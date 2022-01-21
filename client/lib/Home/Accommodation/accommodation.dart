@@ -398,6 +398,7 @@ class _AccommodationSearchState extends State<AccommodationSearch> {
                   SizedBox(
                     height: 150.0,
                     child: ListView(
+                      physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
                       padding: const EdgeInsets.only(left: 20, right: 20),
                       scrollDirection: Axis.horizontal,
                       children: <Widget>[

@@ -7,7 +7,7 @@ import 'package:se_app2/navigator/nav/profile/profile.dart';
 import 'package:se_app2/navigator/nav.dart';
 import 'Home/shuttle/shuttle.dart';
 import 'navigator/nav.dart';
-import 'package:se_app2/Home/Accommodation//hotel.dart';
+import 'package:se_app2/Home/Accommodation/hotel.dart';
 
 void main() async {
 

@@ -6,7 +6,6 @@ import 'package:getwidget/components/card/gf_card.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:favorite_button/favorite_button.dart';
 
 class AccommodationResult extends StatefulWidget {
 
@@ -56,6 +55,8 @@ class _AccommodationResultState extends State<AccommodationResult> {
     return Text(stars);
   }
 
+  bool isFavorite = false;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,266 +102,306 @@ class _AccommodationResultState extends State<AccommodationResult> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            const SizedBox(height: 10),
-            SizedBox(
-              height: 50,
-              child: ListView(
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                scrollDirection: Axis.horizontal,
-                children: <Widget>[
-                  GestureDetector(
-                    onTap: () => {
-                      openEditCheckInDialog(context)
-                    },
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(25)
-                      ),
-                      color: const Color(0xff1D3557),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: <Widget>[
-                            const Icon(Icons.login_rounded, color: Color(0xffFFF4DC)),
-                            const SizedBox(width: 10),
-                            Text(
-                              checkInEdit.text,
-                              style: const TextStyle(
-                                color: Color(0xffFFF4DC),
-                                fontSize: 16
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => {
-                      openEditCheckOutDialog(context)
-                    },
-                    child: Card(
-                      shape: RoundedRectangleBorder(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              const SizedBox(height: 10),
+              SizedBox(
+                height: 50,
+                child: ListView(
+                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  scrollDirection: Axis.horizontal,
+                  children: <Widget>[
+                    GestureDetector(
+                      onTap: () => {
+                        openEditCheckInDialog(context)
+                      },
+                      child: Card(
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25)
-                      ),
-                      color: const Color(0xff1D3557),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: <Widget>[
-                            const Icon(Icons.login_rounded, color: Color(0xffFFF4DC)),
-                            const SizedBox(width: 10),
-                            Text(
-                              checkOutEdit.text,
-                              style: const TextStyle(
+                        ),
+                        color: const Color(0xff1D3557),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: <Widget>[
+                              const Icon(Icons.login_rounded, color: Color(0xffFFF4DC)),
+                              const SizedBox(width: 10),
+                              Text(
+                                checkInEdit.text,
+                                style: const TextStyle(
                                   color: Color(0xffFFF4DC),
                                   fontSize: 16
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => {
-                      showMaterialNumberPicker(
-                        context: context,
-                        title: "จำนวนผู้เข้าพัก",
-                        maxNumber: 30,
-                        minNumber: 1,
-                        selectedNumber: int.parse(numberOfPeopleEdit.text),
-                        onChanged: (value) => setState(() => numberOfPeopleEdit.text = value.toString()),
-                      )
-                    },
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25)
-                      ),
-                      color: const Color(0xff1D3557),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: <Widget>[
-                            const Icon(Icons.people_alt_rounded, color: Color(0xffFFF4DC)),
-                            const SizedBox(width: 10),
-                            Text(
-                              numberOfPeopleEdit.text,
-                              style: const TextStyle(
-                                  color: Color(0xffFFF4DC),
-                                  fontSize: 16
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () => {
-                      showMaterialNumberPicker(
-                        context: context,
-                        title: "จำนวนห้อง",
-                        maxNumber: 30,
-                        minNumber: 1,
-                        selectedNumber: int.parse(numberOfRoomsEdit.text),
-                        onChanged: (value) => setState(() => numberOfRoomsEdit.text = value.toString()),
-                      )
-                    },
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25)
-                      ),
-                      color: const Color(0xff1D3557),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20),
-                        child: Row(
-                          children: <Widget>[
-                            const Icon(Icons.meeting_room_rounded, color: Color(0xffFFF4DC)),
-                            const SizedBox(width: 10),
-                            Text(
-                              numberOfRoomsEdit.text,
-                              style: const TextStyle(
-                                  color: Color(0xffFFF4DC),
-                                  fontSize: 16
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            ),
-            const Divider(
-              height: 20,
-              thickness: 1.5,
-              indent: 20,
-              endIndent: 20,
-              color: Color(0xff827E7E),
-            ),
-            SizedBox(
-              child: ListView(
-                shrinkWrap: true,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      GestureDetector(
-                        onTap: () => {
-
-                        },
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  color: Color(0xff1D3557),
-                                  width: 2
-                              ),
-                              borderRadius: BorderRadius.circular(15)
-                          ),
-                          color: const Color(0xffECFAFF),
-                          child: Container(
-                            width: 200,
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
-                                Icon(Icons.filter_alt_rounded, color: Color(0xff1D3557)),
-                                SizedBox(width: 5),
-                                Text(
-                                  'ตัวกรอง  ',
-                                  style: TextStyle(
-                                      color: Color(0xff1D3557),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold
-                                  ),
                                 ),
-                                Text(
-                                  '(3 ผลลัพธ์)',
-                                  style: TextStyle(
-                                      color: Color(0xff827E7E),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w500
-                                  ),
-                                )
-                              ],
-                            ),
+                              )
+                            ],
                           ),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () => {
-
-                        },
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                              side: const BorderSide(
-                                  color: Color(0xff1D3557),
-                                  width: 2
-                              ),
-                              borderRadius: BorderRadius.circular(15)
-                          ),
-                          color: const Color(0xffECFAFF),
-                          child: Container(
-                            width: 150,
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const <Widget>[
-                                Icon(Icons.sort_rounded, color: Color(0xff1D3557)),
-                                SizedBox(width: 5),
-                                Text(
-                                  'ราคาต่ำ - สูง',
-                                  style: TextStyle(
-                                      color: Color(0xff1D3557),
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold
-                                  ),
-                                )
-                              ],
-                            ),
+                    ),
+                    GestureDetector(
+                      onTap: () => {
+                        openEditCheckOutDialog(context)
+                      },
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25)
+                        ),
+                        color: const Color(0xff1D3557),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: <Widget>[
+                              const Icon(Icons.login_rounded, color: Color(0xffFFF4DC)),
+                              const SizedBox(width: 10),
+                              Text(
+                                checkOutEdit.text,
+                                style: const TextStyle(
+                                    color: Color(0xffFFF4DC),
+                                    fontSize: 16
+                                ),
+                              )
+                            ],
                           ),
                         ),
                       ),
-                    ],
-                  ),
-                  GFCard(
-                    color: const Color(0xff1D3557),
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(20),
-                      topRight: Radius.circular(20)
                     ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)
+                    GestureDetector(
+                      onTap: () => {
+                        showMaterialNumberPicker(
+                          context: context,
+                          title: "จำนวนผู้เข้าพัก",
+                          maxNumber: 30,
+                          minNumber: 1,
+                          selectedNumber: int.parse(numberOfPeopleEdit.text),
+                          onChanged: (value) => setState(() => numberOfPeopleEdit.text = value.toString()),
+                        )
+                      },
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25)
+                        ),
+                        color: const Color(0xff1D3557),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: <Widget>[
+                              const Icon(Icons.people_alt_rounded, color: Color(0xffFFF4DC)),
+                              const SizedBox(width: 10),
+                              Text(
+                                numberOfPeopleEdit.text + ' คน',
+                                style: const TextStyle(
+                                    color: Color(0xffFFF4DC),
+                                    fontSize: 16
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
-                    padding: EdgeInsets.zero,
-                    image: Image.network(
-                      'https://placeimg.com/640/480/any',
-                      height: MediaQuery.of(context).size.height * 0.2,
-                      width: MediaQuery.of(context).size.width,
-                      fit: BoxFit.fitWidth,
-                    ),
-                    showImage: true,
-                    content: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                    GestureDetector(
+                      onTap: () => {
+                        showMaterialNumberPicker(
+                          context: context,
+                          title: "จำนวนห้อง",
+                          maxNumber: 30,
+                          minNumber: 1,
+                          selectedNumber: int.parse(numberOfRoomsEdit.text),
+                          onChanged: (value) => setState(() => numberOfRoomsEdit.text = value.toString()),
+                        )
+                      },
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25)
+                        ),
+                        color: const Color(0xff1D3557),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(
+                            children: <Widget>[
+                              const Icon(Icons.meeting_room_rounded, color: Color(0xffFFF4DC)),
+                              const SizedBox(width: 10),
+                              Text(
+                                numberOfRoomsEdit.text + ' ห้อง',
+                                style: const TextStyle(
+                                    color: Color(0xffFFF4DC),
+                                    fontSize: 16
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              const Divider(
+                height: 20,
+                thickness: 1.5,
+                indent: 20,
+                endIndent: 20,
+                color: Color(0xff827E7E),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).size.height * 0.8,
+                child: ListView(
+                  primary: false,
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 15),
-                          child: Column(
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                        GestureDetector(
+                          onTap: () => {
+
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                    color: Color(0xff1D3557),
+                                    width: 2
+                                ),
+                                borderRadius: BorderRadius.circular(15)
+                            ),
+                            color: const Color(0xffECFAFF),
+                            child: Container(
+                              width: 200,
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const <Widget>[
+                                  Icon(Icons.filter_alt_rounded, color: Color(0xff1D3557)),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    'ตัวกรอง  ',
+                                    style: TextStyle(
+                                        color: Color(0xff1D3557),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold
+                                    ),
+                                  ),
+                                  Text(
+                                    '(3 ผลลัพธ์)',
+                                    style: TextStyle(
+                                        color: Color(0xff827E7E),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w500
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => {
+
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                    color: Color(0xff1D3557),
+                                    width: 2
+                                ),
+                                borderRadius: BorderRadius.circular(15)
+                            ),
+                            color: const Color(0xffECFAFF),
+                            child: Container(
+                              width: 150,
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const <Widget>[
+                                  Icon(Icons.sort_rounded, color: Color(0xff1D3557)),
+                                  SizedBox(width: 5),
+                                  Text(
+                                    'ราคาต่ำ - สูง',
+                                    style: TextStyle(
+                                        color: Color(0xff1D3557),
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                      onTap: () => {
+
+                      },
+                      child: GFCard(
+                        color: const Color(0xff1D3557),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)
+                        ),
+                        padding: EdgeInsets.zero,
+                        showImage: true,
+                        content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Stack(
+                                alignment: Alignment.bottomRight,
                                 children: <Widget>[
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      _buildRatingStars(5),
+                                      ClipRRect(
+                                        borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                                        child: Image.network(
+                                          'https://placeimg.com/640/480/any',
+                                          height: 200,
+                                          width: MediaQuery.of(context).size.width,
+                                          fit: BoxFit.cover
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.topLeft,
+                                        height: 30,
+                                        color: Colors.transparent,
+                                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                        child: _buildRatingStars(5),
+                                      ),
+                                    ],
+                                  ),
+                                  Container(
+                                    margin: const EdgeInsets.only(right: 15),
+                                    width: 60,
+                                    height: 60,
+                                    decoration: BoxDecoration(
+                                      color: const Color(0xffECFAFF),
+                                      borderRadius: const BorderRadius.all(Radius.circular(30)),
+                                      border: Border.all(color: const Color(0xff1D3557), width: 3)
+                                    ),
+                                    child: IconButton(
+                                      icon: Icon(
+                                        Icons.favorite_rounded,
+                                        color: isFavorite ? const Color(0xffC4C4C4) : const Color(0xffE80138),
+                                      ),
+                                      iconSize: 30,
+                                      onPressed: () => {
+                                        setState(() => isFavorite = !isFavorite)
+                                      },
+                                    )
+                                  ),
+                                ]
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 15, bottom: 20, left: 15),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
                                       const Text(
                                         'Cape Dara Resort',
                                         style: TextStyle(
@@ -369,70 +410,182 @@ class _AccommodationResultState extends State<AccommodationResult> {
                                           fontSize: 18
                                         ),
                                       ),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: const <Widget>[
+                                          Text(
+                                            'THB ' + '1,100.00',
+                                            style: TextStyle(
+                                                color: Color(0xffF69B12),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18
+                                            ),
+                                          ),
+                                          Text(
+                                            '2,100',
+                                            style: TextStyle(
+                                              color: Color(0xffFFF4DC),
+                                              fontWeight: FontWeight.w500,
+                                              fontSize: 16,
+                                              decoration: TextDecoration.lineThrough
+                                            ),
+                                          ),
+                                        ],
+                                      )
                                     ],
                                   ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.end,
-                                    children: <Widget>[
-                                      // Container(
-                                      //   width: 50,
-                                      //   height: 50,
-                                      //   decoration: const BoxDecoration(
-                                      //     color: Color(0xffECFAFF),
-                                      //     borderRadius: BorderRadius.all(Radius.circular(25))
-                                      //   ),
-                                      //   child: FavoriteButton(
-                                      //     valueChanged: () {},
-                                      //     iconSize: 35,
-                                      //   )
-                                      // ),
-                                      const Text(
-                                        'THB ' + '1,100.00',
-                                        style: TextStyle(
-                                            color: Color(0xffF69B12),
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18
-                                        ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: const <Widget>[
+                                      Padding(
+                                        padding: EdgeInsets.zero,
+                                        child: Icon(Icons.location_pin, color: Color(0xffFFF4DC),),
                                       ),
-                                      const Text(
-                                        '2,100',
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'นาจอมเทียน, พัทยา',
                                         style: TextStyle(
-                                          color: const Color(0xffFFF4DC),
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 18,
-                                          decoration: TextDecoration.lineThrough
+                                          color: Color(0xffFFF4DC),
+                                          fontSize: 14
                                         ),
-                                      ),
+                                      )
                                     ],
                                   )
                                 ],
                               ),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: const <Widget>[
-                                  Padding(
-                                    padding: EdgeInsets.zero,
-                                    child: Icon(Icons.location_pin, color: Color(0xffFFF4DC),),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    GestureDetector(
+                      onTap: () => {
+
+                      },
+                      child: GFCard(
+                        color: const Color(0xff1D3557),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)
+                        ),
+                        padding: EdgeInsets.zero,
+                        showImage: true,
+                        content: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Stack(
+                                alignment: Alignment.bottomRight,
+                                children: <Widget>[
+                                  Column(
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                                        child: Image.network(
+                                            'https://placeimg.com/640/480/any',
+                                            height: 200,
+                                            width: MediaQuery.of(context).size.width,
+                                            fit: BoxFit.cover
+                                        ),
+                                      ),
+                                      Container(
+                                        alignment: Alignment.topLeft,
+                                        height: 30,
+                                        color: Colors.transparent,
+                                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+                                        child: _buildRatingStars(5),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    'นาจอมเทียน, พัทยา',
-                                    style: TextStyle(
-                                      color: Color(0xffFFF4DC),
-                                      fontSize: 14
-                                    ),
+                                  Container(
+                                      margin: const EdgeInsets.only(right: 15),
+                                      width: 60,
+                                      height: 60,
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xffECFAFF),
+                                          borderRadius: const BorderRadius.all(Radius.circular(30)),
+                                          border: Border.all(color: const Color(0xff1D3557), width: 3)
+                                      ),
+                                      child: IconButton(
+                                        icon: Icon(
+                                          Icons.favorite_rounded,
+                                          color: isFavorite ? const Color(0xffC4C4C4) : const Color(0xffE80138),
+                                        ),
+                                        iconSize: 30,
+                                        onPressed: () => {
+                                          setState(() => isFavorite = !isFavorite)
+                                        },
+                                      )
+                                  ),
+                                ]
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 15, bottom: 20, left: 15),
+                              child: Column(
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      const Text(
+                                        'Cape Dara Resort',
+                                        style: TextStyle(
+                                            color: Color(0xffFFF4DC),
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18
+                                        ),
+                                      ),
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.end,
+                                        children: const <Widget>[
+                                          Text(
+                                            'THB ' + '1,100.00',
+                                            style: TextStyle(
+                                                color: Color(0xffF69B12),
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18
+                                            ),
+                                          ),
+                                          Text(
+                                            '2,100',
+                                            style: TextStyle(
+                                                color: Color(0xffFFF4DC),
+                                                fontWeight: FontWeight.w500,
+                                                fontSize: 16,
+                                                decoration: TextDecoration.lineThrough
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: const <Widget>[
+                                      Padding(
+                                        padding: EdgeInsets.zero,
+                                        child: Icon(Icons.location_pin, color: Color(0xffFFF4DC),),
+                                      ),
+                                      SizedBox(width: 5),
+                                      Text(
+                                        'นาจอมเทียน, พัทยา',
+                                        style: TextStyle(
+                                            color: Color(0xffFFF4DC),
+                                            fontSize: 14
+                                        ),
+                                      )
+                                    ],
                                   )
                                 ],
-                              )
-                            ],
-                          ),
-                        )
-                      ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ],
-              ),
-            )
-          ],
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
