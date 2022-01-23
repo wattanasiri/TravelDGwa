@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_material_pickers/flutter_material_pickers.dart';
-import 'package:getwidget/components/card/gf_card.dart';
-import 'package:getwidget/getwidget.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:se_app2/Home/Accommodation/accommodation_result_item.dart';
+import 'package:smart_select/smart_select.dart';
+
+import '/Home/Accommodation/accommodation_result_item.dart';
 
 class AccommodationResult extends StatefulWidget {
 
@@ -15,6 +15,7 @@ class AccommodationResult extends StatefulWidget {
   final checkOutHolder;
   final numberOfPeopleHolder;
   final numberOfRoomsHolder;
+  final result;
 
   const AccommodationResult({
     Key key,
@@ -22,7 +23,8 @@ class AccommodationResult extends StatefulWidget {
     this.checkInHolder,
     this.checkOutHolder,
     this.numberOfPeopleHolder,
-    this.numberOfRoomsHolder
+    this.numberOfRoomsHolder,
+    this.result
   }) : super(key: key);
 
   @override
@@ -46,17 +48,6 @@ class _AccommodationResultState extends State<AccommodationResult> {
     numberOfPeopleEdit = TextEditingController(text: widget.numberOfPeopleHolder);
     numberOfRoomsEdit = TextEditingController(text: widget.numberOfRoomsHolder);
   }
-
-  Text _buildRatingStars(int rating) {
-    String stars = '';
-    for (int i = 0; i < rating; i++) {
-      stars += '⭐ ';
-    }
-    stars.trim();
-    return Text(stars);
-  }
-
-  bool isFavorite = false;
 
   @override
   Widget build(BuildContext context) {
@@ -293,7 +284,7 @@ class _AccommodationResultState extends State<AccommodationResult> {
                 ),
                 GestureDetector(
                   onTap: () => {
-
+                    openSorting(context)
                   },
                   child: Card(
                     shape: RoundedRectangleBorder(
@@ -336,8 +327,8 @@ class _AccommodationResultState extends State<AccommodationResult> {
   }
 
   Future openEditNameDialog(BuildContext context) => showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
+    context: context,
+    builder: (context) => AlertDialog(
         title: const Text(
           'เลือกสถานที่',
           style: TextStyle(
@@ -360,8 +351,8 @@ class _AccommodationResultState extends State<AccommodationResult> {
   );
 
   Future openEditCheckInDialog(BuildContext context) => showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
+    context: context,
+    builder: (context) => AlertDialog(
         title: const Text(
           'วันที่เช็คอิน',
           style: TextStyle(
@@ -416,8 +407,8 @@ class _AccommodationResultState extends State<AccommodationResult> {
   );
 
   Future openEditCheckOutDialog(BuildContext context) => showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
+    context: context,
+    builder: (context) => AlertDialog(
         title: const Text(
           'วันที่เช็คเอาท์',
           style: TextStyle(
@@ -470,4 +461,20 @@ class _AccommodationResultState extends State<AccommodationResult> {
         ],
       )
   );
+
+  Future openSorting(BuildContext context) => showDialog(
+      context: context,
+      builder: (context) => SmartSelect.single(
+        title: 'เรียงลำดับตาม',
+        choiceItems: <S2Choice<String>>[
+          S2Choice<String>(value: 'popular', title: 'Ionic'),
+          S2Choice<String>(value: 'priceH-L', title: 'Flutter'),
+          S2Choice<String>(value: 'priceL-H', title: 'React Native'),
+          S2Choice<String>(value: 'rate', title: 'ระดับดาว (5-0)')
+        ],
+        onChange: (value) => setState(() => numberOfRoomsEdit.text = value.toString()),
+        value: 'value',
+      )
+  );
+
 }

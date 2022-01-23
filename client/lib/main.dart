@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
       title: 'traveldgwa',
       theme: ThemeData(
         textTheme: GoogleFonts.ibmPlexSansThaiTextTheme()
+        // textTheme: GoogleFonts.notoSansThaiTextTheme()
       ),
       home: const AccommodationSearch(),
       routes: <String, WidgetBuilder>{

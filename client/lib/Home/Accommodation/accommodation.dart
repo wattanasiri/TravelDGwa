@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_material_pickers/helpers/show_number_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import 'accommodation_result.dart';
 
@@ -14,6 +16,17 @@ class AccommodationSearch extends StatefulWidget {
 }
 
 class _AccommodationSearchState extends State<AccommodationSearch> {
+
+  String word = '';
+  Map data;
+  List accommodationData;
+
+  Future getAccommodation() async {
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/hotel/search/" + word));
+    data = json.decode(res.body);
+    accommodationData = data['hotels'];
+  }
 
   final name = TextEditingController();
   final checkIn = TextEditingController();
@@ -750,10 +763,12 @@ class _AccommodationSearchState extends State<AccommodationSearch> {
     );
   }
 
-  void getItemAndNavigate(BuildContext context){
+  void getItemAndNavigate(BuildContext context) async{
     if (!_formKey.currentState.validate()) {
       return;
     }
+
+    await getAccommodation();
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -762,7 +777,8 @@ class _AccommodationSearchState extends State<AccommodationSearch> {
           checkInHolder : checkIn.text,
           checkOutHolder : checkOut.text,
           numberOfPeopleHolder : numberOfPeople.text,
-          numberOfRoomsHolder : numberOfRooms.text
+          numberOfRoomsHolder : numberOfRooms.text,
+          result: accommodationData
         )
       )
     );
