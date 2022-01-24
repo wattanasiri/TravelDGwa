@@ -272,10 +272,10 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                             ),
                           ),
                           AnimatedContainer(
-                            duration: Duration(milliseconds: 200),
+                            duration: const Duration(milliseconds: 200),
                             height: viewVisible ? 500 : 0,
                             color: Colors.green,
-                            child: const Center(child: const Text('Show Hide Text View Widget in Flutter',
+                            child: const Center(child: Text('Show Hide Text View Widget in Flutter',
                               textAlign: TextAlign.center,
                               style: TextStyle(color: Colors.white,
                                   fontSize: 23)))
@@ -288,6 +288,7 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                               style: ElevatedButton.styleFrom(
                                 onPrimary: const Color(0xff1D3557),
                                 primary: const Color(0xff1D3557),
+                                minimumSize: const Size(350, 60),
                                 shape: const RoundedRectangleBorder(
                                   borderRadius: BorderRadius.all(Radius.circular(16)),
                                 ),

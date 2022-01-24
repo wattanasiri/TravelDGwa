@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:getwidget/getwidget.dart';
 
-import '/Home/Accommodation/accommodation_detail.dart';
+import 'accommodation_detail.dart';
 
 class ResultItem extends StatefulWidget {
   final accommodationData;
@@ -42,7 +43,14 @@ class _ResultItemState extends State<ResultItem> {
           itemCount: data == null ? 0 : data.length,
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
-              onTap: () => {},
+              onTap: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const AccommodationDetail()
+                  )
+                )
+              },
               child: GFCard(
                 elevation: 8,
                 color: const Color(0xff1D3557),
@@ -123,14 +131,14 @@ class _ResultItemState extends State<ResultItem> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: <Widget>[
                                     Text(
-                                      'THB' + '${data[index]['price']}',
+                                      'THB ' + '${data[index]['price']}',
                                       textAlign: TextAlign.end,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           color: Color(0xffF69B12),
                                           fontWeight: FontWeight.bold,
                                           fontSize: 18),
                                     ),
-                                    Text(
+                                    const Text(
                                       '2,000.00',
                                       textAlign: TextAlign.end,
                                       style: TextStyle(
