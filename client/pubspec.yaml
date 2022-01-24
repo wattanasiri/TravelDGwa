@@ -44,6 +44,8 @@ dependencies:
   ionicons: ^0.1.2
   flutter_boxicons: ^3.0.0
   getwidget: ^2.0.4
+  carousel_slider: ^4.0.0
+  smooth_page_indicator: ^1.0.0+2
 
 
   # The following adds the Cupertino Icons font to your application.
