@@ -131,6 +131,9 @@ class _AccommodationSearchState extends State<AccommodationSearch> {
                                 return null;
                               },
                               focusNode: accFocusNode,
+                              onChanged: (value){
+                                word = value;
+                              },
                             ),
                           ),
                         ],

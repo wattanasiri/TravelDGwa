@@ -4,8 +4,8 @@ import 'package:getwidget/getwidget.dart';
 
 class ResultItem extends StatefulWidget {
 
-  final resultData;
-  const ResultItem({Key key, @required this.resultData})
+  final accommodationData;
+  const ResultItem({Key key, @required this.accommodationData})
       : super(key: key);
   @override
   State<ResultItem> createState() => _ResultItemState();
@@ -29,21 +29,24 @@ class _ResultItemState extends State<ResultItem> {
   void initState() {
     super.initState();
 
-    data = widget.resultData;
+    data = widget.accommodationData;
   }
 
   @override
   Widget build(BuildContext context) {
 
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height * 0.75,
+    return Container(
+      padding: const EdgeInsets.only(bottom: 80),
       child: ListView.builder(
+        shrinkWrap: true,
+        physics: const BouncingScrollPhysics(parent: NeverScrollableScrollPhysics()),
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         itemCount: data == null ? 0 : data.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () => {},
             child: GFCard(
+              elevation: 8,
               color: const Color(0xff1D3557),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20)),
@@ -87,8 +90,8 @@ class _ResultItemState extends State<ResultItem> {
                           icon: const Icon(Icons.favorite_rounded,
                               color:
                               // data.isFavorite
-                              Color(0xffE80138)
-                            // : const Color(0xffC4C4C4),
+                              // ? Color(0xffE80138)
+                            Color(0xffC4C4C4),
                           ),
                           iconSize: 30,
                           onPressed: () => {
@@ -97,7 +100,7 @@ class _ResultItemState extends State<ResultItem> {
                         )),
                   ]),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    padding: const EdgeInsets.only(right: 15, bottom: 15, left: 15),
                     child: Column(
                       children: [
                         Row(
@@ -105,7 +108,7 @@ class _ResultItemState extends State<ResultItem> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             SizedBox(
-                              width: 200,
+                              width: MediaQuery.of(context).size.width * 0.45,
                               child: Text(
                                 data[index]['name'],
                                 style: const TextStyle(
@@ -114,28 +117,34 @@ class _ResultItemState extends State<ResultItem> {
                                     fontSize: 18),
                               ),
                             ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: const <Widget>[
-                                Text(
-                                  'THB ' + 'data price',
-                                  style: TextStyle(
-                                      color: Color(0xffF69B12),
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                ),
-                                Text(
-                                  'data priceDecrease',
-                                  style: TextStyle(
-                                      color: Color(0xffFFF4DC),
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: 16,
-                                      decoration: TextDecoration.lineThrough),
-                                ),
-                              ],
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.32,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: const <Widget>[
+                                  Text(
+                                    'THB ' + '1,000.00',
+                                    textAlign: TextAlign.end,
+                                    style: TextStyle(
+                                        color: Color(0xffF69B12),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18),
+                                  ),
+                                  Text(
+                                    '2,000.00',
+                                    textAlign: TextAlign.end,
+                                    style: TextStyle(
+                                        color: Color(0xffFFF4DC),
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16,
+                                        decoration: TextDecoration.lineThrough),
+                                  ),
+                                ],
+                              ),
                             )
                           ],
                         ),
+                        const SizedBox(height: 5),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
@@ -159,143 +168,7 @@ class _ResultItemState extends State<ResultItem> {
             ),
           );
         },
-      ));
-      // child: GridView.count(
-      //   childAspectRatio: 1.0,
-      //   crossAxisCount: 1,
-      //   mainAxisSpacing: 20,
-      //   physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-      //   padding: const EdgeInsets.only(right: 20, bottom: 100, left: 20),
-      //   children: itemList.map((data) {
-      //     return GestureDetector(
-      //       onTap: () => {
-      //
-      //       },
-      //       child: GFCard(
-      //         color: const Color(0xff1D3557),
-      //         shape: RoundedRectangleBorder(
-      //             borderRadius: BorderRadius.circular(20)
-      //         ),
-      //         padding: EdgeInsets.zero,
-      //         content: Column(
-      //           crossAxisAlignment: CrossAxisAlignment.center,
-      //           children: <Widget>[
-      //             Stack(
-      //                 alignment: Alignment.bottomRight,
-      //                 children: <Widget>[
-      //                   Column(
-      //                     children: [
-      //                       ClipRRect(
-      //                         borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
-      //                         child: Image.network(
-      //                             data.image,
-      //                             height: 200,
-      //                             width: MediaQuery.of(context).size.width,
-      //                             fit: BoxFit.cover
-      //                         ),
-      //                       ),
-      //                       Container(
-      //                         alignment: Alignment.topLeft,
-      //                         height: 40,
-      //                         color: Colors.transparent,
-      //                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-      //                         child: Container(
-      //                           padding: const EdgeInsets.only(top: 10),
-      //                             child: _buildRatingStars(data.rate)
-      //                         ),
-      //                       ),
-      //                     ],
-      //                   ),
-      //                   Container(
-      //                       margin: const EdgeInsets.only(right: 15),
-      //                       width: 60,
-      //                       height: 60,
-      //                       decoration: BoxDecoration(
-      //                           color: const Color(0xffECFAFF),
-      //                           borderRadius: const BorderRadius.all(Radius.circular(30)),
-      //                           border: Border.all(color: const Color(0xff1D3557), width: 3)
-      //                       ),
-      //                       child: IconButton(
-      //                         icon: Icon(
-      //                           Icons.favorite_rounded,
-      //                           color: data.isFavorite ? const Color(0xffE80138) : const Color(0xffC4C4C4),
-      //                         ),
-      //                         iconSize: 30,
-      //                         onPressed: () => {
-      //                           setState(() => data.isFavorite = !data.isFavorite)
-      //                         },
-      //                       )
-      //                   ),
-      //                 ]
-      //             ),
-      //             Padding(
-      //               padding: const EdgeInsets.symmetric(horizontal: 15),
-      //               child: Column(
-      //                 children: [
-      //                   Row(
-      //                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //                     crossAxisAlignment: CrossAxisAlignment.start,
-      //                     children: <Widget>[
-      //                       Container(
-      //                         width: 160,
-      //                         child: Text(
-      //                           data.name,
-      //                           style: const TextStyle(
-      //                               color: Color(0xffFFF4DC),
-      //                               fontWeight: FontWeight.bold,
-      //                               fontSize: 18
-      //                           ),
-      //                         ),
-      //                       ),
-      //                       SizedBox(
-      //                         width: 140,
-      //                         child: Column(
-      //                           crossAxisAlignment: CrossAxisAlignment.end,
-      //                           children: <Widget>[
-      //                             Text(
-      //                               'THB ' + data.price,
-      //                               style: const TextStyle(
-      //                                   color: Color(0xffF69B12),
-      //                                   fontWeight: FontWeight.bold,
-      //                                   fontSize: 18
-      //                               ),
-      //                             ),
-      //                             Text(
-      //                               data.priceDecrease,
-      //                               style: const TextStyle(
-      //                                   color: Color(0xffFFF4DC),
-      //                                   fontWeight: FontWeight.w500,
-      //                                   fontSize: 16,
-      //                                   decoration: TextDecoration.lineThrough
-      //                               ),
-      //                             ),
-      //                           ],
-      //                         ),
-      //                       )
-      //                     ],
-      //                   ),
-      //                   Row(
-      //                     mainAxisAlignment: MainAxisAlignment.start,
-      //                     children: <Widget>[
-      //                       const Icon(Icons.location_pin, color: Color(0xffFFF4DC),),
-      //                       const SizedBox(width: 5),
-      //                       Text(
-      //                         data.location,
-      //                         style: const TextStyle(
-      //                             color: Color(0xffFFF4DC),
-      //                             fontSize: 14
-      //                         ),
-      //                       )
-      //                     ],
-      //                   )
-      //                 ],
-      //               ),
-      //             )
-      //           ],
-      //         ),
-      //       ),
-      //     );
-      //   }).toList(),
-      // ),
+      )
+    );
   }
 }
