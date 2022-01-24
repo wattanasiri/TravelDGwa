@@ -9,17 +9,7 @@ var hotelSchema  = new mongoose.Schema({
         }
     ],
     image : String,
-    location : String,
-    price : Number,
-    desc : String,
-    star : Number,
-    type : String,
-    comments : [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Comment'
-        }
-    ]
+    location : String
 })
 
 module.exports = mongoose.model('Hotel',hotelSchema)
