@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:getwidget/getwidget.dart';
+
+import '/Home/Accommodation/accommodation_detail.dart';
 
 class ResultItem extends StatefulWidget {
 
@@ -44,7 +45,10 @@ class _ResultItemState extends State<ResultItem> {
         itemCount: data == null ? 0 : data.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
-            onTap: () => {},
+            onTap: () => {
+            Navigator.push(context, MaterialPageRoute(
+            builder: (context) => AccommodationDetail()))
+            },
             child: GFCard(
               elevation: 8,
               color: const Color(0xff1D3557),

@@ -2,12 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:se_app2/Home/Accommodation/accommodation.dart';
-import 'package:se_app2/navigator/nav/profile/profile.dart';
-import 'package:se_app2/navigator/nav.dart';
-import 'Home/shuttle/shuttle.dart';
+
+import 'Home/Accommodation/accommodation.dart';
+import 'navigator/nav/profile/profile.dart';
 import 'navigator/nav.dart';
-import 'package:se_app2/Home/Accommodation/hotel.dart';
+import 'Home/shuttle/shuttle.dart';
 
 void main() async {
 

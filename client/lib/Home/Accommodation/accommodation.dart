@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_material_pickers/helpers/show_number_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
@@ -92,14 +91,59 @@ class _AccommodationSearchState extends State<AccommodationSearch> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
+                  const SizedBox(height: 30),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 30),
+                      const Text(
+                        "เลือกสถานที่",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.normal,
+                          color: Color(0xff1D3557)
+                        )
+                      ),
+                      const SizedBox(height: 5),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                        width: 350,
+                        decoration: BoxDecoration(
+                          color: const Color(0xffECFAFF),
+                          borderRadius: BorderRadius.circular(15),
+                          border:  Border.all(color: const Color(0xff1D3557),width: 2)
+                        ),
+                        child: TextFormField(
+                          controller: name,
+                          decoration: const InputDecoration(
+                            hintText: 'สถานที่ หรือ ชื่อที่พัก',
+                            enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xffECFAFF))
+                            ),
+                            suffixIcon: Icon(Icons.search, color: Color(0xff1D3557))
+                          ),
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'กรุณาระบุสถานที่';
+                            }
+                            return null;
+                          },
+                          focusNode: accFocusNode,
+                          onChanged: (value){
+                            word = value;
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            "เลือกสถานที่",
+                            "วันที่เช็คอิน",
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.normal,
@@ -109,297 +153,248 @@ class _AccommodationSearchState extends State<AccommodationSearch> {
                           const SizedBox(height: 5),
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-                            width: 350,
+                            width: 170,
                             decoration: BoxDecoration(
                               color: const Color(0xffECFAFF),
                               borderRadius: BorderRadius.circular(15),
                               border:  Border.all(color: const Color(0xff1D3557),width: 2)
                             ),
                             child: TextFormField(
-                              controller: name,
+                              controller: checkIn,
+                              readOnly: true,
                               decoration: const InputDecoration(
-                                hintText: 'สถานที่ หรือ ชื่อที่พัก',
+                                hintText: 'วว-ดด-ปปปป',
                                 enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Color(0xffECFAFF))
+                                    borderSide: BorderSide(color: Color(0xffECFAFF))
                                 ),
-                                suffixIcon: Icon(Icons.search, color: Color(0xff1D3557))
+                                suffixIcon: Icon(Ionicons.calendar_outline, color: Color(0xff1D3557))
                               ),
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'กรุณาระบุสถานที่';
+                                  return 'กรุณาระบุวันที่';
                                 }
                                 return null;
                               },
-                              focusNode: accFocusNode,
-                              onChanged: (value){
-                                word = value;
+                              focusNode: accFocusNode1,
+                              onTap: () async {
+                                DateTime pickedDate = await showDatePicker(
+                                  context: context, initialDate: DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2101)
+                                );
+
+                                if(pickedDate != null ){
+                                  print(pickedDate);
+                                  String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                                  print(formattedDate);
+
+                                  setState(() {
+                                    checkIn.text = formattedDate;
+                                  });
+                                }else {
+                                  print("Date is not selected");
+                                }
                               },
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      const SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "วันที่เช็คอิน",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.normal,
-                                  color: Color(0xff1D3557)
-                                )
-                              ),
-                              const SizedBox(height: 5),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-                                width: 170,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xffECFAFF),
-                                  borderRadius: BorderRadius.circular(15),
-                                  border:  Border.all(color: const Color(0xff1D3557),width: 2)
-                                ),
-                                child: TextFormField(
-                                  controller: checkIn,
-                                  readOnly: true,
-                                  decoration: const InputDecoration(
-                                    hintText: 'วว-ดด-ปปปป',
-                                    enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Color(0xffECFAFF))
-                                    ),
-                                    suffixIcon: Icon(Ionicons.calendar_outline, color: Color(0xff1D3557))
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'กรุณาระบุวันที่';
-                                    }
-                                    return null;
-                                  },
-                                  focusNode: accFocusNode1,
-                                  onTap: () async {
-                                    DateTime pickedDate = await showDatePicker(
-                                      context: context, initialDate: DateTime.now(),
-                                      firstDate: DateTime(2000),
-                                      lastDate: DateTime(2101)
-                                    );
-
-                                    if(pickedDate != null ){
-                                      print(pickedDate);
-                                      String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
-                                      print(formattedDate);
-
-                                      setState(() {
-                                        checkIn.text = formattedDate;
-                                      });
-                                    }else {
-                                      print("Date is not selected");
-                                    }
-                                  },
-                                ),
-                              ),
-                            ],
+                          const Text(
+                            "วันที่เช็คเอาท์",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal,
+                              color: Color(0xff1D3557)
+                            )
                           ),
-                          const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "วันที่เช็คเอาท์",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.normal,
-                                  color: Color(0xff1D3557)
-                                )
-                              ),
-                              const SizedBox(height: 5),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-                                width: 170,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xffECFAFF),
-                                  borderRadius: BorderRadius.circular(15),
-                                  border:  Border.all(color: const Color(0xff1D3557),width: 2)
+                          const SizedBox(height: 5),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                            width: 170,
+                            decoration: BoxDecoration(
+                              color: const Color(0xffECFAFF),
+                              borderRadius: BorderRadius.circular(15),
+                              border:  Border.all(color: const Color(0xff1D3557),width: 2)
+                            ),
+                            child: TextFormField(
+                              controller: checkOut,
+                              readOnly: true,
+                              decoration: const InputDecoration(
+                                hintText: 'วว-ดด-ปปปป',
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Color(0xffECFAFF))
                                 ),
-                                child: TextFormField(
-                                  controller: checkOut,
-                                  readOnly: true,
-                                  decoration: const InputDecoration(
-                                    hintText: 'วว-ดด-ปปปป',
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Color(0xffECFAFF))
-                                    ),
-                                    suffixIcon: Icon(Ionicons.calendar_outline, color: Color(0xff1D3557))
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'กรุณาระบุวันที่';
-                                    }
-                                    return null;
-                                  },
-                                  focusNode: accFocusNode2,
-                                  onTap: () async {
-                                    DateTime pickedDate = await showDatePicker(
-                                      context: context, initialDate: DateTime.now(),
-                                      firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
-                                      lastDate: DateTime(2101)
-                                    );
-
-                                    if(pickedDate != null ){
-                                      print(pickedDate);
-                                      String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
-                                      print(formattedDate);
-
-                                      setState(() {
-                                        checkOut.text = formattedDate; //set output date to TextField value.
-                                      });
-                                    }else {
-                                      print("Date is not selected");
-                                    }
-                                  },
-                                ),
+                                suffixIcon: Icon(Ionicons.calendar_outline, color: Color(0xff1D3557))
                               ),
-                            ],
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'กรุณาระบุวันที่';
+                                }
+                                return null;
+                              },
+                              focusNode: accFocusNode2,
+                              onTap: () async {
+                                DateTime pickedDate = await showDatePicker(
+                                  context: context, initialDate: DateTime.now(),
+                                  firstDate: DateTime(2000), //DateTime.now() - not to allow to choose before today.
+                                  lastDate: DateTime(2101)
+                                );
+
+                                if(pickedDate != null ){
+                                  print(pickedDate);
+                                  String formattedDate = DateFormat('dd-MM-yyyy').format(pickedDate);
+                                  print(formattedDate);
+
+                                  setState(() {
+                                    checkOut.text = formattedDate; //set output date to TextField value.
+                                  });
+                                }else {
+                                  print("Date is not selected");
+                                }
+                              },
+                            ),
                           ),
                         ],
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "จำนวนผู้เข้าพัก",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.normal,
-                                  color: Color(0xff1D3557)
-                                )
-                              ),
-                              const SizedBox(height: 5),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-                                width: 170,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xffECFAFF),
-                                  borderRadius: BorderRadius.circular(15),
-                                  border:  Border.all(color: const Color(0xff1D3557),width: 2)
-                                ),
-                                child: TextFormField(
-                                  controller: numberOfPeople,
-                                  readOnly: true,
-                                  decoration: const InputDecoration(
-                                    hintText: '0 คน',
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Color(0xffECFAFF))
-                                    ),
-                                    suffixIcon: Icon(Icons.people_alt_rounded, color: Color(0xff1D3557),)
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'กรุณาระบุจำนวนผู้เข้าพัก';
-                                    }
-                                    return null;
-                                  },
-                                  focusNode: accFocusNode3,
-                                  onTap: () async {
-                                    showMaterialNumberPicker(
-                                      context: context,
-                                      title: "จำนวนผู้เข้าพัก",
-                                      maxNumber: 30,
-                                      minNumber: 1,
-                                      selectedNumber: int.parse(numberOfPeople.text),
-                                      onChanged: (value) => setState(() => numberOfPeople.text = value.toString()),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(width: 10),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "จำนวนห้อง",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.normal,
-                                  color: Color(0xff1D3557)
-                                )
-                              ),
-                              const SizedBox(height: 5),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-                                width: 170,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xffECFAFF),
-                                  borderRadius: BorderRadius.circular(15),
-                                  border:  Border.all(color: const Color(0xff1D3557),width: 2)
-                                ),
-                                child: TextFormField(
-                                  controller: numberOfRooms,
-                                  readOnly: true,
-                                  decoration: const InputDecoration(
-                                    hintText: '0 ห้อง',
-                                    enabledBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Color(0xffECFAFF))
-                                    ),
-                                    suffixIcon: Icon(Icons.meeting_room_rounded, color: Color(0xff1D3557),)
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'กรุณาระบุจำนวนห้อง';
-                                    }
-                                    return null;
-                                  },
-                                  focusNode: accFocusNode4,
-                                  onTap: () async {
-                                    showMaterialNumberPicker(
-                                      context: context,
-                                      title: "จำนวนห้อง",
-                                      maxNumber: 9,
-                                      minNumber: 1,
-                                      selectedNumber: int.parse(numberOfRooms.text),
-                                      onChanged: (value) => setState(() => numberOfRooms.text = value.toString()),
-                                    );
-                                  },
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 30),
-                      ElevatedButton(
-                        onPressed: () => getItemAndNavigate(context),
-                        style: ElevatedButton.styleFrom(
-                          onPrimary: const Color(0xff1D3557),
-                          primary: const Color(0xff1D3557),
-                          minimumSize: const Size(350, 60),
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(16)),
-                          ),
-                        ),
-                        child: const Text(
-                        'ค้นหาที่พัก',
-                        style: TextStyle(
-                          color: Color(0xffFFF4DC),
-                          fontSize: 20
-                        ),),
-                      ),
-                      const SizedBox(height: 30),
-                      const Divider(
-                        thickness: 1.5,
-                        indent: 25,
-                        endIndent: 25,
-                        color: Color(0xff827E7E),
                       ),
                     ],
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "จำนวนผู้เข้าพัก",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal,
+                              color: Color(0xff1D3557)
+                            )
+                          ),
+                          const SizedBox(height: 5),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                            width: 170,
+                            decoration: BoxDecoration(
+                              color: const Color(0xffECFAFF),
+                              borderRadius: BorderRadius.circular(15),
+                              border:  Border.all(color: const Color(0xff1D3557),width: 2)
+                            ),
+                            child: TextFormField(
+                              controller: numberOfPeople,
+                              readOnly: true,
+                              decoration: const InputDecoration(
+                                hintText: '0 คน',
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Color(0xffECFAFF))
+                                ),
+                                suffixIcon: Icon(Icons.people_alt_rounded, color: Color(0xff1D3557),)
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'กรุณาระบุจำนวนผู้เข้าพัก';
+                                }
+                                return null;
+                              },
+                              focusNode: accFocusNode3,
+                              onTap: () async {
+                                showMaterialNumberPicker(
+                                  context: context,
+                                  title: "จำนวนผู้เข้าพัก",
+                                  maxNumber: 30,
+                                  minNumber: 1,
+                                  selectedNumber: int.parse(numberOfPeople.text),
+                                  onChanged: (value) => setState(() => numberOfPeople.text = value.toString()),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(width: 10),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            "จำนวนห้อง",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.normal,
+                              color: Color(0xff1D3557)
+                            )
+                          ),
+                          const SizedBox(height: 5),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                            width: 170,
+                            decoration: BoxDecoration(
+                              color: const Color(0xffECFAFF),
+                              borderRadius: BorderRadius.circular(15),
+                              border:  Border.all(color: const Color(0xff1D3557),width: 2)
+                            ),
+                            child: TextFormField(
+                              controller: numberOfRooms,
+                              readOnly: true,
+                              decoration: const InputDecoration(
+                                hintText: '0 ห้อง',
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide: BorderSide(color: Color(0xffECFAFF))
+                                ),
+                                suffixIcon: Icon(Icons.meeting_room_rounded, color: Color(0xff1D3557),)
+                              ),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'กรุณาระบุจำนวนห้อง';
+                                }
+                                return null;
+                              },
+                              focusNode: accFocusNode4,
+                              onTap: () async {
+                                showMaterialNumberPicker(
+                                  context: context,
+                                  title: "จำนวนห้อง",
+                                  maxNumber: 9,
+                                  minNumber: 1,
+                                  selectedNumber: int.parse(numberOfRooms.text),
+                                  onChanged: (value) => setState(() => numberOfRooms.text = value.toString()),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 30),
+                  ElevatedButton(
+                    onPressed: () => getItemAndNavigate(context),
+                    style: ElevatedButton.styleFrom(
+                      onPrimary: const Color(0xff1D3557),
+                      primary: const Color(0xff1D3557),
+                      minimumSize: const Size(350, 60),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(16)),
+                      ),
+                    ),
+                    child: const Text(
+                    'ค้นหาที่พัก',
+                    style: TextStyle(
+                      color: Color(0xffFFF4DC),
+                      fontSize: 20
+                    ),),
+                  ),
+                  const SizedBox(height: 30),
+                  const Divider(
+                    thickness: 1.5,
+                    indent: 25,
+                    endIndent: 25,
+                    color: Color(0xff827E7E),
                   ),
                 ],
               ),
