@@ -4,50 +4,22 @@ import 'package:getwidget/getwidget.dart';
 
 import 'accommodation_detail.dart';
 
-class ResultItem extends StatefulWidget {
-
-  final checkInHolder;
-  final checkOutHolder;
-  final numberOfPeopleHolder;
-  final numberOfRoomsHolder;
-  final accommodationData;
-  const ResultItem({
-    Key key,
-    @required this.accommodationData,
-    this.checkInHolder,
-    this.checkOutHolder,
-    this.numberOfPeopleHolder,
-    this.numberOfRoomsHolder
-  }) : super(key: key);
+class RoomItem extends StatefulWidget {
+  final roomData;
+  const RoomItem({Key key, @required this.roomData})
+      : super(key: key);
   @override
-  State<ResultItem> createState() => _ResultItemState();
+  State<RoomItem> createState() => _RoomItemState();
 }
 
-class _ResultItemState extends State<ResultItem> {
-
-  var checkInEdit = TextEditingController();
-  var checkOutEdit = TextEditingController();
-  var numberOfPeopleEdit = TextEditingController();
-  var numberOfRoomsEdit = TextEditingController();
+class _RoomItemState extends State<RoomItem> {
   var data;
-
-  Text _buildRatingStars(int rating) {
-    String stars = '';
-    for (int i = 0; i < rating; i++) {
-      stars += '⭐ ';
-    }
-    stars.trim();
-    return Text(stars);
-  }
 
   @override
   void initState() {
     super.initState();
-    data = widget.accommodationData;
-    checkInEdit = TextEditingController(text: widget.checkInHolder);
-    checkOutEdit = TextEditingController(text: widget.checkOutHolder);
-    numberOfPeopleEdit = TextEditingController(text: widget.numberOfPeopleHolder);
-    numberOfRoomsEdit = TextEditingController(text: widget.numberOfRoomsHolder);
+
+    data = widget.roomData;
   }
 
   @override
@@ -63,17 +35,6 @@ class _ResultItemState extends State<ResultItem> {
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
               onTap: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AccommodationDetail(
-                      checkInHolder : checkInEdit.text,
-                      checkOutHolder : checkOutEdit.text,
-                      numberOfPeopleHolder : numberOfPeopleEdit.text,
-                      numberOfRoomsHolder : numberOfRoomsEdit.text,
-                    )
-                  )
-                )
               },
               child: GFCard(
                 elevation: 8,
@@ -96,14 +57,6 @@ class _ResultItemState extends State<ResultItem> {
                                 width: MediaQuery.of(context).size.width,
                                 fit: BoxFit.cover),
                           ),
-                          Container(
-                            alignment: Alignment.topLeft,
-                            height: 30,
-                            color: Colors.transparent,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 5),
-                            child: _buildRatingStars(5),
-                          ),
                         ],
                       ),
                       Container(
@@ -113,16 +66,16 @@ class _ResultItemState extends State<ResultItem> {
                           decoration: BoxDecoration(
                               color: const Color(0xffECFAFF),
                               borderRadius:
-                                  const BorderRadius.all(Radius.circular(30)),
+                              const BorderRadius.all(Radius.circular(30)),
                               border: Border.all(
                                   color: const Color(0xff1D3557), width: 3)),
                           child: IconButton(
                             icon: const Icon(
                               Icons.favorite_rounded,
                               color:
-                                  // data.isFavorite
-                                  // ? Color(0xffE80138)
-                                  Color(0xffC4C4C4),
+                              // data.isFavorite
+                              // ? Color(0xffE80138)
+                              Color(0xffC4C4C4),
                             ),
                             iconSize: 30,
                             onPressed: () => {
@@ -170,7 +123,7 @@ class _ResultItemState extends State<ResultItem> {
                                           fontWeight: FontWeight.w500,
                                           fontSize: 16,
                                           decoration:
-                                              TextDecoration.lineThrough),
+                                          TextDecoration.lineThrough),
                                     ),
                                   ],
                                 ),
