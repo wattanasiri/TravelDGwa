@@ -2,17 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:se_app2/Home/Accommodation/accommodation_room.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 
 class AccommodationDetail extends StatefulWidget {
-  const AccommodationDetail({Key key}) : super(key: key);
+
+  final checkInHolder;
+  final checkOutHolder;
+  final numberOfPeopleHolder;
+  final numberOfRoomsHolder;
+  const AccommodationDetail({
+    Key key,
+    @required this.checkInHolder,
+    this.checkOutHolder,
+    this.numberOfPeopleHolder,
+    this.numberOfRoomsHolder
+  }) : super(key: key);
 
   @override
   _AccommodationDetailState createState() => _AccommodationDetailState();
 }
 
 class _AccommodationDetailState extends State<AccommodationDetail> {
+
+  var checkInEdit = TextEditingController();
+  var checkOutEdit = TextEditingController();
+  var numberOfPeopleEdit = TextEditingController();
+  var numberOfRoomsEdit = TextEditingController();
 
   int activeIndex = 0;
   final urlImages = [
@@ -43,6 +60,15 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
     setState(() {
       viewVisible = false ;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    checkInEdit = TextEditingController(text: widget.checkInHolder);
+    checkOutEdit = TextEditingController(text: widget.checkOutHolder);
+    numberOfPeopleEdit = TextEditingController(text: widget.numberOfPeopleHolder);
+    numberOfRoomsEdit = TextEditingController(text: widget.numberOfRoomsHolder);
   }
 
   @override
@@ -284,7 +310,19 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                             alignment: Alignment.bottomCenter,
                             margin: const EdgeInsets.symmetric(vertical: 10),
                             child: ElevatedButton(
-                              onPressed: () => {},
+                              onPressed: () => {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => AccommodationRoom(
+                                      checkInHolder : checkInEdit.text,
+                                      checkOutHolder : checkOutEdit.text,
+                                      numberOfPeopleHolder : numberOfPeopleEdit.text,
+                                      numberOfRoomsHolder : numberOfRoomsEdit.text,
+                                    )
+                                  )
+                                )
+                              },
                               style: ElevatedButton.styleFrom(
                                 onPrimary: const Color(0xff1D3557),
                                 primary: const Color(0xff1D3557),
