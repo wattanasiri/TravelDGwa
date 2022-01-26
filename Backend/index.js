@@ -14,7 +14,7 @@ app.use(bodyParser.json())
 app.use('/',require('./routes/user_routes'))
 app.use('/hotel',require('./routes/hotel_routes'))
 
-seedDB()
+// seedDB()
 
 app.listen(port, () => {
     console.log('port running on port : ' + port)

@@ -1,30 +1,29 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:getwidget/getwidget.dart';
-
 import 'accommodation_detail.dart';
 
 class ResultItem extends StatefulWidget {
-
   final checkInHolder;
   final checkOutHolder;
   final numberOfPeopleHolder;
   final numberOfRoomsHolder;
   final accommodationData;
-  const ResultItem({
-    Key key,
-    @required this.accommodationData,
-    this.checkInHolder,
-    this.checkOutHolder,
-    this.numberOfPeopleHolder,
-    this.numberOfRoomsHolder
-  }) : super(key: key);
+  const ResultItem(
+      {Key key,
+      @required this.accommodationData,
+      this.checkInHolder,
+      this.checkOutHolder,
+      this.numberOfPeopleHolder,
+      this.numberOfRoomsHolder})
+      : super(key: key);
   @override
   State<ResultItem> createState() => _ResultItemState();
 }
 
 class _ResultItemState extends State<ResultItem> {
-
   var checkInEdit = TextEditingController();
   var checkOutEdit = TextEditingController();
   var numberOfPeopleEdit = TextEditingController();
@@ -46,7 +45,8 @@ class _ResultItemState extends State<ResultItem> {
     data = widget.accommodationData;
     checkInEdit = TextEditingController(text: widget.checkInHolder);
     checkOutEdit = TextEditingController(text: widget.checkOutHolder);
-    numberOfPeopleEdit = TextEditingController(text: widget.numberOfPeopleHolder);
+    numberOfPeopleEdit =
+        TextEditingController(text: widget.numberOfPeopleHolder);
     numberOfRoomsEdit = TextEditingController(text: widget.numberOfRoomsHolder);
   }
 
@@ -64,16 +64,14 @@ class _ResultItemState extends State<ResultItem> {
             return GestureDetector(
               onTap: () => {
                 Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AccommodationDetail(
-                      checkInHolder : checkInEdit.text,
-                      checkOutHolder : checkOutEdit.text,
-                      numberOfPeopleHolder : numberOfPeopleEdit.text,
-                      numberOfRoomsHolder : numberOfRoomsEdit.text,
-                    )
-                  )
-                )
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AccommodationDetail(
+                            checkInHolder: checkInEdit.text,
+                            checkOutHolder: checkOutEdit.text,
+                            numberOfPeopleHolder: numberOfPeopleEdit.text,
+                            numberOfRoomsHolder: numberOfRoomsEdit.text,
+                            detail: data[index])))
               },
               child: GFCard(
                 elevation: 8,
