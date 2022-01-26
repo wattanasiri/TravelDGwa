@@ -31,7 +31,7 @@ class _driver_infoState extends State<driver_info> {
             ),
           ),
         ),
-        body: Center(
+        body: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
