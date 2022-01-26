@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:se_app2/navigator/nav/home/components/body.dart';
 
 import '/navigator/nav/blog/blog.dart';
 import '/navigator/nav/booking/booking.dart';
@@ -23,7 +24,7 @@ class _NavState extends State<Nav> {
   bool isLeft = true;
 
   final List<Widget> _pageList = <Widget>[
-    const MainHome(),
+    const HomeBody(),
     const Booking(),
     const TripWithAI(),
     const Blog(),

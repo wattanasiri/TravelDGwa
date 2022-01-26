@@ -19,7 +19,7 @@ class _MainHomeState extends State<MainHome> {
         child: ElevatedButton(
           onPressed: () {
             Navigator.push(context, MaterialPageRoute(
-                builder: (context) => AccommodationSearch()
+                builder: (context) => AccommodationPage()
             ));
           },
           child: Container(
