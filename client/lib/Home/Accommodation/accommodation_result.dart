@@ -90,10 +90,12 @@ class _AccommodationResultState extends State<AccommodationResult> {
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
-                  nameEdit.text,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16),
+                Flexible(
+                  child: Text(
+                    nameEdit.text,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 16),
+                  ),
                 ),
                 IconButton(
                   icon: const Icon(
@@ -256,7 +258,7 @@ class _AccommodationResultState extends State<AccommodationResult> {
                   checkOutHolder : checkOutEdit.text,
                   numberOfPeopleHolder : numberOfPeopleEdit.text,
                   numberOfRoomsHolder : numberOfRoomsEdit.text,
-                  accommodationData: widget.result
+                  accommodationData: accommodationData
                 ),
               ],
             ),
@@ -280,34 +282,39 @@ class _AccommodationResultState extends State<AccommodationResult> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            InkWell(
-              onTap: () => {},
-              child: Card(
-                elevation: 0,
-                color: const Color(0xffFFF4DC),
-                child: Container(
-                  width: 200,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const <Widget>[
-                      Icon(Icons.filter_alt_rounded, color: Color(0xff1D3557)),
-                      SizedBox(width: 5),
-                      Text(
-                        'ตัวกรอง  ',
-                        style: TextStyle(
-                            color: Color(0xff1D3557),
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        '(3 ผลลัพธ์)',
-                        style: TextStyle(
-                            color: Color(0xff827E7E),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500),
-                      )
-                    ],
+            Flexible(
+              child: InkWell(
+                onTap: () => {},
+                child: Card(
+                  elevation: 0,
+                  color: const Color(0xffFFF4DC),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const <Widget>[
+                        Icon(Icons.filter_alt_rounded, color: Color(0xff1D3557)),
+                        SizedBox(width: 5),
+                        Flexible(
+                          child: Text(
+                            'ตัวกรอง ',
+                            style: TextStyle(
+                                color: Color(0xff1D3557),
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        Flexible(
+                          child: Text(
+                            '(3 ผลลัพธ์)',
+                            style: TextStyle(
+                                color: Color(0xff827E7E),
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -318,27 +325,30 @@ class _AccommodationResultState extends State<AccommodationResult> {
               decoration: BoxDecoration(
                   border: Border.all(color: const Color(0xff827E7E))),
             ),
-            InkWell(
-              onTap: () => {_openSortingModal()},
-              child: Card(
-                elevation: 0,
-                color: const Color(0xffFFF4DC),
-                child: Container(
-                  width: 150,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      const Icon(Icons.sort_rounded, color: Color(0xff1D3557)),
-                      const SizedBox(width: 5),
-                      Text(
-                        sortByTitle,
-                        style: const TextStyle(
-                            color: Color(0xff1D3557),
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      )
-                    ],
+            Flexible(
+              child: InkWell(
+                onTap: () => {_openSortingModal()},
+                child: Card(
+                  elevation: 0,
+                  color: const Color(0xffFFF4DC),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        const Icon(Icons.sort_rounded, color: Color(0xff1D3557)),
+                        const SizedBox(width: 5),
+                        Flexible(
+                          child: Text(
+                            sortByTitle,
+                            style: const TextStyle(
+                                color: Color(0xff1D3557),
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

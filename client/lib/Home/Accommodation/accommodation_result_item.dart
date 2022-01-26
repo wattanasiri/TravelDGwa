@@ -137,8 +137,7 @@ class _ResultItemState extends State<ResultItem> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.45,
+                              Flexible(
                                 child: Text(
                                   data[index]['name'],
                                   style: const TextStyle(
@@ -147,13 +146,12 @@ class _ResultItemState extends State<ResultItem> {
                                       fontSize: 18),
                                 ),
                               ),
-                              SizedBox(
-                                width: MediaQuery.of(context).size.width * 0.32,
+                              Flexible(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: <Widget>[
                                     Text(
-                                      'THB ' + '${data[index]['price']}',
+                                      'THB ${data[index]['price']}',
                                       textAlign: TextAlign.end,
                                       style: const TextStyle(
                                           color: Color(0xffF69B12),
@@ -175,8 +173,9 @@ class _ResultItemState extends State<ResultItem> {
                               )
                             ],
                           ),
-                          const SizedBox(height: 5),
+                          const SizedBox(height: 10),
                           Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: <Widget>[
                               const Icon(
@@ -184,10 +183,14 @@ class _ResultItemState extends State<ResultItem> {
                                 color: Color(0xffFFF4DC),
                               ),
                               const SizedBox(width: 5),
-                              Text(
-                                data[index]['location'],
-                                style: const TextStyle(
-                                    color: Color(0xffFFF4DC), fontSize: 14),
+                              Flexible(
+                                child: Text(
+                                  data[index]['location'],
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: const TextStyle(
+                                      color: Color(0xffFFF4DC), fontSize: 14),
+                                ),
                               )
                             ],
                           )
