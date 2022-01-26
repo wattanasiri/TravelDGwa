@@ -13,10 +13,11 @@ const User = require('./models/user_model');
 
 mongoose.connect('mongodb+srv://admin:se1235@cluster0.inezx.mongodb.net/TravelDGwa?retryWrites=true&w=majority')
 
-app.use(cors())
-app.use(bodyParser.urlencoded({extended:true}))
-app.use(bodyParser.json())
-app.use('/hotel',require('./routes/hotel_routes'))
+app.use(require('express-session')({
+  secret: 'it\'s a secret to everyone.',
+  resave: false,
+  saveUninitialized: false
+}));
 
 app.use(cors())
 app.use(bodyParser.urlencoded({extended:true}))
@@ -29,14 +30,10 @@ passport.use(new LocalStrategy({
   },
   User.authenticate()
 ));
-app.use(require('express-session')({
-  secret: 'it\'s a secret to everyone.',
-  resave: false,
-  saveUninitialized: false
-}));
 
 app.use('/',require('./routes/user_routes'))
 app.use('/shuttle', require('./routes/shuttle_routes'))
+app.use('/hotel',require('./routes/hotel_routes'))
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
