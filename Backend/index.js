@@ -29,6 +29,11 @@ passport.use(new LocalStrategy({
   },
   User.authenticate()
 ));
+app.use(require('express-session')({
+  secret: 'it\'s a secret to everyone.',
+  resave: false,
+  saveUninitialized: false
+}));
 
 app.use('/',require('./routes/user_routes'))
 app.use('/shuttle', require('./routes/shuttle_routes'))
