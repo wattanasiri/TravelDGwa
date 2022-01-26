@@ -4,10 +4,13 @@ import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 import '/Home/Accommodation/accommodation_result_item.dart';
 
 class AccommodationResult extends StatefulWidget {
+
   final nameHolder;
   final checkInHolder;
   final checkOutHolder;
@@ -35,7 +38,17 @@ class _AccommodationResultState extends State<AccommodationResult> {
   var checkOutEdit = TextEditingController();
   var numberOfPeopleEdit = TextEditingController();
   var numberOfRoomsEdit = TextEditingController();
-  var result;
+
+  var accommodationData;
+  String word = '';
+  Map data;
+
+  Future getAccommodation() async {
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/hotel/search/" + word));
+    data = json.decode(res.body);
+    accommodationData = data['hotels'];
+  }
 
   @override
   void initState() {
@@ -43,11 +56,10 @@ class _AccommodationResultState extends State<AccommodationResult> {
     nameEdit = TextEditingController(text: widget.nameHolder);
     checkInEdit = TextEditingController(text: widget.checkInHolder);
     checkOutEdit = TextEditingController(text: widget.checkOutHolder);
-    numberOfPeopleEdit =
-        TextEditingController(text: widget.numberOfPeopleHolder);
+    numberOfPeopleEdit = TextEditingController(text: widget.numberOfPeopleHolder);
     numberOfRoomsEdit = TextEditingController(text: widget.numberOfRoomsHolder);
-    result = widget.result;
-    result.sort((a, b) => a["price"].compareTo(b["price"]) as int);
+    accommodationData = widget.result;
+    accommodationData.sort((a, b) => a["price"].compareTo(b["price"]) as int);
   }
 
   var sortBy = 'l-h';
@@ -579,7 +591,7 @@ class _AccommodationResultState extends State<AccommodationResult> {
   }
 
   void _selectItem1(value) {
-    result.sort((a, b) => a["price"].compareTo(b["price"]) as int);
+    accommodationData.sort((a, b) => a["price"].compareTo(b["price"]) as int);
     setState(() => {
           selected1 = true,
           selected2 = false,
@@ -587,13 +599,13 @@ class _AccommodationResultState extends State<AccommodationResult> {
           selected4 = false,
           sortBy = value,
           sortByTitle = 'ราคาต่ำ - สูง',
-          ResultItem(accommodationData: result),
-          print(result)
+          ResultItem(accommodationData: accommodationData),
+          print(accommodationData)
         });
   }
 
   void _selectItem2(value) {
-    result.sort((a, b) => b["price"].compareTo(a["price"]) as int);
+    accommodationData.sort((a, b) => b["price"].compareTo(a["price"]) as int);
     setState(() => {
           selected1 = false,
           selected2 = true,
@@ -601,8 +613,8 @@ class _AccommodationResultState extends State<AccommodationResult> {
           selected4 = false,
           sortBy = value,
           sortByTitle = 'ราคาสูง - ต่ำ',
-          ResultItem(accommodationData: result),
-          print(result)
+          ResultItem(accommodationData: accommodationData),
+          print(accommodationData)
         });
   }
 
@@ -618,7 +630,7 @@ class _AccommodationResultState extends State<AccommodationResult> {
   }
 
   void _selectItem4(value) {
-    result.sort((a, b) => b["star"].compareTo(a["star"]) as int);
+    accommodationData.sort((a, b) => b["star"].compareTo(a["star"]) as int);
     setState(() => {
           selected1 = false,
           selected2 = false,

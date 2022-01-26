@@ -757,15 +757,17 @@ class _AccommodationPageState extends State<AccommodationPage> {
 
     await getAccommodation();
     Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => AccommodationResult(
-                nameHolder: name.text,
-                checkInHolder: checkIn.text,
-                checkOutHolder: checkOut.text,
-                numberOfPeopleHolder: numberOfPeople.text,
-                numberOfRoomsHolder: numberOfRooms.text,
-                result: accommodationData)));
+      context,
+      MaterialPageRoute(
+        builder: (context) => AccommodationResult(
+          nameHolder: name.text,
+          checkInHolder: checkIn.text,
+          checkOutHolder: checkOut.text,
+          numberOfPeopleHolder: numberOfPeople.text,
+          numberOfRoomsHolder: numberOfRooms.text,
+          result: accommodationData)
+      )
+    );
   }
 }
 
