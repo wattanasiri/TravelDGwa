@@ -1,15 +1,35 @@
-
-
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:se_app2/Home/Accommodation/accommodation.dart';
 
-class mainhome extends StatefulWidget {
+class MainHome extends StatefulWidget {
+
+  const MainHome({Key key}) : super(key: key);
+
   @override
-  _mainhomeState createState() => _mainhomeState();
+  _MainHomeState createState() => _MainHomeState();
 }
 
-class _mainhomeState extends State<mainhome> {
+class _MainHomeState extends State<MainHome> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      backgroundColor: Color(0xffFFF4DC),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(
+                builder: (context) => AccommodationSearch()
+            ));
+          },
+          child: Container(
+            height: 50,
+            width: 150,
+            color: Colors.blue,
+            child: Center(child: Text('Accommodation')),
+          ),
+        ),
+      ),
+    );
   }
 }

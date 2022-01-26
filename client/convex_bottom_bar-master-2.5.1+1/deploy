@@ -1,0 +1,109 @@
+#!/usr/bin/env bash
+##################################################################
+##
+##  Publish package to pub.dev
+##
+##  1. Run test case
+##  2. Run code coverage
+##  3. Analyze package scores
+##  4. Local publish --dry-run
+##  5. Deploy to pub.dev
+##
+##  Author: Chaobin Wu
+##  Email : chaobinwu89@gmail.com
+##
+#################################################################
+
+tag='[Deploy]'
+error() {
+  echo -e "\033[1m$tag\033[0m \033[31m$*\033[0m"
+}
+info() {
+  echo -e "\033[1m$tag\033[0m \033[32m$*\033[0m"
+}
+warning() {
+  echo -e "\033[1m$tag\033[0m \033[33m$*\033[0m"
+}
+
+die() {
+  error "$*"
+  exit 1
+}
+
+confirm() {
+  read -r -p "Looks great! Are you ready to continue (y/n)? " input
+  if [[ $input != 'y' ]]; then
+    die "Workflow terminated"
+  fi
+}
+
+# $1 = # of seconds
+# $@ = What to print before "in n seconds"
+countdown() {
+  secs=$1
+  shift
+  msg=$*
+  # shellcheck disable=SC2086
+  while [ $secs -gt 0 ]; do
+    printf "\r\033[K$msg in %.d seconds" $((secs--))
+    sleep 1
+  done
+  echo
+}
+
+checkHost() {
+  host=$1
+  info "$host/#home"
+  output=$(curl -IX HEAD "$host/#home")
+  c=$(grep -c "OK" <"$output")
+  if [ ! "$c" = "0" ]; then
+    print "$host"
+  fi
+}
+info "Start process workflow"
+info "Step 1 Run test case with code coverage"
+
+flutter pub get
+if ! flutter test --coverage; then
+  die "Test failed"
+fi
+genhtml coverage/lcov.info --output=coverage
+
+info "Step 2 Review code coverage report"
+countdown 3 "Will open browser"
+open coverage/index.html
+confirm
+
+info "Step 3 Evaluate with panahtml(Skipped)"
+#panahtml &
+#pid=$!
+#info "run in background #$pid"
+#sleep 3
+#
+#secs=1
+#shift
+## shellcheck disable=SC2086
+#while [ $secs -gt 0 ]; do
+#  printf "\r\033[KWait until panahtml completes: %.d" $((secs++))
+#  count=$(lsof -nP -iTCP -sTCP:LISTEN | grep dart | grep -c 'LISTEN')
+#  if [ "$count" = "0" ]; then
+#    sleep 1
+#  else
+#    secs=0
+#  fi
+#done
+#echo
+#
+#read -r -p "Are you ready to continue (y/n)? " input
+#kill -0 $pid
+#
+#if [[ $input != 'y' ]]; then
+#  die "Workflow terminated"
+#fi
+
+info "Step 4 Run publish --dry-run"
+flutter pub publish --dry-run
+confirm
+
+info "Step 5 Publish to pub.dev"
+flutter pub publish
