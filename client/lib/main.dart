@@ -34,12 +34,11 @@ class MyApp extends StatelessWidget {
         textTheme: GoogleFonts.ibmPlexSansThaiTextTheme()
         // textTheme: GoogleFonts.notoSansThaiTextTheme()
       ),
-      home: const AccommodationSearch(),
+      home: const Nav(),
       routes: <String, WidgetBuilder>{
-        '/Navi': (BuildContext context) => Nav(),
+        '/Navi': (BuildContext context) => const Nav(),
         '/airport_shuttle': (BuildContext context) => shuttle(),
-        // '/hotel ': (BuildContext context) => hotel(),
-        '/profile': (BuildContext context) => profile(),
+        '/profile': (BuildContext context) => const ProfilePage(),
       },
     );
   }

@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 
-class booking extends StatefulWidget {
+class Booking extends StatefulWidget {
+
+  const Booking({Key key}) : super(key: key);
+
   @override
-  _bookingState createState() => _bookingState();
+  _BookingState createState() => _BookingState();
 }
 
-class _bookingState extends State<booking> {
+class _BookingState extends State<Booking> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      backgroundColor: Color(0xffFFF4DC),
+    );
   }
 }

@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 
-class blog extends StatefulWidget {
+class Blog extends StatefulWidget {
+
+  const Blog({Key key}) : super(key: key);
+
   @override
-  _blogState createState() => _blogState();
+  _BlogState createState() => _BlogState();
 }
 
-class _blogState extends State<blog> {
+class _BlogState extends State<Blog> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      backgroundColor: Color(0xffFFF4DC),
+    );
   }
 }
