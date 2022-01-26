@@ -7,14 +7,14 @@ import 'dart:convert';
 
 import 'accommodation_result.dart';
 
-class AccommodationSearch extends StatefulWidget {
-  const AccommodationSearch({Key key}) : super(key: key);
+class AccommodationPage extends StatefulWidget {
+  const AccommodationPage({Key key}) : super(key: key);
 
   @override
-  _AccommodationSearchState createState() => _AccommodationSearchState();
+  _AccommodationPageState createState() => _AccommodationPageState();
 }
 
-class _AccommodationSearchState extends State<AccommodationSearch> {
+class _AccommodationPageState extends State<AccommodationPage> {
   String word = '';
   Map data;
   List accommodationData;

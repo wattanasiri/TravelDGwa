@@ -103,40 +103,47 @@ class _ProfilePageState extends State<ProfilePage> {
         physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
         child: Column(
           children: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => partnership())
-                );
-              },
-              child: Container(
-                margin: const EdgeInsets.symmetric(vertical: 10),
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: const Color(0xff1D3557),
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.3),
-                      spreadRadius: 1,
-                      blurRadius: 6,
-                      offset: const Offset(1, 6),
-                    ),
-                  ],
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.3),
+                    spreadRadius: 1,
+                    blurRadius: 6,
+                    offset: const Offset(1, 6),
+                  ),
+                ],
+              ),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  animationDuration: const Duration(milliseconds: 1000),
+                  padding: const EdgeInsets.all(20),
+                  primary: const Color(0xffECFAFF),
+                  onPrimary: const Color(0xff1D3557),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
                 ),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => partnership())
+                  );
+                },
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Flexible(
                       child: Row(
-                        children: [
-                          Image.asset('assets/icons/partnership.png',width: 40, height: 40,),
-                          const SizedBox(width: 20,),
-                          const Text("สมัครเป็นพาร์ทเนอร์", style: TextStyle(fontSize: 16, color: Color(0xFFECFAFF)),),
+                        children: const [
+                          Icon(Icons.group_rounded, color: Color(0xff1D3557), size: 40,),
+                          SizedBox(width: 20),
+                          Text("สมัครเป็นพาร์ทเนอร์", style: TextStyle(fontSize: 16, color: Color(0xff1D3557)),),
                         ],
                       ),
                     ),
-                    const Icon(Icons.navigate_next_rounded, color: Color(0xffECFAFF), size: 30,)
+                    const Icon(Icons.navigate_next_rounded, color: Color(0xff1D3557), size: 30,)
                   ],
                 ),
               ),
