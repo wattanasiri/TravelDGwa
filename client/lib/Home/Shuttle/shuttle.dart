@@ -154,9 +154,7 @@ class _ShuttlePageState extends State<ShuttlePage> {
             key: _formKey,
             child: Column(
               children: [
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.only(left: 40.0 , right: 60),
                   child: Row(
@@ -203,9 +201,7 @@ class _ShuttlePageState extends State<ShuttlePage> {
                     ],
                   ),
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
+                const SizedBox(height: 5),
                 const Divider(
                   height: 10,
                   thickness: 1,

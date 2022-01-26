@@ -50,7 +50,7 @@ class _search_driverState extends State<search_driver> {
             ),
           ),
         ),
-        body: Center(
+        body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               Padding(

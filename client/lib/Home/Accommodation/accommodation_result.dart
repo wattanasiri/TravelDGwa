@@ -58,6 +58,7 @@ class _AccommodationResultState extends State<AccommodationResult> {
     checkOutEdit = TextEditingController(text: widget.checkOutHolder);
     numberOfPeopleEdit = TextEditingController(text: widget.numberOfPeopleHolder);
     numberOfRoomsEdit = TextEditingController(text: widget.numberOfRoomsHolder);
+    word = nameEdit.text;
     accommodationData = widget.result;
     accommodationData.sort((a, b) => a["price"].compareTo(b["price"]) as int);
   }
@@ -361,8 +362,13 @@ class _AccommodationResultState extends State<AccommodationResult> {
             ),
             actions: [
               TextButton(
-                  onPressed: () =>
-                      {setState(() {}), Navigator.of(context).pop()},
+                  onPressed: () async {
+                    setState(() {
+                      word = nameEdit.text;
+                    });
+                    getAccommodation();
+                    Navigator.of(context).pop();
+                  },
                   child: const Text('ตกลง'))
             ],
           ));
