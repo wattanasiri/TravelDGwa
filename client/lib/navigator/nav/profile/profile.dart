@@ -6,6 +6,7 @@ import 'package:se_app2/navigator/nav/booking/booking.dart';
 import 'package:se_app2/navigator/nav/profile/creditcard/maincreditcard.dart';
 import 'package:se_app2/navigator/nav/profile/partnership/mainpartnership.dart';
 import 'package:se_app2/navigator/nav/profile/profile_edit.dart';
+import 'package:se_app2/screen/login_register/login.dart';
 
 class ProfilePage extends StatefulWidget {
 
@@ -256,7 +257,14 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                print('Log out!');
+                Navigator.pushReplacement(
+                  context, MaterialPageRoute(
+                  builder: (context) => LoginScreen()
+                  )
+                );
+              },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 10),
                 padding: const EdgeInsets.all(20),

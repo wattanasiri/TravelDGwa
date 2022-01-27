@@ -96,7 +96,6 @@ class _PasswordFormState extends State<PasswordRecoveryForm> {
                 decoration: InputDecoration(
                     labelText: 'กรุณากรอกอีเมลหรือหมายเลขโทรศัพท์',
                     labelStyle: TextStyle(
-                        fontFamily: 'Montserrat',
                         fontWeight: FontWeight.bold,
                         color: primaryColor,
                     ),
@@ -142,8 +141,8 @@ class _PasswordFormState extends State<PasswordRecoveryForm> {
                           'ดำเนินการต่อ',
                           style: TextStyle(
                               color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Montserrat'),
+                              fontWeight: FontWeight.bold
+                          ),
                         ),
                       ),
                     ),

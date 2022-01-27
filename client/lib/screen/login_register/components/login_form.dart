@@ -74,7 +74,6 @@ class _LoginFormState extends State<LoginForm>  {
                 decoration: InputDecoration(
                     labelText: 'อีเมลหรือหมายเลขโทรศัพท์',
                     labelStyle: TextStyle(
-                        fontFamily: 'Montserrat',
                         fontWeight: FontWeight.bold,
                         color: primaryColor,
                     ),
@@ -94,7 +93,6 @@ class _LoginFormState extends State<LoginForm>  {
                 decoration: InputDecoration(
                     labelText: 'รหัสผ่าน',
                     labelStyle: TextStyle(
-                        fontFamily: 'Montserrat',
                         fontWeight: FontWeight.bold,
                         color: primaryColor,
                     ),
@@ -148,8 +146,8 @@ class _LoginFormState extends State<LoginForm>  {
                          'เข้าสู่ระบบ',
                          style: TextStyle(
                              color: Colors.white,
-                             fontWeight: FontWeight.bold,
-                             fontFamily: 'Montserrat'),
+                             fontWeight: FontWeight.bold
+                         ),
                        ),
                      ),
                    ),
@@ -208,7 +206,7 @@ class _LoginFormState extends State<LoginForm>  {
                         style:  TextStyle(color: Colors.black),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            Navigator.pushNamed(context, '/register',);
+                            Navigator.pushReplacementNamed(context, '/register',);
                           }),
                     TextSpan(text: 'เข้าใช้งานด้วยอีเมลและหมายเลขโทรศัพท์'),
                   ],

@@ -80,7 +80,6 @@ class _RegisterFormState extends State<RegisterForm> {
                 decoration: InputDecoration(
                     labelText: 'อีเมล',
                     labelStyle: TextStyle(
-                        fontFamily: 'Montserrat',
                         fontWeight: FontWeight.bold,
                         color: primaryColor,
                     ),
@@ -104,7 +103,6 @@ class _RegisterFormState extends State<RegisterForm> {
                         decoration: InputDecoration(
                           labelText: 'ชื่อ',
                           labelStyle: TextStyle(
-                            fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
                             color: primaryColor,
                           ),
@@ -124,7 +122,6 @@ class _RegisterFormState extends State<RegisterForm> {
                         decoration: InputDecoration(
                           labelText: 'นามสกุล',
                           labelStyle: TextStyle(
-                            fontFamily: 'Montserrat',
                             fontWeight: FontWeight.bold,
                             color: primaryColor,
                           ),
@@ -145,7 +142,6 @@ class _RegisterFormState extends State<RegisterForm> {
                 decoration: InputDecoration(
                     labelText: 'หมายเลขโทรศัพท์',
                     labelStyle: TextStyle(
-                      fontFamily: 'Montserrat',
                       fontWeight: FontWeight.bold,
                       color: primaryColor,
                     ),
@@ -166,7 +162,6 @@ class _RegisterFormState extends State<RegisterForm> {
                 decoration: InputDecoration(
                     labelText: 'รหัสผ่าน',
                     labelStyle: TextStyle(
-                        fontFamily: 'Montserrat',
                         fontWeight: FontWeight.bold,
                         color: primaryColor,
                     ),
@@ -202,8 +197,8 @@ class _RegisterFormState extends State<RegisterForm> {
                           'สมัครสมาชิก',
                           style: TextStyle(
                               color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Montserrat'),
+                              fontWeight: FontWeight.bold
+                          ),
                         ),
                       ),
                     ),
@@ -218,10 +213,10 @@ class _RegisterFormState extends State<RegisterForm> {
                     TextSpan(text: 'มีบัญชี TravelDKwa อยู่แล้ว ? '),
                     TextSpan(
                         text: 'เข้าสู่ระบบ ',
-                        style:  TextStyle(color: Colors.black),
+                        style:  TextStyle(color: primaryColor),
                         recognizer: TapGestureRecognizer()
                           ..onTap = () {
-                            Navigator.pushNamed(context, '/login',);
+                            Navigator.pushReplacementNamed(context, '/login',);
                           }),
                   ],
                 ),

@@ -13,6 +13,16 @@ class _BlogState extends State<Blog> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xffFFF4DC),
+      body: Center(
+        child: Text(
+          'หน้าบล็อค',
+          style: TextStyle(
+            color: Color(0xff1D3557),
+            fontSize: 24,
+            fontWeight: FontWeight.bold
+          ),
+        ),
+      ),
     );
   }
 }

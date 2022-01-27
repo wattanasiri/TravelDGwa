@@ -61,7 +61,7 @@ class _NavState extends State<Nav> {
       ),
       bottomNavigationBar: ConvexAppBar(
         onTap: _onItemTap,
-        height: 85,
+        height: 80,
         curveSize: 80,
         style: TabStyle.fixed,
         initialActiveIndex: 0,
