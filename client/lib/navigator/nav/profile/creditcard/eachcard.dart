@@ -10,36 +10,32 @@ class _eachcardState extends State<eachcard> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor : Color(0xFFFFF4DC),
-      body: Column(
-        children: [
-          //ส่วนหัว
-          Container(
-            padding: const EdgeInsets.only(top: 50.0,left: 20),
-            decoration: BoxDecoration(
-                color : Color(0xFF1d3557), borderRadius : BorderRadius.only(bottomRight: Radius.circular(10),bottomLeft: Radius.circular(10),)),
-            height: 100,
-            child: Row(
-              children: [
-                GestureDetector( onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return eachcard();
-                  }));
-                },
-                  child :Container(
-                    child: Row(
-                      children: [
-                        Image.asset('assets/icons/back.png',width: 25, height: 25,),
-                      ],
-                    ),
-                  ),),
-                SizedBox(width: 115,),
-                //Icon(Icons.house, color: Color(0xFFECFAFF), size: 25,),
-                Text("ข้อมูลบัตร", style: TextStyle(fontSize: 17, color: Color(0xFFECFAFF)),textAlign: TextAlign.center,),
-
-              ],
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60.0),
+        child: AppBar(
+          centerTitle: true,
+          backgroundColor: const Color(0xff1D3557),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_rounded,
+                color: Color(0xffECFAFF)),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          title: const Text(
+            'ข้อมูลบัตร',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          flexibleSpace: const SizedBox(
+            height: 20,
+          ),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(12),
             ),
           ),
-          //จบส่วนหัว
+        ),
+      ),
+      body: Column(
+        children: [
           SizedBox(height: 10,),
           //ส่วนล่าง
           Container(

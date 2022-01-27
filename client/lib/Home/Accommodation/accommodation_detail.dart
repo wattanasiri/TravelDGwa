@@ -149,14 +149,17 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(
-                                detail['name'],
-                                style: GoogleFonts.poppins(
-                                    color: const Color(0xff1D3557),
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
+                              Flexible(
+                                child: Text(
+                                  detail['name'],
+                                  style: GoogleFonts.poppins(
+                                      color: const Color(0xff1D3557),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                ),
                               ),
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
@@ -236,13 +239,19 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                                     fontSize: 16,
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                  child: Text(
-                                    detail['location'],
-                                    style: TextStyle(
-                                        color: Color(0xff1D3557), fontSize: 14),
-                                  ),
+                                Row(
+                                  children: [
+                                    Flexible(
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                        child: Text(
+                                          detail['location'],
+                                          style: TextStyle(
+                                              color: Color(0xff1D3557), fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 )
                               ],
                             ),
@@ -264,13 +273,19 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                                     fontSize: 16,
                                   ),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.symmetric(horizontal: 10),
-                                  child: Text(
-                                    '${detail['desc']}',
-                                    style: TextStyle(
-                                        color: Color(0xff1D3557), fontSize: 14),
-                                  ),
+                                Row(
+                                  children: [
+                                    Flexible(
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                        child: Text(
+                                          '${detail['desc']}',
+                                          style: TextStyle(
+                                              color: Color(0xff1D3557), fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 )
                               ],
                             ),

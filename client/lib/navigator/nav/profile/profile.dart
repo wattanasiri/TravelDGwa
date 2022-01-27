@@ -21,8 +21,9 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       backgroundColor : const Color(0xFFFFF4DC),
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(150.0),
+        preferredSize: const Size.fromHeight(160.0),
         child: AppBar(
+          automaticallyImplyLeading: false,
           centerTitle: true,
           backgroundColor: const Color(0xff1D3557),
           flexibleSpace: Container(
@@ -149,7 +150,11 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => maincreditcard())
+                );
+              },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 10),
                 padding: const EdgeInsets.all(20),

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:se_app2/navigator/nav/booking/booking.dart';
 
@@ -26,244 +27,322 @@ class _partnershipState extends State<partnership> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor : Color(0xFFFFF4DC),
-      body: Column(
-        children: [
-          //ส่วนหัว
-          Container(
-            padding: const EdgeInsets.only(top: 50.0,left: 20),
-            decoration: BoxDecoration(
-                color : Color(0xFF1d3557), borderRadius : BorderRadius.only(bottomRight: Radius.circular(10),bottomLeft: Radius.circular(10),)),
-            height: 100,
-            child: Row(
-              children: [
-                GestureDetector( onTap: () {
-                  Navigator.pop(context);
-                  },
-                child :Container(
-                  child: Row(
-                    children: [
-                      Image.asset('assets/icons/back.png',width: 25, height: 25,),
-                    ],
-                  ),
-                ),),
-                SizedBox(width: 96,),
-                //Icon(Icons.house, color: Color(0xFFECFAFF), size: 25,),
-                Text("สมัครพาร์ทเนอร์", style: TextStyle(fontSize: 17, color: Color(0xFFECFAFF)),textAlign: TextAlign.center,),
-
-              ],
-            ),
-
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60.0),
+        child: AppBar(
+          centerTitle: true,
+          backgroundColor: const Color(0xff1D3557),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_rounded,
+                color: Color(0xffECFAFF)),
+            onPressed: () => Navigator.of(context).pop(),
           ),
-          //จบส่วนหัว
-          SizedBox(height: 10,),
-          //ส่วนเมนู
-          Container(
-            padding: const EdgeInsets.all(20.0),
-            child: Row(
+          title: const Text(
+            'สมัครพาร์ทเนอร์',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          flexibleSpace: const SizedBox(
+            height: 20,
+          ),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(12),
+            ),
+          ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Row(
               crossAxisAlignment:  CrossAxisAlignment.center,
               children: [
-                //ที่พัก
-                  Container(
-                    width: 87,
-                    padding: const EdgeInsets.only(top: 20),
-                  decoration: BoxDecoration(
-                  color : Color(0xff1d3557), borderRadius : BorderRadius.only(topLeft: Radius.circular(10), bottomLeft: Radius.circular(10)),),
-                    height: 60,
-                    child: Text("ที่พัก", style: TextStyle(fontSize: 15, color: Color(0xFFECFAFF)),textAlign: TextAlign.center,),
-                  ),
-                SizedBox(width: 1,),
-                //เช่ารถ
-                Container(
-                  width: 87,
-                  padding: const EdgeInsets.only(top: 20),
-                  decoration: BoxDecoration(
-                    color : Color(0xff1d3557),),
-                  height: 60,
-                  child: Text("เช่ารถ", style: TextStyle(fontSize: 15, color: Color(0xFFECFAFF)),textAlign: TextAlign.center,),
+                Expanded(
+                  child: InkWell(
+                    onTap: () {},
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 1),
+                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+                      decoration: BoxDecoration(
+                        color: Color(0xff1D3557),
+                        borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15))
+                      ),
+                      child: Center(
+                        child: Text(
+                          'ที่พัก',
+                          style: TextStyle(
+                            color: Color(0xffECFAFF),
+                            fontSize: 16
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
                 ),
-                SizedBox(width: 1,),
-                //รถรับส่ง
-                Container(
-                  width: 87,
-                  padding: const EdgeInsets.only(top: 20),
-                  decoration: BoxDecoration(
-                    color : Color(0xff1d3557),),
-                  height: 60,
-                  child: Text("รถรับส่ง", style: TextStyle(fontSize: 15, color: Color(0xFFECFAFF)),textAlign: TextAlign.center,),
+                Expanded(
+                    child: InkWell(
+                      onTap: () {},
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 1),
+                        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+                        decoration: BoxDecoration(
+                            color: Color(0xff1D3557),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'เช่ารถ',
+                            style: TextStyle(
+                                color: Color(0xffECFAFF),
+                                fontSize: 16
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
                 ),
-                SizedBox(width: 1,),
-                //กิจกรรม
-                Container(
-                  width: 87,
-                  padding: const EdgeInsets.only(top: 20),
-                  decoration: BoxDecoration(
-                    color : Color(0xff1d3557), borderRadius : BorderRadius.only(bottomRight: Radius.circular(10),topRight:Radius.circular(10)),),
-                  height: 60,
-                  child: Text("กิจกรรม", style: TextStyle(fontSize: 15, color: Color(0xFFECFAFF)),textAlign: TextAlign.center,),
+                Expanded(
+                    child: InkWell(
+                      onTap: () {},
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 1),
+                        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+                        decoration: BoxDecoration(
+                            color: Color(0xff1D3557),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'รถรับส่ง',
+                            style: TextStyle(
+                                color: Color(0xffECFAFF),
+                                fontSize: 16
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
                 ),
+                Expanded(
+                    child: InkWell(
+                      onTap: () {},
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 1),
+                        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+                        decoration: BoxDecoration(
+                            color: Color(0xff1D3557),
+                          borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15))
+                        ),
+                        child: Center(
+                          child: Text(
+                            'กิจกรรม',
+                            style: TextStyle(
+                                color: Color(0xffECFAFF),
+                                fontSize: 16
+                            ),
+                          ),
+                        ),
+                      ),
+                    )
+                )
               ],
             ),
-          ),
-          //จบส่วนเมนู
-
-          SizedBox(height:0,),
-          //ส่วนล่าง
-          //รวมกล่อง
-          Container(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                //กล่อง1
-                GestureDetector( onTap: () {
-                  //print('Test');
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return partnership();
-                  }));
-                },
-                  child: Container(
-                    padding: const EdgeInsets.all(20.0),
-                    decoration: BoxDecoration(
-                      color : Color(0xff1d3557), borderRadius : BorderRadius.circular(10),
-                      boxShadow:[
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3), //color of shadow
-                          spreadRadius: 1, //spread radius
-                          blurRadius: 6, // blur radius
-                          offset: Offset(1, 6), // changes position of shadow
-                          //first paramerter of offset is left-right
-                          //second parameter is top to down
-                        ),
-                        //you can set more BoxShadow() here
-                      ],
-                    ),
-                    height: 80,
-                    child: Row(
-                      crossAxisAlignment:  CrossAxisAlignment.center,
-                      children :[
-                        Image.asset('assets/icons/partnership.png',width: 40, height: 40,),
-                        //Icon(Icons.house, color: Color(0xFFECFAFF), size: 40,),
-                        SizedBox(width: 20,),
-                        Text(" สมัครเป็นพาทเนอร์", style: TextStyle(fontSize: 20, color: Color(0xFFECFAFF)),),
-                        SizedBox(width: 50,),
-                        Expanded(
-                          child: Image.asset('assets/icons/next 1.png',width: 40, height: 40,),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                //จบกล่อง1
-                SizedBox(height: 15,),
-                //กล่อง 2
-                GestureDetector( onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return Booking();
-                  }));
-                },
-                  child : Container(
-                    padding: const EdgeInsets.all(20.0),
-                    decoration: BoxDecoration(
-                      color : Color(0xFFECFAFF), borderRadius : BorderRadius.circular(10),
-                      boxShadow:[
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3), //color of shadow
-                          spreadRadius: 1, //spread radius
-                          blurRadius: 6, // blur radius
-                          offset: Offset(1, 6), // changes position of shadow
-                          //first paramerter of offset is left-right
-                          //second parameter is top to down
-                        ),
-                        //you can set more BoxShadow() here
-                      ],
-                    ),
-                    height: 80,
-                    child: Row(
-                      children :[
-                        Image.asset('assets/icons/creditcard.png', width: 40.0, height: 40.0),
-                        SizedBox(width: 20,),
-                        Text("บัตรเครดิตที่บันทึกไว้", style: TextStyle(fontSize: 20, color: Color(0xff1d3557)),),
-                        SizedBox(width: 36,),
-                        Image.asset('assets/icons/next 3.png', width: 40.0, height: 40.0),
-                      ],
+            Container(
+              margin: EdgeInsets.only(top: 20),
+              child: Column(
+                children: [
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 10),
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Color(0xffECFAFF),
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 6,
+                            offset: const Offset(1, 6),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.home_rounded, size: 50, color: Color(0xff1D3557)),
+                          SizedBox(width: 10),
+                          Flexible(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'อพาร์ทเม้น',
+                                  style: TextStyle(
+                                    color: Color(0xff1D3557),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(
+                                  'ที่อยู่อาศัยตกแต่งในอาคารอพาร์ตเมนต์ที่มีห้องพักส่วนตัวพร้อม บริการเหมือนโรงแรม',
+                                  style: TextStyle(
+                                    color: Color(0xff1D3557),
+                                    fontSize: 14,
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                //จบกล่อง 2
-                SizedBox(height: 15,),
-                //กล่อง 3
-                GestureDetector( onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return Booking();
-                  }));
-                },
-                  child : Container(
-                    padding: const EdgeInsets.all(20.0),
-                    decoration: BoxDecoration(
-                      color : Color(0xFFECFAFF), borderRadius : BorderRadius.circular(10),
-                      boxShadow:[
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3), //color of shadow
-                          spreadRadius: 1, //spread radius
-                          blurRadius: 6, // blur radius
-                          offset: Offset(1, 6), // changes position of shadow
-                          //first paramerter of offset is left-right
-                          //second parameter is top to down
-                        ),
-                        //you can set more BoxShadow() here
-                      ],
-                    ),
-                    height: 80,
-                    child: Row(
-                      children :[
-                        Image.asset('assets/icons/favourite.png', width: 40.0, height: 40.0),
-                        SizedBox(width: 20,),
-                        Text("รายการโปรด", style: TextStyle(fontSize: 20, color: Color(0xff1d3557)),),
-                        SizedBox(width: 100,),
-                        Image.asset('assets/icons/next 3.png', width: 40.0, height: 40.0),
-                      ],
-                    ),
-                  ),
-                ),
-                //จบกล่อง 3
-                SizedBox(height: 15,),
-                //กล่อง 4
-                GestureDetector( onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return Booking();
-                  }));
-                },
-                  child : Container(
-                    padding: const EdgeInsets.all(20.0),
-                    decoration: BoxDecoration(
-                      color : Color(0xFFECFAFF), borderRadius : BorderRadius.circular(10),
-                      boxShadow:[
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3), //color of shadow
-                          spreadRadius: 1, //spread radius
-                          blurRadius: 6, // blur radius
-                          offset: Offset(1, 6), // changes position of shadow
-                          //first paramerter of offset is left-right
-                          //second parameter is top to down
-                        ),
-                        //you can set more BoxShadow() here
-                      ],
-                    ),
-                    height: 80,
-                    child: Row(
-                      children :[
-                        Image.asset('assets/icons/help.png', width: 40.0, height: 40.0),
-                        SizedBox(width: 20,),
-                        Text("ศูนย์ช่วยเหลือ", style: TextStyle(fontSize: 20, color: Color(0xff1d3557)),),
-                        SizedBox(width: 92,),
-                        Image.asset('assets/icons/next 3.png', width: 40.0, height: 40.0),
-                      ],
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 15),
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Color(0xffECFAFF),
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 6,
+                            offset: const Offset(1, 6),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.home_rounded, size: 50, color: Color(0xff1D3557)),
+                          SizedBox(width: 10),
+                          Flexible(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'วิลลา',
+                                  style: TextStyle(
+                                    color: Color(0xff1D3557),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(
+                                  'ที่พักที่เป็นพื้นที่ขนาดใหญ่ บรรจุกลุ่มคนได้เป็นจำนวนมาก เป็นพื้นที่โล่งและใกล้เคียงกับธรรมชาติ',
+                                  style: TextStyle(
+                                    color: Color(0xff1D3557),
+                                    fontSize: 14,
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                //จบกล่อง 4
-              ],),),
-          //จบส่วนล่าง
-        ],
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 15),
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Color(0xffECFAFF),
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 6,
+                            offset: const Offset(1, 6),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.home_rounded, size: 50, color: Color(0xff1D3557)),
+                          SizedBox(width: 10),
+                          Flexible(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'บ้านเดี่ยว',
+                                  style: TextStyle(
+                                    color: Color(0xff1D3557),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(
+                                  'ที่พักเชิงพาณิชย์ที่ให้บริการห้องพักส่วนตัวพร้อมอาหารและบริการแขก',
+                                  style: TextStyle(
+                                    color: Color(0xff1D3557),
+                                    fontSize: 14,
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  InkWell(
+                    onTap: () {},
+                    child: Container(
+                      margin: EdgeInsets.symmetric(vertical: 15),
+                      padding: EdgeInsets.all(20),
+                      decoration: BoxDecoration(
+                        color: Color(0xffECFAFF),
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 6,
+                            offset: const Offset(1, 6),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.home_rounded, size: 50, color: Color(0xff1D3557)),
+                          SizedBox(width: 10),
+                          Flexible(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'บังกะโล',
+                                  style: TextStyle(
+                                    color: Color(0xff1D3557),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Text(
+                                  'บ้านพักตากอากาศตามชายทะเล ',
+                                  style: TextStyle(
+                                    color: Color(0xff1D3557),
+                                    fontSize: 14,
+                                  ),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

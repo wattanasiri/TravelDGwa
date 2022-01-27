@@ -1,6 +1,8 @@
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:se_app2/navigator/nav.dart';
+import 'package:se_app2/navigator/nav/home/components/body.dart';
 
 class AccommodationReceipt extends StatefulWidget {
 
@@ -45,12 +47,9 @@ class _AccommodationReceiptState extends State<AccommodationReceipt> {
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
         child: AppBar(
+          automaticallyImplyLeading: false,
           centerTitle: true,
           backgroundColor: const Color(0xff1D3557),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_rounded, color: Color(0xffECFAFF)),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
           title: const Text(
             'ใบเสร็จ',
             style: TextStyle(
@@ -101,35 +100,35 @@ class _AccommodationReceiptState extends State<AccommodationReceipt> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Flexible(
-                                child: Text(
-                                  'Cape Dara Resort',
-                                  style: GoogleFonts.poppins(
-                                      color: const Color(0xff1D3557),
-                                      fontSize: 16
-                                  ),
-                                )
+                              child: Text(
+                                'Cape Dara Resort',
+                                style: GoogleFonts.poppins(
+                                  color: const Color(0xff1D3557),
+                                  fontSize: 16
+                                ),
+                              )
                             ),
                             Flexible(
-                                child: Text(
-                                  '#0001TH',
-                                  style: GoogleFonts.poppins(
-                                      color: const Color(0xff827E7E),
-                                      fontSize: 16
-                                  ),
-                                )
+                              child: Text(
+                                '#0001TH',
+                                style: GoogleFonts.poppins(
+                                  color: const Color(0xff827E7E),
+                                  fontSize: 16
+                                ),
+                              )
                             )
                           ],
                         ),
                         Row(
                           children: const <Widget>[
                             Flexible(
-                                child: Text(
-                                  'ข้อมูลเพิ่มเติม',
-                                  style: TextStyle(
-                                      color: Color(0xff827E7E),
-                                      fontSize: 16
-                                  ),
-                                )
+                              child: Text(
+                                'ข้อมูลเพิ่มเติม',
+                                style: TextStyle(
+                                  color: Color(0xff827E7E),
+                                  fontSize: 16
+                                ),
+                              )
                             ),
                           ],
                         ),
@@ -200,7 +199,7 @@ class _AccommodationReceiptState extends State<AccommodationReceipt> {
                         SizedBox(width: 5),
                         Flexible(
                           child: Text(
-                            'สามารถยกเลิกการจองได้ฟรีก่อนวันที่จอง 1 วันหากเกินกว่านั้นจะมีค่า ธรรมเนียมในการยกเลิก',
+                            'สามารถยกเลิกการจองได้ฟรีก่อนวันที่จอง 1 วันหากเกินกว่านั้นจะมีค่าธรรมเนียมในการยกเลิก',
                             style: TextStyle(
                                 color: Color(0xff1D3557),
                                 fontSize: 12
@@ -222,7 +221,11 @@ class _AccommodationReceiptState extends State<AccommodationReceipt> {
             const SizedBox(height: 30),
             ElevatedButton(
               onPressed: () => {
-
+                Navigator.push(
+                  context, MaterialPageRoute(
+                    builder: (context) => Nav()
+                  )
+                )
               },
               style: ElevatedButton.styleFrom(
                 elevation: 8,
@@ -286,8 +289,8 @@ class _AccommodationReceiptState extends State<AccommodationReceipt> {
     return [
       const DataRow(cells: [
         DataCell(Text('1', textAlign: TextAlign.center)),
-        DataCell(Text('(1x) One grass suite : 3 คืน', textAlign: TextAlign.start)),
-        DataCell(Text('3,300.00' + ' THB', textAlign: TextAlign.end))
+        DataCell(Text('(1x) One grass suite : 1 คืน', textAlign: TextAlign.start)),
+        DataCell(Text('4,000.00' + ' THB', textAlign: TextAlign.end))
       ]),
       const DataRow(cells: [
         DataCell(Text('รวม',
@@ -295,7 +298,7 @@ class _AccommodationReceiptState extends State<AccommodationReceipt> {
           style: TextStyle(fontWeight: FontWeight.bold)
         )),
         DataCell(Text('')),
-        DataCell(Text('3,300.00' + ' THB',
+        DataCell(Text('4,000.00' + ' THB',
           textAlign: TextAlign.end,
           style: TextStyle(fontWeight: FontWeight.bold),
         )),

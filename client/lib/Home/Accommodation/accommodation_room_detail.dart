@@ -55,6 +55,9 @@ class _RoomDetailState extends State<RoomDetail> {
     'https://placeimg.com/640/480/any',
   ];
 
+  List<String> facilitiesInRoom = ['เครื่องปรับอากาศ', 'โทรทัศน์', 'ตู้เย็น', 'ไมโครเวฟ', 'อินเทอร์เน็ต WIFI'];
+  List<String> facilitiesInBathRoom = ['น้ำอุ่น', 'ห้องน้ำส่วนตัว', 'อุปกรณ์อาบน้ำ'];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -134,120 +137,117 @@ class _RoomDetailState extends State<RoomDetail> {
                                     BorderRadius.all(Radius.circular(15))),
                             child: Row(
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    const Padding(
-                                      padding: EdgeInsets.only(bottom: 5),
-                                      child: Text(
-                                        'รายละเอียดที่พัก',
-                                        style: TextStyle(
-                                          color: Color(0xff1D3557),
-                                          fontSize: 16,
+                                Flexible(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      const Padding(
+                                        padding: EdgeInsets.only(bottom: 5),
+                                        child: Text(
+                                          'รายละเอียดที่พัก',
+                                          style: TextStyle(
+                                            color: Color(0xff1D3557),
+                                            fontSize: 16,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 5),
-                                      child: Wrap(
-                                        crossAxisAlignment:
-                                            WrapCrossAlignment.center,
-                                        children: <Widget>[
-                                          Icon(Ionicons.expand,
-                                              color: Color(0xffFF9A62)),
-                                          SizedBox(width: 15),
-                                          Text(
-                                            '${room_detail['area']} ตร.ม',
-                                            style: TextStyle(
-                                              color: Color(0xff1D3557),
-                                              fontSize: 14,
-                                            ),
-                                          )
-                                        ],
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            const Icon(Ionicons.expand, color: Color(0xffFF9A62)),
+                                            const SizedBox(width: 15),
+                                            Flexible(
+                                              child: Text(
+                                                '${room_detail['area']} ตร.ม',
+                                                style: const TextStyle(
+                                                  color: Color(0xff1D3557),
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 5),
-                                      child: Wrap(
-                                        crossAxisAlignment:
-                                            WrapCrossAlignment.center,
-                                        children: const <Widget>[
-                                          Icon(Ionicons.people,
-                                              color: Color(0xffFF9A62)),
-                                          SizedBox(width: 15),
-                                          Text(
-                                            '2 ผู้เข้าพัก (เข้าพักสูงสุดได้ 2 คน)',
-                                            style: TextStyle(
-                                              color: Color(0xff1D3557),
-                                              fontSize: 14,
-                                            ),
-                                          )
-                                        ],
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: const <Widget>[
+                                            Icon(Ionicons.people, color: Color(0xffFF9A62)),
+                                            SizedBox(width: 15),
+                                            Flexible(
+                                              child: Text(
+                                                '2 ผู้เข้าพัก (เข้าพักสูงสุดได้ 2 คน)',
+                                                style: TextStyle(
+                                                  color: Color(0xff1D3557),
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 5),
-                                      child: Wrap(
-                                        crossAxisAlignment:
-                                            WrapCrossAlignment.center,
-                                        children: const <Widget>[
-                                          Icon(Icons.king_bed_rounded,
-                                              color: Color(0xffFF9A62)),
-                                          SizedBox(width: 15),
-                                          Text(
-                                            '1 เตียงควีนไซส์',
-                                            style: TextStyle(
-                                              color: Color(0xff1D3557),
-                                              fontSize: 14,
-                                            ),
-                                          )
-                                        ],
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: const <Widget>[
+                                            Icon(Icons.king_bed_rounded, color: Color(0xffFF9A62)),
+                                            SizedBox(width: 15),
+                                            Flexible(
+                                              child: Text(
+                                                '1 เตียงควีนไซส์',
+                                                style: TextStyle(
+                                                  color: Color(0xff1D3557),
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 5),
-                                      child: Wrap(
-                                        crossAxisAlignment:
-                                            WrapCrossAlignment.center,
-                                        children: const <Widget>[
-                                          Icon(Icons.chair_rounded,
-                                              color: Color(0xffFF9A62)),
-                                          SizedBox(width: 15),
-                                          Text(
-                                            '2 โซฟา',
-                                            style: TextStyle(
-                                              color: Color(0xff1D3557),
-                                              fontSize: 14,
-                                            ),
-                                          )
-                                        ],
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: const <Widget>[
+                                            Icon(Icons.chair_rounded, color: Color(0xffFF9A62)),
+                                            SizedBox(width: 15),
+                                            Flexible(
+                                              child: Text(
+                                                '2 โซฟา',
+                                                style: TextStyle(
+                                                  color: Color(0xff1D3557),
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 5),
-                                      child: Wrap(
-                                        crossAxisAlignment:
-                                            WrapCrossAlignment.center,
-                                        children: const <Widget>[
-                                          Icon(Icons.smoke_free_rounded,
-                                              color: Color(0xffFF9A62)),
-                                          SizedBox(width: 15),
-                                          Text(
-                                            'ห้ามสูบบุหรี่',
-                                            style: TextStyle(
-                                              color: Color(0xff1D3557),
-                                              fontSize: 14,
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    )
-                                  ],
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: const <Widget>[
+                                            Icon(Icons.smoke_free_rounded, color: Color(0xffFF9A62)),
+                                            SizedBox(width: 15),
+                                            Flexible(
+                                              child: Text(
+                                                'ห้ามสูบบุหรี่',
+                                                style: TextStyle(
+                                                  color: Color(0xff1D3557),
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
@@ -256,402 +256,159 @@ class _RoomDetailState extends State<RoomDetail> {
                             margin: const EdgeInsets.symmetric(vertical: 10),
                             padding: const EdgeInsets.all(10),
                             decoration: const BoxDecoration(
-                                color: Color(0xffFFEEC9),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(15))),
-                            child: Wrap(
-                              children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    const Padding(
-                                      padding: EdgeInsets.only(bottom: 5),
-                                      child: Text(
-                                        'สิ่งอำนวยความสะดวกภายในห้อง',
-                                        style: TextStyle(
-                                          color: Color(0xff1D3557),
-                                          fontSize: 16,
-                                        ),
+                              color: Color(0xffFFEEC9),
+                              borderRadius: BorderRadius.all(Radius.circular(15)
+                              )
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                const Text(
+                                  'สิ่งอำนวยความสะดวกภายในห้อง',
+                                  style: TextStyle(
+                                    color: Color(0xff1D3557),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  child: MediaQuery.removePadding(
+                                    removeTop: true,
+                                    context: context,
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      itemCount: facilitiesInRoom.length,
+                                      itemBuilder: (context, int index) =>
+                                      Row(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.start,
+                                        children: [
+                                          const Icon(Icons.circle, color: const Color(0xff1D3557), size: 10),
+                                          const SizedBox(width: 5),
+                                          Flexible(
+                                            child: Text(
+                                              facilitiesInRoom[index],
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                color: const Color(0xff1D3557),
+                                                fontSize: 14,
+                                              )
+                                            )
+                                          )
+                                        ],
                                       ),
                                     ),
-                                    Wrap(
-                                      children: [
-                                        Container(
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          width: 150,
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: const <Widget>[
-                                              Icon(
-                                                Icons.circle,
-                                                color: Color(0xff1D3557),
-                                                size: 10,
-                                              ),
-                                              SizedBox(width: 5),
-                                              Text(
-                                                'เครื่องปรับอากาศ',
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  color: Color(0xff1D3557),
-                                                  fontSize: 14,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          width: 150,
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: const <Widget>[
-                                              Icon(
-                                                Icons.circle,
-                                                color: Color(0xff1D3557),
-                                                size: 10,
-                                              ),
-                                              SizedBox(width: 5),
-                                              Text(
-                                                'เครื่องปรับอากาศ',
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  color: Color(0xff1D3557),
-                                                  fontSize: 14,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          width: 150,
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: const <Widget>[
-                                              Icon(
-                                                Icons.circle,
-                                                color: Color(0xff1D3557),
-                                                size: 10,
-                                              ),
-                                              SizedBox(width: 5),
-                                              Text(
-                                                'เครื่องปรับอากาศ',
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  color: Color(0xff1D3557),
-                                                  fontSize: 14,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          width: 150,
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: const <Widget>[
-                                              Icon(
-                                                Icons.circle,
-                                                color: Color(0xff1D3557),
-                                                size: 10,
-                                              ),
-                                              SizedBox(width: 5),
-                                              Text(
-                                                'เครื่องปรับอากาศ',
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  color: Color(0xff1D3557),
-                                                  fontSize: 14,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          width: 150,
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: const <Widget>[
-                                              Icon(
-                                                Icons.circle,
-                                                color: Color(0xff1D3557),
-                                                size: 10,
-                                              ),
-                                              SizedBox(width: 5),
-                                              Text(
-                                                'เครื่องปรับอากาศ',
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  color: Color(0xff1D3557),
-                                                  fontSize: 14,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                        Container(
-                                          margin: EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          width: 150,
-                                          child: Row(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.center,
-                                            children: const <Widget>[
-                                              Icon(
-                                                Icons.circle,
-                                                color: Color(0xff1D3557),
-                                                size: 10,
-                                              ),
-                                              SizedBox(width: 5),
-                                              Text(
-                                                'เครื่องปรับอากาศ',
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                  color: Color(0xff1D3557),
-                                                  fontSize: 14,
-                                                ),
-                                              )
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    )
-                                  ],
-                                ),
+                                  ),
+                                )
                               ],
                             ),
                           ),
                           Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              padding: const EdgeInsets.all(10),
-                              decoration: const BoxDecoration(
-                                  color: Color(0xffFFEEC9),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(15))),
-                              child: Wrap(
-                                children: [
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    width: 150,
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: const <Widget>[
-                                        Icon(
-                                          Icons.circle,
-                                          color: Color(0xff1D3557),
-                                          size: 10,
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          'เครื่องปรับอากาศ',
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Color(0xff1D3557),
-                                            fontSize: 14,
-                                          ),
-                                        )
-                                      ],
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
+                                color: Color(0xffFFEEC9),
+                                borderRadius: BorderRadius.all(Radius.circular(15)
+                                )
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                const Text(
+                                  'สิ่งอำนวยความสะดวกภายในห้องน้ำ',
+                                  style: const TextStyle(
+                                    color: const Color(0xff1D3557),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  child: MediaQuery.removePadding(
+                                    removeTop: true,
+                                    context: context,
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      itemCount: facilitiesInBathRoom.length,
+                                      itemBuilder: (context, int index) =>
+                                        Row(
+                                          crossAxisAlignment: CrossAxisAlignment.center,
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            const Icon(Icons.circle, color: Color(0xff1D3557), size: 10),
+                                            const SizedBox(width: 5),
+                                            Flexible(
+                                            child: Text(
+                                              facilitiesInBathRoom[index],
+                                              maxLines: 1,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: const TextStyle(
+                                                color: Color(0xff1D3557),
+                                                fontSize: 14,
+                                              )
+                                            )
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    width: 150,
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: const <Widget>[
-                                        Icon(
-                                          Icons.circle,
-                                          color: Color(0xff1D3557),
-                                          size: 10,
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          'เครื่องปรับอากาศ',
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Color(0xff1D3557),
-                                            fontSize: 14,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    width: 150,
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: const <Widget>[
-                                        Icon(
-                                          Icons.circle,
-                                          color: Color(0xff1D3557),
-                                          size: 10,
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          'เครื่องปรับอากาศ',
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Color(0xff1D3557),
-                                            fontSize: 14,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    width: 150,
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: const <Widget>[
-                                        Icon(
-                                          Icons.circle,
-                                          color: Color(0xff1D3557),
-                                          size: 10,
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          'เครื่องปรับอากาศ',
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Color(0xff1D3557),
-                                            fontSize: 14,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    width: 150,
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: const <Widget>[
-                                        Icon(
-                                          Icons.circle,
-                                          color: Color(0xff1D3557),
-                                          size: 10,
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          'เครื่องปรับอากาศ',
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Color(0xff1D3557),
-                                            fontSize: 14,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                  Container(
-                                    margin:
-                                        EdgeInsets.symmetric(horizontal: 10),
-                                    width: 150,
-                                    child: Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: const <Widget>[
-                                        Icon(
-                                          Icons.circle,
-                                          color: Color(0xff1D3557),
-                                          size: 10,
-                                        ),
-                                        SizedBox(width: 5),
-                                        Text(
-                                          'เครื่องปรับอากาศ',
-                                          maxLines: 2,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: TextStyle(
-                                            color: Color(0xff1D3557),
-                                            fontSize: 14,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              )),
+                                )
+                              ],
+                            ),
+                          ),
                           const Divider(
                             thickness: 1.5,
                             color: Color(0xff827E7E),
                           ),
-                          Wrap(
-                            children: [
-                              Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              const Flexible(
+                                child: Text(
+                                  'ราคา',
+                                  style: TextStyle(
+                                    color: Color(0xff1D3557),
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold
+                                  ),
+                                ),
+                              ),
+                              Flexible(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
                                   children: <Widget>[
-                                    const Text(
-                                      'ราคา',
-                                      style: TextStyle(
-                                          color: Color(0xff1D3557),
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
+                                    Text('THB ${room_detail['price']}',
+                                      textAlign: TextAlign.end,
+                                      style: GoogleFonts.poppins(
+                                        color: const Color(0xffF25B52),
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.w800
+                                      )
                                     ),
-                                    Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.end,
-                                        children: <Widget>[
-                                          Text('THB ${room_detail['price']}',
-                                              textAlign: TextAlign.end,
-                                              style: GoogleFonts.poppins(
-                                                  color: Color(0xffF25B52),
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.w800)),
-                                          Text('2,200.00',
-                                              textAlign: TextAlign.end,
-                                              style: GoogleFonts.poppins(
-                                                  color: Color(0xff1D3557),
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.w800,
-                                                  decoration: TextDecoration
-                                                      .lineThrough)),
-                                          const Text('/ห้อง/คืน',
-                                              textAlign: TextAlign.end,
-                                              style: TextStyle(
-                                                color: Color(0xff827E7E),
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w800,
-                                              ))
-                                        ])
-                                  ])
-                            ],
+                                    Text('5,000.00',
+                                      textAlign: TextAlign.end,
+                                      style: GoogleFonts.poppins(
+                                        color: const Color(0xff1D3557),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w800,
+                                        decoration: TextDecoration.lineThrough
+                                      )
+                                    ),
+                                    const Text('/ห้อง/คืน',
+                                      textAlign: TextAlign.end,
+                                      style: TextStyle(
+                                        color: Color(0xff827E7E),
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w800,
+                                      )
+                                    )
+                                  ]
+                                ),
+                              )
+                            ]
                           ),
                           Container(
                             alignment: Alignment.bottomCenter,
@@ -659,32 +416,27 @@ class _RoomDetailState extends State<RoomDetail> {
                             child: ElevatedButton(
                               onPressed: () => {
                                 Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            AccommodationTransaction(
-                                              checkInHolder: checkInEdit.text,
-                                              checkOutHolder: checkOutEdit.text,
-                                              numberOfPeopleHolder:
-                                                  numberOfPeopleEdit.text,
-                                              numberOfRoomsHolder:
-                                                  numberOfRoomsEdit.text,
-                                              userNameHolder:
-                                                  'Sedtawut Chalothornnarumit',
-                                              userEmailHolder:
-                                                  'sedtawut.62-50@gmail.com',
-                                              userPhoneHolder: '09-8765-4321',
-                                              room_detail: room_detail,
-                                              hotel_name: hotel_name,
-                                            )))
+                                  context, MaterialPageRoute(
+                                    builder: (context) => AccommodationTransaction(
+                                      checkInHolder: checkInEdit.text,
+                                      checkOutHolder: checkOutEdit.text,
+                                      numberOfPeopleHolder: numberOfPeopleEdit.text,
+                                      numberOfRoomsHolder: numberOfRoomsEdit.text,
+                                      userNameHolder: 'Sedtawut Chalothornnarumit',
+                                      userEmailHolder: 'sedtawut.62-50@gmail.com',
+                                      userPhoneHolder: '09-8765-4321',
+                                      room_detail: room_detail,
+                                      hotel_name: hotel_name,
+                                    )
+                                  )
+                                )
                               },
                               style: ElevatedButton.styleFrom(
                                 onPrimary: const Color(0xff1D3557),
                                 primary: const Color(0xff1D3557),
                                 minimumSize: const Size(350, 60),
                                 shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(16)),
+                                  borderRadius: BorderRadius.all(Radius.circular(16)),
                                 ),
                               ),
                               child: const Text(
@@ -692,7 +444,8 @@ class _RoomDetailState extends State<RoomDetail> {
                                 style: TextStyle(
                                     color: Color(0xffFFF4DC),
                                     fontSize: 20,
-                                    fontWeight: FontWeight.bold),
+                                    fontWeight: FontWeight.bold
+                                ),
                               ),
                             ),
                           ),
@@ -710,20 +463,21 @@ class _RoomDetailState extends State<RoomDetail> {
   }
 
   Widget buildImage(String urlImage, int index) => Container(
-        color: Colors.black,
-        child: Image.network(
-          urlImage,
-          fit: BoxFit.cover,
-        ),
-      );
+    color: Colors.black,
+    child: Image.network(
+      urlImage,
+      fit: BoxFit.cover,
+    ),
+  );
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
-        activeIndex: activeIndex,
-        count: urlImages.length,
-        effect: ScaleEffect(
-            dotWidth: 8,
-            dotHeight: 8,
-            activeDotColor: const Color(0xffECFAFF),
-            dotColor: const Color(0xffECFAFF).withOpacity(0.5)),
-      );
+    activeIndex: activeIndex,
+    count: urlImages.length,
+    effect: ScaleEffect(
+      dotWidth: 8,
+      dotHeight: 8,
+      activeDotColor: const Color(0xffECFAFF),
+      dotColor: const Color(0xffECFAFF).withOpacity(0.5)
+    ),
+  );
 }

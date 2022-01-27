@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:se_app2/navigator/nav/profile/creditcard/eachcard.dart';
 import 'package:se_app2/navigator/nav/profile/creditcard/newcard.dart';
 
@@ -14,161 +15,144 @@ class _maincreditcardState extends State<maincreditcard> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor : Color(0xFFFFF4DC),
-      body: Column(
-        children: [
-          //ส่วนหัว
-          Container(
-            padding: const EdgeInsets.only(top: 50.0,left: 20),
-            decoration: BoxDecoration(
-                color : Color(0xFF1d3557), borderRadius : BorderRadius.only(bottomRight: Radius.circular(10),bottomLeft: Radius.circular(10),)),
-            height: 100,
-            child: Row(
-              children: [
-                GestureDetector( onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return ProfilePage();
-                  }));
-                },
-                  child :Container(
-                    child: Row(
-                      children: [
-                        Image.asset('assets/icons/back.png',width: 25, height: 25,),
-                      ],
-                    ),
-                  ),),
-                SizedBox(width: 100,),
-                //Icon(Icons.house, color: Color(0xFFECFAFF), size: 25,),
-                Text("บัตรที่บันทึกไว้", style: TextStyle(fontSize: 17, color: Color(0xFFECFAFF)),textAlign: TextAlign.center,),
-
-              ],
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60.0),
+        child: AppBar(
+          centerTitle: true,
+          backgroundColor: const Color(0xff1D3557),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_rounded,
+                color: Color(0xffECFAFF)),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          title: const Text(
+            'บัตรที่บันทึกไว้',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          flexibleSpace: const SizedBox(
+            height: 20,
+          ),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(12),
             ),
           ),
-          //จบส่วนหัว
-          SizedBox(height:10 ,),
-          //ส่วนล่าง
-          Container(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              children: [
-                //ยังไม่มีบัตร
-                GestureDetector( onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return newcard();
-                  }));
-                },
-                  child : Container(
-                    padding: const EdgeInsets.all(20.0),
-                    decoration: BoxDecoration(
-                      color : Color(0xFFECFAFF), borderRadius : BorderRadius.circular(10),
-                      boxShadow:[
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3), //color of shadow
-                          spreadRadius: 1, //spread radius
-                          blurRadius: 6, // blur radius
-                          offset: Offset(1, 6), // changes position of shadow
-                          //first paramerter of offset is left-right
-                          //second parameter is top to down
-                        ),
-                        //you can set more BoxShadow() here
-                      ],
-                    ),
-                    height: 80,
-                    child: Row(
-                      children :[
-                        Container(padding: const EdgeInsets.all(20.0),),
-                        Text("ยังไม่มีบัตรเครดิตที่บันทึกไว้", style: TextStyle(fontSize: 20, color: Color(0xff1d3557)),),
-                      ],
-                    ),
+        ),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(20),
+        child: Column(
+          children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 20),
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.3),
+                    spreadRadius: 1,
+                    blurRadius: 6,
+                    offset: const Offset(1, 6),
+                  ),
+                ],
+              ),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  animationDuration: const Duration(milliseconds: 1000),
+                  padding: const EdgeInsets.all(20),
+                  primary: const Color(0xffECFAFF),
+                  onPrimary: const Color(0xff1D3557),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
                 ),
-                //จบยังไม่มีบัตร
-                SizedBox(height: 15,),
-                //บัตรที่บันทึก
-                GestureDetector( onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return eachcard();
-                  }));
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => eachcard())
+                  );
                 },
-                  child : Container(
-                    padding: const EdgeInsets.all(20.0),
-                    decoration: BoxDecoration(
-                      color : Color(0xFFECFAFF), borderRadius : BorderRadius.circular(10),
-                      boxShadow:[
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3), //color of shadow
-                          spreadRadius: 1, //spread radius
-                          blurRadius: 6, // blur radius
-                          offset: Offset(1, 6), // changes position of shadow
-                          //first paramerter of offset is left-right
-                          //second parameter is top to down
-                        ),
-                        //you can set more BoxShadow() here
-                      ],
-                    ),
-                    height: 80,
-                    child: Row(
-                      children :[
-                        Image.asset('assets/icons/visa.png', width: 40.0, height: 40.0),
-                        SizedBox(width: 20,),
-                        Text("ชื่อบัตร", style: TextStyle(fontSize: 20, color: Color(0xff1d3557)),),
-                        SizedBox(width: 148,),
-                        Image.asset('assets/icons/next 3.png', width: 40.0, height: 40.0),
-                      ],
-                    ),
-                  ),
-                ),
-                //จบบัตรที่บันทึก
-                SizedBox(height: 15,),
-                //เพิ่มบัตรใหม่
-                Container(child: Column(
-                  crossAxisAlignment:  CrossAxisAlignment.start,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text("เพิ่มบัตรใหม่", style: TextStyle(fontSize: 20, color: Color(0xff1d3557)),),
+                    Flexible(
+                      child: Row(
+                        children: const [
+                          Icon(Boxicons.bxl_visa, color: Color(0xff1D3557), size: 40,),
+                          SizedBox(width: 20),
+                          Text("เสฎฐวุฒิ ชโลธรนฤมิต", style: TextStyle(fontSize: 16, color: Color(0xff1D3557)),),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      'บัตรหลัก',
+                      style: TextStyle(
+                        color: Color(0xff1D3557),
+                        fontSize: 18,
+                      )
+                    )
                   ],
                 ),
-                ),
-                //จบเพิ่มบัตรใหม่
-                SizedBox(height: 15,),
-                //ข้อมูลบัตร
-                GestureDetector( onTap: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    return newcard();
-                  }));
-                },
-                  child : Container(
-                    padding: const EdgeInsets.all(20.0),
-                    decoration: BoxDecoration(
-                      color : Color(0xFFECFAFF), borderRadius : BorderRadius.circular(10),
-                      boxShadow:[
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3), //color of shadow
-                          spreadRadius: 1, //spread radius
-                          blurRadius: 6, // blur radius
-                          offset: Offset(1, 6), // changes position of shadow
-                          //first paramerter of offset is left-right
-                          //second parameter is top to down
-                        ),
-                        //you can set more BoxShadow() here
-                      ],
-                    ),
-                    height: 80,
-                    child: Row(
-                      children :[
-                        Image.asset('assets/icons/creditcard2.png', width: 40.0, height: 40.0),
-                        SizedBox(width: 20,),
-                        Text("บัตรเครดิต/เดบิต", style: TextStyle(fontSize: 20, color: Color(0xff1d3557)),),
-                        SizedBox(width: 66,),
-                        Image.asset('assets/icons/next 3.png', width: 40.0, height: 40.0),
-                      ],
-                    ),
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Text(
+                  'เพิ่มบัตรใหม่',
+                  style: TextStyle(
+                    color: Color(0xff1D3557),
+                    fontSize: 18,
                   ),
                 ),
-                //จบข้อมูลบัตร
               ],
             ),
-          ),
-          //จบส่วนล่าง
-        ],
+            Container(
+              margin: const EdgeInsets.symmetric(vertical: 10),
+              decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.3),
+                    spreadRadius: 1,
+                    blurRadius: 6,
+                    offset: const Offset(1, 6),
+                  ),
+                ],
+              ),
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  animationDuration: const Duration(milliseconds: 1000),
+                  padding: const EdgeInsets.all(20),
+                  primary: const Color(0xffECFAFF),
+                  onPrimary: const Color(0xff1D3557),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(10)),
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => newcard())
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Row(
+                        children: const [
+                          Icon(Icons.credit_card_rounded, color: Color(0xff1D3557), size: 40,),
+                          SizedBox(width: 20),
+                          Text("บัตรเครดิต / บัตรเดบิต", style: TextStyle(fontSize: 16, color: Color(0xff1D3557)),),
+                        ],
+                      ),
+                    ),
+                    const Icon(Icons.navigate_next_rounded, color: Color(0xff1D3557), size: 30,)
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

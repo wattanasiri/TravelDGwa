@@ -251,34 +251,35 @@ class _AccommodationRoomState extends State<AccommodationRoom> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: <Widget>[
-            InkWell(
-              onTap: () => {},
-              child: Card(
-                elevation: 0,
-                color: const Color(0xffFFF4DC),
-                child: Container(
-                  width: 200,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const <Widget>[
-                      Icon(Icons.filter_alt_rounded, color: Color(0xff1D3557)),
-                      SizedBox(width: 5),
-                      Text(
-                        'ตัวกรอง  ',
-                        style: TextStyle(
-                            color: Color(0xff1D3557),
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        '(3 ผลลัพธ์)',
-                        style: TextStyle(
-                            color: Color(0xff827E7E),
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500),
-                      )
-                    ],
+            Flexible(
+              child: InkWell(
+                onTap: () => {},
+                child: Card(
+                  elevation: 0,
+                  color: const Color(0xffFFF4DC),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: const <Widget>[
+                        Icon(Icons.filter_alt_rounded, color: Color(0xff1D3557)),
+                        SizedBox(width: 5),
+                        Text(
+                          'ตัวกรอง  ',
+                          style: TextStyle(
+                              color: Color(0xff1D3557),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(
+                          '(3 ผลลัพธ์)',
+                          style: TextStyle(
+                              color: Color(0xff827E7E),
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -289,27 +290,28 @@ class _AccommodationRoomState extends State<AccommodationRoom> {
               decoration: BoxDecoration(
                   border: Border.all(color: const Color(0xff827E7E))),
             ),
-            InkWell(
-              onTap: () => {_openSortingModal()},
-              child: Card(
-                elevation: 0,
-                color: const Color(0xffFFF4DC),
-                child: Container(
-                  width: 150,
-                  padding: const EdgeInsets.symmetric(vertical: 10),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      const Icon(Icons.sort_rounded, color: Color(0xff1D3557)),
-                      const SizedBox(width: 5),
-                      Text(
-                        sortByTitle,
-                        style: const TextStyle(
-                            color: Color(0xff1D3557),
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold),
-                      )
-                    ],
+            Flexible(
+              child: InkWell(
+                onTap: () => {_openSortingModal()},
+                child: Card(
+                  elevation: 0,
+                  color: const Color(0xffFFF4DC),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        const Icon(Icons.sort_rounded, color: Color(0xff1D3557)),
+                        const SizedBox(width: 5),
+                        Text(
+                          sortByTitle,
+                          style: const TextStyle(
+                              color: Color(0xff1D3557),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -321,268 +323,275 @@ class _AccommodationRoomState extends State<AccommodationRoom> {
   }
 
   Future openEditCheckInDialog(BuildContext context) => showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-            title: const Text(
-              'วันที่เช็คอิน',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            content: TextFormField(
-              controller: checkInEdit,
-              readOnly: true,
-              decoration: const InputDecoration(
-                  hintText: 'วว-ดด-ปปปป',
-                  enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xffECFAFF))),
-                  suffixIcon: Icon(Ionicons.calendar_outline,
-                      color: Color(0xff1D3557))),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'กรุณาระบุวันที่';
-                }
-                return null;
-              },
-              onTap: () async {
-                DateTime pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2101));
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text(
+        'วันที่เช็คอิน',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      content: TextFormField(
+        controller: checkInEdit,
+        readOnly: true,
+        decoration: const InputDecoration(
+          hintText: 'วว-ดด-ปปปป',
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Color(0xffECFAFF))),
+          suffixIcon: Icon(Ionicons.calendar_outline,
+            color: Color(0xff1D3557))),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'กรุณาระบุวันที่';
+          }
+          return null;
+        },
+        onTap: () async {
+          DateTime pickedDate = await showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2101));
 
-                if (pickedDate != null) {
-                  print(pickedDate);
-                  String formattedDate =
-                      DateFormat('dd-MM-yyyy').format(pickedDate);
-                  print(formattedDate);
+          if (pickedDate != null) {
+            print(pickedDate);
+            String formattedDate =
+              DateFormat('dd-MM-yyyy').format(pickedDate);
+            print(formattedDate);
 
-                  setState(() {
-                    checkInEdit.text = formattedDate;
-                  });
-                } else {
-                  print("Date is not selected");
-                }
-              },
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () =>
-                      {setState(() {}), Navigator.of(context).pop()},
-                  child: const Text('ตกลง'))
-            ],
-          ));
+            setState(() {
+              checkInEdit.text = formattedDate;
+            });
+          } else {
+            print("Date is not selected");
+          }
+        },
+      ),
+      actions: [
+        TextButton(
+          onPressed: () =>
+            {setState(() {}), Navigator.of(context).pop()},
+          child: const Text('ตกลง'))
+      ],
+    )
+  );
 
   Future openEditCheckOutDialog(BuildContext context) => showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-            title: const Text(
-              'วันที่เช็คเอาท์',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            content: TextFormField(
-              controller: checkOutEdit,
-              readOnly: true,
-              decoration: const InputDecoration(
-                  hintText: 'วว-ดด-ปปปป',
-                  enabledBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: Color(0xffECFAFF))),
-                  suffixIcon: Icon(Ionicons.calendar_outline,
-                      color: Color(0xff1D3557))),
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return 'กรุณาระบุวันที่';
-                }
-                return null;
-              },
-              onTap: () async {
-                DateTime pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(2000),
-                    lastDate: DateTime(2101));
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text(
+        'วันที่เช็คเอาท์',
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      content: TextFormField(
+        controller: checkOutEdit,
+        readOnly: true,
+        decoration: const InputDecoration(
+          hintText: 'วว-ดด-ปปปป',
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Color(0xffECFAFF))),
+          suffixIcon: Icon(Ionicons.calendar_outline,
+            color: Color(0xff1D3557))),
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'กรุณาระบุวันที่';
+          }
+          return null;
+        },
+        onTap: () async {
+          DateTime pickedDate = await showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2101));
 
-                if (pickedDate != null) {
-                  print(pickedDate);
-                  String formattedDate =
-                      DateFormat('dd-MM-yyyy').format(pickedDate);
-                  print(formattedDate);
+          if (pickedDate != null) {
+            print(pickedDate);
+            String formattedDate =
+                DateFormat('dd-MM-yyyy').format(pickedDate);
+            print(formattedDate);
 
-                  setState(() {
-                    checkOutEdit.text = formattedDate;
-                  });
-                } else {
-                  print("Date is not selected");
-                }
-              },
-            ),
-            actions: [
-              TextButton(
-                  onPressed: () =>
-                      {setState(() {}), Navigator.of(context).pop()},
-                  child: const Text('ตกลง'))
-            ],
-          ));
+            setState(() {
+              checkOutEdit.text = formattedDate;
+            });
+          } else {
+            print("Date is not selected");
+          }
+        },
+      ),
+      actions: [
+        TextButton(
+            onPressed: () =>
+                {setState(() {}), Navigator.of(context).pop()},
+            child: const Text('ตกลง'))
+      ],
+    )
+  );
+
   void _openSortingModal() {
     showModalBottomSheet(
-        isScrollControlled: true,
-        context: context,
-        builder: (context) {
-          return StatefulBuilder(// this is new
-              builder: (BuildContext context, StateSetter setState) {
-            return Container(
-              color: const Color(0xff1D3557),
-              padding: const EdgeInsets.all(15.0),
-              child: Wrap(
-                children: <Widget>[
-                  Center(
-                      child: Container(
-                          height: 3.0,
-                          width: 40.0,
-                          color: const Color(0xffC4C4C4))),
-                  const SizedBox(height: 20.0),
-                  const Center(
-                    child: Text(
-                      'เรียงลำดับตาม',
-                      style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xffFFF4DC)),
+      isScrollControlled: true,
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+            builder: (BuildContext context, StateSetter setState) {
+          return Container(
+            color: const Color(0xff1D3557),
+            padding: const EdgeInsets.all(15.0),
+            child: Wrap(
+              children: <Widget>[
+                Center(
+                  child: Container(
+                    height: 3.0,
+                    width: 40.0,
+                    color: const Color(0xffC4C4C4)
+                  )
+                ),
+                const SizedBox(height: 20.0),
+                const Center(
+                  child: Text(
+                    'เรียงลำดับตาม',
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xffFFF4DC)
                     ),
                   ),
-                  const SizedBox(height: 50.0),
-                  Theme(
-                    data: Theme.of(context).copyWith(
-                      unselectedWidgetColor: const Color(0xffFFF4DC),
-                      toggleableActiveColor: const Color(0xffFF9A62),
-                    ),
-                    child: Column(
-                      children: <Widget>[
-                        RadioListTile(
-                          selected: selected1,
-                          groupValue: sortBy,
-                          value: 'l-h',
-                          onChanged: (value) => {
-                            _selectItem1(value),
-                            Navigator.of(context).pop()
-                          },
-                          title: Text(
-                            'ราคาต่ำ - สูง',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                              color: selected1
-                                  ? const Color(0xffFF9A62)
-                                  : const Color(0xffFFF4DC),
-                            ),
+                ),
+                const SizedBox(height: 50.0),
+                Theme(
+                  data: Theme.of(context).copyWith(
+                    unselectedWidgetColor: const Color(0xffFFF4DC),
+                    toggleableActiveColor: const Color(0xffFF9A62),
+                  ),
+                  child: Column(
+                    children: <Widget>[
+                      RadioListTile(
+                        selected: selected1,
+                        groupValue: sortBy,
+                        value: 'l-h',
+                        onChanged: (value) => {
+                          _selectItem1(value),
+                          Navigator.of(context).pop()
+                        },
+                        title: Text(
+                          'ราคาต่ำ - สูง',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: selected1
+                              ? const Color(0xffFF9A62)
+                              : const Color(0xffFFF4DC),
                           ),
                         ),
-                        RadioListTile(
-                          selected: selected2,
-                          groupValue: sortBy,
-                          value: 'h-l',
-                          onChanged: (value) => {
-                            _selectItem2(value),
-                            Navigator.of(context).pop()
-                          },
-                          title: Text(
-                            'ราคาสูง - ต่ำ',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                              color: selected2
-                                  ? const Color(0xffFF9A62)
-                                  : const Color(0xffFFF4DC),
-                            ),
+                      ),
+                      RadioListTile(
+                        selected: selected2,
+                        groupValue: sortBy,
+                        value: 'h-l',
+                        onChanged: (value) => {
+                          _selectItem2(value),
+                          Navigator.of(context).pop()
+                        },
+                        title: Text(
+                          'ราคาสูง - ต่ำ',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: selected2
+                              ? const Color(0xffFF9A62)
+                              : const Color(0xffFFF4DC),
                           ),
                         ),
-                        RadioListTile(
-                          selected: selected3,
-                          groupValue: sortBy,
-                          value: 'popular',
-                          onChanged: (value) => {
-                            _selectItem3(value),
-                            Navigator.of(context).pop()
-                          },
-                          title: Text(
-                            'ความนิยม',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                              color: selected3
-                                  ? const Color(0xffFF9A62)
-                                  : const Color(0xffFFF4DC),
-                            ),
+                      ),
+                      RadioListTile(
+                        selected: selected3,
+                        groupValue: sortBy,
+                        value: 'popular',
+                        onChanged: (value) => {
+                          _selectItem3(value),
+                          Navigator.of(context).pop()
+                        },
+                        title: Text(
+                          'ความนิยม',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: selected3
+                              ? const Color(0xffFF9A62)
+                              : const Color(0xffFFF4DC),
                           ),
                         ),
-                        RadioListTile(
-                          selected: selected4,
-                          groupValue: sortBy,
-                          value: 'rate',
-                          onChanged: (value) => {
-                            _selectItem4(value),
-                            Navigator.of(context).pop()
-                          },
-                          title: Text(
-                            'ระดับดาว (5-0)',
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
-                              color: selected4
-                                  ? const Color(0xffFF9A62)
-                                  : const Color(0xffFFF4DC),
-                            ),
+                      ),
+                      RadioListTile(
+                        selected: selected4,
+                        groupValue: sortBy,
+                        value: 'rate',
+                        onChanged: (value) => {
+                          _selectItem4(value),
+                          Navigator.of(context).pop()
+                        },
+                        title: Text(
+                          'ระดับดาว (5-0)',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                            color: selected4
+                              ? const Color(0xffFF9A62)
+                              : const Color(0xffFFF4DC),
                           ),
                         ),
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            );
-          });
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          );
         });
+      }
+    );
   }
 
   void _selectItem1(value) {
     setState(() => {
-          selected1 = true,
-          selected2 = false,
-          selected3 = false,
-          selected4 = false,
-          sortBy = value,
-          sortByTitle = 'ราคาต่ำ - สูง',
-        });
+      selected1 = true,
+      selected2 = false,
+      selected3 = false,
+      selected4 = false,
+      sortBy = value,
+      sortByTitle = 'ราคาต่ำ - สูง',
+    });
   }
 
   void _selectItem2(value) {
     setState(() => {
-          selected1 = false,
-          selected2 = true,
-          selected3 = false,
-          selected4 = false,
-          sortBy = value,
-          sortByTitle = 'ราคาสูง - ต่ำ',
-        });
+      selected1 = false,
+      selected2 = true,
+      selected3 = false,
+      selected4 = false,
+      sortBy = value,
+      sortByTitle = 'ราคาสูง - ต่ำ',
+    });
   }
 
   void _selectItem3(value) {
     setState(() => {
-          selected1 = false,
-          selected2 = false,
-          selected3 = true,
-          selected4 = false,
-          sortBy = value,
-          sortByTitle = 'ความนิยม'
-        });
+      selected1 = false,
+      selected2 = false,
+      selected3 = true,
+      selected4 = false,
+      sortBy = value,
+      sortByTitle = 'ความนิยม'
+    });
   }
 
   void _selectItem4(value) {
     setState(() => {
-          selected1 = false,
-          selected2 = false,
-          selected3 = false,
-          selected4 = true,
-          sortBy = value,
-          sortByTitle = 'ระดับดาว (5-0)'
-        });
+      selected1 = false,
+      selected2 = false,
+      selected3 = false,
+      selected4 = true,
+      sortBy = value,
+      sortByTitle = 'ระดับดาว (5-0)'
+    });
   }
 }
