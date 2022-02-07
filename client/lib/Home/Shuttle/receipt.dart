@@ -137,7 +137,7 @@ class _receiptState extends State<receipt> {
                           Row(
                             children: [
                               Container(
-                                width: 310,
+                                width: 290,
                                 child: Text(
                                   'จาก : ' + widget.yourlocation,
                                   style: TextStyle(
@@ -375,23 +375,31 @@ class _receiptState extends State<receipt> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
-                  const SizedBox(
-                    height: 20,
-                  ),
                   Padding(
-                      padding: const EdgeInsets.only(left: 25, bottom: 20),
-                      child: AnimatedButton(
-                          height: 50,
-                          width: 360,
-                          isReverse: true,
-                          selectedTextColor: Colors.black,
-                          transitionType: TransitionType.LEFT_TO_RIGHT,
-                          backgroundColor: const Color(0xff1D3557),
-                          borderColor: const Color(0xffFFF4DC),
-                          borderRadius: 13,
-                          borderWidth: 2,
-                          text: "ไปที่การจองของฉัน",
-                          onPress: () {})),
+                    padding: const EdgeInsets.all(30.0),
+                    child: RaisedButton(
+                      onPressed: () {
+                        Navigator.pushNamed(
+                          context, '/Navi',
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'กลับไปที่การจองของฉัน',
+                          style: TextStyle(
+                              fontSize: 19.0,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xffFFF4DC)
+                          ),
+                        ),
+                      ),
+                      color: Color(0xff1D3557),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12), // <-- Radius
+                      ),
+                    ),
+                  ),
                 ],
               ),
             )

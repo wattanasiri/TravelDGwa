@@ -359,40 +359,78 @@ class _driver_infoState extends State<driver_info> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    const SizedBox(
-                      height: 20,
-                    ),
                     Padding(
-                        padding: const EdgeInsets.only(left: 25),
-                        child: AnimatedButton(
-                            height: 50,
-                            width: 360,
-                            isReverse: true,
-                            selectedTextColor: Colors.black,
-                            transitionType: TransitionType.LEFT_TO_RIGHT,
-                            backgroundColor: const Color(0xff1d3557),
-                            borderColor: const Color(0xffFFF4DC),
-                            borderRadius: 13,
-                            borderWidth: 2,
-                            text: "ดำเนินการต่อ",
-                            onPress: () {
-                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
-                                  summary( startdate: widget.startdate,
-                                    typeshuttle: widget.typeshuttle,
-                                    starttime: widget.starttime,
-                                    destination: widget.destination,
-                                    yourlocation: widget.yourlocation,
-                                    sumprice: widget.sumprice,
-                                    value_booknow: widget.value_booknow,
-                                  )));
-
-
-                              // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
-                              // new shuttle()));
-                            })),
+                      padding: const EdgeInsets.all(30.0),
+                      child: RaisedButton(
+                        onPressed: () {
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
+                              summary( startdate: widget.startdate,
+                                typeshuttle: widget.typeshuttle,
+                                starttime: widget.starttime,
+                                destination: widget.destination,
+                                yourlocation: widget.yourlocation,
+                                sumprice: widget.sumprice,
+                                value_booknow: widget.value_booknow,
+                              )));
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'ดำเนินการต่อ',
+                            style: TextStyle(
+                                fontSize: 21.0,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xffFFF4DC)
+                            ),
+                          ),
+                        ),
+                        color: Color(0xff1D3557),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12), // <-- Radius
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               )
+              // Container(
+              //   child: Column(
+              //     crossAxisAlignment: CrossAxisAlignment.stretch,
+              //     children: <Widget>[
+              //       const SizedBox(
+              //         height: 20,
+              //       ),
+              //       Padding(
+              //           padding: const EdgeInsets.only(left: 25),
+              //           child: AnimatedButton(
+              //               height: 50,
+              //               width: 360,
+              //               isReverse: true,
+              //               selectedTextColor: Colors.black,
+              //               transitionType: TransitionType.LEFT_TO_RIGHT,
+              //               backgroundColor: const Color(0xff1d3557),
+              //               borderColor: const Color(0xffFFF4DC),
+              //               borderRadius: 13,
+              //               borderWidth: 2,
+              //               text: "ดำเนินการต่อ",
+              //               onPress: () {
+              //                 Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
+              //                     summary( startdate: widget.startdate,
+              //                       typeshuttle: widget.typeshuttle,
+              //                       starttime: widget.starttime,
+              //                       destination: widget.destination,
+              //                       yourlocation: widget.yourlocation,
+              //                       sumprice: widget.sumprice,
+              //                       value_booknow: widget.value_booknow,
+              //                     )));
+              //
+              //
+              //                 // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
+              //                 // new shuttle()));
+              //               })),
+              //     ],
+              //   ),
+              // )
             ],
           ),
         )

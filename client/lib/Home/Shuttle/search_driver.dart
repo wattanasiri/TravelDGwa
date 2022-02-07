@@ -278,7 +278,7 @@ class _search_driverState extends State<search_driver> {
                       height: 20,
                     ),
                     Padding(
-                        padding: const EdgeInsets.only(left: 25),
+                        padding: const EdgeInsets.only(left: 15),
                         child: AnimatedButton(
                             height: 50,
                             width: 360,

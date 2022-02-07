@@ -345,7 +345,7 @@ class _ShuttlePageState extends State<ShuttlePage> {
                 ),
                 if(value_booknow == false)
                 Padding(
-                  padding: const EdgeInsets.only(left: 35.0 , right: 145),
+                  padding: const EdgeInsets.only(left: 30.0 , right: 145),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -364,7 +364,7 @@ class _ShuttlePageState extends State<ShuttlePage> {
                 ),
                 if(value_booknow == false)
                 Padding(
-                  padding: const EdgeInsets.only(left: 15),
+                  padding: const EdgeInsets.only(left: 7),
                   child: Row(
                     children: [
                       Container(
@@ -426,7 +426,7 @@ class _ShuttlePageState extends State<ShuttlePage> {
                           ),
                         child: TextFormField(
                           decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.fromLTRB(0, 15, 0, 0),
+                            contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
                             hintText: ' 00:00',
                             prefixIcon: Icon(Icons.access_time_outlined,color: Colors.black,),
                             enabledBorder: UnderlineInputBorder(
@@ -500,24 +500,54 @@ class _ShuttlePageState extends State<ShuttlePage> {
                   ),
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 0,
                 ),
-                Padding(
-                    padding: const EdgeInsets.only(right: 0),
-                    child: AnimatedButton(
-                        height: 50,
-                        width: 360,
-                        isReverse: true,
-                        selectedTextColor: Colors.black,
-                        transitionType: TransitionType.LEFT_TO_RIGHT,
-                        backgroundColor: const Color(0xff1d3557),
-                        borderColor: const Color(0xffFFF4DC),
-                        borderRadius: 13,
-                        borderWidth: 2,
-                        text: "ค้นหา",
-                        onPress: () {
-                          saveOrder();
-                        })),
+                Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: RaisedButton(
+                          onPressed: () {
+                            saveOrder();
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'ยืนยันการชำระเงิน',
+                              style: TextStyle(
+                                  fontSize: 21.0,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xffFFF4DC)
+                              ),
+                            ),
+                          ),
+                          color: Color(0xff1D3557),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12), // <-- Radius
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+                // Padding(
+                //     padding: const EdgeInsets.only(right: 0),
+                //     child: AnimatedButton(
+                //         height: 50,
+                //         width: 360,
+                //         isReverse: true,
+                //         selectedTextColor: Colors.black,
+                //         transitionType: TransitionType.LEFT_TO_RIGHT,
+                //         backgroundColor: const Color(0xff1d3557),
+                //         borderColor: const Color(0xffFFF4DC),
+                //         borderRadius: 13,
+                //         borderWidth: 2,
+                //         text: "ค้นหา",
+                //         onPress: () {
+                //           saveOrder();
+                //         })),
               ],
             )
         ),
