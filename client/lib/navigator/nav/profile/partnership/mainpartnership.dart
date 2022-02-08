@@ -26,7 +26,7 @@ class _partnershipState extends State<partnership> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor : Color(0xFFFFF4DC),
+      backgroundColor : const Color(0xFFFFF4DC),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
         child: AppBar(
@@ -52,7 +52,7 @@ class _partnershipState extends State<partnership> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             Row(
@@ -62,13 +62,13 @@ class _partnershipState extends State<partnership> {
                   child: InkWell(
                     onTap: () {},
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 1),
-                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
-                      decoration: BoxDecoration(
+                      margin: const EdgeInsets.symmetric(horizontal: 1),
+                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+                      decoration: const BoxDecoration(
                         color: Color(0xff1D3557),
                         borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15))
                       ),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           'ที่พัก',
                           style: TextStyle(
@@ -84,12 +84,12 @@ class _partnershipState extends State<partnership> {
                     child: InkWell(
                       onTap: () {},
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 1),
-                        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
-                        decoration: BoxDecoration(
+                        margin: const EdgeInsets.symmetric(horizontal: 1),
+                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+                        decoration: const BoxDecoration(
                             color: Color(0xff1D3557),
                         ),
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             'เช่ารถ',
                             style: TextStyle(
@@ -105,12 +105,12 @@ class _partnershipState extends State<partnership> {
                     child: InkWell(
                       onTap: () {},
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 1),
-                        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
-                        decoration: BoxDecoration(
+                        margin: const EdgeInsets.symmetric(horizontal: 1),
+                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+                        decoration: const BoxDecoration(
                             color: Color(0xff1D3557),
                         ),
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             'รถรับส่ง',
                             style: TextStyle(
@@ -126,13 +126,13 @@ class _partnershipState extends State<partnership> {
                     child: InkWell(
                       onTap: () {},
                       child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 1),
-                        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
-                        decoration: BoxDecoration(
+                        margin: const EdgeInsets.symmetric(horizontal: 1),
+                        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 20),
+                        decoration: const BoxDecoration(
                             color: Color(0xff1D3557),
                           borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15))
                         ),
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             'กิจกรรม',
                             style: TextStyle(
@@ -147,17 +147,17 @@ class _partnershipState extends State<partnership> {
               ],
             ),
             Container(
-              margin: EdgeInsets.only(top: 20),
+              margin: const EdgeInsets.only(top: 20),
               child: Column(
                 children: [
                   InkWell(
                     onTap: () {},
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      padding: EdgeInsets.all(20),
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: Color(0xffECFAFF),
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        color: const Color(0xffECFAFF),
+                        borderRadius: const BorderRadius.all(Radius.circular(15)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.3),
@@ -169,13 +169,13 @@ class _partnershipState extends State<partnership> {
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.home_rounded, size: 50, color: Color(0xff1D3557)),
-                          SizedBox(width: 10),
+                          const Icon(Icons.home_rounded, size: 50, color: Color(0xff1D3557)),
+                          const SizedBox(width: 10),
                           Flexible(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: const [
                                 Text(
                                   'อพาร์ทเม้น',
                                   style: TextStyle(
@@ -200,11 +200,11 @@ class _partnershipState extends State<partnership> {
                   InkWell(
                     onTap: () {},
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 15),
-                      padding: EdgeInsets.all(20),
+                      margin: const EdgeInsets.symmetric(vertical: 15),
+                      padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: Color(0xffECFAFF),
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        color: const Color(0xffECFAFF),
+                        borderRadius: const BorderRadius.all(Radius.circular(15)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.3),
@@ -216,13 +216,13 @@ class _partnershipState extends State<partnership> {
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.home_rounded, size: 50, color: Color(0xff1D3557)),
-                          SizedBox(width: 10),
+                          const Icon(Icons.home_rounded, size: 50, color: Color(0xff1D3557)),
+                          const SizedBox(width: 10),
                           Flexible(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: const [
                                 Text(
                                   'วิลลา',
                                   style: TextStyle(
@@ -247,11 +247,11 @@ class _partnershipState extends State<partnership> {
                   InkWell(
                     onTap: () {},
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 15),
-                      padding: EdgeInsets.all(20),
+                      margin: const EdgeInsets.symmetric(vertical: 15),
+                      padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: Color(0xffECFAFF),
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        color: const Color(0xffECFAFF),
+                        borderRadius: const BorderRadius.all(Radius.circular(15)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.3),
@@ -263,13 +263,13 @@ class _partnershipState extends State<partnership> {
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.home_rounded, size: 50, color: Color(0xff1D3557)),
-                          SizedBox(width: 10),
+                          const Icon(Icons.home_rounded, size: 50, color: Color(0xff1D3557)),
+                          const SizedBox(width: 10),
                           Flexible(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: const [
                                 Text(
                                   'บ้านเดี่ยว',
                                   style: TextStyle(
@@ -294,11 +294,11 @@ class _partnershipState extends State<partnership> {
                   InkWell(
                     onTap: () {},
                     child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 15),
-                      padding: EdgeInsets.all(20),
+                      margin: const EdgeInsets.symmetric(vertical: 15),
+                      padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
-                        color: Color(0xffECFAFF),
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
+                        color: const Color(0xffECFAFF),
+                        borderRadius: const BorderRadius.all(Radius.circular(15)),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.3),
@@ -310,13 +310,13 @@ class _partnershipState extends State<partnership> {
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.home_rounded, size: 50, color: Color(0xff1D3557)),
-                          SizedBox(width: 10),
+                          const Icon(Icons.home_rounded, size: 50, color: Color(0xff1D3557)),
+                          const SizedBox(width: 10),
                           Flexible(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
+                              children: const [
                                 Text(
                                   'บังกะโล',
                                   style: TextStyle(

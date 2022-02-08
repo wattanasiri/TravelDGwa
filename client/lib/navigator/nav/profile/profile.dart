@@ -25,7 +25,6 @@ class _ProfilePageState extends State<ProfilePage> {
         preferredSize: const Size.fromHeight(160.0),
         child: AppBar(
           automaticallyImplyLeading: false,
-          centerTitle: true,
           backgroundColor: const Color(0xff1D3557),
           flexibleSpace: Container(
             padding: const EdgeInsets.only(top: 50.0, right: 20, left: 20, bottom: 30),
@@ -141,7 +140,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: const [
                           Icon(Icons.group_rounded, color: Color(0xff1D3557), size: 40,),
                           SizedBox(width: 20),
-                          Text("สมัครเป็นพาร์ทเนอร์", style: TextStyle(fontSize: 16, color: Color(0xff1D3557)),),
+                          Flexible(
+                            child: Text("สมัครเป็นพาร์ทเนอร์", style: TextStyle(fontSize: 16, color: Color(0xff1D3557)),)),
                         ],
                       ),
                     ),

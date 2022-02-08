@@ -11,7 +11,7 @@ class _editproState extends State<editpro> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor : Color(0xFFFFF4DC),
+      backgroundColor : const Color(0xFFFFF4DC),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(60.0),
         child: AppBar(
@@ -39,21 +39,22 @@ class _editproState extends State<editpro> {
                 onPressed: (){
                   Navigator.of(context).pop();
                 },
-                child: Text(
+                child: const Text(
                   'บันทึก',
                   style: TextStyle(
                     color: Color(0xff7BEE99)
                   ),
-                ))
+                )
+            ),
           ],
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         child: Column(
             children: [
               Column(
-                children: [
+                children: const [
                   CircleAvatar(
                     backgroundColor: Color(0xFFECFAFF),
                     radius: 48,
@@ -63,14 +64,14 @@ class _editproState extends State<editpro> {
                   Text("เปลี่ยนรูปโปรไฟล์", style: TextStyle(fontSize: 17, color: Color(0xFFFF9A62)),textAlign: TextAlign.start,),
                 ],
               ),
-              SizedBox(height: 10,),
-              Divider(thickness: 1, color: Color(0xff827E7E)),
+              const SizedBox(height: 10,),
+              const Divider(thickness: 1, color: Color(0xff827E7E)),
               Row(
                 children: [
                   Expanded(
-                    flex: 5,
+                    flex: 2,
                     child: Container(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -100,9 +101,9 @@ class _editproState extends State<editpro> {
                     ),
                   ),
                   Expanded(
-                    flex: 5,
+                    flex: 2,
                     child: Container(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -137,7 +138,7 @@ class _editproState extends State<editpro> {
                   children: [
                     Expanded(
                       child: Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -172,7 +173,7 @@ class _editproState extends State<editpro> {
                   children: [
                     Expanded(
                       child: Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -204,16 +205,16 @@ class _editproState extends State<editpro> {
                   ]
               ),
               Container(
-                margin: EdgeInsets.symmetric(vertical: 20),
-                padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                decoration: BoxDecoration(
+                margin: const EdgeInsets.symmetric(vertical: 20),
+                padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                decoration: const BoxDecoration(
                   border: Border.symmetric(horizontal: BorderSide(color: Color(0xff827E7E), width: 1.5))
                 ),
                 child: InkWell(
                   onTap: () {},
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
+                    children: const [
                       Flexible(
                           child: Text(
                               'เปลี่ยนรหัสผ่าน',
