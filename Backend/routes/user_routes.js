@@ -20,6 +20,8 @@ router.post('/signup',(req,res) => {
                 const user = User({
                     email:req.body.email,
                     phone: req.body.phone,
+                    realname:req.body.realname,
+                    surname: req.body.surname,
                 })
                 console.log(user)
                 User.register(user, req.body.password, function(err, user) {

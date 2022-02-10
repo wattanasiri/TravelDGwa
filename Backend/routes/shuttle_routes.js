@@ -5,8 +5,18 @@ const User = require('../models/user_model')
 
 const router = express.Router()
 
-router.get('/', (req,res) => {
-    console.log('Hello')
+router.get('/' , (req,res) => {
+    // TODO: expand booking categories and limit to a specific user
+
+    shuttle_partner.find({}, function (err, foundBooking) {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            console.log(foundBooking)
+            res.json({booking:foundBooking})
+        }
+    });
 })
 
 router.post('/register_shuttlepartner',(req,res) => { 

@@ -8,8 +8,7 @@ const shuttle_partnerSchema = new Schema({
     car_registration: String,
     phone: String,
     email: String,
-    
-    
+
 })
 
-module.exports = mongoose.model('shuttle_partner',shuttle_partnerSchema )
+module.exports = mongoose.model('shuttle_partner',shuttle_partnerSchema)

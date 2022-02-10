@@ -60,7 +60,7 @@ class _AccommodationResultState extends State<AccommodationResult> {
     numberOfRoomsEdit = TextEditingController(text: widget.numberOfRoomsHolder);
     word = nameEdit.text;
     accommodationData = widget.result;
-    accommodationData.sort((a, b) => a["price"].compareTo(b["price"]) as int);
+      accommodationData.sort((a, b) => a["price"].compareTo(b["price"]) as int);
   }
 
   var sortBy = 'l-h';
