@@ -130,7 +130,11 @@ class Home extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: Colors.amber
                         ),
-                        child: Text('image no. $i', style: TextStyle(fontSize: 24.0),)
+                      child: Image.network('https://placeimg.com/640/480/any',
+                          height: 100,
+                          width: 160,
+                          fit: BoxFit.cover
+                      ),
                     );
                   },
                 );
@@ -181,7 +185,11 @@ class Home extends StatelessWidget {
                           color: Colors.amber,
                           borderRadius: BorderRadius.all(Radius.circular(8),),
                         ),
-                        child: Text('image no. $i', style: TextStyle(fontSize: 24.0),)
+                        child: Image.network('https://placeimg.com/640/480/any',
+                            height: 100,
+                            width: 160,
+                            fit: BoxFit.cover
+                        ),
                     );
                   },
                 );

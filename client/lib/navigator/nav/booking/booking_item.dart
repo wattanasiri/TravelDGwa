@@ -66,7 +66,6 @@ class _ResultItemState extends State<ResultItem> {
   Widget build(BuildContext context) {
 
     return Container(
-        key: UniqueKey(),
         padding: const EdgeInsets.only(bottom: 80),
         child: ListView.builder(
           shrinkWrap: true,
@@ -97,28 +96,100 @@ class _ResultItemState extends State<ResultItem> {
                   children: <Widget>[
                     Stack(alignment: Alignment.bottomRight, children: <Widget>[
                       Row(
+                        crossAxisAlignment : CrossAxisAlignment.start,
                         children: [
-                          ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20)),
-                            child: Image.asset('assets/images/homebg.png',
-                                height: 100,
-                                width: 140,
-                                fit: BoxFit.cover),
+                          ShaderMask(shaderCallback: (rect) {
+                            return LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [Colors.transparent, Color(0xff1D3557)],
+                              ).createShader(Rect.fromLTRB(80, 0, rect.width*1, rect.height));
+                            },
+                            blendMode: BlendMode.srcATop,
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20)),
+                              child: Image.asset('assets/images/homebg.png',
+                                  height: 100,
+                                  width: 160,
+                                  fit: BoxFit.cover),
+                            ),
                           ),
-                          Column(
-                            children: [
-                              Text(
-                                data[index]['username'],
+                          Flexible(child: Container(
+                            padding: EdgeInsets.only(
+                              top: 5,
+                              bottom: 5,
+                              left: 5,
+                              right: 40,
+                            ),
+                            child: Column(
+                              crossAxisAlignment : CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  data[index]['username'],
                                   style: const TextStyle(
                                       color: Color(0xffFFF4DC),
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 18),
+                                      fontSize: 14),
                                 ),
-                            ],
+                                Text(
+                                  'SUBTITLEEEEEEEEEEEEEEEEEEEEEEE',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      color: Color(0xffFFF4DC),
+                                      fontSize: 12),
+                                ),
+                                SizedBox(height: 3,),
+                                Text(
+                                  'DATE1',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      color: Color(0xffECFAFF),
+                                      fontSize: 11),
+                                ),
+                                Text(
+                                  'DATE2',
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                      color: Color(0xffECFAFF),
+                                      fontSize: 11),
+                                ),
+                              ],
+                              ),
+                            ),
                           ),
                         ],
+                      ),
+                      Container(
+                        margin: const EdgeInsets.only(
+                          bottom: 68,
+                          right: 7,
+                        ),
+                        width: 25,
+                        height: 25,
+                        decoration: const BoxDecoration(
+                          color: Color(0xffECFAFF),
+                          borderRadius: BorderRadius.all(Radius.circular(25),),
+                        ),
+                        child: Icon(Icons.directions_car,
+                            color: Color(0xff1D3557),
+                            size: 20),
+                      ),
+                      Container(
+                        alignment: Alignment.centerRight,
+                        margin: const EdgeInsets.only(
+                          bottom: 5,
+                          right: 5,
+                        ),
+                        child: Text(
+                          'กดเพื่อดูรายละเอียดเพิ่มเติม >>',
+                          textAlign: TextAlign.end,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                              color: Color(0xffECFAFF),
+                              fontSize: 9),
+                        ),
                       ),
                     ]),
                   ],
