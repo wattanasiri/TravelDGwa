@@ -5,7 +5,9 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:se_app2/constants.dart';
+import 'package:se_app2/functions.dart';
 
 import 'booking_item.dart';
 
@@ -23,10 +25,7 @@ class hotelDetail extends StatefulWidget {
 }
 
 class _hotelDetailState extends State<hotelDetail> {
-  var checkInEdit = TextEditingController();
-  var checkOutEdit = TextEditingController();
-  var numberOfPeopleEdit = TextEditingController();
-  var numberOfRoomsEdit = TextEditingController();
+
   var detail;
 
   String id;
@@ -71,11 +70,26 @@ class _hotelDetailState extends State<hotelDetail> {
     });
   }
 
+  String formatCheckIn(String date) {
+    var inputFormat = DateFormat('dd-MM-yyyy');
+    DateTime parsedDate = inputFormat.parse(date);
+    var text = 'วันที่เช็คอิน : ' + parsedDate.day.toString() + ' ' + getMonthName(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
+    return text;
+  }
+  String formatCheckOut(String date) {
+    var inputFormat = DateFormat('dd-MM-yyyy');
+    DateTime parsedDate = inputFormat.parse(date);
+    var text = 'วันที่เช็คเอาท์ : ' + parsedDate.day.toString() + ' ' + getMonthName(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
+    return text;
+  }
+
   @override
   void initState() {
     super.initState();
-    // id = widget.detail['_id'];
-    // detail = widget.detail;
+    id = widget.detail['_id'];
+    detail = widget.detail;
+
+    print(detail);
   }
 
   @override
@@ -143,7 +157,7 @@ class _hotelDetailState extends State<hotelDetail> {
                             children: <Widget>[
                               Flexible(
                                 child: Text(
-                                  'NAME',
+                                  detail["acc_name"],
                                   style: GoogleFonts.poppins(
                                       color: const Color(0xff1D3557),
                                       fontSize: 20,
@@ -170,9 +184,9 @@ class _hotelDetailState extends State<hotelDetail> {
                           _buildRatingStars(5),
                           SizedBox(height: 5,),
                           Row(
-                            children: const [
+                            children: [
                               Text(
-                                'วันที่เช็คอิน : 29 ธันวาคม พ.ศ. 2564',
+                                formatCheckIn(detail['checkIn']),
                                 style: TextStyle(
                                   color: Color(0xff1D3557),
                                   fontSize: 16,
@@ -180,7 +194,7 @@ class _hotelDetailState extends State<hotelDetail> {
                               ),
                               SizedBox(width: 3,),
                               Text(
-                                '(14.00 น.)',
+                                '(XX.XX น.)',
                                 style: TextStyle(
                                   color: Color(0xff827E7E),
                                   fontSize: 13,
@@ -189,9 +203,9 @@ class _hotelDetailState extends State<hotelDetail> {
                             ],
                           ),
                           Row(
-                            children: const [
+                            children: [
                               Text(
-                                'วันที่เช็คเอาท์ : 1 มกราคม พ.ศ. 2565',
+                                formatCheckOut(detail['checkOut']),
                                 style: TextStyle(
                                   color: Color(0xff1D3557),
                                   fontSize: 16,
@@ -199,7 +213,7 @@ class _hotelDetailState extends State<hotelDetail> {
                               ),
                               SizedBox(width: 3,),
                               Text(
-                                '(12.00 น.)',
+                                '(XX.XX น.)',
                                 style: TextStyle(
                                   color: Color(0xff827E7E),
                                   fontSize: 13,

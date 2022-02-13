@@ -21,4 +21,4 @@ var accommTransactionSchema = mongoose.Schema({
     ]
 })
 
-module.exports = mongoose.model('accomTransaction', accommTransactionSchema)
+module.exports = mongoose.model('AccomTransaction', accommTransactionSchema)

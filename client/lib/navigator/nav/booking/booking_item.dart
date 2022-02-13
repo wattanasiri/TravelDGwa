@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:se_app2/constants.dart';
-import 'package:http/http.dart' as http;
+import 'package:intl/intl.dart';
+import 'package:se_app2/functions.dart';
 
 import 'booking_detail_hotel.dart';
 
@@ -32,34 +33,23 @@ class _ResultItemState extends State<ResultItem> {
   var bookingData;
   var data;
 
-  Future getBookingData() async {
-    http.Response res = await http.get(Uri.parse("http://10.0.2.2:8080/shuttle"));
-    data = json.decode(res.body);
-    data = data['booking'];
-
-    if (res.statusCode == 200) {
-      print('success');
-      var itemCount = data.length;
-      if (itemCount > 0) {
-        setState((){
-          itemFound = true;
-          connectionFailed = false;
-        });
-      } else {
-        setState((){ itemFound = false; connectionFailed = false;});
-      }
-    }
-    else {
-      print('failure');
-      setState((){
-        connectionFailed = true;
-      });
-    }
+  String formatCheckIn(String date) {
+    var inputFormat = DateFormat('dd-MM-yyyy');
+    DateTime parsedDate = inputFormat.parse(date);
+    var text = 'วันที่ ' + parsedDate.day.toString() + ' ' + getMonthNameShort(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
+    return text;
   }
+  String formatCheckOut(String date) {
+    var inputFormat = DateFormat('dd-MM-yyyy');
+    DateTime parsedDate = inputFormat.parse(date);
+    var text = 'วันที่ ' + parsedDate.day.toString() + ' ' + getMonthNameShort(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
+    return text;
+  }
+
   @override
   void initState() {
-    getBookingData();
     super.initState();
+    data = widget.bookingData;
   }
 
   @override
@@ -76,9 +66,6 @@ class _ResultItemState extends State<ResultItem> {
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
               onTap: () => {
-                print(data[index]),
-                print(widget.bookingStatus),
-                print(widget.bookingSort),
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -111,7 +98,7 @@ class _ResultItemState extends State<ResultItem> {
                                   topLeft: Radius.circular(20),
                                   topRight: Radius.circular(20)),
                               child: Image.asset('assets/images/homebg.png',
-                                  height: 100,
+                                  height: 110,
                                   width: 160,
                                   fit: BoxFit.cover),
                             ),
@@ -127,34 +114,52 @@ class _ResultItemState extends State<ResultItem> {
                               crossAxisAlignment : CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  data[index]['username'],
+                                  data[index]['acc_name'],
+                                  overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                       color: Color(0xffFFF4DC),
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14),
                                 ),
                                 Text(
-                                  'SUBTITLEEEEEEEEEEEEEEEEEEEEEEE',
+                                  'ห้อง Unknown eeeeeeeeeeeeeeeeeeeeee',
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                       color: Color(0xffFFF4DC),
                                       fontSize: 12),
                                 ),
                                 SizedBox(height: 3,),
-                                Text(
-                                  'DATE1',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      color: Color(0xffECFAFF),
-                                      fontSize: 11),
+                                Row(
+                                  children: [
+                                    Icon(Icons.calendar_today_outlined,
+                                        color: Color(0xffECFAFF),
+                                        size: 14),
+                                    SizedBox(width: 3,),
+                                    Text(
+                                      formatCheckIn(data[index]['checkIn']),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                          color: Color(0xffECFAFF),
+                                          fontSize: 11),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  'DATE2',
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                      color: Color(0xffECFAFF),
-                                      fontSize: 11),
+                                Row(
+                                  children: [
+                                    Icon(Icons.alarm_off,
+                                        color: Color(0xffECFAFF),
+                                        size: 14),
+                                    SizedBox(width: 3,),
+                                    Text(
+                                      formatCheckOut(data[index]['checkOut']),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                          color: Color(0xffECFAFF),
+                                          fontSize: 11),
+                                    ),
+                                  ],
                                 ),
+
                               ],
                               ),
                             ),
@@ -163,7 +168,7 @@ class _ResultItemState extends State<ResultItem> {
                       ),
                       Container(
                         margin: const EdgeInsets.only(
-                          bottom: 68,
+                          bottom: 78,
                           right: 7,
                         ),
                         width: 25,
@@ -172,7 +177,7 @@ class _ResultItemState extends State<ResultItem> {
                           color: Color(0xffECFAFF),
                           borderRadius: BorderRadius.all(Radius.circular(25),),
                         ),
-                        child: Icon(Icons.directions_car,
+                        child: Icon(Icons.location_city_sharp,
                             color: Color(0xff1D3557),
                             size: 20),
                       ),

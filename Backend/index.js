@@ -34,6 +34,8 @@ passport.use('local', new LocalStrategy({
 app.use('/',require('./routes/user_routes'))
 app.use('/shuttle', require('./routes/shuttle_routes'))
 app.use('/hotel',require('./routes/hotel_routes'))
+app.use('/transaction',require('./routes/transaction_routes'))
+app.use('/booking',require('./routes/booking_routes'))
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());

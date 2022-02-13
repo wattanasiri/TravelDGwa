@@ -22,10 +22,46 @@ class _BookingState extends State<Booking> {
   var bookingSort = 0; // 0 to 5
   var itemFound = false;
   var connectionFailed = false;
+  var done = false;
+
+  var bookingData;
+  Map data;
+
+  Future getBookingData() async {
+    http.Response res = await http.get(Uri.parse("http://10.0.2.2:8080/booking"));
+    data = json.decode(res.body);
+    bookingData = data['booking'];
+    print(bookingData);
+
+    if (res.statusCode == 200) {
+      var itemCount = data.length;
+      if (itemCount > 0) {
+        setState((){
+          done = true;
+          itemFound = true;
+          connectionFailed = false;
+        });
+      } else {
+        setState((){
+          done = true;
+          itemFound = false;
+          connectionFailed = false;
+        });
+      }
+    }
+    else {
+      print('failure');
+      setState((){
+        done = true;
+        connectionFailed = true;
+      });
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    getBookingData();
   }
 
   @override
@@ -316,18 +352,14 @@ class _BookingState extends State<Booking> {
             ),
             const SizedBox(height: 5,),
 
-            // If no booking found
-            // SizedBox(height: size.height *0.12,),
-            // Container(
-            //   alignment: Alignment.center,
-            //   child: BookingBodyNone(),
-            // ),
-
-            // If booking found
-            Container(
-              alignment: Alignment.center,
-              child: ResultItem(bookingStatus: bookingStatus, bookingSort: bookingSort,),
-            ),
+            if (done)
+                Container(
+                alignment: Alignment.center,
+                child: ResultItem(bookingStatus: bookingStatus, bookingSort: bookingSort, bookingData: bookingData),
+              )
+            else
+              Center(child: CircularProgressIndicator())
+            ,
 
           ],
         ),
