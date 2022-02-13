@@ -1,13 +1,13 @@
 const express  = require('express')
+const middleware = require('../middleware')
 const shuttle_partner = require('../models/shuttle_partner_model')
 const shuttle_invoice = require('../models/shuttle_invoice_model')
 const User = require('../models/user_model')
 
 const router = express.Router()
 
-router.get('/' , (req,res) => {
+router.get('/' , middleware.isLoggedIn, (req,res) => {
     // TODO: expand booking categories and limit to a specific user
-
     shuttle_partner.find({}, function (err, foundBooking) {
         if (err) {
             console.log(err);

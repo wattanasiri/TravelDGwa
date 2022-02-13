@@ -24,7 +24,7 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use(new LocalStrategy({
+passport.use('local', new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
   },

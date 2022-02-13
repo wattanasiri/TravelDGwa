@@ -80,6 +80,8 @@ class _hotelDetailState extends State<hotelDetail> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -451,28 +453,58 @@ class _hotelDetailState extends State<hotelDetail> {
                             ],
                           ),
 
-                          Container(
-                            alignment: Alignment.bottomCenter,
-                            margin: const EdgeInsets.symmetric(vertical: 10),
-                            child: ElevatedButton(
-                              onPressed: () async => {
-                              },
-                              style: ElevatedButton.styleFrom(
-                                onPrimary: const Color(0xff1D3557),
-                                primary: const Color(0xff1D3557),
-                                minimumSize: const Size(350, 60),
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius:
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                alignment: Alignment.bottomCenter,
+                                margin: const EdgeInsets.symmetric(vertical: 10),
+                                child: ElevatedButton(
+                                  onPressed: () async => {
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    onPrimary: const Color(0xff1D3557),
+                                    primary: const Color(0xff1D3557),
+                                    minimumSize: Size(size.width * 0.4, 50),
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius:
                                       BorderRadius.all(Radius.circular(16)),
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    'ดูใบเสร็จการชำระ',
+                                    style: TextStyle(
+                                        color: Color(0xffFFF4DC), fontSize: 18),
+                                  ),
                                 ),
                               ),
-                              child: const Text(
-                                'จองห้องพัก',
-                                style: TextStyle(
-                                    color: Color(0xffFFF4DC), fontSize: 20),
+                              SizedBox(width: size.width * 0.05,),
+                              Container(
+                                alignment: Alignment.bottomCenter,
+                                margin: const EdgeInsets.symmetric(vertical: 10),
+                                child: ElevatedButton(
+                                  onPressed: () async => {
+                                  },
+                                  style: ElevatedButton.styleFrom(
+                                    onPrimary: const Color(0xffF25B52),
+                                    primary: const Color(0xffF25B52),
+                                    minimumSize: Size(size.width * 0.4, 50),
+                                    shape: const RoundedRectangleBorder(
+                                      borderRadius:
+                                      BorderRadius.all(Radius.circular(16)),
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    'ยกเลิกการจอง',
+                                    style: TextStyle(
+                                        color: Color(0xffECFAFF), fontSize: 18),
+                                  ),
+                                ),
                               ),
-                            ),
+                            ],
                           ),
+
+
                         ],
                       ),
                     ],
