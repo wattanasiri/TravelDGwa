@@ -31,15 +31,13 @@ class _BookingState extends State<Booking> {
   Future getBookingData() async {
 
     var _prefs = await SharedPreferences.getInstance();
-    print(_prefs.getString('token'));
     var token = _prefs.get('token');
-    print(token);
 
     http.Response res = await http.get(Uri.parse("http://10.0.2.2:8080/booking"),
       headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ${token}',
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
       },
     );
     data = json.decode(res.body);

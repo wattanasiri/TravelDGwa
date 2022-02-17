@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:se_app2/constants.dart';
 import 'package:flutter/gestures.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({Key key}) : super(key: key);
@@ -21,6 +22,18 @@ class _RegisterFormState extends State<RegisterForm> {
   TextEditingController realnameController = TextEditingController();
   TextEditingController surnameController = TextEditingController();
 
+  SharedPreferences sharedPref;
+
+  _initSharedPreferences() async {
+    sharedPref = await SharedPreferences.getInstance();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initSharedPreferences();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -37,7 +50,8 @@ class _RegisterFormState extends State<RegisterForm> {
             "surname": surnameController.text,
             "password": passwordController.text,
           });
-      print(res.statusCode);
+      await sharedPref.setString('token', res.body);
+      print(sharedPref.getString('token'));
       if (res.statusCode == 200) {
         print('success');
         Navigator.pushNamed(

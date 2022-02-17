@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:se_app2/constants.dart';
 import 'package:flutter/gestures.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginForm extends StatefulWidget {
