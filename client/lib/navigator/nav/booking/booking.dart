@@ -5,6 +5,7 @@ import 'package:se_app2/constants.dart';
 import '../booking/booking_body_none.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'booking_item.dart';
 
@@ -28,10 +29,23 @@ class _BookingState extends State<Booking> {
   Map data;
 
   Future getBookingData() async {
-    http.Response res = await http.get(Uri.parse("http://10.0.2.2:8080/booking"));
+
+    var _prefs = await SharedPreferences.getInstance();
+    print(_prefs.getString('token'));
+    var token = _prefs.get('token');
+    print(token);
+
+    http.Response res = await http.get(Uri.parse("http://10.0.2.2:8080/booking"),
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${token}',
+      },
+    );
     data = json.decode(res.body);
     bookingData = data['booking'];
     print(bookingData);
+
 
     if (res.statusCode == 200) {
       var itemCount = data.length;

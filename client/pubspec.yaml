@@ -27,6 +27,7 @@ dependencies:
   convex_bottom_bar:
     path: ./convex_bottom_bar-master-2.5.1+1/
   animations: ^2.0.2
+  shared_preferences: ^2.0.13
 
   cupertino_icons: ^1.0.2
 

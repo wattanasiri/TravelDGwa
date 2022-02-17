@@ -30,7 +30,6 @@ class _ResultItemState extends State<ResultItem> {
   var connectionFailed = false;
   var bookingStatus;
   var bookingSort;
-  var bookingData;
   var data;
 
   String formatCheckIn(String date) {
