@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:http/http.dart' as http;
-import 'confirm_driver.dart';
+import 'Airport_Transfer_driver_confirm.dart';
 
 class driver_info extends StatefulWidget {
   String startdate,yourlocation,destination,starttime,typeshuttle,sumprice;
@@ -192,7 +192,7 @@ class _driver_infoState extends State<driver_info> {
                             Container(
                                 width: 85,
                                 child: Text(widget.startdate, style: TextStyle(
-                                    fontSize: 18.0,
+                                    fontSize: 16.0,
                                     color: Color(0xff1D3557)
                                 ),)
                             ),
@@ -219,7 +219,7 @@ class _driver_infoState extends State<driver_info> {
                               child: Text(
                                 widget.starttime,
                                 style: TextStyle(
-                                    fontSize: 18.0,
+                                    fontSize: 16.0,
                                     color: Color(0xff1D3557)
                                 ),textAlign: TextAlign.center
                               ),
@@ -246,7 +246,7 @@ class _driver_infoState extends State<driver_info> {
                               child: Text(
                                 widget.typeshuttle,
                                 style: TextStyle(
-                                    fontSize: 18.0,
+                                    fontSize: 16.0,
                                     color: Color(0xff1D3557)
                                 ),textAlign: TextAlign.center
                               ),

@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:http/http.dart' as http;
-
-import '/Home/Shuttle/receipt.dart';
+import 'package:se_app2/Data/data_currentuser.dart';
+import 'package:se_app2/Home/Airport_Transfer/Airport_Transfer_driver_receipt.dart';
 
 class summary extends StatefulWidget {
   String startdate,yourlocation,destination,starttime,typeshuttle,sumprice;
@@ -17,6 +17,9 @@ class summary extends StatefulWidget {
 class _summaryState extends State<summary> {
 
   Future save_invoice() async {
+    Datauser datauser = Datauser();
+    print('id');
+    print(datauser.id);
     String typereserve,username = '';
     print('saveinvoice');
     if(widget.value_booknow){
@@ -24,12 +27,12 @@ class _summaryState extends State<summary> {
     }else{
       typereserve = 'จองล่วงหน้า';
     }
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/shuttle/save_invoice'),
+    var res = await http.post(Uri.parse('http://10.0.2.2:8080/airport_transfer/save_invoice'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
         },
         body: <String, String>{
-          "username" : username,
+          "username" : datauser.id,
           "typereserve": typereserve,
           "typeshuttle": widget.typeshuttle,
           "yourlocation": widget.yourlocation,

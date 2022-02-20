@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'dart:async';
 
-import 'shuttle.dart';
-import 'info_driver.dart';
+import 'Airport_Transfer_driver_input.dart';
+import 'Airport_Transfer_driver_info.dart';
 
 class search_driver extends StatefulWidget {
   String startdate,yourlocation,destination,starttime,typeshuttle,sumprice;
@@ -103,7 +103,7 @@ class _search_driverState extends State<search_driver> {
                             Container(
                               width: 85,
                                 child: Text(widget.startdate,style: TextStyle(
-                                    fontSize: 18.0,
+                                    fontSize: 16.0,
                                     color: Color(0xff1D3557)
                                 ),textAlign: TextAlign.center,
                                 )
@@ -129,7 +129,7 @@ class _search_driverState extends State<search_driver> {
                               child: Text(
                                 widget.starttime,
                                 style: TextStyle(
-                                    fontSize: 18.0,
+                                    fontSize: 16.0,
                                     color: Color(0xff1D3557)
                                 ),textAlign: TextAlign.center,
                               ),
@@ -154,7 +154,7 @@ class _search_driverState extends State<search_driver> {
                               child: Text(
                                 widget.typeshuttle,
                                 style: TextStyle(
-                                    fontSize: 18.0,
+                                    fontSize: 16.0,
                                     color: Color(0xff1D3557)
                                 ),textAlign: TextAlign.center,
                               ),

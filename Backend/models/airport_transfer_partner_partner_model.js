@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const shuttle_partnerSchema = new Schema({
+const airporttransferpartnerSchema = new Schema({
     username: String,
     display_name: String,
     car_brand: String,
@@ -12,4 +12,4 @@ const shuttle_partnerSchema = new Schema({
     
 })
 
-module.exports = mongoose.model('shuttle_partner',shuttle_partnerSchema )
+module.exports = mongoose.model('airporttransferpartner',airporttransferpartnerSchema )

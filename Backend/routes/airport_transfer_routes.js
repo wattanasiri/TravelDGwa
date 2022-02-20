@@ -1,7 +1,8 @@
 const express  = require('express')
-const shuttle_partner = require('../models/shuttle_partner_model')
-const shuttle_invoice = require('../models/shuttle_invoice_model')
+const airporttransferpartner = require('../models/airport_transfer_partner_partner_model')
+const airporttransferreceipt = require('../models/airport_transfer_receipt_model')
 const User = require('../models/user_model')
+var mongoose = require('mongoose');
 
 const router = express.Router()
 
@@ -11,7 +12,7 @@ router.get('/', (req,res) => {
 
 router.post('/register_shuttlepartner',(req,res) => { 
     console.log('register_shuttlepartner')
-    const infopartner = new shuttle_partner({username: req.body.username,
+    const infopartner = new airporttransferpartner({username: req.body.username,
         display_name: req.body.display_name,
         car_brand: req.body.car_brand,
         car_registration: req.body.car_registration,
@@ -22,9 +23,11 @@ router.post('/register_shuttlepartner',(req,res) => {
 })
 
 router.post('/save_invoice',(req,res) => { 
+    
     console.log('save invoice')
-    const infoinvoice = new shuttle_invoice({
-        username: req.body.username,
+    console.log(req.body.username)
+    const infoinvoice = new airporttransferreceipt({
+        usernameID: new mongoose.Types.ObjectId(req.body.username),
         typereserve: req.body.typereserve,
         typeshuttle : req.body.typeshuttle,
         yourlocation : req.body.yourlocation,
