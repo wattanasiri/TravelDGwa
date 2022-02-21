@@ -19,6 +19,12 @@ var exportElements = {};
 exportElements.SecretText = SecretText
 module.exports = exportElements;
 
+app.use(require('express-session')({
+  secret: 'it\'s a secret to everyone.',
+  resave: false,
+  saveUninitialized: false
+}));
+
 app.use(cors())
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
@@ -41,21 +47,33 @@ app.use(require('express-session')({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-passport.use('local', new LocalStrategy({
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
   },
   User.authenticate()
 ));
 
+app.use(async function(req,res,next){
+  res.locals.message = req.user;
+  console.log(res.locals)
+  next();
+});
+
 app.use('/',require('./routes/user_routes'))
-app.use('/shuttle', require('./routes/shuttle_routes'))
+app.use('/airport_transfer', require('./routes/airport_transfer_routes'))
 app.use('/hotel',require('./routes/hotel_routes'))
 app.use('/transaction',require('./routes/transaction_routes'))
 app.use('/booking',require('./routes/booking_routes'))
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+app.use('/rentcar',require('./routes/rentcar_routes'))
 
 // seedDB()
 

@@ -1,14 +1,15 @@
 const express  = require('express')
 const User = require('../models/user_model')
-const shuttle_partner = require('../models/shuttle_partner_model')
-const shuttle_invoice = require('../models/shuttle_invoice_model')
 const jwt = require('jwt-simple')
+const shuttle_partner = require('../models/airport_transfer_partner_model')
+const shuttle_invoice = require('../models/airport_transfer_receipt_model')
 const passport = require('passport')
 const secret = require('..').SecretText
 
 const router = express.Router()
 
 router.get('/', (req,res) => {
+    
     console.log('Hello')
 })
 
@@ -45,6 +46,8 @@ router.post('/signup',(req,res) => {
                     req.login(user, function(err) {
                         if (err) return next(err);
                         console.log("Register successful.");
+                        res.json(user)
+                        res.locals.currentUser = user
                         var token = jwt.encode(user, secret)
                         return res.status(200).json({"token" : token})
                     })
@@ -67,7 +70,8 @@ router.post('/signin',(req,res,next) => {
                 if (err) return next(err);
                 console.log("Login successful.");
                 var token = jwt.encode(user, secret)
-                return res.status(200).json({"token" : token})
+                console.log(res.locals.currentUser)
+                return res.status(200).send(String(user._id)).json({"token" : token})
             })
             console.log(req.isAuthenticated())
         } else {

@@ -12,7 +12,6 @@ import '/navigator/nav/profile/profile.dart';
 import '/navigator/nav/tripwithAI/tripwithAI.dart';
 
 class Nav extends StatefulWidget {
-  const Nav({Key key}) : super(key: key);
 
   @override
   _NavState createState() => _NavState();
@@ -22,6 +21,7 @@ class _NavState extends State<Nav> {
 
   int _selectedIndex = 0;
   bool isLeft = true;
+
 
   final List<Widget> _pageList = <Widget>[
     const HomeBody(),
