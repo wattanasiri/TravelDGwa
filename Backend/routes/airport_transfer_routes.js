@@ -1,5 +1,5 @@
 const express  = require('express')
-const airporttransferpartner = require('../models/airport_transfer_partner_partner_model')
+const airporttransferpartner = require('../models/airport_transfer_partner_model')
 const airporttransferreceipt = require('../models/airport_transfer_receipt_model')
 const User = require('../models/user_model')
 var mongoose = require('mongoose');
@@ -36,6 +36,7 @@ router.post('/save_invoice',(req,res) => {
         starttime: req.body.starttime,
         sum_price: req.body.sum_price,})
     infoinvoice.save()
+    
 
 })
 

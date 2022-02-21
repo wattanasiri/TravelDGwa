@@ -1,6 +1,6 @@
 const express  = require('express')
 const User = require('../models/user_model')
-const shuttle_partner = require('../models/airport_transfer_partner_partner_model')
+const shuttle_partner = require('../models/airport_transfer_partner_model')
 const shuttle_invoice = require('../models/airport_transfer_receipt_model')
 const passport = require('passport')
 

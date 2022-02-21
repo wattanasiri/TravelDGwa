@@ -5,6 +5,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:se_app2/Data/data_currentuser.dart';
 
 import '/data/data_airport.dart';
 import 'Rentcar_info.dart';
@@ -16,6 +17,80 @@ class rentcar extends StatefulWidget {
 }
 
 class _rentcarState extends State<rentcar> {
+
+  Future save_partner() async {
+    print('savepartner');
+    Datauser datauser = Datauser();
+    print('id');
+    print(datauser.id);
+
+    var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/register_rentcarpartner'),
+        headers: <String, String>{
+          'Context-Type': 'application/json;charSet=UTF-8'
+        },
+        body: <String, String>{
+          "usernameID" : datauser.id,
+          "image": "https://www.luvdrive.com/assets/img/logo/new-logo.png",
+          "phone": "095-2911766",
+          "email": "aoy35085@hotmail.com",
+
+        });
+    print(res.body);
+  }
+
+  Future update_partner() async{
+
+    print('update partner');
+    List<String> document = ["บัตรประชาชน / Passport","ใบขับขี่ / Driving License"];
+    List<String> name_extrapay = ["05:30 - 08.59","31:01 - 23:59","บริการรับส่งนอกสถานที่"];
+    List<String> price_extrapay = ["300","300","100"];
+    Map<String,String> data;
+    data={
+      "document[]": document.toString(),
+      "name_extrapay[]": name_extrapay.toString(),
+      "price_extrapay[]": price_extrapay.toString(),
+    };
+    for(int i = 0;i < document.length ; i++){
+      data.addAll({"document[$i]":document[i]});
+    }
+    for(int i = 0;i < name_extrapay.length ; i++){
+      data.addAll({"name_extrapay[$i]":name_extrapay[i]});
+    }
+    for(int i = 0;i < price_extrapay.length ; i++){
+      data.addAll({"price_extrapay[$i]":price_extrapay[i]});
+    }
+    print(data);
+    var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/update_register_rentcarpartner'),
+        headers: <String, String>{
+          'Context-Type': 'application/json;charSet=UTF-8'
+        },
+        body: data,
+    );
+    print(res.body);
+  }
+  Future save_carinfo_partner() async{
+
+    print('save carinfo partner');
+
+    var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/register_carinfo_rentcarpartner'),
+        headers: <String, String>{
+          'Context-Type': 'application/json;charSet=UTF-8'
+        },
+        body: <String, String>{
+
+          "carname": "Toyota yaris",
+          "carbrand": "Toyota",
+          "year": "2564",
+          "numsit": "4",
+          "bigbag": "1",
+          "smallbag": "2",
+          "selfpick": "0",
+          "sentcar": "500",
+
+        });
+    print(res.body);
+  }
+
 
   TextEditingController
   _timegetcarcontroller,
@@ -352,6 +427,9 @@ class _rentcarState extends State<rentcar> {
                         padding: const EdgeInsets.all(20.0),
                         child: RaisedButton(
                           onPressed: () {
+                            save_partner();
+                            update_partner();
+                            save_carinfo_partner();
                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Rentcar_info(
                               dategetcar: _dategetcarcontroller.text,
                               timegetcar: _timegetcarcontroller.text,
