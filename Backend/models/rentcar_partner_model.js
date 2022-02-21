@@ -7,6 +7,7 @@ const rentcarpartnerSchema = new Schema({
         type :mongoose.Schema.Types.ObjectId,
         ref : 'User'
     },
+    namepartner: String,
     date_open: String,
     time_open: String,
     time_extrapay: [

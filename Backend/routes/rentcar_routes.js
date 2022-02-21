@@ -3,10 +3,13 @@ const rentcarinfo = require('../models/rentcar_carinfo_model.js')
 const rentcarpartner = require('../models/rentcar_partner_model.js')
 const User = require('../models/user_model')
 var mongoose = require('mongoose');
+const ObjectId = require('mongodb').ObjectId; 
 
 
 const router = express.Router()
 var idinfopartner;
+var idinfocar;
+var updatepartner2;
 
 router.get('/', (req,res) => {
     console.log('Hello')
@@ -22,6 +25,7 @@ router.post('/register_rentcarpartner',async (req,res) => {
         // price_extrapay: ,
         // document_require: ,
         // comment: ,
+        namepartner: req.body.partnername,
         image: req.body.image,
         phone: req.body.phone,
         email: req.body.email,
@@ -60,14 +64,87 @@ router.post('/register_carinfo_rentcarpartner',async (req,res) => {
         car_nunber_smallbag: req.body.smallbag,
         car_price_selfpick : req.body.selfpick,
         car_price_sentcar: req.body.sentcar,
+        car_country: req.body.country,
     })
    
     carinfopartner.save()
+    idinfocar = carinfopartner._id.toString()
     console.log(idinfopartner)
-    const updatepartner2 = await rentcarpartner.findById(idinfopartner)
+    updatepartner2 = await rentcarpartner.findById(idinfopartner)
     console.log(updatepartner2)
+    
     updatepartner2.carinfoID.push(carinfopartner._id)
     updatepartner2.save()
+
+})
+
+router.post('/update_register_rentcarinfo',async (req,res) => { 
+    console.log('update_register_rentcarinfo')  
+    console.log(idinfocar)  
+    // const infouser = await User.findById(req.body.username)
+    const updatecarinfopartner = await rentcarinfo.findById(idinfocar)
+    for(i = 1;i<3;i++){
+        updatecarinfopartner.car_image.push(req.body.image[i])
+    }
+    for(i = 1;i<5;i++){
+        updatecarinfopartner.car_service.push(req.body.name_service[i])
+    }
+    updatecarinfopartner.save()
+   
+
+})
+
+router.post('/regis_rentcarinfo',async (req,res) => { 
+    console.log('register_rentcarinfo')    
+    
+
+    const carinfopartner = await new rentcarinfo({
+        PartnerID: mongoose.Types.ObjectId('62134d4c6201bfd271838567'),
+        car_name: req.body.carname,
+        car_brand: req.body.carbrand,
+        car_registration_year: req.body.year,
+        car_nunber_sit: req.body.numsit,
+        car_nunber_bigbag: req.body.bigbag,
+        car_nunber_smallbag: req.body.smallbag,
+        car_price_selfpick : req.body.selfpick,
+        car_price_sentcar: req.body.sentcar,
+        car_country: req.body.country,
+    })
+    carinfopartner.save()
+    idinfocar = carinfopartner._id.toString()
+    var updatepartner2 = await rentcarpartner.findById('62134d4c6201bfd271838567')
+    updatepartner2.carinfoID.push(carinfopartner._id)
+    updatepartner2.save()
+    
+   
+
+})
+
+router.post('/update_regis_rentcarinfo',async (req,res) => { 
+    console.log('update_register_rentcarinfo')    
+
+    // const infouser = await User.findById(req.body.username)
+    console.log(idinfocar)  
+    const updatecarinfopartner = await rentcarinfo.findOne({ _id: ObjectId(idinfocar) });
+    for(i = 1;i<3;i++){
+        updatecarinfopartner.car_image.push(req.body.image[i])
+    }
+    for(i = 1;i<5;i++){
+        updatecarinfopartner.car_service.push(req.body.name_service[i])
+    }
+    updatecarinfopartner.save()
+   
+
+})
+
+router.post('/getcarinfo',async (req,res) => { 
+    console.log('getcarinfo')    
+
+    // const infouser = await User.findById(req.body.username)
+    console.log(req.body.country)  
+    const infocar = await rentcarinfo.find({ "car_country": req.body.country });
+    console.log(infocar)  
+    
 
 })
 

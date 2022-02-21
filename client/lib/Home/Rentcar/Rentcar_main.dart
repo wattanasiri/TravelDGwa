@@ -29,6 +29,7 @@ class _rentcarState extends State<rentcar> {
           'Context-Type': 'application/json;charSet=UTF-8'
         },
         body: <String, String>{
+          "partnername": "Luv Driver Car Rent",
           "usernameID" : datauser.id,
           "image": "https://www.luvdrive.com/assets/img/logo/new-logo.png",
           "phone": "095-2911766",
@@ -59,7 +60,6 @@ class _rentcarState extends State<rentcar> {
     for(int i = 0;i < price_extrapay.length ; i++){
       data.addAll({"price_extrapay[$i]":price_extrapay[i]});
     }
-    print(data);
     var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/update_register_rentcarpartner'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
@@ -86,11 +86,95 @@ class _rentcarState extends State<rentcar> {
           "smallbag": "2",
           "selfpick": "0",
           "sentcar": "500",
+          "country": "bangkok",
+
+        });
+    print(res.body);
+
+  }
+  Future update_carinfo_partner() async{
+
+      print('update carinfo partner');
+      List<String> image = ["https://www.toyota.co.th/media/product/feature/large/e8d2cc60fa1d5467bc3a8b2b944677faa9c42502.jpg","https://s.isanook.com/au/0/rp/r/w728/ya0xa0m1w0/aHR0cHM6Ly9zLmlzYW5vb2suY29tL2F1LzAvdWQvMTYvODEyODAveWFyaXNfYXRpdl8zMi5qcGc=.jpg"];
+      List<String> name_service = ["FM/AM Radio","Bluetooth","USB/AUX","CD/MP3"];
+      Map<String,String> data;
+      data={
+        "image[]": image.toString(),
+        "name_service[]": name_service.toString(),
+      };
+      for(int i = 0;i < image.length ; i++){
+        data.addAll({"image[$i]":image[i]});
+      }
+      for(int i = 0;i < name_service.length ; i++){
+        data.addAll({"name_service[$i]":name_service[i]});
+      }
+      var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/update_register_rentcarinfo'),
+        headers: <String, String>{
+          'Context-Type': 'application/json;charSet=UTF-8'
+        },
+        body: data,
+      );
+      print(res.body);
+  }
+  Future regis_carinfo_partner() async{
+    var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/regis_rentcarinfo'),
+        headers: <String, String>{
+          'Context-Type': 'application/json;charSet=UTF-8'
+        },
+        body: <String, String>{
+
+          "carname": "Toyota Camry (ASV70R)",
+          "carbrand": "Toyota",
+          "year": "2561",
+          "numsit": "4",
+          "bigbag": "1",
+          "smallbag": "2",
+          "selfpick": "0",
+          "sentcar": "1000",
+          "country": "อุดรธานี",
 
         });
     print(res.body);
   }
 
+  Future update_regis_carinfo_partner() async{
+
+    List<String> image = ["https://upload.wikimedia.org/wikipedia/commons/a/ac/2018_Toyota_Camry_%28ASV70R%29_Ascent_sedan_%282018-08-27%29_01.jpg","https://upload.wikimedia.org/wikipedia/commons/c/cb/2018_Toyota_Camry_%28ASV70R%29_Ascent_sedan_%282018-08-27%29_02.jpg"];
+    List<String> name_service = ["FM/AM Radio","Bluetooth","USB/AUX","CD/MP3"];
+    Map<String,String> data;
+    data={
+      "image[]": image.toString(),
+      "name_service[]": name_service.toString(),
+    };
+    for(int i = 0;i < image.length ; i++){
+      data.addAll({"image[$i]":image[i]});
+    }
+    for(int i = 0;i < name_service.length ; i++){
+      data.addAll({"name_service[$i]":name_service[i]});
+    }
+    var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/update_regis_rentcarinfo'),
+      headers: <String, String>{
+        'Context-Type': 'application/json;charSet=UTF-8'
+      },
+      body: data,
+    );
+    print(res.body);
+  }
+
+  Future getcarinfo() async{
+    var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/getcarinfo'),
+      headers: <String, String>{
+        'Context-Type': 'application/json;charSet=UTF-8'
+      },
+      body: <String, String>{
+          "country": "อุดรธานี",
+
+
+        },
+    );
+    print(res.body);
+
+  }
 
   TextEditingController
   _timegetcarcontroller,
@@ -427,9 +511,7 @@ class _rentcarState extends State<rentcar> {
                         padding: const EdgeInsets.all(20.0),
                         child: RaisedButton(
                           onPressed: () {
-                            save_partner();
-                            update_partner();
-                            save_carinfo_partner();
+                            getcarinfo();
                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Rentcar_info(
                               dategetcar: _dategetcarcontroller.text,
                               timegetcar: _timegetcarcontroller.text,

@@ -23,6 +23,7 @@ const rentcarcarinfoSchema = new Schema({
             type:String
         }
     ],
+    car_country: String,
     car_price_selfpick : Number,
     car_price_sentcar: Number,
     
