@@ -167,7 +167,7 @@ class _rentcarState extends State<rentcar> {
         'Context-Type': 'application/json;charSet=UTF-8'
       },
       body: <String, String>{
-          "country": "อุดรธานี",
+          "country": _yourlocationcontroller.text,
 
 
         },
@@ -227,7 +227,7 @@ class _rentcarState extends State<rentcar> {
                 const SizedBox(height: 25),
                 Padding(
                   padding: const EdgeInsets.only(right: 215),
-                  child: Text("สถานที่ที่จะเช่ารถ", style: GoogleFonts.nunitoSans(color: Colors.black, fontSize: 15),
+                  child: Text("จังหวัดที่จะเช่ารถ", style: GoogleFonts.nunitoSans(color: Colors.black, fontSize: 15),
                   ),
                 ),
                 Padding(
@@ -243,18 +243,21 @@ class _rentcarState extends State<rentcar> {
                       ),
                       child: TextFormField(
                         decoration: const InputDecoration(
+                          errorStyle: TextStyle(
+                            color: Colors.red,
+                            fontSize: 12,
+                          ),
                           hintText: 'จังหวัด',
                           prefixIcon: Icon(Icons.fmd_good,color: Colors.black,),
                           enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white)),
+                              borderSide: BorderSide(color: Colors.white,width: 2.0)),
+
                         ),
                         controller: _yourlocationcontroller,
-                        onFieldSubmitted: (String newvalue) {
-                          // _price(_yourlocationcontroller.text);
-                        },
+
                         validator: (value) {
                           if (value.isEmpty) {
-                            return 'กรุณาระบุสถานที่';
+                            return 'กรุณาระบุจังหวัด';
                           }
                           return null;
                         },
@@ -298,14 +301,18 @@ class _rentcarState extends State<rentcar> {
                         ),
                         child:  TextFormField(
                           decoration: const InputDecoration(
+                            errorStyle: TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                            ),
                             hintText: ' วว-ดด-ปป',
                             prefixIcon: Icon(Icons.calendar_today,color: Colors.black,),
                             enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
+                                borderSide: BorderSide(color: Colors.white,width: 2.0)),
                           ),
                           validator: (value) {
-                            if (value.isEmpty || value == null) {
-                              return 'กรุณาระบุวันเดินทาง';
+                            if (value.isEmpty) {
+                              return 'กรุณาระบุวันรับรถ';
                             }
                             return null;
                           },
@@ -348,12 +355,16 @@ class _rentcarState extends State<rentcar> {
                             contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
                             hintText: ' 00:00',
                             prefixIcon: Icon(Icons.access_time_outlined,color: Colors.black,),
+                            errorStyle: TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                            ),
                             enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white)),
                           ),
                           validator: (value) {
                             if (value.isEmpty || value == null) {
-                              return 'กรุณาระบุเวลา';
+                              return 'กรุณาระบุเวลารับรถ';
                             }
                             return null;
                           },
@@ -419,12 +430,16 @@ class _rentcarState extends State<rentcar> {
                           decoration: const InputDecoration(
                             hintText: ' วว-ดด-ปป',
                             prefixIcon: Icon(Icons.calendar_today,color: Colors.black,),
+                            errorStyle: TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                            ),
                             enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white)),
                           ),
                           validator: (value) {
                             if (value.isEmpty || value == null) {
-                              return 'กรุณาระบุวันเดินทาง';
+                              return 'กรุณาระบุวันส่งคืนรถ';
                             }
                             return null;
                           },
@@ -467,12 +482,16 @@ class _rentcarState extends State<rentcar> {
                             contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
                             hintText: ' 00:00',
                             prefixIcon: Icon(Icons.access_time_outlined,color: Colors.black,),
+                            errorStyle: TextStyle(
+                              color: Colors.red,
+                              fontSize: 12,
+                            ),
                             enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white)),
                           ),
                           validator: (value) {
                             if (value.isEmpty || value == null) {
-                              return 'กรุณาระบุเวลา';
+                              return 'กรุณาระบุเวลาส่งคืนรถ';
                             }
                             return null;
                           },
@@ -511,6 +530,10 @@ class _rentcarState extends State<rentcar> {
                         padding: const EdgeInsets.all(20.0),
                         child: RaisedButton(
                           onPressed: () {
+                            if (!_formKey.currentState.validate()) {
+                              return;
+                            }
+                            _formKey.currentState.save();
                             getcarinfo();
                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Rentcar_info(
                               dategetcar: _dategetcarcontroller.text,
