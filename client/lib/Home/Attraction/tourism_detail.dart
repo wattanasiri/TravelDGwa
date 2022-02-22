@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
@@ -8,97 +8,30 @@ import 'package:se_app2/Home/Accommodation/accommodation_room.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:http/http.dart' as http;
 
-class AccommodationDetail extends StatefulWidget {
-  final checkInHolder;
-  final checkOutHolder;
-  final numberOfPeopleHolder;
-  final numberOfRoomsHolder;
-  final detail;
-  const AccommodationDetail(
-      {Key key,
-      @required this.checkInHolder,
-      this.checkOutHolder,
-      this.numberOfPeopleHolder,
-      this.numberOfRoomsHolder,
-      this.detail})
-      : super(key: key);
-
+class Attractiondetail extends StatefulWidget {
   @override
-  _AccommodationDetailState createState() => _AccommodationDetailState();
+  _AttractiondetailState createState() => _AttractiondetailState();
 }
+int activeIndex = 0;
+final urlImages = [
+  'https://placeimg.com/640/480/any',
+  'https://placeimg.com/640/480/any',
+  'https://placeimg.com/640/480/any',
+  'https://placeimg.com/640/480/any',
+];
 
-class _AccommodationDetailState extends State<AccommodationDetail> {
-  var checkInEdit = TextEditingController();
-  var checkOutEdit = TextEditingController();
-  var numberOfPeopleEdit = TextEditingController();
-  var numberOfRoomsEdit = TextEditingController();
-  var detail;
-
-  String id;
-  Map data;
-  List accommodationRoomData;
-  String hotelName;
-
-  Future getRoom() async {
-    http.Response res =
-        await http.get(Uri.parse("http://10.0.2.2:8080/hotel/" + id + '/room'));
-    data = json.decode(res.body);
-    accommodationRoomData = data['rooms']['room'];
-    hotelName = data['rooms']['name'];
-    print(accommodationRoomData);
-  }
-
-  int activeIndex = 0;
-  final urlImages = [
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any',
-  ];
-
-  Text _buildRatingStars(int rating) {
-    String stars = '';
-    for (int i = 0; i < rating; i++) {
-      stars += '⭐ ';
-    }
-    stars.trim();
-    return Text(stars);
-  }
-
-  bool viewVisible = false;
-
-  void showWidget() {
-    setState(() {
-      viewVisible = true;
-    });
-  }
-
-  void hideWidget() {
-    setState(() {
-      viewVisible = false;
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    id = widget.detail['_id'];
-    checkInEdit = TextEditingController(text: widget.checkInHolder);
-    checkOutEdit = TextEditingController(text: widget.checkOutHolder);
-    numberOfPeopleEdit =
-        TextEditingController(text: widget.numberOfPeopleHolder);
-    numberOfRoomsEdit = TextEditingController(text: widget.numberOfRoomsHolder);
-    detail = widget.detail;
-  }
-
+class _AttractiondetailState extends State<Attractiondetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFFF4DC),
+
       body: SingleChildScrollView(
-        child: Column(
+        child : Column(
           children: [
+            //ทำให้ซ้อนกันได้
             Stack(
-              children: <Widget>[
+              children: [
                 SizedBox(height: MediaQuery.of(context).size.height),
                 CarouselSlider.builder(
                   itemCount: urlImages.length,
@@ -106,7 +39,7 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                       height: 400.0,
                       viewportFraction: 1,
                       onPageChanged: (index, reason) =>
-                          {setState(() => activeIndex = index)}),
+                      {setState(() => activeIndex = index)}),
                   itemBuilder: (context, index, realIndex) {
                     final urlImage = urlImages[index];
                     return buildImage(urlImage, index);
@@ -126,15 +59,18 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                     ),
                   ),
                 ),
+                //จุดเลื่อนภาพ
                 Container(
                     height: 400,
                     alignment: Alignment.bottomCenter,
                     padding: const EdgeInsets.only(bottom: 30),
                     child: buildIndicator()),
+                //จุดเลื่อนภาพ
+                //กล่องด้านล่าง
                 Container(
                   margin: const EdgeInsets.only(top: 380),
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+                  const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
                   decoration: const BoxDecoration(
                       color: Color(0xffFFF4DC),
                       borderRadius: BorderRadius.only(
@@ -147,14 +83,14 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                     children: [
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
+                        children: [
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Flexible(
                                 child: Text(
-                                  detail['name'],
+                                  "detail['name']",
                                   style: GoogleFonts.poppins(
                                       color: const Color(0xff1D3557),
                                       fontSize: 20,
@@ -178,7 +114,6 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                               )
                             ],
                           ),
-                          _buildRatingStars(5),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
@@ -186,14 +121,14 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                                 onTap: () => {},
                                 child: Container(
                                   margin:
-                                      const EdgeInsets.symmetric(vertical: 10),
+                                  const EdgeInsets.symmetric(vertical: 10),
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 15),
                                   height: 40,
                                   decoration: const BoxDecoration(
                                     color: Color(0xff1D3557),
                                     borderRadius:
-                                        BorderRadius.all(Radius.circular(20)),
+                                    BorderRadius.all(Radius.circular(20)),
                                   ),
                                   child: Row(
                                     children: const <Widget>[
@@ -228,7 +163,7 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                             decoration: const BoxDecoration(
                                 color: Color(0xffFFEEC9),
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(15))),
+                                BorderRadius.all(Radius.circular(15))),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
@@ -243,13 +178,11 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                                   children: [
                                     Flexible(
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 10),
+                                        padding: EdgeInsets.symmetric(horizontal: 10),
                                         child: Text(
-                                          detail['location'],
+                                          "detail['location']",
                                           style: TextStyle(
-                                              color: Color(0xff1D3557),
-                                              fontSize: 14),
+                                              color: Color(0xff1D3557), fontSize: 14),
                                         ),
                                       ),
                                     ),
@@ -264,7 +197,7 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                             decoration: const BoxDecoration(
                                 color: Color(0xffFFEEC9),
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(15))),
+                                BorderRadius.all(Radius.circular(15))),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
@@ -279,13 +212,12 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                                   children: [
                                     Flexible(
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 10),
+                                        padding: EdgeInsets.symmetric(horizontal: 10),
                                         child: Text(
-                                          '${detail['desc']}',
+                                          'detail['"desc"']45d6fgfdgggdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdggrsdfgggddd'
+                                              'wertggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggddddddddddd',
                                           style: TextStyle(
-                                              color: Color(0xff1D3557),
-                                              fontSize: 14),
+                                              color: Color(0xff1D3557), fontSize: 14),
                                         ),
                                       ),
                                     ),
@@ -294,90 +226,13 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                               ],
                             ),
                           ),
-                          InkWell(
-                            onTap: () =>
-                                {viewVisible ? hideWidget() : showWidget()},
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              padding: const EdgeInsets.symmetric(vertical: 10),
-                              decoration: const BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          width: 2, color: Color(0xff827E7E)))),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  const Text(
-                                    'ดูรีวิว',
-                                    style: TextStyle(
-                                        color: Color(0xff1D3557), fontSize: 16),
-                                  ),
-                                  IconButton(
-                                      onPressed: () => {
-                                            viewVisible
-                                                ? hideWidget()
-                                                : showWidget()
-                                          },
-                                      icon: viewVisible
-                                          ? const Icon(
-                                              Icons.keyboard_arrow_up_rounded)
-                                          : const Icon(Icons
-                                              .keyboard_arrow_down_rounded))
-                                ],
-                              ),
-                            ),
-                          ),
-                          AnimatedContainer(
-                              duration: const Duration(milliseconds: 200),
-                              height: viewVisible ? 500 : 0,
-                              color: Colors.green,
-                              child: const Center(
-                                  child: Text(
-                                      'Show Hide Text View Widget in Flutter',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 23)))),
-                          Container(
-                            alignment: Alignment.bottomCenter,
-                            margin: const EdgeInsets.symmetric(vertical: 10),
-                            child: ElevatedButton(
-                              onPressed: () async => {
-                                await getRoom(),
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => AccommodationRoom(
-                                            checkInHolder: checkInEdit.text,
-                                            checkOutHolder: checkOutEdit.text,
-                                            numberOfPeopleHolder:
-                                                numberOfPeopleEdit.text,
-                                            numberOfRoomsHolder:
-                                                numberOfRoomsEdit.text,
-                                            rooms: accommodationRoomData,
-                                            hotel_name: hotelName)))
-                              },
-                              style: ElevatedButton.styleFrom(
-                                onPrimary: const Color(0xff1D3557),
-                                primary: const Color(0xff1D3557),
-                                minimumSize: const Size(350, 60),
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(16)),
-                                ),
-                              ),
-                              child: const Text(
-                                'จองห้องพัก',
-                                style: TextStyle(
-                                    color: Color(0xffFFF4DC), fontSize: 20),
-                              ),
-                            ),
-                          ),
+
                         ],
                       ),
                     ],
                   ),
                 ),
+                //กล่องด้านล่าง
               ],
             ),
           ],
@@ -385,22 +240,22 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
       ),
     );
   }
-
-  Widget buildImage(String urlImage, int index) => Container(
-        color: Colors.black,
-        child: Image.network(
-          urlImage,
-          fit: BoxFit.cover,
-        ),
-      );
-
-  Widget buildIndicator() => AnimatedSmoothIndicator(
-        activeIndex: activeIndex,
-        count: urlImages.length,
-        effect: ScaleEffect(
-            dotWidth: 8,
-            dotHeight: 8,
-            activeDotColor: const Color(0xffECFAFF),
-            dotColor: const Color(0xffECFAFF).withOpacity(0.5)),
-      );
 }
+
+Widget buildImage(String urlImage, int index) => Container(
+  color: Colors.black,
+  child: Image.network(
+    urlImage,
+    fit: BoxFit.cover,
+  ),
+);
+
+Widget buildIndicator() => AnimatedSmoothIndicator(
+  activeIndex: activeIndex,
+  count: urlImages.length,
+  effect: ScaleEffect(
+      dotWidth: 8,
+      dotHeight: 8,
+      activeDotColor: const Color(0xffECFAFF),
+      dotColor: const Color(0xffECFAFF).withOpacity(0.5)),
+);
