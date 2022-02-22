@@ -62,9 +62,9 @@ router.post('/register_carinfo_rentcarpartner',async (req,res) => {
         car_nunber_sit: req.body.numsit,
         car_nunber_bigbag: req.body.bigbag,
         car_nunber_smallbag: req.body.smallbag,
-        car_price_selfpick : req.body.selfpick,
-        car_price_sentcar: req.body.sentcar,
+        car_location: req.body.location,
         car_country: req.body.country,
+        car_price: req.body.price,
     })
    
     carinfopartner.save()
@@ -89,6 +89,13 @@ router.post('/update_register_rentcarinfo',async (req,res) => {
     for(i = 1;i<5;i++){
         updatecarinfopartner.car_service.push(req.body.name_service[i])
     }
+    for(i = 1;i<4;i++){
+        updatecarinfopartner.car_locationpickup.push(req.body.locationpickup[i])
+    }
+    for(i = 1;i<4;i++){
+        updatecarinfopartner.car_pricelocationpickup.push(req.body.pricelocationpickup[i])
+    }
+    
     updatecarinfopartner.save()
    
 
@@ -106,9 +113,9 @@ router.post('/regis_rentcarinfo',async (req,res) => {
         car_nunber_sit: req.body.numsit,
         car_nunber_bigbag: req.body.bigbag,
         car_nunber_smallbag: req.body.smallbag,
-        car_price_selfpick : req.body.selfpick,
-        car_price_sentcar: req.body.sentcar,
+        car_location: req.body.location,
         car_country: req.body.country,
+        car_price: req.body.price,
     })
     carinfopartner.save()
     idinfocar = carinfopartner._id.toString()
@@ -132,6 +139,12 @@ router.post('/update_regis_rentcarinfo',async (req,res) => {
     for(i = 1;i<5;i++){
         updatecarinfopartner.car_service.push(req.body.name_service[i])
     }
+    for(i = 1;i<4;i++){
+        updatecarinfopartner.car_locationpickup.push(req.body.locationpickup[i])
+    }
+    for(i = 1;i<4;i++){
+        updatecarinfopartner.car_pricelocationpickup.push(req.body.pricelocationpickup[i])
+    }
     updatecarinfopartner.save()
    
 
@@ -146,6 +159,51 @@ router.post('/getcarinfo',async (req,res) => {
     console.log(infocar)  
     
 
+})
+
+router.get('/:id' + '/infocar', (req,res) => {
+    console.log('getdetailcar')
+    var country = req.params.id;
+    country = 'อุดรธานี'
+    console.log(country)
+    rentcarinfo.find({ "car_country": country }).exec((err,foundCar) => {
+        if(err){
+            console.log(err)
+        } else {
+            res.json({foundCar})
+            console.log(foundCar)
+        }
+    })
+   
+})
+
+router.get('/:partnerid' + '/infopartner', (req,res) => {
+    console.log('getdetailpartner')
+    var id = req.params.partnerid;
+    console.log(id)
+    rentcarpartner.findById(id).exec((err,foundpartner) => {
+        if(err){
+            console.log(err)
+        } else {
+            res.json({foundpartner})
+            console.log(foundpartner)
+        }
+    })
+   
+})
+
+router.get('/:id' + '/queryrentcar' , (req,res) => {
+    console.log('getmanycar')
+    var country = req.params.id;
+    console.log(country)
+    rentcarinfo.find({ "car_country": country }).exec((err,foundCar) => {
+        if(err){
+            console.log(err)
+        } else {
+            res.json({foundCar})
+        }
+    })
+   
 })
 
 module.exports = router

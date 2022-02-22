@@ -23,9 +23,19 @@ const rentcarcarinfoSchema = new Schema({
             type:String
         }
     ],
+    car_locationpickup: [
+        {
+            type:String
+        }
+    ],
+    car_pricelocationpickup: [
+        {
+            type:Number
+        }
+    ],
+    car_location: String,
     car_country: String,
-    car_price_selfpick : Number,
-    car_price_sentcar: Number,
+    car_price: Number,
     
     
     

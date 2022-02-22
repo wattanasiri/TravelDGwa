@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,6 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:se_app2/Data/data_currentuser.dart';
 
 import '/data/data_airport.dart';
+import 'Rentcar_detail.dart';
 import 'Rentcar_info.dart';
 
 class rentcar extends StatefulWidget {
@@ -17,7 +20,11 @@ class rentcar extends StatefulWidget {
 }
 
 class _rentcarState extends State<rentcar> {
-
+  String id;
+  Map data;
+  Map partnerdata;
+  Map dataafterquery;
+  String partnerid;
   Future save_partner() async {
     print('savepartner');
     Datauser datauser = Datauser();
@@ -87,6 +94,8 @@ class _rentcarState extends State<rentcar> {
           "selfpick": "0",
           "sentcar": "500",
           "country": "bangkok",
+          "location" : "703 อาคารรัชฎาสวีท ถนนวงศ์สว่าง แขวงวงศ์สว่าง เขตบางซื่อ กทม 10800",
+          "price": "1500"
 
         });
     print(res.body);
@@ -97,6 +106,8 @@ class _rentcarState extends State<rentcar> {
       print('update carinfo partner');
       List<String> image = ["https://www.toyota.co.th/media/product/feature/large/e8d2cc60fa1d5467bc3a8b2b944677faa9c42502.jpg","https://s.isanook.com/au/0/rp/r/w728/ya0xa0m1w0/aHR0cHM6Ly9zLmlzYW5vb2suY29tL2F1LzAvdWQvMTYvODEyODAveWFyaXNfYXRpdl8zMi5qcGc=.jpg"];
       List<String> name_service = ["FM/AM Radio","Bluetooth","USB/AUX","CD/MP3"];
+      List<String> locationpickup = ["มารับด้วยตนเอง","ท่าอากศยานสุวรรณภูมิ","ท่าอากศยานดินเมือง"];
+      List<String> pricelocationpickup = ["0","500","800"];
       Map<String,String> data;
       data={
         "image[]": image.toString(),
@@ -108,6 +119,13 @@ class _rentcarState extends State<rentcar> {
       for(int i = 0;i < name_service.length ; i++){
         data.addAll({"name_service[$i]":name_service[i]});
       }
+      for(int i = 0;i < locationpickup.length ; i++){
+        data.addAll({"locationpickup[$i]":locationpickup[i]});
+      }
+      for(int i = 0;i < pricelocationpickup.length ; i++){
+        data.addAll({"pricelocationpickup[$i]":pricelocationpickup[i]});
+      }
+
       var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/update_register_rentcarinfo'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
@@ -132,15 +150,18 @@ class _rentcarState extends State<rentcar> {
           "selfpick": "0",
           "sentcar": "1000",
           "country": "อุดรธานี",
+          "location" : "703 อาคารรัชฎาสวีท ถนนวงศ์สว่าง แขวงวงศ์สว่าง เขตบางซื่อ กทม 10800",
+          "price": "1500"
 
         });
     print(res.body);
   }
-
   Future update_regis_carinfo_partner() async{
 
     List<String> image = ["https://upload.wikimedia.org/wikipedia/commons/a/ac/2018_Toyota_Camry_%28ASV70R%29_Ascent_sedan_%282018-08-27%29_01.jpg","https://upload.wikimedia.org/wikipedia/commons/c/cb/2018_Toyota_Camry_%28ASV70R%29_Ascent_sedan_%282018-08-27%29_02.jpg"];
     List<String> name_service = ["FM/AM Radio","Bluetooth","USB/AUX","CD/MP3"];
+    List<String> locationpickup = ["มารับด้วยตนเอง","ท่าอากศยานสุวรรณภูมิ","ท่าอากศยานดินเมือง"];
+    List<String> pricelocationpickup = ["0","500","800"];
     Map<String,String> data;
     data={
       "image[]": image.toString(),
@@ -152,6 +173,12 @@ class _rentcarState extends State<rentcar> {
     for(int i = 0;i < name_service.length ; i++){
       data.addAll({"name_service[$i]":name_service[i]});
     }
+    for(int i = 0;i < locationpickup.length ; i++){
+      data.addAll({"locationpickup[$i]":locationpickup[i]});
+    }
+    for(int i = 0;i < pricelocationpickup.length ; i++){
+      data.addAll({"pricelocationpickup[$i]":pricelocationpickup[i]});
+    }
     var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/update_regis_rentcarinfo'),
       headers: <String, String>{
         'Context-Type': 'application/json;charSet=UTF-8'
@@ -160,7 +187,50 @@ class _rentcarState extends State<rentcar> {
     );
     print(res.body);
   }
+  Future querycar() async {
+    print('querycar');
+    id = 'กรุงเทพ';
 
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/rentcar/" + id + '/queryrentcar'));
+    dataafterquery = json.decode(res.body);
+    // print(dataafterquery);
+    // for u pee pee
+    // print('data');
+    // print(dataafterquery);
+    // print(dataafterquery['foundCar'][0]);
+    // print(dataafterquery['foundCar'][0]['car_name']);
+    // print(dataafterquery['foundCar'][0]['car_image'][0]);
+    // print(dataafterquery['foundCar'][0]['car_image'].length);
+
+  }
+  Future getdetailpartnercar() async{
+    print('getdetailpartnercar');
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/rentcar/" + partnerid + '/infopartner'));
+    partnerdata = json.decode(res.body);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => cardetail(
+      dategetcar: _dategetcarcontroller.text,
+      timegetcar: _timegetcarcontroller.text,
+      datesentcar: _datesentcarcontroller.text,
+      timesentcar: _timesentcarcontroller.text,
+      yourlocation: _yourlocationcontroller.text,
+      data : data,
+      partnerdata: partnerdata,
+    ),));
+  }
+  Future getdetailcar() async {
+    // if (!_formKey.currentState.validate()) {
+    //   return;
+    // }
+    // _formKey.currentState.save();
+    print('getdetailcar');
+    id = '62134d4c6201bfd27183856a';
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/rentcar/" + id + '/infocar'));
+    data = json.decode(res.body);
+    partnerid = data['foundCar'][0]['PartnerID'];
+  }
   Future getcarinfo() async{
     var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/getcarinfo'),
       headers: <String, String>{
@@ -194,6 +264,7 @@ class _rentcarState extends State<rentcar> {
   void initState() {
     // save();
     super.initState();
+
     _timegetcarcontroller = TextEditingController();
     _timesentcarcontroller = TextEditingController();
     _yourlocationcontroller = TextEditingController();
@@ -529,19 +600,12 @@ class _rentcarState extends State<rentcar> {
                       Padding(
                         padding: const EdgeInsets.all(20.0),
                         child: RaisedButton(
-                          onPressed: () {
-                            if (!_formKey.currentState.validate()) {
-                              return;
-                            }
-                            _formKey.currentState.save();
-                            getcarinfo();
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Rentcar_info(
-                              dategetcar: _dategetcarcontroller.text,
-                              timegetcar: _timegetcarcontroller.text,
-                              datesentcar: _datesentcarcontroller.text,
-                              timesentcar: _timesentcarcontroller.text,
-                              yourlocation: _yourlocationcontroller.text,
-                            ),));
+                          onPressed: () async =>  {
+                            // await querycar(),
+
+                            await getdetailcar(),
+                            await getdetailpartnercar(),
+
 
                           },
                           child: Padding(
