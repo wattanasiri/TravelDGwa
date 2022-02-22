@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -12,6 +14,7 @@ class Restaudetail extends StatefulWidget {
   @override
   _RestaudetailState createState() => _RestaudetailState();
 }
+
 int activeIndex = 0;
 final urlImages = [
   'https://placeimg.com/640/480/any',
@@ -29,10 +32,6 @@ Text _buildRatingStars(int rating) {
   return Text(stars);
 }
 
-
-
-
-
 class _RestaudetailState extends State<Restaudetail> {
   bool viewVisible = false;
 
@@ -47,12 +46,16 @@ class _RestaudetailState extends State<Restaudetail> {
       viewVisible = false;
     });
   }
+
+  final _controller = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFFFF4DC),
 
       body: SingleChildScrollView(
+        controller: _controller,
         child : Column(
           children: [
             //ทำให้ซ้อนกันได้
@@ -258,36 +261,46 @@ class _RestaudetailState extends State<Restaudetail> {
                             children: <Widget>[
                               const Divider(color: Color(0xff827E7E), thickness: 1.5),
                               InkWell(
-                                onTap: () => {viewVisible ? hideWidget() : showWidget()},
+                                onTap: () {
+                                  viewVisible ? hideWidget() : showWidget();
+                                  if(viewVisible){
+                                    _controller.animateTo(
+                                        MediaQuery.of(context).size.height,
+                                        curve: Curves.easeInOut,
+                                        duration: const Duration(milliseconds: 500));
+                                  }
+                                },
                                 child: Container(
-                                  padding:
-                                  const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Flexible(
                                           child: Text(
-                                            'ดูรีวิว'.toString(),
+                                            'ดูรีวิว',
                                             style: GoogleFonts.poppins(
                                                 color: const Color(0xff1D3557),
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold),
                                           )),
-                                      Row(
-                                        children: [
-                                          IconButton(
-                                            onPressed: () =>
-                                            {viewVisible ? hideWidget() : showWidget()},
-                                            iconSize: 35,
-                                            padding: EdgeInsets.zero,
-                                            splashRadius: 20,
-                                            constraints: const BoxConstraints(),
-                                            icon: viewVisible
-                                                ? const Icon(Icons.keyboard_arrow_up_rounded)
-                                                : const Icon(
-                                                Icons.keyboard_arrow_down_rounded),
-                                          ),
-                                        ],
+                                      IconButton(
+                                        onPressed: () {
+                                          viewVisible ? hideWidget() : showWidget();
+                                          if(viewVisible){
+                                            _controller.animateTo(
+                                                MediaQuery.of(context).size.height,
+                                                curve: Curves.easeInOut,
+                                                duration: const Duration(milliseconds: 500));
+                                          }
+                                        },
+                                        iconSize: 35,
+                                        padding: EdgeInsets.zero,
+                                        splashRadius: 20,
+                                        constraints: const BoxConstraints(),
+                                        icon: viewVisible
+                                            ? const Icon(Icons.keyboard_arrow_up_rounded)
+                                            : const Icon(
+                                            Icons.keyboard_arrow_down_rounded),
                                       ),
 
                                     ],
@@ -295,268 +308,217 @@ class _RestaudetailState extends State<Restaudetail> {
                                 ),
                               ),
                               const Divider(color: Color(0xff827E7E), thickness: 1.5),
-                              Visibility(
-                                visible: viewVisible,
-                                child: Container(
-                                  margin:
-                                  const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                                  padding: const EdgeInsets.all(10),
-                                  decoration: const BoxDecoration(
-                                      color: Color(0xffFFEEC9),
-                                      borderRadius: BorderRadius.all(Radius.circular(10))),
-                                  child : Container(
-                                    child: Column(
-                                      children: [
-                                        /*Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Text(
-                                                "fdfd" ,
-                                                style: TextStyle(
-                                                    color: Color(0xff1D3557), fontSize: 16)),
-                                            Text(
-                                                'price',
-                                                style: TextStyle(
-                                                    color: Color(0xff1D3557), fontSize: 16))
+                              Container(
+                                height: viewVisible ? 300 : 0,
+                                margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                                padding: const EdgeInsets.all(10),
+                                decoration: const BoxDecoration(
+                                    color: Color(0xffFFEEC9),
+                                    borderRadius: BorderRadius.all(Radius.circular(10))),
+                                child : MediaQuery.removePadding(
+                                  removeTop: true,
+                                  context: context,
+                                  child: ListView(
+                                    children: [
+                                      Container(
+                                        margin: EdgeInsets.symmetric(vertical: 10),
+                                        padding: EdgeInsets.all(20),
+                                        decoration: BoxDecoration(
+                                          color: Color(0xff1D3557),
+                                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black.withOpacity(0.3),
+                                              spreadRadius: 1,
+                                              blurRadius: 6,
+                                              offset: const Offset(1, 6),
+                                            ),
                                           ],
-                                        ),*/
-                                        //กล่องรีวิว
-                                        Container(
-                                          //height: 300,
-                                          child: Column(
-                                            children: [
-                                              SingleChildScrollView(
-                                                physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-                                                child : Column(
-                                                  children: [
-                                                    //กล่องรีวิว1
-                                                    Container(
-                                                      margin: EdgeInsets.symmetric(vertical: 10),
-                                                      padding: EdgeInsets.all(20),
-                                                      decoration: BoxDecoration(
-                                                        color: Color(0xff1D3557),
-                                                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: Colors.black.withOpacity(0.3),
-                                                            spreadRadius: 1,
-                                                            blurRadius: 6,
-                                                            offset: const Offset(1, 6),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      child : Column(
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              const CircleAvatar(
-                                                                backgroundColor: Color(0xFFECFAFF),
-                                                                radius: 25,
-                                                                child: Text(
-                                                                  "SC",
-                                                                  style: TextStyle(
-                                                                      fontSize: 20,
-                                                                      color: Color(0xFF1d3557)
-                                                                  ),
-                                                                ),
-                                                              ),
-                                                              SizedBox(width: 10),
-                                                              Flexible(
-                                                                child: Column(
-                                                                  mainAxisAlignment: MainAxisAlignment.start,
-                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                  children: [
-                                                                    Text(
-                                                                      'Sedtawut Chalothronnarumit',
-                                                                      style: TextStyle(
-                                                                        color: Color(0xffFFF4DC),
-                                                                        fontSize: 16,
-                                                                      ),
-                                                                    ),
-                                                                    Text(
-                                                                      '29 พฤศจิกายน พ.ศ. 2564, เวลา 12.10 น.',
-                                                                      style: TextStyle(
-                                                                        color: Color(0xffFFF4DC),
-                                                                        fontSize: 10,
-                                                                      ),
-                                                                    ),
-                                                                    SizedBox(height: 5),
-                                                                    Text(
-                                                                      'อาหารอร่อยสดใหม่มาก',
-                                                                      style: TextStyle(
-                                                                        color: Color(0xffFFF4DC),
-                                                                        fontSize: 14,
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
-                                                              ),
-                                                              Row(
-                                                                children: [
-                                                                  IconButton(
-                                                                    onPressed: () =>
-                                                                    {viewVisible ? hideWidget() : showWidget()},
-                                                                    iconSize: 35,
-                                                                    padding: EdgeInsets.zero,
-                                                                    splashRadius: 20,
-                                                                    constraints: const BoxConstraints(),
-                                                                    icon: viewVisible
-                                                                        ? const Icon(Icons.keyboard_arrow_up_rounded,
-                                                                      color : Color(0xffFFF4DC),)
-                                                                        : const Icon(
-                                                                        Icons.keyboard_arrow_down_rounded),
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            ],
-                                                          ),
-
-                                                          Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            children: <Widget>[
-                                                              Text(
-                                                                  "fdfd" ,
-                                                                  style: TextStyle(
-                                                                      color: Color(0xffFFF4DC), fontSize: 16)),
-                                                              Text(
-                                                                  'price',
-                                                                  style: TextStyle(
-                                                                      color: Color(0xffFFF4DC), fontSize: 16))
-                                                            ],
-                                                          ),
-                                                        ],
-                                                      ),
-
+                                        ),
+                                        child : Column(
+                                          children: [
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              children: [
+                                                const CircleAvatar(
+                                                  backgroundColor: Color(0xFFECFAFF),
+                                                  radius: 25,
+                                                  child: Text(
+                                                    "SC",
+                                                    style: TextStyle(
+                                                        fontSize: 20,
+                                                        color: Color(0xFF1d3557)
                                                     ),
-                                                    //จบกล่องรีวิว1
-                                                    //กล่องรีวิว2
-                                                    Container(
-                                                      margin: EdgeInsets.symmetric(vertical: 10),
-                                                      padding: EdgeInsets.all(20),
-                                                      decoration: BoxDecoration(
-                                                        color: Color(0xff1D3557),
-                                                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: Colors.black.withOpacity(0.3),
-                                                            spreadRadius: 1,
-                                                            blurRadius: 6,
-                                                            offset: const Offset(1, 6),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      child: Row(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          const CircleAvatar(
-                                                            backgroundColor: Color(0xFFECFAFF),
-                                                            radius: 25,
-                                                            child: Text(
-                                                              "SC",
-                                                              style: TextStyle(
-                                                                  fontSize: 20,
-                                                                  color: Color(0xFF1d3557)
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          SizedBox(width: 10),
-                                                          Flexible(
-                                                            child: Column(
-                                                              mainAxisAlignment: MainAxisAlignment.start,
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                              children: [
-                                                                Text(
-                                                                  'อพาร์ทเม้น',
-                                                                  style: TextStyle(
-                                                                    color: Color(0xffECFAFF),
-                                                                    fontSize: 16,
-                                                                  ),
-                                                                ),
-                                                                Text(
-                                                                  'ที่อยู่อาศัยตกแต่งในอาคารอพาร์ตเมนต์ที่มีห้องพักส่วนตัวพร้อม บริการเหมือนโรงแรม',
-                                                                  style: TextStyle(
-                                                                    color: Color(0xffECFAFF),
-                                                                    fontSize: 14,
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    //จบรีวิวกล่อง2
-                                                    //กล่องรีวิว3
-                                                    Container(
-                                                      margin: EdgeInsets.symmetric(vertical: 10),
-                                                      padding: EdgeInsets.all(20),
-                                                      decoration: BoxDecoration(
-                                                        color: Color(0xff1D3557),
-                                                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                                                        boxShadow: [
-                                                          BoxShadow(
-                                                            color: Colors.black.withOpacity(0.3),
-                                                            spreadRadius: 1,
-                                                            blurRadius: 6,
-                                                            offset: const Offset(1, 6),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      child: Row(
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          const CircleAvatar(
-                                                            backgroundColor: Color(0xFFECFAFF),
-                                                            radius: 25,
-                                                            child: Text(
-                                                              "SC",
-                                                              style: TextStyle(
-                                                                  fontSize: 20,
-                                                                  color: Color(0xFF1d3557)
-                                                              ),
-                                                            ),
-                                                          ),
-                                                          SizedBox(width: 10),
-                                                          Flexible(
-                                                            child: Column(
-                                                              mainAxisAlignment: MainAxisAlignment.start,
-                                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                                              children: [
-                                                                Text(
-                                                                  'อพาร์ทเม้น',
-                                                                  style: TextStyle(
-                                                                    color: Color(0xffECFAFF),
-                                                                    fontSize: 16,
-                                                                  ),
-                                                                ),
-                                                                Text(
-                                                                  'ที่อยู่อาศัยตกแต่งในอาคารอพาร์ตเมนต์ที่มีห้องพักส่วนตัวพร้อม บริการเหมือนโรงแรม',
-                                                                  style: TextStyle(
-                                                                    color: Color(0xffECFAFF),
-                                                                    fontSize: 14,
-                                                                  ),
-                                                                )
-                                                              ],
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
-                                                    //จบรีวิวกล่อง3
-                                                  ],
+                                                  ),
                                                 ),
+                                                SizedBox(width: 10),
+                                                Flexible(
+                                                  child: Column(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                    children: [
+                                                      Text(
+                                                        'Sedtawut Chalothronnarumit',
+                                                        style: TextStyle(
+                                                          color: Color(0xffFFF4DC),
+                                                          fontSize: 16,
+                                                        ),
+                                                      ),
+                                                      Text(
+                                                        '29 พฤศจิกายน พ.ศ. 2564, เวลา 12.10 น.',
+                                                        style: TextStyle(
+                                                          color: Color(0xffFFF4DC),
+                                                          fontSize: 10,
+                                                        ),
+                                                      ),
+                                                      SizedBox(height: 5),
+                                                      Text(
+                                                        'อาหารอร่อยสดใหม่มาก',
+                                                        style: TextStyle(
+                                                          color: Color(0xffFFF4DC),
+                                                          fontSize: 14,
+                                                        ),
+                                                      )
+                                                    ],
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
 
+                                            Row(
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: <Widget>[
+                                                Text(
+                                                    "fdfd" ,
+                                                    style: TextStyle(
+                                                        color: Color(0xffFFF4DC), fontSize: 16)),
+                                                Text(
+                                                    'price',
+                                                    style: TextStyle(
+                                                        color: Color(0xffFFF4DC), fontSize: 16))
+                                              ],
+                                            ),
+                                          ],
                                         ),
-                                              //จบกล่องรีวิว
-                                            ],
-                                          ),
+
+                                      ),
+                                      //จบกล่องรีวิว1
+                                      //กล่องรีวิว2
+                                      Container(
+                                        margin: EdgeInsets.symmetric(vertical: 10),
+                                        padding: EdgeInsets.all(20),
+                                        decoration: BoxDecoration(
+                                          color: Color(0xff1D3557),
+                                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black.withOpacity(0.3),
+                                              spreadRadius: 1,
+                                              blurRadius: 6,
+                                              offset: const Offset(1, 6),
+                                            ),
+                                          ],
                                         ),
-                                      ],
-                                    ),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            const CircleAvatar(
+                                              backgroundColor: Color(0xFFECFAFF),
+                                              radius: 25,
+                                              child: Text(
+                                                "SC",
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    color: Color(0xFF1d3557)
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            Flexible(
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'อพาร์ทเม้น',
+                                                    style: TextStyle(
+                                                      color: Color(0xffECFAFF),
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'ที่อยู่อาศัยตกแต่งในอาคารอพาร์ตเมนต์ที่มีห้องพักส่วนตัวพร้อม บริการเหมือนโรงแรม',
+                                                    style: TextStyle(
+                                                      color: Color(0xffECFAFF),
+                                                      fontSize: 14,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      //จบรีวิวกล่อง2
+                                      //กล่องรีวิว3
+                                      Container(
+                                        margin: EdgeInsets.symmetric(vertical: 10),
+                                        padding: EdgeInsets.all(20),
+                                        decoration: BoxDecoration(
+                                          color: Color(0xff1D3557),
+                                          borderRadius: BorderRadius.all(Radius.circular(15)),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black.withOpacity(0.3),
+                                              spreadRadius: 1,
+                                              blurRadius: 6,
+                                              offset: const Offset(1, 6),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            const CircleAvatar(
+                                              backgroundColor: Color(0xFFECFAFF),
+                                              radius: 25,
+                                              child: Text(
+                                                "SC",
+                                                style: TextStyle(
+                                                    fontSize: 20,
+                                                    color: Color(0xFF1d3557)
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(width: 10),
+                                            Flexible(
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.start,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  Text(
+                                                    'อพาร์ทเม้น',
+                                                    style: TextStyle(
+                                                      color: Color(0xffECFAFF),
+                                                      fontSize: 16,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    'ที่อยู่อาศัยตกแต่งในอาคารอพาร์ตเมนต์ที่มีห้องพักส่วนตัวพร้อม บริการเหมือนโรงแรม',
+                                                    style: TextStyle(
+                                                      color: Color(0xffECFAFF),
+                                                      fontSize: 14,
+                                                    ),
+                                                  )
+                                                ],
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
                                   ),
-
                                 ),
                               ),
                             ],
