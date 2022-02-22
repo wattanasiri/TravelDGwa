@@ -38,17 +38,20 @@ class _detailpartnerState extends State<detailpartner> {
             Stack(
               children: <Widget>[
                 SizedBox(height: MediaQuery.of(context).size.height),
-                CarouselSlider.builder(
-                  itemCount: widget.data['foundpartner']['image'].length,
-                  options: CarouselOptions(
-                      height: 400.0,
-                      viewportFraction: 1,
-                      onPageChanged: (index, reason) =>
-                      {setState(() => activeIndex = index)}),
-                  itemBuilder: (context, index, realIndex) {
-                    final urlImage = widget.data['foundpartner']['image'][index];
-                    return buildImage(urlImage, index);
-                  },
+                Container(
+                  color: Colors.white,
+                  child: CarouselSlider.builder(
+                    itemCount: widget.data['foundpartner']['image'].length,
+                    options: CarouselOptions(
+                        height: 400.0,
+                        viewportFraction: 1,
+                        onPageChanged: (index, reason) =>
+                        {setState(() => activeIndex = index)}),
+                    itemBuilder: (context, index, realIndex) {
+                      final urlImage = widget.data['foundpartner']['image'][index];
+                      return buildImage(urlImage, index);
+                    },
+                  ),
                 ),
                 Positioned(
                   top: 0,
@@ -121,7 +124,7 @@ class _detailpartnerState extends State<detailpartner> {
                                             const SizedBox(width: 15),
                                             Flexible(
                                               child: Text(
-                                                'วันเปิดทำการ      :    ${ widget.data['foundpartner']['opening_day']}',
+                                                'วันเปิดทำการ          :    ${ widget.data['foundpartner']['opening_day']}',
                                                 style: const TextStyle(
                                                   color: Color(0xff1D3557),
                                                   fontSize: 14,
@@ -205,10 +208,121 @@ class _detailpartnerState extends State<detailpartner> {
                                           ),
                                     ),
                                   ),
-                                )
+                                ),
                               ],
                             ),
                           ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
+                                color: Color(0xffFFEEC9),
+                                borderRadius: BorderRadius.all(Radius.circular(15)
+                                )
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                const Text(
+                                  'เอกสารประกอบการเช่า',
+                                  style: TextStyle(
+                                    color: Color(0xff1D3557),
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                                  child: MediaQuery.removePadding(
+                                    removeTop: true,
+                                    context: context,
+                                    child: ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: const NeverScrollableScrollPhysics(),
+                                      itemCount: widget.data['foundpartner']['document_require'].length,
+                                      itemBuilder: (context, int index) =>
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            mainAxisAlignment: MainAxisAlignment.start,
+                                            children: [
+                                              const Icon(Icons.circle, color: const Color(0xff1D3557), size: 5),
+                                              const SizedBox(width: 5),
+                                              Flexible(
+                                                  child: Text(
+                                                      '      ' + widget.data['foundpartner']['document_require'][index],
+                                                      maxLines: 1,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                        color: const Color(0xff1D3557),
+                                                        fontSize: 14,
+                                                      )
+                                                  )
+                                              )
+                                            ],
+                                          ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            padding: const EdgeInsets.all(10),
+                            decoration: const BoxDecoration(
+                                color: Color(0xffFFEEC9),
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(15))),
+                            child: Row(
+                              children: [
+                                Flexible(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Icon(Icons.app_registration, color: Color(0xffFF9A62)),
+                                            const SizedBox(width: 15),
+                                            Flexible(
+                                              child: Text(
+                                                'วันเปิดทำการ          :    ${ widget.data['foundpartner']['opening_day']}',
+                                                style: const TextStyle(
+                                                  color: Color(0xff1D3557),
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Icon(Icons.chair_alt_outlined, color: Color(0xffFF9A62)),
+                                            const SizedBox(width: 15),
+                                            Flexible(
+                                              child: Text(
+                                                'เวลาเปิดทำการ       :    ${ widget.data['foundpartner']['opening_time']}',
+                                                style: const TextStyle(
+                                                  color: Color(0xff1D3557),
+                                                  fontSize: 14,
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
                         ],
                       ),
                     ],
@@ -222,28 +336,28 @@ class _detailpartnerState extends State<detailpartner> {
     );
   }
 
-  // Widget buildImage(String urlImage, int index) => Container(
-  //   color: Colors.white,
-  //   width: 500,
-  //   child: Image.network(
-  //     urlImage,
-  //     fit: BoxFit.cover,
-  //     height: double.infinity,
-  //     width: double.infinity,
-  //     alignment: Alignment.center,
-  //   ),
-  // );
-  //
-  Widget buildImage(String urlImage, int index) =>CircleAvatar(radius: (600),
-      backgroundColor: Colors.white,
-      child: ClipRRect(
-        borderRadius:BorderRadius.circular(0),
-        child: Image.network(
-          urlImage,
-          fit: BoxFit.cover,
-        ),
-      )
+  Widget buildImage(String urlImage, int index) => Container(
+    color: Colors.white,
+    height: double.infinity,
+    width: double.infinity,
+    child: Image.network(
+      urlImage,
+      fit: BoxFit.cover,
+
+      alignment: Alignment.center,
+    ),
   );
+
+  // Widget buildImage(String urlImage, int index) =>CircleAvatar(radius: (1000),
+  //     backgroundColor: Colors.white,
+  //     child: ClipRRect(
+  //       borderRadius:BorderRadius.circular(0),
+  //       child: Image.network(
+  //         urlImage,
+  //         fit: BoxFit.cover,
+  //       ),
+  //     )
+  // );
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
     activeIndex: activeIndex,
