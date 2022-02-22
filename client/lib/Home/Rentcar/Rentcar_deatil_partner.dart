@@ -8,10 +8,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:http/http.dart' as http;
 
-class detailpartner extends StatefulWidget {
-  Map data;
+import 'Rentcar_detail_car.dart';
 
-  detailpartner({this.data});
+class detailpartner extends StatefulWidget {
+  String dategetcar, timegetcar,datesentcar,yourlocation,timesentcar;
+  Map data,partnerdata;
+  var destination = new List();
+
+  detailpartner({this.dategetcar,this.timegetcar,this.datesentcar,this.timesentcar,this.yourlocation,this.data,this.partnerdata,this.destination});
   @override
   _detailpartnerState createState() => _detailpartnerState();
 }
@@ -25,9 +29,9 @@ class _detailpartnerState extends State<detailpartner> {
   void initState() {
     super.initState();
     print('datapartner');
-    print(widget.data);
-    print(widget.data['foundpartner']['image']);
-    print(widget.data['foundpartner']['image'].length);
+    print(widget.partnerdata);
+    print(widget.partnerdata['foundpartner']['image']);
+    print(widget.partnerdata['foundpartner']['image'].length);
   }
   @override
   Widget build(BuildContext context) {
@@ -41,14 +45,14 @@ class _detailpartnerState extends State<detailpartner> {
                 Container(
                   color: Colors.white,
                   child: CarouselSlider.builder(
-                    itemCount: widget.data['foundpartner']['image'].length,
+                    itemCount: widget.partnerdata['foundpartner']['image'].length,
                     options: CarouselOptions(
                         height: 400.0,
                         viewportFraction: 1,
                         onPageChanged: (index, reason) =>
                         {setState(() => activeIndex = index)}),
                     itemBuilder: (context, index, realIndex) {
-                      final urlImage = widget.data['foundpartner']['image'][index];
+                      final urlImage = widget.partnerdata['foundpartner']['image'][index];
                       return buildImage(urlImage, index);
                     },
                   ),
@@ -62,8 +66,18 @@ class _detailpartnerState extends State<detailpartner> {
                     elevation: 0,
                     leading: IconButton(
                       icon: const Icon(Icons.arrow_back_ios_rounded,
-                          color: Color(0xffECFAFF)),
-                      onPressed: () => Navigator.pop(context),
+                          color: Colors.black),
+                      onPressed: () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
+                          cardetail(
+                            dategetcar: widget.dategetcar,
+                            timegetcar: widget.timegetcar,
+                            datesentcar: widget.datesentcar,
+                            timesentcar: widget.timesentcar,
+                            yourlocation: widget.yourlocation,
+                            data: widget.data,
+                            destination: widget.destination,
+                            partnerdata: widget.partnerdata,
+                          ),)),
                     ),
                   ),
                 ),
@@ -90,7 +104,7 @@ class _detailpartnerState extends State<detailpartner> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            widget.data['foundpartner']['namepartner'],
+                            widget.partnerdata['foundpartner']['namepartner'],
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.poppins(
@@ -120,11 +134,11 @@ class _detailpartnerState extends State<detailpartner> {
                                         child: Row(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            Icon(Icons.app_registration, color: Color(0xffFF9A62)),
+                                            Icon(Icons.calendar_today_outlined, color: Color(0xffFF9A62)),
                                             const SizedBox(width: 15),
                                             Flexible(
                                               child: Text(
-                                                'วันเปิดทำการ          :    ${ widget.data['foundpartner']['opening_day']}',
+                                                'วันเปิดทำการ          :    ${ widget.partnerdata['foundpartner']['opening_day']}',
                                                 style: const TextStyle(
                                                   color: Color(0xff1D3557),
                                                   fontSize: 14,
@@ -139,11 +153,11 @@ class _detailpartnerState extends State<detailpartner> {
                                         child: Row(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            Icon(Icons.chair_alt_outlined, color: Color(0xffFF9A62)),
+                                            Icon(Icons.share_arrival_time_outlined, color: Color(0xffFF9A62)),
                                             const SizedBox(width: 15),
                                             Flexible(
                                               child: Text(
-                                                'เวลาเปิดทำการ       :    ${ widget.data['foundpartner']['opening_time']}',
+                                                'เวลาเปิดทำการ       :    ${ widget.partnerdata['foundpartner']['opening_time']}',
                                                 style: const TextStyle(
                                                   color: Color(0xff1D3557),
                                                   fontSize: 14,
@@ -185,7 +199,7 @@ class _detailpartnerState extends State<detailpartner> {
                                     child: ListView.builder(
                                       shrinkWrap: true,
                                       physics: const NeverScrollableScrollPhysics(),
-                                      itemCount: widget.data['foundpartner']['time_extrapay'].length,
+                                      itemCount: widget.partnerdata['foundpartner']['time_extrapay'].length,
                                       itemBuilder: (context, int index) =>
                                           Row(
                                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -195,7 +209,7 @@ class _detailpartnerState extends State<detailpartner> {
                                               const SizedBox(width: 5),
                                               Flexible(
                                                   child: Text(
-                                                      '      ' + widget.data['foundpartner']['time_extrapay'][index] + ' :  + ' + widget.data['foundpartner']['price_extrapay'][index],
+                                                      '      ' + widget.partnerdata['foundpartner']['time_extrapay'][index] + ' :  + ' + widget.partnerdata['foundpartner']['price_extrapay'][index],
                                                       maxLines: 1,
                                                       overflow: TextOverflow.ellipsis,
                                                       style: const TextStyle(
@@ -238,7 +252,7 @@ class _detailpartnerState extends State<detailpartner> {
                                     child: ListView.builder(
                                       shrinkWrap: true,
                                       physics: const NeverScrollableScrollPhysics(),
-                                      itemCount: widget.data['foundpartner']['document_require'].length,
+                                      itemCount: widget.partnerdata['foundpartner']['document_require'].length,
                                       itemBuilder: (context, int index) =>
                                           Row(
                                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -248,7 +262,7 @@ class _detailpartnerState extends State<detailpartner> {
                                               const SizedBox(width: 5),
                                               Flexible(
                                                   child: Text(
-                                                      '      ' + widget.data['foundpartner']['document_require'][index],
+                                                      '      ' + widget.partnerdata['foundpartner']['document_require'][index],
                                                       maxLines: 1,
                                                       overflow: TextOverflow.ellipsis,
                                                       style: const TextStyle(
@@ -283,11 +297,11 @@ class _detailpartnerState extends State<detailpartner> {
                                         child: Row(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            Icon(Icons.app_registration, color: Color(0xffFF9A62)),
+                                            Icon(Icons.phone_enabled_outlined , color: Color(0xffFF9A62)),
                                             const SizedBox(width: 15),
                                             Flexible(
                                               child: Text(
-                                                'วันเปิดทำการ          :    ${ widget.data['foundpartner']['opening_day']}',
+                                                'เบอร์โทรศัพท์  :    ${ widget.partnerdata['foundpartner']['phone']}',
                                                 style: const TextStyle(
                                                   color: Color(0xff1D3557),
                                                   fontSize: 14,
@@ -302,11 +316,11 @@ class _detailpartnerState extends State<detailpartner> {
                                         child: Row(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: <Widget>[
-                                            Icon(Icons.chair_alt_outlined, color: Color(0xffFF9A62)),
+                                            Icon(Icons.email_outlined , color: Color(0xffFF9A62)),
                                             const SizedBox(width: 15),
                                             Flexible(
                                               child: Text(
-                                                'เวลาเปิดทำการ       :    ${ widget.data['foundpartner']['opening_time']}',
+                                                'อีเมล  : ${ widget.partnerdata['foundpartner']['email']}',
                                                 style: const TextStyle(
                                                   color: Color(0xff1D3557),
                                                   fontSize: 14,
@@ -361,7 +375,7 @@ class _detailpartnerState extends State<detailpartner> {
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
     activeIndex: activeIndex,
-    count: widget.data['foundpartner']['image'].length,
+    count: widget.partnerdata['foundpartner']['image'].length,
     effect: ScaleEffect(
         dotWidth: 8,
         dotHeight: 8,

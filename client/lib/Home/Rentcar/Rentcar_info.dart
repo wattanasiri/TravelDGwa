@@ -1,6 +1,7 @@
 
 
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,7 @@ class _Rentcar_infoState extends State<Rentcar_info> {
   Map partnerdata;
   String partnerid;
 
+
   Future getdetailpartnercar() async {
     print('getdetailpartnercar');
     http.Response res =
@@ -33,6 +35,13 @@ class _Rentcar_infoState extends State<Rentcar_info> {
     print(data);
     print(data['foundCar']);
     print(data['foundCar']['car_name']);
+    var destination = new List(data['foundCar']['car_locationpickup'].length);
+    for(int i=0;i<data['foundCar']['car_locationpickup'].length;i++){
+
+      destination[i] = data['foundCar']['car_locationpickup'][i].toString() + ' ( + THB ' +data['foundCar']['car_pricelocationpickup'][i].toString() + ' )';
+      print(destination[i]);
+    }
+    print(destination);
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
         cardetail(
           dategetcar: widget.dategetcar,
@@ -40,6 +49,7 @@ class _Rentcar_infoState extends State<Rentcar_info> {
           datesentcar: widget.datesentcar,
           timesentcar: widget.timesentcar,
           yourlocation: widget.yourlocation,
+          destination: destination,
           data: data,
           partnerdata: partnerdata,
         ),));
@@ -58,7 +68,6 @@ class _Rentcar_infoState extends State<Rentcar_info> {
     data = json.decode(res.body);
     partnerid = data['foundCar']['PartnerID'];
   }
-
 
   @override
   void initState() {

@@ -8,12 +8,15 @@ import 'package:se_app2/Home/Rentcar/Rentcar_deatil_partner.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:http/http.dart' as http;
 
+import 'Rentcar_result_reserve.dart';
+
 class cardetail extends StatefulWidget {
   String dategetcar, timegetcar,datesentcar,yourlocation,timesentcar;
   Map data,partnerdata;
+  var destination = new List();
 
 
-  cardetail({this.dategetcar,this.timegetcar,this.datesentcar,this.timesentcar,this.yourlocation,this.data,this.partnerdata});
+  cardetail({this.dategetcar,this.timegetcar,this.datesentcar,this.timesentcar,this.yourlocation,this.data,this.partnerdata,this.destination});
   @override
   _cardetailState createState() => _cardetailState();
 }
@@ -23,8 +26,8 @@ class _cardetailState extends State<cardetail> {
   @override
   void initState() {
     super.initState();
-    // print('data');
-    // print(widget.data);
+    print('data destination');
+    print(widget.destination);
     // print(widget.data['foundCar']['car_price']);
     // print(widget.data['foundCar']['car_name']);
     // print(widget.data['foundCar']['car_image'][0]);
@@ -37,17 +40,24 @@ class _cardetailState extends State<cardetail> {
   ValueNotifier<String> price = ValueNotifier('--');
   final GlobalKey<FormState> _formKey = GlobalKey();
   String value_of_pickuppoint;
+  String value_price,value_destination,value_namedestination;
   int activeIndex = 0;
   var k =0;
 
   Future _price(String location) async{
+    print('price');
+    print(location);
     for(int i =0;i<widget.data['foundCar']['car_locationpickup'].length;i++){
-      if(location == widget.data['foundCar']['car_locationpickup'][i]){
+      int endstring = location.length - 14;
+      print(widget.data['foundCar']['car_locationpickup'][i]);
+      if(location.substring(0,endstring) == widget.data['foundCar']['car_locationpickup'][i]){
         k = i;
       }
     }
     price.value = (widget.data['foundCar']['car_pricelocationpickup'][k]+widget.data['foundCar']['car_price']).toString();
-
+    value_price = (widget.data['foundCar']['car_pricelocationpickup'][k]+widget.data['foundCar']['car_price']).toString();
+    value_destination = widget.data['foundCar']['car_pricelocationpickup'][k].toString();
+    value_namedestination = widget.data['foundCar']['car_locationpickup'][k];
   }
 
 
@@ -142,7 +152,7 @@ class _cardetailState extends State<cardetail> {
                                             child: Row(
                                               crossAxisAlignment: CrossAxisAlignment.start,
                                               children: <Widget>[
-                                                CircleAvatar(radius: (28),
+                                                CircleAvatar(radius: (20),
                                                     backgroundColor: Colors.white,
                                                     child: ClipRRect(
                                                       borderRadius:BorderRadius.circular(50),
@@ -154,7 +164,7 @@ class _cardetailState extends State<cardetail> {
                                                 ),
                                                 Flexible(
                                                   child: Padding(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 17),
+                                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 11),
                                                    child: Row(
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: <Widget>[
@@ -200,11 +210,17 @@ class _cardetailState extends State<cardetail> {
                               ),
                             ),
                             onTap: () {
-                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
+                              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
                                   detailpartner(
-                                    data: widget.partnerdata,
+                                    dategetcar: widget.dategetcar,
+                                    timegetcar: widget.timegetcar,
+                                    datesentcar: widget.datesentcar,
+                                    timesentcar: widget.timesentcar,
+                                    yourlocation: widget.yourlocation,
+                                    data: widget.data,
+                                    partnerdata: widget.partnerdata,
+                                    destination: widget.destination,
                                   ),));
-                              print("tapped on container");
                             },
                           ),
 
@@ -463,7 +479,7 @@ class _cardetailState extends State<cardetail> {
                                 iconSize: 16,
                                 icon: const Icon(Icons.arrow_drop_down, color: Colors.black,),
                                 isExpanded: true,
-                                items: widget.data['foundCar']['car_locationpickup'].map<DropdownMenuItem<String>>((value) =>
+                                items: (widget.destination).map<DropdownMenuItem<String>>((value) =>
                                 new DropdownMenuItem<String>(
                                   value: value,
                                   child: new Text(value),
@@ -533,6 +549,20 @@ class _cardetailState extends State<cardetail> {
                             margin: const EdgeInsets.symmetric(vertical: 15),
                             child: ElevatedButton(
                               onPressed: () => {
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
+                                    result_reserve(
+                                      dategetcar: widget.dategetcar,
+                                      timegetcar: widget.timegetcar,
+                                      datesentcar: widget.datesentcar,
+                                      timesentcar: widget.timesentcar,
+                                      yourlocation: widget.yourlocation,
+                                      // destination: value_destination,
+                                      price: value_price,
+                                      data: widget.data,
+                                      partnerdata: widget.partnerdata,
+                                      pricedestination : value_destination,
+                                      namedestination : value_namedestination,
+                                    ),)),
 
                               },
                               style: ElevatedButton.styleFrom(

@@ -208,14 +208,6 @@ class _rentcarState extends State<rentcar> {
       data : dataafterquery,
 
     ),));
-    // for u pee pee
-    // print('data');
-    // print(dataafterquery);
-    // print(dataafterquery['foundCar'][0]);
-    // print(dataafterquery['foundCar'][0]['car_name']);
-    // print(dataafterquery['foundCar'][0]['car_image'][0]);
-    // print(dataafterquery['foundCar'][0]['car_image'].length);
-
   }
 
   TextEditingController
