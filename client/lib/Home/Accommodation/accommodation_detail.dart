@@ -336,6 +336,7 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                             child: ElevatedButton(
                               onPressed: () async => {
                                 await getRoom(),
+
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

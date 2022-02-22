@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:se_app2/Home/Accommodation/accommodation.dart';
-import 'package:se_app2/Home/Shuttle/shuttle.dart';
+import 'package:se_app2/Home/Airport_Transfer/Airport_Transfer_driver_input.dart';
+import 'package:se_app2/Home/Rentcar/Rentcar_detail_car.dart';
+import 'package:se_app2/Home/Rentcar/Rentcar_main.dart';
 import 'package:se_app2/constants.dart';
 import 'home_button.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -72,7 +74,7 @@ class Home extends StatelessWidget {
               children: <Widget>[
                 HomeButton(icon: 'assets/icons/03.png', text: 'บริการรับ-ส่ง', route: ShuttlePage()),
                 SizedBox(width: 30),
-                HomeButton(icon: 'assets/icons/04.png', text: 'เช่ารถ', route: '/findhotel'),
+                HomeButton(icon: 'assets/icons/04.png', text: 'เช่ารถ', route: rentcar()),
                 SizedBox(width: 30),
                 HomeButton(icon: 'assets/icons/05.png', text: 'แผนที่', route: '/findhotel'),
               ],
