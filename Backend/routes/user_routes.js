@@ -71,7 +71,11 @@ router.post('/signin',(req,res,next) => {
                 console.log("Login successful.");
                 var token = jwt.encode(user, secret)
                 console.log(res.locals.currentUser)
-                return res.status(200).send(String(user._id)).json({"token" : token})
+
+                // aoy's branch only
+                // return res.status(200).send(String(user._id));
+                // Job's branch only
+                return res.status(200).json({"token" : token})
             })
             console.log(req.isAuthenticated())
         } else {

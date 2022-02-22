@@ -20,7 +20,7 @@ class Booking extends StatefulWidget {
 class _BookingState extends State<Booking> {
 
   var bookingStatus = 0; // 0, 1, 2
-  var bookingSort = 0; // 0 to 5
+  var bookingType = 0; // 0 to 5
   var itemFound = false;
   var connectionFailed = false;
   var done = false;
@@ -70,6 +70,23 @@ class _BookingState extends State<Booking> {
     }
   }
 
+
+  void filterStatusData(statusIndex) {
+    // TODO
+    setState(() => {
+      bookingStatus = statusIndex,
+      ResultItem(bookingData: bookingData),
+    });
+  }
+
+  void filterTypeData(typeIndex) {
+    var filteredData = [...bookingData].where((row) => (row['bookingType'] == 'accommodation'));
+    setState(() => {
+      bookingType = typeIndex,
+      ResultItem(bookingData: filteredData),
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -110,7 +127,7 @@ class _BookingState extends State<Booking> {
                   onPressed: () {
                     setState(() => {
                       bookingStatus = 0,
-                      ResultItem(bookingStatus: bookingStatus)
+                      ResultItem()
                     });
                   },
                   child: Text('เร็วๆ นี้',
@@ -133,7 +150,7 @@ class _BookingState extends State<Booking> {
                   onPressed: () {
                     setState(() => {
                       bookingStatus = 1,
-                      ResultItem(bookingStatus: bookingStatus)
+                      ResultItem()
                     });
                   },
                   child: Text('เรียบร้อยแล้ว',
@@ -157,7 +174,7 @@ class _BookingState extends State<Booking> {
                   onPressed: () {
                     setState(() => {
                       bookingStatus = 2,
-                      ResultItem(bookingStatus: bookingStatus)
+                      ResultItem()
                     });
                   },
                   child: Text('ที่ยกเลิก',
@@ -188,10 +205,7 @@ class _BookingState extends State<Booking> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    setState(() => {
-                      bookingSort = 0,
-                      ResultItem(bookingStatus: bookingSort)
-                    });
+                    filterTypeData(0);
                   },
                   child: Column(
                     children: [
@@ -206,7 +220,7 @@ class _BookingState extends State<Booking> {
                           borderRadius: BorderRadius.all(Radius.circular(25),),
                         ),
                         child: Icon(Icons.copy,
-                            color: bookingSort == 0 ? orangeColor : Colors.white,
+                            color: bookingType == 0 ? orangeColor : Colors.white,
                             size: 20),
                       ),
                       const Text('ทั้งหมด', style: TextStyle(fontSize: 14),),
@@ -215,10 +229,7 @@ class _BookingState extends State<Booking> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    setState(() => {
-                      bookingSort = 1,
-                      ResultItem(bookingStatus: bookingSort)
-                    });
+                    filterTypeData(1);
                   },
                   child: Column(
                     children: [
@@ -233,7 +244,7 @@ class _BookingState extends State<Booking> {
                           borderRadius: BorderRadius.all(Radius.circular(25),),
                         ),
                         child: Icon(Icons.business,
-                            color: bookingSort == 1 ? orangeColor : Colors.white,
+                            color: bookingType == 1 ? orangeColor : Colors.white,
                             size: 20),
                       ),
                       const Text('ที่พัก', style: TextStyle(fontSize: 14),),
@@ -243,10 +254,7 @@ class _BookingState extends State<Booking> {
                 //--------------------------------------------------------------
                 GestureDetector(
                   onTap: () {
-                    setState(() => {
-                      bookingSort = 2,
-                      ResultItem(bookingStatus: bookingSort)
-                    });
+                    filterTypeData(2);
                   },
                   child: Column(
                     children: [
@@ -261,7 +269,7 @@ class _BookingState extends State<Booking> {
                           borderRadius: BorderRadius.all(Radius.circular(25),),
                         ),
                         child: Icon(Icons.flight,
-                            color: bookingSort == 2 ? orangeColor : Colors.white,
+                            color: bookingType == 2 ? orangeColor : Colors.white,
                             size: 20),
                       ),
                       const Text('เที่ยวบิน', style: TextStyle(fontSize: 14),),
@@ -271,10 +279,7 @@ class _BookingState extends State<Booking> {
                 //--------------------------------------------------------------
                 GestureDetector(
                   onTap: () {
-                    setState(() => {
-                      bookingSort = 3,
-                      ResultItem(bookingStatus: bookingSort)
-                    });
+                    filterTypeData(3);
                   },
                   child: Column(
                     children: [
@@ -289,7 +294,7 @@ class _BookingState extends State<Booking> {
                           borderRadius: BorderRadius.all(Radius.circular(25),),
                         ),
                         child: Icon(Icons.directions_car,
-                            color: bookingSort == 3 ? orangeColor : Colors.white,
+                            color: bookingType == 3 ? orangeColor : Colors.white,
                             size: 20),
                       ),
                       const Text('รถรับ-ส่ง', style: TextStyle(fontSize: 14),),
@@ -299,10 +304,7 @@ class _BookingState extends State<Booking> {
                 //--------------------------------------------------------------
                 GestureDetector(
                   onTap: () {
-                    setState(() => {
-                      bookingSort = 4,
-                      ResultItem(bookingStatus: bookingSort)
-                    });
+                    filterTypeData(4);
                   },
                   child: Column(
                     children: [
@@ -317,7 +319,7 @@ class _BookingState extends State<Booking> {
                           borderRadius: BorderRadius.all(Radius.circular(25),),
                         ),
                         child: Icon(Icons.car_rental,
-                            color: bookingSort == 4 ? orangeColor : Colors.white,
+                            color: bookingType == 4 ? orangeColor : Colors.white,
                             size: 20),
                       ),
                       const Text('เช่ารถ', style: TextStyle(fontSize: 14),),
@@ -327,10 +329,7 @@ class _BookingState extends State<Booking> {
                 //--------------------------------------------------------------
                 GestureDetector(
                   onTap: () {
-                    setState(() => {
-                      bookingSort = 5,
-                      ResultItem(bookingStatus: bookingSort)
-                    });
+                    filterTypeData(5);
                   },
                   child: Column(
                     children: [
@@ -345,7 +344,7 @@ class _BookingState extends State<Booking> {
                           borderRadius: BorderRadius.all(Radius.circular(25),),
                         ),
                         child: Icon(Icons.star,
-                            color: bookingSort == 5 ? orangeColor : Colors.white,
+                            color: bookingType == 5 ? orangeColor : Colors.white,
                             size: 20),
                       ),
                       const Text('กิจกรรม', style: TextStyle(fontSize: 14),),
@@ -367,7 +366,7 @@ class _BookingState extends State<Booking> {
             if (done)
                 Container(
                 alignment: Alignment.center,
-                child: ResultItem(bookingStatus: bookingStatus, bookingSort: bookingSort, bookingData: bookingData),
+                child: ResultItem(bookingData: bookingData),
               )
             else
               Center(child: CircularProgressIndicator())

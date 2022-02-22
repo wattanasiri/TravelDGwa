@@ -8,15 +8,12 @@ import 'package:intl/intl.dart';
 import 'package:se_app2/functions.dart';
 
 import 'booking_detail_hotel.dart';
+import 'components/booking_type_icon.dart';
 
 class ResultItem extends StatefulWidget {
-  final bookingStatus;
-  final bookingSort;
   final bookingData;
   const ResultItem(
       {Key key,
-        this.bookingStatus,
-        this.bookingSort,
         this.bookingData,
       })
       : super(key: key);
@@ -28,21 +25,59 @@ class _ResultItemState extends State<ResultItem> {
 
   var itemFound = false;
   var connectionFailed = false;
-  var bookingStatus;
-  var bookingSort;
   var data;
 
   String formatCheckIn(String date) {
     var inputFormat = DateFormat('dd-MM-yyyy');
     DateTime parsedDate = inputFormat.parse(date);
-    var text = 'วันที่ ' + parsedDate.day.toString() + ' ' + getMonthNameShort(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
+    var text = 'วันที่ ' + parsedDate.day.toString() + ' ' +
+        getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
+        convertYearToBE(parsedDate.year).toString();
     return text;
   }
   String formatCheckOut(String date) {
     var inputFormat = DateFormat('dd-MM-yyyy');
     DateTime parsedDate = inputFormat.parse(date);
-    var text = 'วันที่ ' + parsedDate.day.toString() + ' ' + getMonthNameShort(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
+    var text = 'วันที่ ' + parsedDate.day.toString() + ' ' +
+        getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
+        convertYearToBE(parsedDate.year).toString();
     return text;
+  }
+
+  String getBookingTitle(Map dataIndex) {
+    if (dataIndex['bookingType'] == 'accommodation') {
+      return dataIndex['acc_name'];
+    } else if (dataIndex['bookingType'] == 'transferrecipt') {
+      return 'DRIVER UNKNOWN';
+    }
+    else {
+      return 'text error';
+    }
+  }
+
+  String getDateText1(Map dataIndex) {
+    if (dataIndex['bookingType'] == 'accommodation') {
+      return formatCheckIn(dataIndex['checkIn']);
+    } else if (dataIndex['bookingType'] == 'transferrecipt') {
+      var inputFormat = DateFormat('dd-MM-yyyy');
+      DateTime parsedDate = inputFormat.parse(dataIndex['startdate']);
+      var text = 'วันที่ ' + parsedDate.day.toString() + ' ' +
+          getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
+          convertYearToBE(parsedDate.year).toString() + ' เวลา ' +
+          dataIndex['starttime'] + ' น.';
+      return text;
+    }
+    else {
+      return '';
+    }
+  }
+
+  String getDateText2(Map dataIndex) {
+    if (dataIndex['bookingType'] == 'accommodation') {
+      return formatCheckOut(dataIndex['checkOut']);
+    } else {
+      return '';
+    }
   }
 
   @override
@@ -65,11 +100,16 @@ class _ResultItemState extends State<ResultItem> {
           itemBuilder: (BuildContext context, int index) {
             return GestureDetector(
               onTap: () => {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => hotelDetail(
-                            detail: data[index])))
+                if (data[index]['bookingType'] == 'accommodation') {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => hotelDetail(
+                              detail: data[index])))
+                } else {
+                  // print('not accom'),
+                },
+
               },
               child: GFCard(
                 elevation: 8,
@@ -107,13 +147,13 @@ class _ResultItemState extends State<ResultItem> {
                               top: 5,
                               bottom: 5,
                               left: 5,
-                              right: 40,
+                              right: 20,
                             ),
                             child: Column(
                               crossAxisAlignment : CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  data[index]['acc_name'],
+                                  getBookingTitle(data[index]),
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                       color: Color(0xffFFF4DC),
@@ -121,7 +161,7 @@ class _ResultItemState extends State<ResultItem> {
                                       fontSize: 14),
                                 ),
                                 Text(
-                                  'ห้อง Unknown eeeeeeeeeeeeeeeeeeeeee',
+                                  'UNDEFINED SUBTITLE',
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
                                       color: Color(0xffFFF4DC),
@@ -130,31 +170,33 @@ class _ResultItemState extends State<ResultItem> {
                                 SizedBox(height: 3,),
                                 Row(
                                   children: [
-                                    Icon(Icons.calendar_today_outlined,
-                                        color: Color(0xffECFAFF),
-                                        size: 14),
+                                    if (data[index]['bookingType'] == 'accommodation')
+                                      Icon(Icons.calendar_today_outlined,
+                                          color: Color(0xffECFAFF),
+                                          size: 14),
                                     SizedBox(width: 3,),
                                     Text(
-                                      formatCheckIn(data[index]['checkIn']),
+                                      getDateText1(data[index]),
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                           color: Color(0xffECFAFF),
-                                          fontSize: 11),
+                                          fontSize: 10),
                                     ),
                                   ],
                                 ),
                                 Row(
                                   children: [
-                                    Icon(Icons.alarm_off,
-                                        color: Color(0xffECFAFF),
-                                        size: 14),
+                                    if (data[index]['bookingType'] == 'accommodation')
+                                      Icon(Icons.alarm_off,
+                                          color: Color(0xffECFAFF),
+                                          size: 14),
                                     SizedBox(width: 3,),
                                     Text(
-                                      formatCheckOut(data[index]['checkOut']),
+                                      getDateText2(data[index]),
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
                                           color: Color(0xffECFAFF),
-                                          fontSize: 11),
+                                          fontSize: 10),
                                     ),
                                   ],
                                 ),
@@ -176,9 +218,7 @@ class _ResultItemState extends State<ResultItem> {
                           color: Color(0xffECFAFF),
                           borderRadius: BorderRadius.all(Radius.circular(25),),
                         ),
-                        child: Icon(Icons.location_city_sharp,
-                            color: Color(0xff1D3557),
-                            size: 20),
+                        child: BookingTypeIcon(type: data[index]['bookingType']),
                       ),
                       Container(
                         alignment: Alignment.centerRight,
