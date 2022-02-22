@@ -45,8 +45,7 @@ class _ResultItemState extends State<ResultItem> {
     data = widget.accommodationData;
     checkInEdit = TextEditingController(text: widget.checkInHolder);
     checkOutEdit = TextEditingController(text: widget.checkOutHolder);
-    numberOfPeopleEdit =
-        TextEditingController(text: widget.numberOfPeopleHolder);
+    numberOfPeopleEdit = TextEditingController(text: widget.numberOfPeopleHolder);
     numberOfRoomsEdit = TextEditingController(text: widget.numberOfRoomsHolder);
   }
 
@@ -80,31 +79,32 @@ class _ResultItemState extends State<ResultItem> {
                     borderRadius: BorderRadius.circular(20)),
                 padding: EdgeInsets.zero,
                 content: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Stack(alignment: Alignment.bottomRight, children: <Widget>[
-                      Column(
-                        children: [
-                          ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20)),
-                            child: Image.network('${data[index]['image']}',
-                                height: 200,
-                                width: MediaQuery.of(context).size.width,
-                                fit: BoxFit.cover),
-                          ),
-                          Container(
-                            alignment: Alignment.topLeft,
-                            height: 30,
-                            color: Colors.transparent,
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 5),
-                            child: _buildRatingStars(5),
-                          ),
-                        ],
-                      ),
-                      Container(
+                    Stack(
+                      alignment: Alignment.bottomRight,
+                      children: <Widget>[
+                        Column(
+                          children: [
+                            ClipRRect(
+                              borderRadius: const BorderRadius.only(
+                                  topLeft: Radius.circular(20),
+                                  topRight: Radius.circular(20)),
+                              child: Image.network('${data[index]['image']}',
+                                  height: 200,
+                                  width: MediaQuery.of(context).size.width,
+                                  fit: BoxFit.cover),
+                            ),
+                            Container(
+                              alignment: Alignment.topLeft,
+                              height: 30,
+                              color: Colors.transparent,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 15, vertical: 5),
+                              child: _buildRatingStars(5),
+                            ),
+                          ],
+                        ),
+                        Container(
                           margin: const EdgeInsets.only(right: 15),
                           width: 60,
                           height: 60,

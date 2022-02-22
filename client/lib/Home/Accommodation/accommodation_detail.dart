@@ -112,25 +112,21 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                     return buildImage(urlImage, index);
                   },
                 ),
-                Positioned(
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  child: AppBar(
-                    backgroundColor: Colors.transparent,
-                    elevation: 0,
-                    leading: IconButton(
-                      icon: const Icon(Icons.arrow_back_ios_rounded,
-                          color: Color(0xffECFAFF)),
-                      onPressed: () => Navigator.pop(context),
-                    ),
+                AppBar(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back_ios_rounded,
+                        color: Color(0xffECFAFF)),
+                    onPressed: () => Navigator.pop(context),
                   ),
                 ),
                 Container(
                     height: 400,
                     alignment: Alignment.bottomCenter,
                     padding: const EdgeInsets.only(bottom: 30),
-                    child: buildIndicator()),
+                    child: buildIndicator()
+                ),
                 Container(
                   margin: const EdgeInsets.only(top: 380),
                   padding:
