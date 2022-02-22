@@ -37,7 +37,14 @@ const rentcarpartnerSchema = new Schema({
             ref : 'comment'   
         }
     ],
-    image: String,
+    image: [
+        {
+            type:String
+        }
+    ],
+    opening_day: String,
+    opening_time: String,
+    
     phone : String,
     email: String,
     

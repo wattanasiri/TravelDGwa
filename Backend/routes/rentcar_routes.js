@@ -26,9 +26,10 @@ router.post('/register_rentcarpartner',async (req,res) => {
         // document_require: ,
         // comment: ,
         namepartner: req.body.partnername,
-        image: req.body.image,
         phone: req.body.phone,
         email: req.body.email,
+        opening_day: req.body.opening_day,
+        opening_time: req.body.opening_time,
     })
     infopartner.save()
     idinfopartner = infopartner._id.toString()
@@ -65,6 +66,7 @@ router.post('/register_carinfo_rentcarpartner',async (req,res) => {
         car_location: req.body.location,
         car_country: req.body.country,
         car_price: req.body.price,
+        car_partnername: req.body.partnername,
     })
    
     carinfopartner.save()
@@ -116,6 +118,7 @@ router.post('/regis_rentcarinfo',async (req,res) => {
         car_location: req.body.location,
         car_country: req.body.country,
         car_price: req.body.price,
+        car_partnername: req.body.partnername,
     })
     carinfopartner.save()
     idinfocar = carinfopartner._id.toString()
@@ -163,10 +166,8 @@ router.post('/getcarinfo',async (req,res) => {
 
 router.get('/:id' + '/infocar', (req,res) => {
     console.log('getdetailcar')
-    var country = req.params.id;
-    country = 'อุดรธานี'
-    console.log(country)
-    rentcarinfo.find({ "car_country": country }).exec((err,foundCar) => {
+    console.log(req.params.id)
+    rentcarinfo.findById(req.params.id).exec((err,foundCar) => {
         if(err){
             console.log(err)
         } else {

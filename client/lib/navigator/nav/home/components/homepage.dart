@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:se_app2/Home/Accommodation/accommodation.dart';
 import 'package:se_app2/Home/Airport_Transfer/Airport_Transfer_driver_input.dart';
-import 'package:se_app2/Home/Rentcar/Rentcar_detail.dart';
+import 'package:se_app2/Home/Rentcar/Rentcar_detail_car.dart';
 import 'package:se_app2/Home/Rentcar/Rentcar_main.dart';
 import 'package:se_app2/constants.dart';
 import 'home_button.dart';

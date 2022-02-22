@@ -33,6 +33,7 @@ const rentcarcarinfoSchema = new Schema({
             type:Number
         }
     ],
+    car_partnername: String,
     car_location: String,
     car_country: String,
     car_price: Number,

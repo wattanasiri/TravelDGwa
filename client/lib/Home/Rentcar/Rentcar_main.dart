@@ -10,7 +10,7 @@ import 'package:intl/intl.dart';
 import 'package:se_app2/Data/data_currentuser.dart';
 
 import '/data/data_airport.dart';
-import 'Rentcar_detail.dart';
+import 'Rentcar_detail_car.dart';
 import 'Rentcar_info.dart';
 
 class rentcar extends StatefulWidget {
@@ -21,10 +21,9 @@ class rentcar extends StatefulWidget {
 
 class _rentcarState extends State<rentcar> {
   String id;
-  Map data;
-  Map partnerdata;
+
   Map dataafterquery;
-  String partnerid;
+
   Future save_partner() async {
     print('savepartner');
     Datauser datauser = Datauser();
@@ -38,20 +37,20 @@ class _rentcarState extends State<rentcar> {
         body: <String, String>{
           "partnername": "Luv Driver Car Rent",
           "usernameID" : datauser.id,
-          "image": "https://www.luvdrive.com/assets/img/logo/new-logo.png",
           "phone": "095-2911766",
           "email": "aoy35085@hotmail.com",
-
+          "opening_day": "จันทร์ - ศุกร์",
+          "opening_time": "09.00 - 21.00",
         });
     print(res.body);
   }
-
   Future update_partner() async{
 
     print('update partner');
     List<String> document = ["บัตรประชาชน / Passport","ใบขับขี่ / Driving License"];
     List<String> name_extrapay = ["05:30 - 08.59","31:01 - 23:59","บริการรับส่งนอกสถานที่"];
     List<String> price_extrapay = ["300","300","100"];
+    List<String> image = ["https://www.luvdrive.com/assets/img/logo/new-logo.png","https://lh5.googleusercontent.com/p/AF1QipNf5_4r5eeUBPNb_sT5IcZ7u_luULYk5L2iFJBe=w1080-k-no"];
     Map<String,String> data;
     data={
       "document[]": document.toString(),
@@ -67,6 +66,9 @@ class _rentcarState extends State<rentcar> {
     for(int i = 0;i < price_extrapay.length ; i++){
       data.addAll({"price_extrapay[$i]":price_extrapay[i]});
     }
+    for(int i = 0;i < image.length ; i++){
+      data.addAll({"image[$i]":image[i]});
+    }
     var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/update_register_rentcarpartner'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
@@ -76,9 +78,7 @@ class _rentcarState extends State<rentcar> {
     print(res.body);
   }
   Future save_carinfo_partner() async{
-
     print('save carinfo partner');
-
     var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/register_carinfo_rentcarpartner'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
@@ -95,14 +95,14 @@ class _rentcarState extends State<rentcar> {
           "sentcar": "500",
           "country": "bangkok",
           "location" : "703 อาคารรัชฎาสวีท ถนนวงศ์สว่าง แขวงวงศ์สว่าง เขตบางซื่อ กทม 10800",
-          "price": "1500"
+          "price": "1500",
+          "partnername" : "Luv Driver Car Rent",
 
         });
     print(res.body);
 
   }
   Future update_carinfo_partner() async{
-
       print('update carinfo partner');
       List<String> image = ["https://www.toyota.co.th/media/product/feature/large/e8d2cc60fa1d5467bc3a8b2b944677faa9c42502.jpg","https://s.isanook.com/au/0/rp/r/w728/ya0xa0m1w0/aHR0cHM6Ly9zLmlzYW5vb2suY29tL2F1LzAvdWQvMTYvODEyODAveWFyaXNfYXRpdl8zMi5qcGc=.jpg"];
       List<String> name_service = ["FM/AM Radio","Bluetooth","USB/AUX","CD/MP3"];
@@ -151,7 +151,8 @@ class _rentcarState extends State<rentcar> {
           "sentcar": "1000",
           "country": "อุดรธานี",
           "location" : "703 อาคารรัชฎาสวีท ถนนวงศ์สว่าง แขวงวงศ์สว่าง เขตบางซื่อ กทม 10800",
-          "price": "1500"
+          "price": "1500",
+          "partnername" : "Luv Driver Car Rent",
 
         });
     print(res.body);
@@ -188,13 +189,25 @@ class _rentcarState extends State<rentcar> {
     print(res.body);
   }
   Future querycar() async {
+    // if (!_formKey.currentState.validate()) {
+    //   return;
+    // }
+    // _formKey.currentState.save();
     print('querycar');
-    id = 'กรุงเทพ';
-
+    id = _yourlocationcontroller.text.toString();
+    //กรุงเทพ
     http.Response res =
     await http.get(Uri.parse("http://10.0.2.2:8080/rentcar/" + id + '/queryrentcar'));
     dataafterquery = json.decode(res.body);
-    // print(dataafterquery);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Rentcar_info(
+      dategetcar: _dategetcarcontroller.text,
+      timegetcar: _timegetcarcontroller.text,
+      datesentcar: _datesentcarcontroller.text,
+      timesentcar: _timesentcarcontroller.text,
+      yourlocation: _yourlocationcontroller.text,
+      data : dataafterquery,
+
+    ),));
     // for u pee pee
     // print('data');
     // print(dataafterquery);
@@ -202,47 +215,6 @@ class _rentcarState extends State<rentcar> {
     // print(dataafterquery['foundCar'][0]['car_name']);
     // print(dataafterquery['foundCar'][0]['car_image'][0]);
     // print(dataafterquery['foundCar'][0]['car_image'].length);
-
-  }
-  Future getdetailpartnercar() async{
-    print('getdetailpartnercar');
-    http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/rentcar/" + partnerid + '/infopartner'));
-    partnerdata = json.decode(res.body);
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => cardetail(
-      dategetcar: _dategetcarcontroller.text,
-      timegetcar: _timegetcarcontroller.text,
-      datesentcar: _datesentcarcontroller.text,
-      timesentcar: _timesentcarcontroller.text,
-      yourlocation: _yourlocationcontroller.text,
-      data : data,
-      partnerdata: partnerdata,
-    ),));
-  }
-  Future getdetailcar() async {
-    // if (!_formKey.currentState.validate()) {
-    //   return;
-    // }
-    // _formKey.currentState.save();
-    print('getdetailcar');
-    id = '62134d4c6201bfd27183856a';
-    http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/rentcar/" + id + '/infocar'));
-    data = json.decode(res.body);
-    partnerid = data['foundCar'][0]['PartnerID'];
-  }
-  Future getcarinfo() async{
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/getcarinfo'),
-      headers: <String, String>{
-        'Context-Type': 'application/json;charSet=UTF-8'
-      },
-      body: <String, String>{
-          "country": _yourlocationcontroller.text,
-
-
-        },
-    );
-    print(res.body);
 
   }
 
@@ -601,10 +573,10 @@ class _rentcarState extends State<rentcar> {
                         padding: const EdgeInsets.all(20.0),
                         child: RaisedButton(
                           onPressed: () async =>  {
-                            // await querycar(),
-
-                            await getdetailcar(),
-                            await getdetailpartnercar(),
+                            await querycar(),
+                            //
+                            // await getdetailcar(),
+                            // await getdetailpartnercar(),
 
 
                           },

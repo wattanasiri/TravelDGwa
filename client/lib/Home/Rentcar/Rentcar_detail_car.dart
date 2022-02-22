@@ -4,9 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:se_app2/Home/Accommodation/accommodation_room.dart';
-import 'package:se_app2/Home/Accommodation/accommodation_transaction.dart';
+import 'package:se_app2/Home/Rentcar/Rentcar_deatil_partner.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:http/http.dart' as http;
 
@@ -25,17 +23,15 @@ class _cardetailState extends State<cardetail> {
   @override
   void initState() {
     super.initState();
-    print(widget.data['foundCar'][0]['car_locationpickup'].runtimeType);
-    print('data');
-    print(widget.data);
-    print(widget.data['foundCar'][0]);
-    print(widget.data['foundCar'][0]['car_price']);
-    print(widget.data['foundCar'][0]['car_name']);
-    print(widget.data['foundCar'][0]['car_image'][0]);
-    print(widget.data['foundCar'][0]['car_image'].length);
-    print('datapartner');
-    print(widget.partnerdata);
-    print(widget.partnerdata['foundpartner']['namepartner']);
+    // print('data');
+    // print(widget.data);
+    // print(widget.data['foundCar']['car_price']);
+    // print(widget.data['foundCar']['car_name']);
+    // print(widget.data['foundCar']['car_image'][0]);
+    // print(widget.data['foundCar']['car_image'].length);
+    // print('datapartner');
+    // print(widget.partnerdata);
+    // print(widget.partnerdata['foundpartner']['namepartner']);
   }
 
   ValueNotifier<String> price = ValueNotifier('--');
@@ -45,12 +41,12 @@ class _cardetailState extends State<cardetail> {
   var k =0;
 
   Future _price(String location) async{
-    for(int i =0;i<widget.data['foundCar'][0]['car_locationpickup'].length;i++){
-      if(location == widget.data['foundCar'][0]['car_locationpickup'][i]){
+    for(int i =0;i<widget.data['foundCar']['car_locationpickup'].length;i++){
+      if(location == widget.data['foundCar']['car_locationpickup'][i]){
         k = i;
       }
     }
-    price.value = (widget.data['foundCar'][0]['car_pricelocationpickup'][k]+widget.data['foundCar'][0]['car_price']).toString();
+    price.value = (widget.data['foundCar']['car_pricelocationpickup'][k]+widget.data['foundCar']['car_price']).toString();
 
   }
 
@@ -66,14 +62,14 @@ class _cardetailState extends State<cardetail> {
               children: <Widget>[
                 SizedBox(height: MediaQuery.of(context).size.height),
                 CarouselSlider.builder(
-                  itemCount: widget.data['foundCar'][0]['car_image'].length,
+                  itemCount: widget.data['foundCar']['car_image'].length,
                   options: CarouselOptions(
                       height: 400.0,
                       viewportFraction: 1,
                       onPageChanged: (index, reason) =>
                       {setState(() => activeIndex = index)}),
                   itemBuilder: (context, index, realIndex) {
-                    final urlImage = widget.data['foundCar'][0]['car_image'][index];
+                    final urlImage = widget.data['foundCar']['car_image'][index];
                     return buildImage(urlImage, index);
                   },
                 ),
@@ -114,7 +110,7 @@ class _cardetailState extends State<cardetail> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            widget.data['foundCar'][0]['car_name'],
+                            widget.data['foundCar']['car_name'],
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.poppins(
@@ -141,7 +137,6 @@ class _cardetailState extends State<cardetail> {
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: <Widget>[
-
                                           Padding(
                                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                             child: Row(
@@ -152,15 +147,12 @@ class _cardetailState extends State<cardetail> {
                                                     child: ClipRRect(
                                                       borderRadius:BorderRadius.circular(50),
                                                       child: Image.network(
-                                                        widget.partnerdata['foundpartner']['image'],
+                                                        widget.partnerdata['foundpartner']['image'][0],
                                                         fit: BoxFit.cover,
                                                       ),
                                                     )
                                                 ),
-
-
                                                 Flexible(
-
                                                   child: Padding(
                                                   padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 17),
                                                    child: Row(
@@ -208,6 +200,10 @@ class _cardetailState extends State<cardetail> {
                               ),
                             ),
                             onTap: () {
+                               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
+                                  detailpartner(
+                                    data: widget.partnerdata,
+                                  ),));
                               print("tapped on container");
                             },
                           ),
@@ -244,7 +240,7 @@ class _cardetailState extends State<cardetail> {
                                             const SizedBox(width: 15),
                                             Flexible(
                                               child: Text(
-                                                'ปีจดทะเบียน      :    ${ widget.data['foundCar'][0]['car_registration_year']}',
+                                                'ปีจดทะเบียน      :    ${ widget.data['foundCar']['car_registration_year']}',
                                                 style: const TextStyle(
                                                   color: Color(0xff1D3557),
                                                   fontSize: 14,
@@ -263,7 +259,7 @@ class _cardetailState extends State<cardetail> {
                                             const SizedBox(width: 15),
                                             Flexible(
                                               child: Text(
-                                                'จำนวนที่นั่ง        :    ${ widget.data['foundCar'][0]['car_nunber_sit']}',
+                                                'จำนวนที่นั่ง        :    ${ widget.data['foundCar']['car_nunber_sit']}',
                                                 style: const TextStyle(
                                                   color: Color(0xff1D3557),
                                                   fontSize: 14,
@@ -282,7 +278,7 @@ class _cardetailState extends State<cardetail> {
                                             const SizedBox(width: 15),
                                             Flexible(
                                               child: Text(
-                                                'กระเป๋าใหญ่       :    ${ widget.data['foundCar'][0]['car_nunber_bigbag']}',
+                                                'กระเป๋าใหญ่       :    ${ widget.data['foundCar']['car_nunber_bigbag']}',
                                                 style: const TextStyle(
                                                   color: Color(0xff1D3557),
                                                   fontSize: 14,
@@ -301,7 +297,7 @@ class _cardetailState extends State<cardetail> {
                                             const SizedBox(width: 15),
                                             Flexible(
                                               child: Text(
-                                                'กระเป๋าเล็ก        :     ${ widget.data['foundCar'][0]['car_nunber_smallbag']}',
+                                                'กระเป๋าเล็ก        :     ${ widget.data['foundCar']['car_nunber_smallbag']}',
                                                 style: const TextStyle(
                                                   color: Color(0xff1D3557),
                                                   fontSize: 14,
@@ -344,7 +340,7 @@ class _cardetailState extends State<cardetail> {
                                     child: ListView.builder(
                                       shrinkWrap: true,
                                       physics: const NeverScrollableScrollPhysics(),
-                                      itemCount: widget.data['foundCar'][0]['car_service'].length,
+                                      itemCount: widget.data['foundCar']['car_service'].length,
                                       itemBuilder: (context, int index) =>
                                           Row(
                                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -354,7 +350,7 @@ class _cardetailState extends State<cardetail> {
                                               const SizedBox(width: 5),
                                               Flexible(
                                                   child: Text(
-                                                      '      ' + widget.data['foundCar'][0]['car_service'][index],
+                                                      '      ' + widget.data['foundCar']['car_service'][index],
                                                       maxLines: 1,
                                                       overflow: TextOverflow.ellipsis,
                                                       style: const TextStyle(
@@ -403,7 +399,7 @@ class _cardetailState extends State<cardetail> {
                                             const SizedBox(width: 15),
                                             Flexible(
                                               child: Text(
-                                                'ราคา      :    ${ widget.data['foundCar'][0]['car_price']}  ต่อวัน (24 ชั่วโมง)',
+                                                'ราคา      :    ${ widget.data['foundCar']['car_price']}  ต่อวัน (24 ชั่วโมง)',
                                                 style: const TextStyle(
                                                   color: Color(0xff1D3557),
                                                   fontSize: 14,
@@ -467,7 +463,7 @@ class _cardetailState extends State<cardetail> {
                                 iconSize: 16,
                                 icon: const Icon(Icons.arrow_drop_down, color: Colors.black,),
                                 isExpanded: true,
-                                items: widget.data['foundCar'][0]['car_locationpickup'].map<DropdownMenuItem<String>>((value) =>
+                                items: widget.data['foundCar']['car_locationpickup'].map<DropdownMenuItem<String>>((value) =>
                                 new DropdownMenuItem<String>(
                                   value: value,
                                   child: new Text(value),
@@ -581,7 +577,7 @@ class _cardetailState extends State<cardetail> {
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
     activeIndex: activeIndex,
-    count: widget.data['foundCar'][0]['car_image'].length,
+    count: widget.data['foundCar']['car_image'].length,
     effect: ScaleEffect(
         dotWidth: 8,
         dotHeight: 8,
