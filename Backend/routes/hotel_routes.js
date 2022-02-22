@@ -42,7 +42,6 @@ router.get('/:id/room' , (req,res) => {
 })
 
 router.get('/search/:word', (req,res) => {
-    console.log(res.locals.currentUser.email)
     var searchWord = req.params.word
     Hotel.find({$or:[{name:{$regex:searchWord,$options:'i'}}
     ,{location:{$regex:searchWord,$options:'i'}}]}).populate('room')

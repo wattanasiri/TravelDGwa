@@ -13,7 +13,6 @@ const User = require('./models/user_model');
 
 mongoose.connect('mongodb+srv://admin:se1235@cluster0.inezx.mongodb.net/TravelDGwa?retryWrites=true&w=majority')
 
-
 app.use(require('express-session')({
   secret: 'it\'s a secret to everyone.',
   resave: false,
@@ -25,11 +24,6 @@ app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
 app.use(passport.initialize());
 app.use(passport.session());
-
-passport.serializeUser(User.serializeUser());
-passport.deserializeUser(User.deserializeUser());
-
-
 passport.use(new LocalStrategy({
     usernameField: 'email',
     passwordField: 'password'
@@ -37,16 +31,12 @@ passport.use(new LocalStrategy({
   User.authenticate()
 ));
 
-app.use(async function(req,res,next){
-  res.locals.message = req.user;
-  console.log(res.locals)
-  next();
-});
-
 app.use('/',require('./routes/user_routes'))
-app.use('/airport_transfer', require('./routes/airport_transfer_routes'))
+app.use('/shuttle', require('./routes/shuttle_routes'))
 app.use('/hotel',require('./routes/hotel_routes'))
-app.use('/rentcar',require('./routes/rentcar_routes'))
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // seedDB()
 

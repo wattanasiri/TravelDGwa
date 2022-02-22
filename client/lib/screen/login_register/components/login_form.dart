@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:se_app2/Data/data_currentuser.dart';
 import 'package:se_app2/constants.dart';
 import 'package:flutter/gestures.dart';
 import 'package:http/http.dart' as http;
-import 'package:se_app2/navigator/nav.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key key}) : super(key: key);
@@ -24,7 +22,6 @@ class _LoginFormState extends State<LoginForm>  {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-
     Future save() async {
       var res = await http.post(Uri.parse('http://10.0.2.2:8080/signin'),
           headers: <String, String>{
@@ -34,12 +31,6 @@ class _LoginFormState extends State<LoginForm>  {
             "email": emailController.text,
             "password": passwordController.text,
           });
-      print(res.body);
-      String currentid = res.body;
-      Datauser datauser = Datauser();
-      datauser.id = currentid;
-      print('id');
-      print(datauser.id);
       print(res.statusCode);
       if (res.statusCode == 200) {
         print('success');
