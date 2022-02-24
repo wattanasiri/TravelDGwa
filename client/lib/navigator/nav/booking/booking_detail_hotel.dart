@@ -9,6 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:se_app2/constants.dart';
 import 'package:se_app2/functions.dart';
 
+import 'billing_hotel.dart';
+import 'cancel_confirm.dart';
 import 'booking_item.dart';
 
 class hotelDetail extends StatefulWidget {
@@ -460,7 +462,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                 ),
                               ),
                               Text(
-                                'THB 3,300',
+                                'THB X,XXX',
                                 style: TextStyle(
                                     color: Color(0xff1D3557), fontSize: 20, fontWeight: FontWeight.bold),
                               ),
@@ -475,6 +477,14 @@ class _hotelDetailState extends State<hotelDetail> {
                                 margin: const EdgeInsets.symmetric(vertical: 10),
                                 child: ElevatedButton(
                                   onPressed: () async => {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return hotelBilling(
+                                          detail: detail,
+                                        );
+                                      },
+                                    ),
                                   },
                                   style: ElevatedButton.styleFrom(
                                     onPrimary: const Color(0xff1D3557),
@@ -498,6 +508,14 @@ class _hotelDetailState extends State<hotelDetail> {
                                 margin: const EdgeInsets.symmetric(vertical: 10),
                                 child: ElevatedButton(
                                   onPressed: () async => {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return confirmCancelBox(
+                                          detail: detail,
+                                        );
+                                      },
+                                    ),
                                   },
                                   style: ElevatedButton.styleFrom(
                                     onPrimary: const Color(0xffF25B52),

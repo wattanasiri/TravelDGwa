@@ -1,0 +1,176 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:se_app2/constants.dart';
+import 'package:se_app2/functions.dart';
+
+
+class confirmCancelBox extends StatefulWidget {
+
+  final detail;
+  final width;
+  final height;
+  const confirmCancelBox(
+      {Key key,
+        this.detail,
+        this.width,
+        this.height
+      })
+      : super(key: key);
+
+  @override
+  _confirmBoxState createState() => _confirmBoxState();
+}
+
+class _confirmBoxState extends State<confirmCancelBox> {
+  var detail;
+
+  List sample = [
+    {
+      "time": 1,
+      "info": "(1x) One grass suite : 3 คืน",
+      "price": 3300.00,
+    },
+  ];
+
+  String formatCheckIn(String date) {
+    var inputFormat = DateFormat('dd-MM-yyyy');
+    DateTime parsedDate = inputFormat.parse(date);
+    var text = 'วันที่เช็คอิน : ' + parsedDate.day.toString() + ' ' + getMonthName(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
+    return text;
+  }
+  String formatCheckOut(String date) {
+    var inputFormat = DateFormat('dd-MM-yyyy');
+    DateTime parsedDate = inputFormat.parse(date);
+    var text = 'วันที่เช็คเอาท์ : ' + parsedDate.day.toString() + ' ' + getMonthName(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
+    return text;
+  }
+
+  String formatPricing(double price) {
+    var text = formatPrice(price) + ' THB';
+    return text;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    detail = widget.detail;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+          borderRadius:
+          BorderRadius.all(
+              Radius.circular(15))),
+      contentPadding: EdgeInsets.all(0),
+      content: Builder(
+        builder: (context) {
+          var height = MediaQuery.of(context).size.height;
+          var width = MediaQuery.of(context).size.width;
+
+          return Container(
+            height: 200,
+            width: width - 50,
+            decoration: BoxDecoration(
+                color: Color(0xFFECFAFF),
+                border: Border.all(width: 2, color: Colors.black),
+                borderRadius: BorderRadius.all(Radius.circular(15))
+            ),
+            child: Stack(
+              overflow: Overflow.visible,
+              children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.only(
+                      top: 16,
+                      left: 0,
+                      right: 0,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Align(
+                        alignment: Alignment.center,
+                        child: Text(
+                          'ยกเลิกการจอง',
+                          style: GoogleFonts.poppins(
+                              color: const Color(0xff1D3557),
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      SizedBox(height: 25,),
+                      Container(
+                        padding: const EdgeInsets.only(
+                          left: 40,
+                          right: 40,
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'ในการยกเลิกการจองต้องใช้เวลาดำเนินการคืนเงิน ประมาณ 1-2 สัปดาห์ และอาจมีค่าธรรมเนียมในการ ยกเลิก ตาม ข้อกำหนดของ TravelDGwa',
+                              style: GoogleFonts.poppins(
+                                color: primaryColor,
+                                fontSize: 12,),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              Container(
+                                width: (width - 90) * 0.5,
+                                decoration: BoxDecoration(
+                                    color: Colors.red
+                                ),
+                                child: Text(
+                                  'ยกเลิก',
+                                  style: GoogleFonts.poppins(
+                                    color: primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                              Container(
+                                width: (width - 90) * 0.5,
+                                decoration: BoxDecoration(
+                                    color: Colors.red
+                                ),
+                                child: Text(
+                                  'ดำเนินการต่อ',
+                                  style: GoogleFonts.poppins(
+                                    color: primaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ],
+                          ),
+                      ),
+
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}

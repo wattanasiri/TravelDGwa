@@ -43,3 +43,7 @@ String getMonthNameShort (int monthZ) {
 int convertYearToBE (int year) {
   return year + 543;
 }
+
+String formatPrice(double input) {
+  return input.toStringAsFixed(2);
+}

@@ -2,8 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:se_app2/constants.dart';
-import '../booking/booking_body_none.dart';
-import 'package:ionicons/ionicons.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -14,7 +12,7 @@ class Booking extends StatefulWidget {
   const Booking({Key key}) : super(key: key);
 
   @override
-  _BookingState createState() => _BookingState();
+  State<Booking> createState() => _BookingState();
 }
 
 class _BookingState extends State<Booking> {
@@ -26,6 +24,7 @@ class _BookingState extends State<Booking> {
   var done = false;
 
   var bookingData;
+  var filteredData;
   Map data;
 
   Future getBookingData() async {
@@ -70,7 +69,6 @@ class _BookingState extends State<Booking> {
     }
   }
 
-
   void filterStatusData(statusIndex) {
     // TODO
     setState(() => {
@@ -80,11 +78,12 @@ class _BookingState extends State<Booking> {
   }
 
   void filterTypeData(typeIndex) {
-    var filteredData = [...bookingData].where((row) => (row['bookingType'] == 'accommodation'));
+    filteredData = [...bookingData].where((row) => (row['bookingType'] == 'transferrecipt'));
     setState(() => {
-      bookingType = typeIndex,
       ResultItem(bookingData: filteredData),
+      bookingType = typeIndex,
     });
+    // print(filteredData);
   }
 
   @override
@@ -127,7 +126,6 @@ class _BookingState extends State<Booking> {
                   onPressed: () {
                     setState(() => {
                       bookingStatus = 0,
-                      ResultItem()
                     });
                   },
                   child: Text('เร็วๆ นี้',
@@ -150,7 +148,6 @@ class _BookingState extends State<Booking> {
                   onPressed: () {
                     setState(() => {
                       bookingStatus = 1,
-                      ResultItem()
                     });
                   },
                   child: Text('เรียบร้อยแล้ว',
@@ -174,7 +171,6 @@ class _BookingState extends State<Booking> {
                   onPressed: () {
                     setState(() => {
                       bookingStatus = 2,
-                      ResultItem()
                     });
                   },
                   child: Text('ที่ยกเลิก',
