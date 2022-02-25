@@ -1,19 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter_boxicons/flutter_boxicons.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:se_app2/Home/Rentcar/Rentcar_deatil_partner.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:http/http.dart' as http;
+import 'package:se_app2/Home/Rentcar/Rentcar_receipt.dart';
 
 class result_reserve extends StatefulWidget {
   String dategetcar, timegetcar,datesentcar,yourlocation,timesentcar,price,pricedestination,namedestination;
+  var result_price_extra,result_price_extra_,result_date_time;
   Map data,partnerdata;
+  bool checkpriceextra;
 
 
-  result_reserve({this.dategetcar,this.timegetcar,this.datesentcar,this.timesentcar,this.yourlocation,this.data,this.partnerdata,this.pricedestination,this.namedestination,this.price});
+  result_reserve({this.dategetcar,this.timegetcar,this.datesentcar,this.timesentcar,this.yourlocation,this.data,this.partnerdata,this.pricedestination,this.namedestination,this.price,this.result_price_extra,this.result_price_extra_,this.result_date_time,this.checkpriceextra});
 
   @override
   _result_reserveState createState() => _result_reserveState();
@@ -23,18 +21,9 @@ class _result_reserveState extends State<result_reserve> {
   @override
   void initState() {
     super.initState();
-    print('result');
-    print(widget.pricedestination);
-    print(widget.price);
-    print(widget.namedestination);
+    print(widget.result_price_extra);
+    print(widget.result_price_extra_);
 
-    // print(widget.data['foundCar']['car_price']);
-    // print(widget.data['foundCar']['car_name']);
-    // print(widget.data['foundCar']['car_image'][0]);
-    // print(widget.data['foundCar']['car_image'].length);
-    // print('datapartner');
-    // print(widget.partnerdata);
-    // print(widget.partnerdata['foundpartner']['namepartner']);
   }
   @override
   Widget build(BuildContext context) {
@@ -152,6 +141,17 @@ class _result_reserveState extends State<result_reserve> {
                             children: [
                               Text(
                                 'ชื่อรุ่น : ${ widget.data['foundCar']['car_brand']}',
+                                style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: Color(0xff1D3557)
+                                ),
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Text(
+                                'ป้ายทะเบียนรถ : ${ widget.data['foundCar']['car_license']}',
                                 style: TextStyle(
                                     fontSize: 14.0,
                                     color: Color(0xff1D3557)
@@ -394,12 +394,20 @@ class _result_reserveState extends State<result_reserve> {
                         Column(
                           children: [
                             Text(
-                              'รถ ${ widget.data['foundCar']['car_name']}',
+                              'ราคาต่อวัน (${widget.dategetcar}-${widget.datesentcar})',
                               style: TextStyle(
                                   fontSize: 14.0,
                                   color: Color(0xff1D3557)
                               ),
                             ),
+                            if(widget.result_price_extra != 0)
+                              Text(
+                                'ราคาส่วนต่างเวลา (${widget.timegetcar}-${widget.timesentcar})',
+                                style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: Color(0xff1D3557)
+                                ),
+                              ),
                             Text(
                               '${ widget.namedestination}',
                               style: TextStyle(
@@ -412,12 +420,20 @@ class _result_reserveState extends State<result_reserve> {
                         Column(
                           children: [
                             Text(
-                              'THB   ${ widget.data['foundCar']['car_price']}',
+                              'THB ${ widget.data['foundCar']['car_price']*widget.result_date_time}',
                               style: TextStyle(
                                   fontSize: 14.0,
                                   color: Color(0xff1D3557)
                               ),
                             ),
+                            if(widget.result_price_extra != 0)
+                              Text(
+                                'THB  ${widget.result_price_extra_}',
+                                style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: Color(0xff1D3557)
+                                ),
+                              ),
                             Text(
                               'THB  ${widget.pricedestination}',
                               style: TextStyle(
@@ -444,15 +460,23 @@ class _result_reserveState extends State<result_reserve> {
                     child: RaisedButton(
                       onPressed: () {
 
-                        // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>
-                        //     receipt( startdate: widget.startdate,
-                        //       typeshuttle: widget.typeshuttle,
-                        //       starttime: widget.starttime,
-                        //       destination: widget.destination,
-                        //       yourlocation: widget.yourlocation,
-                        //       sumprice: widget.sumprice,
-                        //       value_booknow: widget.value_booknow,
-                        //     )));
+                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
+                            rentcar_rerceipt(
+                              dategetcar: widget.dategetcar,
+                              timegetcar: widget.timegetcar,
+                              datesentcar: widget.datesentcar,
+                              timesentcar: widget.timesentcar,
+                              yourlocation: widget.yourlocation,
+                              price: widget.price,
+                              data: widget.data,
+                              partnerdata: widget.partnerdata,
+                              pricedestination : widget.pricedestination,
+                              namedestination : widget.namedestination,
+                              result_price_extra: widget.result_price_extra,
+                              result_price_extra_: widget.result_price_extra_,
+                              result_date_time : widget.result_date_time,
+
+                            ),));
                       },
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),

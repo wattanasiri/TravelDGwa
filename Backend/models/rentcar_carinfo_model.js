@@ -37,6 +37,8 @@ const rentcarcarinfoSchema = new Schema({
     car_location: String,
     car_country: String,
     car_price: Number,
+    car_price_minute: Number,
+    car_license: String, 
     
     
     

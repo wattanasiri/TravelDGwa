@@ -1,16 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:se_app2/Data/data_currentuser.dart';
-
-import '/data/data_airport.dart';
-import 'Rentcar_detail_car.dart';
 import 'Rentcar_info.dart';
 
 class rentcar extends StatefulWidget {
@@ -97,6 +91,8 @@ class _rentcarState extends State<rentcar> {
           "location" : "703 อาคารรัชฎาสวีท ถนนวงศ์สว่าง แขวงวงศ์สว่าง เขตบางซื่อ กทม 10800",
           "price": "1500",
           "partnername" : "Luv Driver Car Rent",
+          "price_minute": "2",
+          "license": "กท32020",
 
         });
     print(res.body);
@@ -152,7 +148,9 @@ class _rentcarState extends State<rentcar> {
           "country": "อุดรธานี",
           "location" : "703 อาคารรัชฎาสวีท ถนนวงศ์สว่าง แขวงวงศ์สว่าง เขตบางซื่อ กทม 10800",
           "price": "1500",
+          "price_minute": "2",
           "partnername" : "Luv Driver Car Rent",
+          "license": "กท32020",
 
         });
     print(res.body);
@@ -189,10 +187,30 @@ class _rentcarState extends State<rentcar> {
     print(res.body);
   }
   Future querycar() async {
-    // if (!_formKey.currentState.validate()) {
-    //   return;
+    // var date_time_getcar,date_time_sentcar;
+    // date_time_getcar = _dategetcarcontroller.text+ ' ' + _timegetcarcontroller.text;
+    // date_time_sentcar = _datesentcarcontroller.text + ' ' + _timesentcarcontroller.text;
+    // print(date_time_getcar);
+    // print(date_time_sentcar);
+    // DateTime dt1 = DateTime.parse(date_time_sentcar);
+    // DateTime dt2 = DateTime.parse(date_time_getcar);
+    // Duration diff = dt1.difference(dt2);
+    // print('dif time');
+    // print(diff.inMinutes);
+    // print(diff.inMinutes%1440);
+    // print(diff.inMinutes~/1440);
+    // if(diff.inMinutes~/1440 == 0) {
+    //   print('result :  1');
     // }
-    // _formKey.currentState.save();
+    // if(diff.inMinutes~/1440 > 0){
+    //   print('result :  ${diff.inMinutes~/1440}');
+    //   print('result :  ${diff.inMinutes%1440}');
+    // }
+
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
     print('querycar');
     id = _yourlocationcontroller.text.toString();
     //กรุงเทพ
@@ -340,7 +358,7 @@ class _rentcarState extends State<rentcar> {
                               color: Colors.red,
                               fontSize: 12,
                             ),
-                            hintText: ' วว-ดด-ปป',
+                            hintText: ' ปปปป-ดด-วว',
                             prefixIcon: Icon(Icons.calendar_today,color: Colors.black,),
                             enabledBorder: UnderlineInputBorder(
                                 borderSide: BorderSide(color: Colors.white,width: 2.0)),
@@ -364,8 +382,11 @@ class _rentcarState extends State<rentcar> {
                                 initialDate: DateTime.now(),
                                 firstDate: DateTime(1900),
                                 lastDate: DateTime(2100));
+                            print(date);
                             var formattedDate =
-                                "${date.day}-${date.month}-${date.year}";
+                            DateFormat('yyyy-MM-dd').format(date);
+                            print('formattedDate');
+                            print(formattedDate);
                             _dategetcarcontroller.text =
                                 formattedDate.toString();
                           },
@@ -463,7 +484,7 @@ class _rentcarState extends State<rentcar> {
                         ),
                         child:  TextFormField(
                           decoration: const InputDecoration(
-                            hintText: ' วว-ดด-ปป',
+                            hintText: ' ปปปป-ดด-วว',
                             prefixIcon: Icon(Icons.calendar_today,color: Colors.black,),
                             errorStyle: TextStyle(
                               color: Colors.red,
@@ -492,7 +513,7 @@ class _rentcarState extends State<rentcar> {
                                 firstDate: DateTime(1900),
                                 lastDate: DateTime(2100));
                             var formattedDate =
-                                "${date.day}-${date.month}-${date.year}";
+                            DateFormat('yyyy-MM-dd').format(date);
                             _datesentcarcontroller.text =
                                 formattedDate.toString();
                           },

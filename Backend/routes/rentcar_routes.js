@@ -48,8 +48,6 @@ router.post('/update_register_rentcarpartner',async (req,res) => {
         updatepartner.time_extrapay.push(req.body.name_extrapay[i])
     }
     updatepartner.save()
-   
-
 })
 
 router.post('/register_carinfo_rentcarpartner',async (req,res) => { 
@@ -65,8 +63,10 @@ router.post('/register_carinfo_rentcarpartner',async (req,res) => {
         car_nunber_smallbag: req.body.smallbag,
         car_location: req.body.location,
         car_country: req.body.country,
+        car_price_minute: req.body.price_minute,
         car_price: req.body.price,
         car_partnername: req.body.partnername,
+        car_license: req.body.license,
     })
    
     carinfopartner.save()
@@ -118,7 +118,10 @@ router.post('/regis_rentcarinfo',async (req,res) => {
         car_location: req.body.location,
         car_country: req.body.country,
         car_price: req.body.price,
+        car_price_minute: req.body.price_minute,
         car_partnername: req.body.partnername,
+        car_license: req.body.license,
+        
     })
     carinfopartner.save()
     idinfocar = carinfopartner._id.toString()
