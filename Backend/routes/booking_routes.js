@@ -11,7 +11,6 @@ const router = express.Router()
 
 // GET TOKEN
 router.get('/' , middleware.isLoggedIn, (req,res) => {
-    // TODO: expand booking categories and limit to a specific user
     if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
         var token = req.headers.authorization.split(' ')[1]
         var stringToken = JSON.parse(token)['token']

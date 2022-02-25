@@ -1,11 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:se_app2/constants.dart';
 import 'package:se_app2/functions.dart';
+import 'package:se_app2/navigator/nav/booking/components/cancel_notif.dart';
+
+import 'booking.dart';
 
 
 class confirmCancelBox extends StatefulWidget {
@@ -27,32 +31,6 @@ class confirmCancelBox extends StatefulWidget {
 
 class _confirmBoxState extends State<confirmCancelBox> {
   var detail;
-
-  List sample = [
-    {
-      "time": 1,
-      "info": "(1x) One grass suite : 3 คืน",
-      "price": 3300.00,
-    },
-  ];
-
-  String formatCheckIn(String date) {
-    var inputFormat = DateFormat('dd-MM-yyyy');
-    DateTime parsedDate = inputFormat.parse(date);
-    var text = 'วันที่เช็คอิน : ' + parsedDate.day.toString() + ' ' + getMonthName(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
-    return text;
-  }
-  String formatCheckOut(String date) {
-    var inputFormat = DateFormat('dd-MM-yyyy');
-    DateTime parsedDate = inputFormat.parse(date);
-    var text = 'วันที่เช็คเอาท์ : ' + parsedDate.day.toString() + ' ' + getMonthName(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
-    return text;
-  }
-
-  String formatPricing(double price) {
-    var text = formatPrice(price) + ' THB';
-    return text;
-  }
 
   @override
   void initState() {
@@ -117,50 +95,104 @@ class _confirmBoxState extends State<confirmCancelBox> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(
-                              'ในการยกเลิกการจองต้องใช้เวลาดำเนินการคืนเงิน ประมาณ 1-2 สัปดาห์ และอาจมีค่าธรรมเนียมในการ ยกเลิก ตาม ข้อกำหนดของ TravelDGwa',
-                              style: GoogleFonts.poppins(
-                                color: primaryColor,
-                                fontSize: 12,),
+                            RichText(
+                              text: TextSpan(
+                                style: GoogleFonts.poppins(
+                                  color: primaryColor,
+                                  fontSize: 12,),
+                                children: <TextSpan>[
+                                  TextSpan(text:
+                                  'ในการยกเลิกการจองต้องใช้เวลาดำเนินการคืนเงิน ประมาณ 1-2 สัปดาห์ และอาจมีค่าธรรมเนียมในการยกเลิกตาม ',),
+                                  TextSpan(
+                                      text: 'ข้อกำหนดของ TravelDGwa',
+                                      style:  TextStyle(
+                                          color: orangeColor,
+                                          decoration: TextDecoration.underline,
+                                      ),
+                                      recognizer: TapGestureRecognizer()
+                                        ..onTap = () {
+                                          print('move user to ToS');
+                                        }),
+                                ],
+                              ),
                             ),
                           ],
                         ),
                       ),
                       Expanded(
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Container(
-                                width: (width - 90) * 0.5,
-                                decoration: BoxDecoration(
-                                    color: Colors.red
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            const Divider(
+                              height: 1,
+                              thickness: 1,
+                              color: Color(0xff827E7E),
+                            ),
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 50,
+                                    width: (width - 90) * 0.509,
+                                    decoration: BoxDecoration(
+                                      border: Border(
+                                        right: BorderSide(width: 1.0, color: Colors.black),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      'ยกเลิก',
+                                      style: GoogleFonts.poppins(
+                                        color: primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
                                 ),
-                                child: Text(
-                                  'ยกเลิก',
-                                  style: GoogleFonts.poppins(
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,),
-                                  textAlign: TextAlign.center,
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Booking()));
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return notifBox(
+                                          title: 'ยกเลิกการจอง',
+                                          text: 'การยกเลิกการจองเสร็จสมบูรณ์',
+                                          fontSize: 14.0,
+                                        );
+                                      },
+                                    );
+                                  },
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    height: 50,
+                                    width: (width - 90) * 0.509,
+                                    decoration: BoxDecoration(
+                                    ),
+                                    child: Text(
+                                      'ดำเนินการต่อ',
+                                      style: GoogleFonts.poppins(
+                                        color: primaryColor,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                              Container(
-                                width: (width - 90) * 0.5,
-                                decoration: BoxDecoration(
-                                    color: Colors.red
-                                ),
-                                child: Text(
-                                  'ดำเนินการต่อ',
-                                  style: GoogleFonts.poppins(
-                                    color: primaryColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                            ],
-                          ),
+
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
 
                     ],
