@@ -391,8 +391,8 @@ class _AccommodationPageState extends State<AccommodationPage> {
                   const SizedBox(height: 30),
                   const Divider(
                     thickness: 1.5,
-                    indent: 25,
-                    endIndent: 25,
+                    indent: 20,
+                    endIndent: 20,
                     color: Color(0xff827E7E),
                   ),
                 ],

@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:se_app2/Home/Accommodation/accommodation.dart';
+import 'package:se_app2/Home/Activity/activity_result.dart';
 import 'package:se_app2/Home/Shuttle/shuttle.dart';
 import 'package:se_app2/constants.dart';
 import 'home_button.dart';
+import 'package:se_app2/Home/Activity/activity.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class Home extends StatelessWidget {
@@ -81,7 +83,7 @@ class Home extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                HomeButton(icon: 'assets/icons/06.png', text: 'กิจกรรม', route: '/findhotel'),
+                HomeButton(icon: 'assets/icons/06.png', text: 'กิจกรรม', route: activity_result()),
                 SizedBox(width: 30),
                 HomeButton(icon: 'assets/icons/07.png', text: 'สถานที่ท่องเที่ยว', route: '/findhotel'),
                 SizedBox(width: 30),

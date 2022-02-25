@@ -34,9 +34,13 @@ passport.use(new LocalStrategy({
 app.use('/',require('./routes/user_routes'))
 app.use('/shuttle', require('./routes/shuttle_routes'))
 app.use('/hotel',require('./routes/hotel_routes'))
+app.use('/rentcar',require('./routes/rentcar_routes'))
+app.use('/activity',require('./routes/activity_routes'))
+
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
 
 // seedDB()
 
