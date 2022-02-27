@@ -8,6 +8,8 @@ import 'package:intl/intl.dart';
 import 'package:se_app2/functions.dart';
 
 import 'booking_detail_hotel.dart';
+import 'booking_detail_ticket.dart';
+import 'booking_detail_transfer.dart';
 import 'components/booking_type_icon.dart';
 
 class ResultItem extends StatefulWidget {
@@ -108,6 +110,11 @@ class _ResultItemState extends State<ResultItem> {
                               detail: data[index])))
                 } else {
                   // print('not accom'),
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => transferDetail(
+                              detail: data[index])))
                 },
 
               },

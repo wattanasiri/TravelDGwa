@@ -221,7 +221,7 @@ class _hotelBillingState extends State<hotelBilling> {
                             child: Row(
                               children: [
                                 Icon(
-                                  Icons.cancel_rounded,
+                                  Icons.receipt_long_rounded,
                                   color: primaryColor,
                                 ),
                                 SizedBox(width: 4,),

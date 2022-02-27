@@ -9,6 +9,7 @@ dependencies:
   geocoding: ^2.0.2
   animated_textformfields: ^1.0.1
   flutter_animated_button: ^1.0.0
+  flutter_rating_bar: ^4.0.0
   google_fonts: ^2.2.0
   mongo_dart: ^0.7.4
   date_time_picker: ^2.1.0
