@@ -1,5 +1,7 @@
 const express  = require('express')
 const activity = require('../models/activity_model')
+const activityreceipt = require('../models/activity_receipt_model')
+
 var mongoose = require('mongoose');
 
 const router = express.Router()
@@ -48,18 +50,36 @@ router.post('/update_activity',async (req,res) => {
     updatepartner.save()
 })
 
-router.get('/:id' + '/queryactivity' , (req,res) => {
+router.get('/:names' + '/queryactivity' , (req,res) => {
     console.log('getactivity')
-    var findname = req.params.id;
-    console.log(country)
-    activity.find({ "name": findname }).exec((err,foundAcc) => {
+    var findname = req.params.names;
+    console.log(findname)
+    activity.findOne({ "name": findname }).exec((err,foundAcc) => {
         if(err){
             console.log(err)
         } else {
             res.json({foundAcc})
+            console.log(foundAcc)
         }
     })
    
+})
+
+router.post('/save_invoice',(req,res) => { 
+    
+    console.log('save invoice')
+    console.log(req.body.username)
+    const infoinvoice = new activityreceipt({
+        usernameID: new mongoose.Types.ObjectId(req.body.username),
+        name: req.body.name,
+        day : req.body.day,
+        time : req.body.time,
+        number: req.body.number,
+        price: req.body.price,
+        sum_price: req.body.sum_price,})
+    infoinvoice.save()
+    
+
 })
 
 module.exports = router

@@ -10,7 +10,7 @@ var activitySchema  = new mongoose.Schema({
     open_day : String,
     open_time : String,
     location : String,
-    price : String,
+    price : Number,
     star : Number,
     service :  [
         {

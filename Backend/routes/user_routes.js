@@ -46,10 +46,11 @@ router.post('/signin',(req,res,next) => {
     passport.authenticate('local', function(err, user, info) {
         if (err) return res.status(401).json(err)
         if (user) {
+
+
+            console.log(res.locals.currentUser)
             // const token = user.generateJwt();
-            return res.status(200).json({
-                // "token": token
-            });
+            return res.status(200).send(String(user._id));
         } else {
             console.log('user not found or wrong password')
             return res.status(401).json(info);

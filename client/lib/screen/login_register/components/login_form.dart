@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:se_app2/Data/data_currentuser.dart';
 import 'package:se_app2/constants.dart';
 import 'package:flutter/gestures.dart';
 import 'package:http/http.dart' as http;
@@ -31,6 +32,12 @@ class _LoginFormState extends State<LoginForm>  {
             "email": emailController.text,
             "password": passwordController.text,
           });
+      print(res.body);
+      String currentid = res.body;
+      Datauser datauser = Datauser();
+      datauser.id = currentid;
+      print('id');
+      print(datauser.id);
       print(res.statusCode);
       if (res.statusCode == 200) {
         print('success');

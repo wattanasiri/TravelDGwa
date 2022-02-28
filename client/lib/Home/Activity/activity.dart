@@ -3,7 +3,10 @@ import 'package:flutter_material_pickers/helpers/show_number_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:http/http.dart' as http;
+import 'package:se_app2/Data/data_currentuser.dart';
 import 'dart:convert';
+
+import 'package:se_app2/Home/Activity/activity_result.dart';
 
 class activity extends StatefulWidget {
   const activity({Key key}) : super(key: key);
@@ -13,6 +16,7 @@ class activity extends StatefulWidget {
 }
 
 class _activityState extends State<activity> {
+
 
   String word = '';
 
@@ -63,14 +67,43 @@ class _activityState extends State<activity> {
     print(res.body);
   }
 
+  Map dataafterquery;
+  String names;
+  Future queryactivity() async {
+
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
+    print('querycar');
+    names = name.text.toString();
+    //กรุงเทพ
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/activity/" + names + '/queryactivity'));
+    dataafterquery = json.decode(res.body);
+    print(dataafterquery);
+    print(dataafterquery['foundAcc']);
+    print(dataafterquery['foundAcc']['name']);
+    // print(dataafterquery['foundAcc'][0]['name']);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => activity_result(
+      name: name.text,
+      // day: day.text,
+      // time: time.text,
+      data : dataafterquery,
+
+    ),));
+  }
+
   FocusNode acFocusNode = FocusNode();
   FocusNode acFocusNode1 = FocusNode();
   FocusNode acFocusNode2 = FocusNode();
 
+
+
   final name = TextEditingController();
-  final checkIn = TextEditingController();
-  final checkOut = TextEditingController();
-  final _timegetcarcontroller = TextEditingController();
+  // final day = TextEditingController();
+  // final time = TextEditingController();
+
 
   final GlobalKey<FormState> _formKey = GlobalKey();
 
@@ -160,131 +193,130 @@ class _activityState extends State<activity> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("วันที่เข้าร่วม",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.normal,
-                                    color: Color(0xff1D3557))),
-                            const SizedBox(height: 5),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 2),
-                              width: 150,
-                              decoration: BoxDecoration(
-                                  color: const Color(0xffECFAFF),
-                                  borderRadius: BorderRadius.circular(15),
-                                  border: Border.all(
-                                      color: const Color(0xff1D3557), width: 2)),
-                              child: TextFormField(
-                                controller: checkIn,
-                                readOnly: true,
-                                decoration: const InputDecoration(
-                                    hintText: 'วว-ดด-ปปปป',
-                                    enabledBorder: UnderlineInputBorder(
-                                        borderSide:
-                                        BorderSide(color: Color(0xffECFAFF))),
-                                    suffixIcon: Icon(Ionicons.calendar_outline,
-                                        color: Color(0xff1D3557))),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'กรุณาระบุวันที่';
-                                  }
-                                  return null;
-                                },
-                                focusNode: acFocusNode1,
-                                onTap: () async {
-                                  DateTime pickedDate = await showDatePicker(
-                                      context: context,
-                                      initialDate: DateTime.now(),
-                                      firstDate: DateTime(2000),
-                                      lastDate: DateTime(2101));
-
-                                  if (pickedDate != null) {
-                                    print(pickedDate);
-                                    String formattedDate =
-                                    DateFormat('dd-MM-yyyy')
-                                        .format(pickedDate);
-                                    print(formattedDate);
-
-                                    setState(() {
-                                      checkIn.text = formattedDate;
-                                    });
-                                  } else {
-                                    print("Date is not selected");
-                                  }
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text("เวลาที่เข้าร่วม",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.normal,
-                                    color: Color(0xff1D3557))),
-                            const SizedBox(height: 5),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 2),
-                              width: 150,
-                              decoration: BoxDecoration(
-                                  color: const Color(0xffECFAFF),
-                                  borderRadius: BorderRadius.circular(15),
-                                  border: Border.all(
-                                      color: const Color(0xff1D3557), width: 2)),
-                              child: TextFormField(
-                                controller: _timegetcarcontroller,
-                                readOnly: true,
-                                decoration: const InputDecoration(
-                                    hintText: '00:00',
-                                    enabledBorder: UnderlineInputBorder(
-                                        borderSide:
-                                        BorderSide(color: Color(0xffECFAFF))),
-                                    suffixIcon: Icon(Ionicons.calendar_outline,
-                                        color: Color(0xff1D3557))),
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'กรุณาระบุวันที่';
-                                  }
-                                  return null;
-                                },
-                                // controller: _timegetcarcontroller,
-                                focusNode: acFocusNode2,
-                                onTap: () async {
-                                  TimeOfDay pickedTime =  await showTimePicker(
-                                    initialTime: TimeOfDay.now(),
-                                    context: context,
-                                  );
-                                  FocusScope.of(context)
-                                      .requestFocus(FocusNode());
-
-                                  if(pickedTime != null ){
-                                    DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
-                                    String formattedTime = DateFormat('HH:mm').format(parsedTime);
-                                    _timegetcarcontroller.text = formattedTime.toString();
-
-                                  }else{
-                                    print("Time is not selected");
-                                  }
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: [
+                  //       Column(
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //           const Text("วันที่เข้าร่วม",
+                  //               style: TextStyle(
+                  //                   fontSize: 18,
+                  //                   fontWeight: FontWeight.normal,
+                  //                   color: Color(0xff1D3557))),
+                  //           const SizedBox(height: 5),
+                  //           Container(
+                  //             padding: const EdgeInsets.symmetric(
+                  //                 horizontal: 16, vertical: 2),
+                  //             width: 150,
+                  //             decoration: BoxDecoration(
+                  //                 color: const Color(0xffECFAFF),
+                  //                 borderRadius: BorderRadius.circular(15),
+                  //                 border: Border.all(
+                  //                     color: const Color(0xff1D3557), width: 2)),
+                  //             child: TextFormField(
+                  //               controller: day,
+                  //               readOnly: true,
+                  //               decoration: const InputDecoration(
+                  //                   hintText: 'วว-ดด-ปปปป',
+                  //                   enabledBorder: UnderlineInputBorder(
+                  //                       borderSide:
+                  //                       BorderSide(color: Color(0xffECFAFF))),
+                  //                   suffixIcon: Icon(Ionicons.calendar_outline,
+                  //                       color: Color(0xff1D3557))),
+                  //               validator: (value) {
+                  //                 if (value == null || value.isEmpty) {
+                  //                   return 'กรุณาระบุวันที่';
+                  //                 }
+                  //                 return null;
+                  //               },
+                  //               focusNode: acFocusNode1,
+                  //               onTap: () async {
+                  //                 DateTime pickedDate = await showDatePicker(
+                  //                     context: context,
+                  //                     initialDate: DateTime.now(),
+                  //                     firstDate: DateTime(2000),
+                  //                     lastDate: DateTime(2101));
+                  //
+                  //                 if (pickedDate != null) {
+                  //                   print(pickedDate);
+                  //                   String formattedDate =
+                  //                   DateFormat('dd-MM-yyyy')
+                  //                       .format(pickedDate);
+                  //                   print(formattedDate);
+                  //
+                  //                   setState(() {
+                  //                     day.text = formattedDate;
+                  //                   });
+                  //                 } else {
+                  //                   print("Date is not selected");
+                  //                 }
+                  //               },
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //       Column(
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //           const Text("เวลาที่เข้าร่วม",
+                  //               style: TextStyle(
+                  //                   fontSize: 18,
+                  //                   fontWeight: FontWeight.normal,
+                  //                   color: Color(0xff1D3557))),
+                  //           const SizedBox(height: 5),
+                  //           Container(
+                  //             padding: const EdgeInsets.symmetric(
+                  //                 horizontal: 16, vertical: 2),
+                  //             width: 150,
+                  //             decoration: BoxDecoration(
+                  //                 color: const Color(0xffECFAFF),
+                  //                 borderRadius: BorderRadius.circular(15),
+                  //                 border: Border.all(
+                  //                     color: const Color(0xff1D3557), width: 2)),
+                  //             child: TextFormField(
+                  //               controller: time,
+                  //               readOnly: true,
+                  //               decoration: const InputDecoration(
+                  //                   hintText: '00:00',
+                  //                   enabledBorder: UnderlineInputBorder(
+                  //                       borderSide:
+                  //                       BorderSide(color: Color(0xffECFAFF))),
+                  //                   suffixIcon: Icon(Ionicons.calendar_outline,
+                  //                       color: Color(0xff1D3557))),
+                  //               validator: (value) {
+                  //                 if (value == null || value.isEmpty) {
+                  //                   return 'กรุณาระบุวันที่';
+                  //                 }
+                  //                 return null;
+                  //               },
+                  //               focusNode: acFocusNode2,
+                  //               onTap: () async {
+                  //                 TimeOfDay pickedTime =  await showTimePicker(
+                  //                   initialTime: TimeOfDay.now(),
+                  //                   context: context,
+                  //                 );
+                  //                 FocusScope.of(context)
+                  //                     .requestFocus(FocusNode());
+                  //
+                  //                 if(pickedTime != null ){
+                  //                   DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
+                  //                   String formattedTime = DateFormat('HH:mm').format(parsedTime);
+                  //                   time.text = formattedTime.toString();
+                  //
+                  //                 }else{
+                  //                   print("Time is not selected");
+                  //                 }
+                  //               },
+                  //             ),
+                  //           ),
+                  //         ],
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
                   SizedBox(height: 10,),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
@@ -292,6 +324,7 @@ class _activityState extends State<activity> {
                       onPressed: () async=> {
                         // activity_partner(),
                         // update_activity()
+                        queryactivity(),
                       },
                       style: ElevatedButton.styleFrom(
                         onPrimary: const Color(0xff1D3557),

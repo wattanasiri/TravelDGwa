@@ -83,7 +83,7 @@ class Home extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                HomeButton(icon: 'assets/icons/06.png', text: 'กิจกรรม', route: activity_result()),
+                HomeButton(icon: 'assets/icons/06.png', text: 'กิจกรรม', route: activity()),
                 SizedBox(width: 30),
                 HomeButton(icon: 'assets/icons/07.png', text: 'สถานที่ท่องเที่ยว', route: '/findhotel'),
                 SizedBox(width: 30),
