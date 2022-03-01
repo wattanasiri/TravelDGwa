@@ -12,6 +12,7 @@ const activityreceiptSchema = new Schema({
     number: Number,
     price: Number,
     sum_price: Number,
+    detail :String,
     
 })
 

@@ -47,6 +47,7 @@ app.use('/',require('./routes/user_routes'))
 app.use('/airport_transfer', require('./routes/airport_transfer_routes'))
 app.use('/hotel',require('./routes/hotel_routes'))
 app.use('/rentcar',require('./routes/rentcar_routes'))
+app.use('/activity',require('./routes/activity_routes'))
 
 // seedDB()
 

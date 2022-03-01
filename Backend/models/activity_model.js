@@ -12,6 +12,7 @@ var activitySchema  = new mongoose.Schema({
     location : String,
     price : Number,
     star : Number,
+    detail :String,
     service :  [
         {
             type: String,

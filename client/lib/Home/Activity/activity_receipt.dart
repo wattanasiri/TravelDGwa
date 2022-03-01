@@ -237,7 +237,7 @@ class _activity_receiptState extends State<activity_receipt> {
                                 Container(
                                   width : 230,
                                   child: Text(
-                                    widget.name,
+                                    '${widget.name} (${widget.number})',
                                     style: TextStyle(
                                         fontSize: 14.0,
                                         overflow: TextOverflow.ellipsis,
@@ -247,7 +247,7 @@ class _activity_receiptState extends State<activity_receipt> {
                                 ),
                                 Container(
                                   child: Text(
-                                    widget.sum_price.toString(),
+                                    widget.price.toString(),
                                     style: TextStyle(
                                         fontSize: 14.0,
                                         color: Color(0xff1D3557)

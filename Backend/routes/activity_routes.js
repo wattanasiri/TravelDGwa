@@ -25,6 +25,7 @@ router.post('/activity_partner',async (req,res) => {
         location: req.body.location,
         price: req.body.price,
         star: req.body.star,
+        detail: req.body.detail,
         open_day: req.body.opening_day,
         open_time: req.body.opening_time,
     })
@@ -76,6 +77,7 @@ router.post('/save_invoice',(req,res) => {
         time : req.body.time,
         number: req.body.number,
         price: req.body.price,
+        detail: req.body.detail,
         sum_price: req.body.sum_price,})
     infoinvoice.save()
     

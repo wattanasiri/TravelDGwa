@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:se_app2/Home/Accommodation/accommodation.dart';
+import 'package:se_app2/Home/Activity/activity.dart';
 import 'package:se_app2/Home/Airport_Transfer/Airport_Transfer_driver_input.dart';
 import 'package:se_app2/Home/Rentcar/Rentcar_detail_car.dart';
 import 'package:se_app2/Home/Rentcar/Rentcar_main.dart';
@@ -83,7 +84,7 @@ class Home extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                HomeButton(icon: 'assets/icons/06.png', text: 'กิจกรรม', route: '/findhotel'),
+                HomeButton(icon: 'assets/icons/06.png', text: 'กิจกรรม', route: activity()),
                 SizedBox(width: 30),
                 HomeButton(icon: 'assets/icons/07.png', text: 'สถานที่ท่องเที่ยว', route: '/findhotel'),
                 SizedBox(width: 30),
