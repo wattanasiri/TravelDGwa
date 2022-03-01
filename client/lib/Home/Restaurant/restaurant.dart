@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:se_app2/Data/data_airport.dart';
 import 'package:se_app2/Home/Restaurant/restau_detail.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:se_app2/Home/Restaurant/restau_result.dart';
 import '../../navigator/nav/profile/creditcard/maincreditcard.dart';
 import '../Attraction/tourism_detail.dart';
+import 'dart:convert';
 
 class Restaurantpage extends StatefulWidget {
   @override
@@ -10,6 +13,37 @@ class Restaurantpage extends StatefulWidget {
 }
 
 class _RestaurantpageState extends State<Restaurantpage> {
+  String word = '';
+  Map data;
+  List restaurantData;
+
+  Future getRestaurant() async {
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/search/" + word));
+    data = json.decode(res.body);
+    restaurantData = data['restaurants'];
+  }
+
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  final name = TextEditingController();
+
+  Future gettheozone() async {
+    Map data ;
+    word = "621be8a20460322d62492099";
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/query/" + word));
+    data = json.decode(res.body);
+    data = data["foundRes"];
+    //restaurantData = data['restaurants'];
+    print(data);
+    Navigator.pushReplacement(context, MaterialPageRoute(
+        builder: (context) => Restaudetail(
+          data : data,
+        ))
+    );
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +81,80 @@ class _RestaurantpageState extends State<Restaurantpage> {
             children : [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+                children: [Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const SizedBox(height: 30),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text("ค้นหาร้านอาหาร",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.normal,
+                                  color: Color(0xff1D3557))),
+                          const SizedBox(height: 5),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 2),
+                            width: 350,
+                            decoration: BoxDecoration(
+                                color: const Color(0xffECFAFF),
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(
+                                    color: const Color(0xff1D3557), width: 2)),
+                            child: TextFormField(
+                              controller: name,
+                              decoration: const InputDecoration(
+                                  hintText: 'ชื่อร้านอาหาร',
+                                  enabledBorder: UnderlineInputBorder(
+                                      borderSide:
+                                      BorderSide(color: Color(0xffECFAFF))),
+                                  suffixIcon:
+                                  Icon(Icons.search, color: Color(0xff1D3557))),
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'กรุณาระบุร้านอาหาร่';
+                                }
+                                return null;
+                              },
+                              onChanged: (value) {
+                                word = value;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      //ปุ่มเซิร์ช
+                      const SizedBox(height: 30),
+                      ElevatedButton(
+                        onPressed: () => getItemAndNavigate(context),
+                        style: ElevatedButton.styleFrom(
+                          onPrimary: const Color(0xff1D3557),
+                          primary: const Color(0xff1D3557),
+                          minimumSize: const Size(350, 60),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                          ),
+                        ),
+                        child: const Text(
+                          'ค้นหาร้านอาหาร',
+                          style: TextStyle(color: Color(0xffFFF4DC), fontSize: 20),
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      const Divider(
+                        thickness: 1.5,
+                        indent: 25,
+                        endIndent: 25,
+                        color: Color(0xff827E7E),
+                      ),
+                    ],
+                  ),
+                ),
                   //เริ่มที่เที่ยวทะเล
                   Text(" ร้านแนะนำสายอาหารทะเล !", style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Color(0xff1D3557))),
                   Column(
@@ -70,9 +177,7 @@ class _RestaurantpageState extends State<Restaurantpage> {
                           children: <Widget>[
                             GestureDetector(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => Restaudetail())
-                                );
+                                gettheozone();
                               },
                               child: Card(
                                 elevation: 3,
@@ -287,6 +392,22 @@ class _RestaurantpageState extends State<Restaurantpage> {
             ]
         ),
       ),
+    );
+  }
+  void getItemAndNavigate(BuildContext context) async {
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+
+    await getRestaurant();
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => RestaurantResult(
+              result : restaurantData,
+              nameHolder : word,
+                )
+        )
     );
   }
 }

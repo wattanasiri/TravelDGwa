@@ -11,6 +11,10 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 
 class Restaudetail extends StatefulWidget {
+  final detail;
+  Map data;
+  Restaudetail({Key key,@required this.detail,this.data}) : super(key : key);
+
   @override
   _RestaudetailState createState() => _RestaudetailState();
 }
@@ -34,7 +38,15 @@ Text _buildRatingStars(int rating) {
 
 class _RestaudetailState extends State<Restaudetail> {
   bool viewVisible = false;
-
+  var data;
+  @override
+  //เลือกแต่ละอันจาก ID
+  void initState(){
+    data = widget.detail;
+    print ("this ");
+    print  (widget.data["name"]);
+  }
+  //จบเลือกแต่ละอันจาก ID
   void showWidget() {
     setState(() {
       viewVisible = true;
@@ -119,14 +131,14 @@ class _RestaudetailState extends State<Restaudetail> {
                             children: <Widget>[
                               Flexible(
                                 child: Text(
-                                  "detail['name']",
+                                  "${widget.data['name']}",
                                   style: GoogleFonts.poppins(
                                       color: const Color(0xff1D3557),
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
-                              Row(
+                              /*Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   IconButton(
@@ -140,7 +152,7 @@ class _RestaudetailState extends State<Restaudetail> {
                                       color: const Color(0xff1D3557),
                                       iconSize: 30)
                                 ],
-                              )
+                              )*/
                             ],
                           ),
                           _buildRatingStars(4),
@@ -191,13 +203,14 @@ class _RestaudetailState extends State<Restaudetail> {
                             margin: const EdgeInsets.symmetric(vertical: 10),
                             padding: const EdgeInsets.all(10),
                             decoration: const BoxDecoration(
-                                color: Color(0xffFFEEC9),
+                                //color: Color(0xffFFEEC9),
                                 borderRadius:
                                 BorderRadius.all(Radius.circular(15))),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(
+                                //location
+                                /*Text(
                                   'ตำแหน่งที่ตั้ง',
                                   style: TextStyle(
                                     color: Color(0xff1D3557),
@@ -210,19 +223,95 @@ class _RestaudetailState extends State<Restaudetail> {
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 10),
                                         child: Text(
-                                          "detail['location']",
+                                          "${data['location']}",
                                           style: TextStyle(
                                               color: Color(0xff1D3557), fontSize: 14),
                                         ),
                                       ),
                                     ),
                                   ],
-                                )
+                                ),
+                                //endedlocation
+                                SizedBox(height: 5,),*/
+                                //ended day open
+                                Row(
+                                  children: [
+                                    const Icon(Icons.monetization_on_outlined, color: Color(0xff1D3557), size: 20,),
+                                    Text(
+                                      ' ราคาเริ่มต้นที่ :',
+                                      style: TextStyle(
+                                        color: Color(0xff1D3557),
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    Flexible(
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                        child: Text(
+                                          "${widget.data['price']}",
+                                          style: TextStyle(
+                                              color: Color(0xff1D3557), fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                //ended day open
+                                SizedBox(height: 5,),
+                                //day open
+                                Row(
+                                  children: [
+                                    const Icon(Icons.calendar_today_outlined, color: Color(0xff1D3557), size: 20,),
+                                    Text(
+                                      ' วันเปิดทำการ :',
+                                      style: TextStyle(
+                                        color: Color(0xff1D3557),
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    Flexible(
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                        child: Text(
+                                          "${widget.data['openday']}",
+                                          style: TextStyle(
+                                              color: Color(0xff1D3557), fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                //ended day open
+                                SizedBox(height: 5,),
+                                //time
+                                Row(
+                                  children: [
+                                    const Icon(Icons.timer, color: Color(0xff1D3557), size: 20,),
+                                    Text(
+                                      ' เวลาเปิดทำการ :',
+                                      style: TextStyle(
+                                        color: Color(0xff1D3557),
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    Flexible(
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                        child: Text(
+                                          "${widget.data['time']}",
+                                          style: TextStyle(
+                                              color: Color(0xff1D3557), fontSize: 14),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                //endedtime
                               ],
                             ),
                           ),
                           Container(
-                            margin: const EdgeInsets.symmetric(vertical: 10),
+                            //margin: const EdgeInsets.symmetric(vertical: 5),
                             padding: const EdgeInsets.all(10),
                             decoration: const BoxDecoration(
                                 color: Color(0xffFFEEC9),
@@ -232,7 +321,7 @@ class _RestaudetailState extends State<Restaudetail> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 Text(
-                                  'รายละเอียดที่พัก',
+                                  'ไฮไลต์',
                                   style: TextStyle(
                                     color: Color(0xff1D3557),
                                     fontSize: 16,
@@ -244,8 +333,7 @@ class _RestaudetailState extends State<Restaudetail> {
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 10),
                                         child: Text(
-                                          'detail['"desc"']45d6fgfdgggdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdgdggrsdfgggddd'
-                                              'wertggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggddddddddddd',
+                                          '${widget.data['desc']}',
                                           style: TextStyle(
                                               color: Color(0xff1D3557), fontSize: 14),
                                         ),
@@ -256,6 +344,44 @@ class _RestaudetailState extends State<Restaudetail> {
                               ],
                             ),
                           ),
+                          SizedBox(height: 10,),
+                          const Divider(color: Color(0xff827E7E), thickness: 1.5),
+                          SizedBox(height: 10,),
+                          //กล่องเพิ่มความเห็น
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 2),
+                            //width: 350,
+                            height: 50,
+                            decoration: BoxDecoration(
+                                color: const Color(0xffECFAFF),
+                                borderRadius: BorderRadius.circular(25),
+                                border: Border.all(
+                                    color: const Color(0xff1D3557), width: 2)),
+                            child: TextFormField(
+                              //controller: name,
+                              decoration: const InputDecoration(
+                                  hintText: 'เขียนและให้คะแนน...',
+                                  enabledBorder: UnderlineInputBorder(
+                                      borderSide:
+                                      BorderSide(color: Color(0xffECFAFF))),
+                                  suffixIcon:
+                                  Icon(Icons.send, color: Color(0xff1D3557))),
+                              /*validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'กรุณาระบุร้านอาหาร่';
+                                }
+                                return null;
+                              },*/
+                              onChanged: (value) {
+                                //word = value;
+                              },
+                            ),
+                          ),
+                          //จบกล่องเพิ่มความเห็น
+                          SizedBox(height: 10,),
+                          _buildRatingStars(5),
+                          SizedBox(height: 10,),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[
@@ -385,18 +511,36 @@ class _RestaudetailState extends State<Restaudetail> {
                                                 ),
                                               ],
                                             ),
-
+                                            SizedBox(height: 10,),
                                             Row(
                                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                               children: <Widget>[
-                                                Text(
+                                                Row(
+                                                  children: [
+                                                    const Icon(Icons.thumb_up_alt_outlined, color: Color(0xffFFF4DC), size: 20,),
+                                                    SizedBox(width: 7,),
+                                                    Text(
+                                                        "325" ,
+                                                        style: TextStyle(
+                                                            color: Color(0xffFFF4DC), fontSize: 16)),
+                                                    SizedBox(width: 7,),
+                                                    const Icon(Icons.thumb_down_alt_outlined, color: Color(0xffFFF4DC), size: 20,),
+                                                    SizedBox(width: 7,),
+                                                    Text(
+                                                        "325" ,
+                                                        style: TextStyle(
+                                                            color: Color(0xffFFF4DC), fontSize: 16)),
+                                                  ],
+                                                ),
+                                                /*Text(
                                                     "fdfd" ,
                                                     style: TextStyle(
                                                         color: Color(0xffFFF4DC), fontSize: 16)),
                                                 Text(
                                                     'price',
                                                     style: TextStyle(
-                                                        color: Color(0xffFFF4DC), fontSize: 16))
+                                                        color: Color(0xffFFF4DC), fontSize: 16)),*/
+                                                _buildRatingStars(5),
                                               ],
                                             ),
                                           ],

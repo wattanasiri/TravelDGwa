@@ -34,11 +34,13 @@ passport.use(new LocalStrategy({
 app.use('/',require('./routes/user_routes'))
 app.use('/shuttle', require('./routes/shuttle_routes'))
 app.use('/hotel',require('./routes/hotel_routes'))
+app.use('/restaurant',require('./routes/restau_routes'))
+app.use('/attraction',require('./routes/attraction_routes'))
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// seedDB()
+ // seedDB()
 
 app.listen(port, () => {
     console.log('port running on port : ' + port)

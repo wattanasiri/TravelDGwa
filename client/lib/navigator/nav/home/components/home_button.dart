@@ -1,23 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:se_app2/Home/Attraction/tourist_attraction.dart';
 import 'package:se_app2/constants.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class HomeButton extends StatelessWidget {
-  const HomeButton({
+  HomeButton({
     Key key,
     this.icon,
     this.text,
     this.route,
   }) : super(key: key);
 
+  String word = '';
+  Map data;
+  List seaattractiondata;
+
   final String icon;
   final String text;
   final route;
+
+
+  Future getseaattraction() async {
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getseaattraction/" + word));
+    data = json.decode(res.body);
+    print("this");
+    print(data);
+    seaattractiondata = data['seaattraction'];
+    print("this");
+    print(seaattractiondata);
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) => route));
+        print(route);
+       if(route.toString() == "Attractionpage"){
+            getseaattraction();
+            print("0");
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => Attractionpage(
+                      result : seaattractiondata,
+                    )
+                )
+            );
+       }
+       Navigator.push(context, MaterialPageRoute(builder: (context) => route));
       },
       child: Container(
           width: 90,
