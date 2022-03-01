@@ -46,6 +46,12 @@ class _cardetailState extends State<cardetail> {
   var date_time_getcar,date_time_sentcar;
   var result_price_extra_;
   bool checkpriceextra = false;
+
+  String durationToString(int minutes) {
+    var d = Duration(minutes:minutes);
+    List<String> parts = d.toString().split(':');
+    return '${parts[0].padLeft(2, '0')}:${parts[1].padLeft(2, '0')}';
+  }
   
   Future _price(String location) async{
     checkpriceextra = false;
@@ -126,6 +132,7 @@ class _cardetailState extends State<cardetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
+
         child: Form(
         key: _formKey,
           child: Column(
@@ -497,7 +504,7 @@ class _cardetailState extends State<cardetail> {
                                                     const SizedBox(width: 5),
                                                     Flexible(
                                                       child: Text(
-                                                        'ราคาเกินกำหนดการส่งคืนรถ  :    ${ widget.data['foundCar']['car_price_minute']*60}  ต่อชั่วโมง',
+                                                        'ราคาเกินกำหนดการส่งคืนรถ  :    ${ (widget.data['foundCar']['car_price_minute']*60).toStringAsFixed(2)}  ต่อชั่วโมง',
                                                         style: const TextStyle(
                                                           color: Color(0xff1D3557),
                                                           fontSize: 12,
@@ -654,7 +661,7 @@ class _cardetailState extends State<cardetail> {
                                   children: <Widget>[
                                     Flexible(
                                       child: Text(
-                                        '(${widget.dategetcar}-${widget.datesentcar})',
+                                        '(${widget.dategetcar}->${widget.datesentcar})',
                                         style: const TextStyle(
                                           fontSize: 13,
                                         ),
@@ -684,7 +691,7 @@ class _cardetailState extends State<cardetail> {
                                   children: <Widget>[
                                     Flexible(
                                       child: Text(
-                                        'ราคาเพิ่มเติม',
+                                        'ราคาส่วนต่างเวลา',
                                         style: const TextStyle(
                                           fontSize: 14,
                                         ),
@@ -693,14 +700,14 @@ class _cardetailState extends State<cardetail> {
 
                                   ]
                               ),
-                            if(checkpriceextra == true)
+                            if(result_price_extra != null && result_price_extra != 0)
                               Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Flexible(
                                       child: Text(
-                                        '(${widget.timegetcar}-${widget.timesentcar})',
+                                        '(${widget.timegetcar}->${widget.timesentcar})',
                                         style: const TextStyle(
                                           fontSize: 13,
                                         ),
@@ -712,7 +719,7 @@ class _cardetailState extends State<cardetail> {
                                           children: <Widget>[
                                             // Text('THB ${room_detail['price']}',
                                             Text(
-                                              '(${result_price_extra.toString()} นาที) ${result_price_extra_}  THB',
+                                              '(${durationToString(result_price_extra).toString()} ชม.) ${result_price_extra_}  THB',
                                               style: const TextStyle(
                                                 fontSize: 14,
                                               ),

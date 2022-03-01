@@ -17,6 +17,12 @@ class rentcar_rerceipt extends StatefulWidget {
 
 class _rentcar_rerceiptState extends State<rentcar_rerceipt> {
 
+  String durationToString(int minutes) {
+    var d = Duration(minutes:minutes);
+    List<String> parts = d.toString().split(':');
+    return '${parts[0].padLeft(2, '0')}:${parts[1].padLeft(2, '0')}';
+  }
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -147,20 +153,20 @@ class _rentcar_rerceiptState extends State<rentcar_rerceipt> {
                                 child: Text(
                                   'วันที่คืนรถ : ${widget.datesentcar} (${widget.timesentcar})',
                                   style: TextStyle(
-                                      fontSize: 14.0,
+                                      fontSize: 13.0,
                                       color: Color(0xff1D3557)
                                   ),
                                 ),
                               ),
                             ],
                           ),
-                          SizedBox(height: 2,),
+                          SizedBox(height: 10,),
                           Row(
                             children: [
                               Text(
                                 'จุดรับรถ : ' + widget.namedestination,
                                 style: TextStyle(
-                                    fontSize: 14.0,
+                                    fontSize: 13.0,
                                     color: Color(0xff1D3557)
                                 ),
                               ),
@@ -259,7 +265,7 @@ class _rentcar_rerceiptState extends State<rentcar_rerceipt> {
                                 Column(
                                   children: [
                                     Text(
-                                      'ราคา',
+                                      'ราคา (THB)',
                                       style: TextStyle(
                                           fontSize: 14.0,
                                           color: Color(0xff1D3557)
@@ -289,7 +295,7 @@ class _rentcar_rerceiptState extends State<rentcar_rerceipt> {
                                 Column(
                                   children: [
                                     Text(
-                                      ' THB  ${ widget.data['foundCar']['car_price']*widget.result_date_time}',
+                                      '${ widget.data['foundCar']['car_price']*widget.result_date_time}',
                                       style: TextStyle(
                                           fontSize: 14.0,
                                           color: Color(0xff1D3557)
@@ -309,7 +315,7 @@ class _rentcar_rerceiptState extends State<rentcar_rerceipt> {
                                 Column(
                                   children: [
                                     Text(
-                                      'ค่าส่วนต่างเวลาคืนรถ ${widget.result_price_extra} นาที',
+                                      'ค่าส่วนต่างเวลาคืนรถ ${durationToString(widget.result_price_extra).toString()} ชม.',
                                       style: TextStyle(
                                           fontSize: 14.0,
                                           color: Color(0xff1D3557)
@@ -320,7 +326,7 @@ class _rentcar_rerceiptState extends State<rentcar_rerceipt> {
                                 Column(
                                   children: [
                                     Text(
-                                      ' THB  ${widget.result_price_extra_}',
+                                      '${widget.result_price_extra_}',
                                       style: TextStyle(
                                           fontSize: 14.0,
                                           color: Color(0xff1D3557)
@@ -350,7 +356,7 @@ class _rentcar_rerceiptState extends State<rentcar_rerceipt> {
                                 Column(
                                   children: [
                                     Text(
-                                      'THB  ${widget.pricedestination}',
+                                      '${widget.pricedestination}',
                                       style: TextStyle(
                                           fontSize: 14.0,
                                           color: Color(0xff1D3557)

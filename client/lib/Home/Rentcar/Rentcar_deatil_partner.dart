@@ -223,6 +223,13 @@ class _detailpartnerState extends State<detailpartner> {
                                     ),
                                   ),
                                 ),
+                                const Text(
+                                  '* ค่าบริการนอกเวลาทำการจะมีการเก็บตอนที่ท่านมารับรถ',
+                                  style: TextStyle(
+                                    color: Color(0xff1D3557),
+                                    fontSize: 13,
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -361,17 +368,6 @@ class _detailpartnerState extends State<detailpartner> {
       alignment: Alignment.center,
     ),
   );
-
-  // Widget buildImage(String urlImage, int index) =>CircleAvatar(radius: (1000),
-  //     backgroundColor: Colors.white,
-  //     child: ClipRRect(
-  //       borderRadius:BorderRadius.circular(0),
-  //       child: Image.network(
-  //         urlImage,
-  //         fit: BoxFit.cover,
-  //       ),
-  //     )
-  // );
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
     activeIndex: activeIndex,

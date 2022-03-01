@@ -93,6 +93,7 @@ class _rentcarState extends State<rentcar> {
           "partnername" : "Luv Driver Car Rent",
           "price_minute": "2",
           "license": "กท32020",
+          "car_rating": "4",
 
         });
     print(res.body);
@@ -151,6 +152,7 @@ class _rentcarState extends State<rentcar> {
           "price_minute": "2",
           "partnername" : "Luv Driver Car Rent",
           "license": "กท32020",
+          "car_rating": "5",
 
         });
     print(res.body);
@@ -187,33 +189,13 @@ class _rentcarState extends State<rentcar> {
     print(res.body);
   }
   Future querycar() async {
-    // var date_time_getcar,date_time_sentcar;
-    // date_time_getcar = _dategetcarcontroller.text+ ' ' + _timegetcarcontroller.text;
-    // date_time_sentcar = _datesentcarcontroller.text + ' ' + _timesentcarcontroller.text;
-    // print(date_time_getcar);
-    // print(date_time_sentcar);
-    // DateTime dt1 = DateTime.parse(date_time_sentcar);
-    // DateTime dt2 = DateTime.parse(date_time_getcar);
-    // Duration diff = dt1.difference(dt2);
-    // print('dif time');
-    // print(diff.inMinutes);
-    // print(diff.inMinutes%1440);
-    // print(diff.inMinutes~/1440);
-    // if(diff.inMinutes~/1440 == 0) {
-    //   print('result :  1');
-    // }
-    // if(diff.inMinutes~/1440 > 0){
-    //   print('result :  ${diff.inMinutes~/1440}');
-    //   print('result :  ${diff.inMinutes%1440}');
-    // }
-
     if (!_formKey.currentState.validate()) {
       return;
     }
     _formKey.currentState.save();
     print('querycar');
     id = _yourlocationcontroller.text.toString();
-    //กรุงเทพ
+    //กรุงเทพ,อุดรธานี
     http.Response res =
     await http.get(Uri.parse("http://10.0.2.2:8080/rentcar/" + id + '/queryrentcar'));
     dataafterquery = json.decode(res.body);
@@ -407,6 +389,7 @@ class _rentcarState extends State<rentcar> {
                           border:  Border.all(color:Color(0xFFB0BEC5),width: 1),
                         ),
                         child: TextFormField(
+                          readOnly: true,
                           decoration: const InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
                             hintText: ' 00:00',
@@ -534,6 +517,7 @@ class _rentcarState extends State<rentcar> {
                           border:  Border.all(color:Color(0xFFB0BEC5),width: 1),
                         ),
                         child: TextFormField(
+                          readOnly: true,
                           decoration: const InputDecoration(
                             contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
                             hintText: ' 00:00',

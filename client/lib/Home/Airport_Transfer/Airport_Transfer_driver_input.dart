@@ -442,6 +442,7 @@ class _ShuttlePageState extends State<ShuttlePage> {
                           },
                           controller: _timecontroller,
                           focusNode: myFocusNode4,
+                          readOnly: true,
                           onTap: () async {
                             TimeOfDay pickedTime =  await showTimePicker(
                               initialTime: TimeOfDay.now(),
