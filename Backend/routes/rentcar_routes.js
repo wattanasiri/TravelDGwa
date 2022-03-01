@@ -2,7 +2,9 @@ const express  = require('express')
 const rentcarinfo = require('../models/rentcar_carinfo_model.js')
 const rentcarpartner = require('../models/rentcar_partner_model.js')
 const User = require('../models/user_model')
+const rentcarreceipt = require('../models/rentcar_transaction_model')
 var mongoose = require('mongoose');
+const { db } = require('../models/rentcar_transaction_model')
 const ObjectId = require('mongodb').ObjectId; 
 
 
@@ -10,6 +12,7 @@ const router = express.Router()
 var idinfopartner;
 var idinfocar;
 var updatepartner2;
+var idreceipt;
 
 router.get('/', (req,res) => {
     console.log('Hello')
@@ -67,6 +70,7 @@ router.post('/register_carinfo_rentcarpartner',async (req,res) => {
         car_price: req.body.price,
         car_partnername: req.body.partnername,
         car_license: req.body.license,
+        car_rating: req.body.rating,
     })
    
     carinfopartner.save()
@@ -121,6 +125,7 @@ router.post('/regis_rentcarinfo',async (req,res) => {
         car_price_minute: req.body.price_minute,
         car_partnername: req.body.partnername,
         car_license: req.body.license,
+        car_rating: req.body.rating,
         
     })
     carinfopartner.save()
@@ -207,7 +212,38 @@ router.get('/:id' + '/queryrentcar' , (req,res) => {
             res.json({foundCar})
         }
     })
-   
 })
+
+router.post('/save_transaction',async (req,res) =>  { 
+    console.log('save_transaction')
+    console.log(req.body.usernameid)
+    const receipt = await new rentcarreceipt({
+        usernameID: mongoose.Types.ObjectId(req.body.usernameid),
+        partnername: req.body.partnername,
+        car_name: req.body.car_name,
+        car_license : req.body.car_license,
+        date_sentcar: req.body.date_sentcar,
+        date_getcar: req.body.date_getcar,
+        time_getcar: req.body.time_getcar,
+        time_sentcar: req.body.time_sentcar,
+        location_getsentcar: req.body.location,
+        detail_pricedate: req.body.detail_pricedate,
+        detail_pricetime:req.body.detail_pricetime,
+        detail_pricelocation: req.body.detail_pricelocation,
+        sum_detail_pricedate: req.body.sum_detail_pricedate,
+        sum_detail_pricetime: req.body.sum_detail_pricetime,
+        sum_detail_pricelocation: req.body.sum_detail_pricelocation,
+        total_price: req.body.total_price, 
+    })
+    receipt.save()
+    console.log(req.body.carid)
+    var result = await rentcarinfo.findById(req.body.carid)
+    console.log(result)
+    console.log(result.car_counting)
+    var result2 = await rentcarinfo.updateOne({_id:req.body.carid},{$set:{car_counting:result.car_counting+1}})
+  
+    res.json({receipt})
+})
+
 
 module.exports = router
