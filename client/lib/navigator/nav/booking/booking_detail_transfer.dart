@@ -4,10 +4,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:se_app2/constants.dart';
+import 'package:se_app2/functions.dart';
 
 import 'booking_item.dart';
+import 'billing_transfer.dart';
 import 'cancel_confirm.dart';
 
 class transferDetail extends StatefulWidget {
@@ -27,13 +30,16 @@ class _TargetState extends State<transferDetail> {
 
   var detail;
 
-  Text _buildRatingStars(int rating) {
-    String stars = '';
-    for (int i = 0; i < rating; i++) {
-      stars += '⭐ ';
-    }
-    stars.trim();
-    return Text(stars);
+  String formatDate(String date) {
+    var inputFormat = DateFormat('dd-MM-yyyy');
+    DateTime parsedDate = inputFormat.parse(date);
+    var text = parsedDate.day.toString() + ' ' + getMonthName(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
+    return text;
+  }
+
+  String formatTime(String time) {
+    var text = time + ' น.';
+    return text;
   }
 
   RatingBarIndicator _buildRatingBar(double rating){
@@ -135,7 +141,7 @@ class _TargetState extends State<transferDetail> {
                                   fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                'รถรุ่น : Honda City',
+                                'รถรุ่น : Unknown',
                                 style: GoogleFonts.poppins(
                                     color: const Color(0xff1D3557),
                                     fontSize: 14),
@@ -219,7 +225,7 @@ class _TargetState extends State<transferDetail> {
                               ),
                             ),
                             Text(
-                              '1 มกราคม พ.ศ. 2564',
+                              formatDate(detail['startdate']),
                               style: GoogleFonts.poppins(
                                 color: const Color(0xff1D3557),
                                 fontSize: 18,),
@@ -240,7 +246,7 @@ class _TargetState extends State<transferDetail> {
                               ),
                             ),
                             Text(
-                              '10.00 น.',
+                              formatTime(detail['starttime']),
                               style: GoogleFonts.poppins(
                                 color: const Color(0xff1D3557),
                                 fontSize: 18,),
@@ -261,7 +267,7 @@ class _TargetState extends State<transferDetail> {
                               ),
                             ),
                             Text(
-                              'Seadan',
+                              detail['typeshuttle'],
                               style: GoogleFonts.poppins(
                                 color: const Color(0xff1D3557),
                                 fontSize: 18,),
@@ -305,10 +311,10 @@ class _TargetState extends State<transferDetail> {
                                             fontSize: 12),
                                       ),
                                       Text(
-                                        'Home 123/4 4444444444444',
+                                        detail['yourlocation'],
                                         style: GoogleFonts.poppins(
                                             color: const Color(0xff1D3557),
-                                            fontSize: 12),
+                                            fontSize: 9),
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
@@ -333,7 +339,7 @@ class _TargetState extends State<transferDetail> {
                                             fontSize: 12),
                                       ),
                                       Text(
-                                        'Suvarnabhumi Airport (BKK)',
+                                        detail['destination'],
                                         style: GoogleFonts.poppins(
                                             color: const Color(0xff1D3557),
                                             fontSize: 12),
@@ -396,6 +402,9 @@ class _TargetState extends State<transferDetail> {
                           showDialog(
                             context: context,
                             builder: (BuildContext context) {
+                              return transferBilling(
+                                detail: detail,
+                              );
                             },
                           ),
                         },

@@ -13,6 +13,7 @@ import 'booking_detail_transfer.dart';
 import 'components/booking_type_icon.dart';
 
 class ResultItem extends StatefulWidget {
+
   final bookingData;
   const ResultItem(
       {Key key,
