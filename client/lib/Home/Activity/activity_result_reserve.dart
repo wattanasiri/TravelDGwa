@@ -495,7 +495,6 @@ class _activity_reserveState extends State<activity_reserve> {
                         time: widget.timeActivity,
                         price: widget.data['foundAcc']['price'],
                         sum_price: widget.sum_price,
-
                             ),));
                       },
                       child: Padding(

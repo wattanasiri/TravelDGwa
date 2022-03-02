@@ -9,7 +9,10 @@ import 'dart:convert';
 import 'package:se_app2/Home/Activity/activity_result.dart';
 
 class activity extends StatefulWidget {
-  const activity({Key key}) : super(key: key);
+  // const activity({Key key}) : super(key: key);
+
+  final result;
+  activity({this.result});
 
   @override
   _activityState createState() => _activityState();
@@ -19,6 +22,7 @@ class _activityState extends State<activity> {
 
 
   String word = '';
+  String selectid = '';
 
   Future activity_partner() async{
 
@@ -27,12 +31,12 @@ class _activityState extends State<activity> {
           'Context-Type': 'application/json;charSet=UTF-8'
         },
         body: <String, String>{
-          "name": "Health Land Pradit Manutham Spa Treatments",
-          "location": "288 ถนนประดิษฐ์มนูธรรม แขวงพลับพลา, เขตวังทองหลาง, กรุงเทพมหานคร 10310 ",
-          "price": "600",
+          "name": "มหานคร สกายวอล์ค",
+          "location": "มหานคร สกายวอล์ค อาคาร คิง เพาเวอร์ มหานคร (King Power Mahanakhon) ตั้งอยู่ที่ถนนนราธิวาสราชนครินทร์ แขวงสีลม เขตบางรัก",
+          "price": "690",
           "star": "5",
           "opening_day": "จันทร์ - อาทิตย์",
-          "opening_time": "09.00 - 21.00",
+          "opening_time": "10.00 - 24.00",
         });
     print(res.body);
   }
@@ -40,9 +44,9 @@ class _activityState extends State<activity> {
   Future update_activity() async{
 
     print('update partner');
-    List<String> hilight = ["จองช่วงเวลาที่คุณต้องการได้อย่างง่ายดายเพื่อเพลิดเพลินกับทรีตเมนต์ที่ดีที่สุดที่ Health Land","ฟื้นฟูร่างกาย จิตใจ และจิตวิญญาณด้วยการนวดผ่อนคลายโดยใช้เทคนิคไทย อโรมา หรืออายุรเวท","คืนความอ่อนเยาว์ให้กับผิวหน้าด้วยทรีตเมนต์พิเศษที่เน้นดวงตา ริ้วรอย ร่องลึก และอื่นๆ","สัมผัสความสมบูรณ์แบบของสุขภาพและความสมบูรณ์ของร่างกายที่ Health Land Spa ใกล้บ้านคุณทั่วประเทศ"];
-    List<String> service = ["ห้องพยาบาล","ห้องน้ำ","ที่จอดรถ","Wi - Fi","ห้องเปลี่ยนเสื้อผ้า"];
-    List<String> image = ["https://ik.imagekit.io/tvlk/xpe-asset/AyJ40ZAo1DOyPyKLZ9c3RGQHTP2oT4ZXW+QmPVVkFQiXFSv42UaHGzSmaSzQ8DO5QIbWPZuF+VkYVRk6gh-Vg4ECbfuQRQ4pHjWJ5Rmbtkk=/2000785513283/Health%2520Land%2520Pradit%2520Manutham%2520Spa%2520Treatments-f3388649-4fee-4630-8c1c-cec1fd1f36f7.jpeg?_src=imagekit&tr=c-at_max","https://ik.imagekit.io/tvlk/xpe-asset/AyJ40ZAo1DOyPyKLZ9c3RGQHTP2oT4ZXW+QmPVVkFQiXFSv42UaHGzSmaSzQ8DO5QIbWPZuF+VkYVRk6gh-Vg4ECbfuQRQ4pHjWJ5Rmbtkk=/2000785513256/Health%2520Land%2520Rama%25202%2520Spa%2520Treatments-d86bb661-a1a4-49d0-9e1d-f535f923a928.jpeg?_src=imagekit&tr=dpr-3"];
+    List<String> hilight = ["ชมทิวทัศน์ของเมืองหลวงที่ไม่มีวันหลับไหลแบบ 360 องศา บนอาคารที่สูงที่สุดในประเทศไทยด้วยความสูงกว่า 314 เมตร นอกจากการได้ชมวิวทิวทัศน์ขรอบเมืองกรุงเทพฯแล้ว คุณจะได้พบกับสิ่งมหัศจรรย์ต่างๆ ไม่ว่าจะเป็นลิฟท์ความเร็วสูงที่จะพาคุณขึ้นไปชั้น 74 ภายใน 50 วินาที ประกอบกับการชมวิดีโอเสมือนจริงแบบรอบทิศทาง, ตู้ไปรษณีย์ที่สูงที่สุดในประเทศไทย และพื้นกระจกใสที่ทำให้คุณได้มองเห็นพื้นข้างล่างเสมือนลอยอยู่กลางอากาศ สัมผัสประสบการณ์ที่ไม่เหมือนใครได้ที่มหานครสกายวอล์ค","ภายในชั้น 74 ยังมีร้านไอศกรีม และร้านชานมไข่มุก ไว้คอยบริการคนที่ท้องว่างอยู่ หรือถ้าอยากมีระดับขึ้นไปกว่านี้ เราแนะนำสกายบาร์ที่ชั้น 78 มีเครื่องดื่ม/ค๊อกเทลมากมายให้เลือกสรร","ไทย เทสต์ ฮับ มหานคร คิวบ์ ตั้งอยู่ที่บริเวณชั้น 1 ของตึกมหานคร คิวบ์ ที่เชื่อมต่อกับรถไฟฟ้าบีทีเอส สถานีช่องนนทรี (ทางออก3) เป็นสตรีทฟู้ดแห่งใหม่ที่อยู่ใจกลางเมืองย่านสาทร-สีลม ครั้งแรกกับการรวบรวมร้านอาหารชื่อดังของเมืองไทยที่การันตีความอร่อยจากมิชลิน เช่น ร้านเผ็ดเผ็ดเฮ่! , ลิ้ม เหล่า ซา , ผัดไทไฟทะลุ และยังมีให้เลือกถึง 12 ร้านด้วยกัน ให้บริการตั้งแต่ 10:00 - 20:30 น."];
+    List<String> service = ["ห้องพยาบาล","ห้องน้ำ","ที่จอดรถ","Wi - Fi","ลิฟต์"];
+    List<String> image = ["https://th.bing.com/th/id/OIP.tYIM25JsvJ-jh0_okPGomwHaE8?w=288&h=192&c=7&r=0&o=5&pid=1.7","https://th.bing.com/th/id/OIP.NVmUE1p25iRxoo7YKcxgTAHaE8?pid=ImgDet&rs=1"];
     Map<String,String> data;
     data={
       "hilight[]": hilight.toString(),
@@ -70,7 +74,7 @@ class _activityState extends State<activity> {
   Map dataafterquery;
   String names;
   Future queryactivity() async {
-
+    word = selectid;
     if (!_formKey.currentState.validate()) {
       return;
     }
@@ -99,7 +103,7 @@ class _activityState extends State<activity> {
   FocusNode acFocusNode2 = FocusNode();
 
 
-
+  List recdata;
   final name = TextEditingController();
   // final day = TextEditingController();
   // final time = TextEditingController();
@@ -108,6 +112,14 @@ class _activityState extends State<activity> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   @override
+  void initState(){
+    super.initState();
+    print("result");
+    print(widget.result);
+    // // recdata = widget.result;
+    // print(recdata.length);
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -322,9 +334,9 @@ class _activityState extends State<activity> {
                     padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                     child: ElevatedButton(
                       onPressed: () async=> {
-                        // activity_partner(),
-                        // update_activity()
-                        queryactivity(),
+                        activity_partner(),
+                        update_activity()
+                        // queryactivity(),
                       },
                       style: ElevatedButton.styleFrom(
                         onPrimary: const Color(0xff1D3557),
@@ -362,21 +374,25 @@ class _activityState extends State<activity> {
                       ),
                       SizedBox(
                         height: 150.0,
-                        child: ListView(
+                        child: ListView.builder(
                           physics: const BouncingScrollPhysics(
                               parent: AlwaysScrollableScrollPhysics()),
-                          padding: const EdgeInsets.only(left: 20, right: 20),
+                          padding: const EdgeInsets.only( left: 20, right: 20),
                           scrollDirection: Axis.horizontal,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () => {},
+                          itemCount: widget.result == null ? 0 : widget.result.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return GestureDetector(
+                              onTap: () {
+                                selectid = widget.result[index]["_id"];
+                                queryactivity();
+                              },
                               child: Card(
                                 child: Container(
                                   width: 280,
-                                  decoration: const BoxDecoration(
+                                  decoration: BoxDecoration(
                                       image: DecorationImage(
                                           image: NetworkImage(
-                                              'https://placeimg.com/640/480/any'),
+                                              "${widget.result[index]['image'][0]}"),
                                           fit: BoxFit.fitWidth,
                                           alignment: Alignment.topCenter,
                                           colorFilter: ColorFilter.mode(
@@ -388,11 +404,11 @@ class _activityState extends State<activity> {
                                     children: <Widget>[
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.end,
-                                        children: const <Widget>[
+                                        children: <Widget>[
                                           Padding(
                                             padding: EdgeInsets.all(10.0),
                                             child: Text(
-                                              'THB ' + '399.00',
+                                              "THB ${widget.result[index]['price']}",
                                               style: TextStyle(
                                                   color: Color(0xffECFAFF),
                                                   fontWeight: FontWeight.w500,
@@ -408,31 +424,32 @@ class _activityState extends State<activity> {
                                           CrossAxisAlignment.start,
                                           children: <Widget>[
                                             // _buildRatingStars(5),
-                                            const Text(
-                                              'Peaberry Place, Stay Stylish in Quiet Neighborhood',
+                                            Text(
+                                              "${widget.result[index]['name']}",
                                               style: TextStyle(
                                                   color: Color(0xffECFAFF),
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 14),
                                             ),
                                             Row(
-                                              children: const <Widget>[
+                                              children: <Widget>[
                                                 Padding(
                                                   padding: EdgeInsets.only(right: 5),
                                                   child: Icon(Icons.location_pin,
                                                       color: Color(0xffECFAFF),
                                                       size: 18),
                                                 ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(top: 4),
-                                                  child: Text(
-                                                    'รัชดา, กรุงเทพมหานคร',
-                                                    style: TextStyle(
-                                                        color: Color(0xffECFAFF),
-                                                        fontWeight: FontWeight.w500,
-                                                        fontSize: 14),
+                                                 Flexible(
+                                                    child: Text(
+                                                      "${widget.result[index]['location']}",
+                                                      style: TextStyle(
+                                                          color: Color(0xffECFAFF),
+                                                          overflow: TextOverflow.ellipsis,
+                                                          fontWeight: FontWeight.w500,
+                                                          fontSize: 14),
+                                                    ),
                                                   ),
-                                                )
+
                                               ],
                                             )
                                           ],
@@ -442,433 +459,13 @@ class _activityState extends State<activity> {
                                   ),
                                 ),
                               ),
-                            ),
-                            GestureDetector(
-                              onTap: () => {},
-                              child: Card(
-                                child: Container(
-                                  width: 280,
-                                  decoration: const BoxDecoration(
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              'https://placeimg.com/640/480/any'),
-                                          fit: BoxFit.fitWidth,
-                                          alignment: Alignment.topCenter,
-                                          colorFilter: ColorFilter.mode(
-                                              Colors.black54, BlendMode.darken)),
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(5))),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: const <Widget>[
-                                          Padding(
-                                            padding: EdgeInsets.all(10.0),
-                                            child: Text(
-                                              'THB ' + '399.00',
-                                              style: TextStyle(
-                                                  color: Color(0xffECFAFF),
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.only(left: 10),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            // _buildRatingStars(5),
-                                            const Text(
-                                              'Peaberry Place, Stay Stylish in Quiet Neighborhood',
-                                              style: TextStyle(
-                                                  color: Color(0xffECFAFF),
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 14),
-                                            ),
-                                            Row(
-                                              children: const <Widget>[
-                                                Padding(
-                                                  padding: EdgeInsets.only(right: 5),
-                                                  child: Icon(Icons.location_pin,
-                                                      color: Color(0xffECFAFF),
-                                                      size: 18),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(top: 4),
-                                                  child: Text(
-                                                    'รัชดา, กรุงเทพมหานคร',
-                                                    style: TextStyle(
-                                                        color: Color(0xffECFAFF),
-                                                        fontWeight: FontWeight.w500,
-                                                        fontSize: 14),
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
+                            );
+                          },
                         ),
                       ),
                     ],
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(top: 15, left: 30),
-                        child: const Text(
-                          "พักผ่อนกายสบายใจ",
-                          style: TextStyle(fontSize: 18, color: Color(0xff1D3557)),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 150.0,
-                        child: ListView(
-                          physics: const BouncingScrollPhysics(
-                              parent: AlwaysScrollableScrollPhysics()),
-                            padding: const EdgeInsets.only(left: 20, right: 20),
-                          scrollDirection: Axis.horizontal,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () => {},
-                              child: Card(
-                                child: Container(
-                                  width: 280,
-                                  decoration: const BoxDecoration(
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              'https://placeimg.com/640/480/any'),
-                                          fit: BoxFit.fitWidth,
-                                          alignment: Alignment.topCenter,
-                                          colorFilter: ColorFilter.mode(
-                                              Colors.black54, BlendMode.darken)),
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(5))),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: const <Widget>[
-                                          Padding(
-                                            padding: EdgeInsets.all(10.0),
-                                            child: Text(
-                                              'THB ' + '399.00',
-                                              style: TextStyle(
-                                                  color: Color(0xffECFAFF),
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.only(left: 10),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            // _buildRatingStars(5),
-                                            const Text(
-                                              'Peaberry Place, Stay Stylish in Quiet Neighborhood',
-                                              style: TextStyle(
-                                                  color: Color(0xffECFAFF),
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 14),
-                                            ),
-                                            Row(
-                                              children: const <Widget>[
-                                                Padding(
-                                                  padding: EdgeInsets.only(right: 5),
-                                                  child: Icon(Icons.location_pin,
-                                                      color: Color(0xffECFAFF),
-                                                      size: 18),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(top: 4),
-                                                  child: Text(
-                                                    'รัชดา, กรุงเทพมหานคร',
-                                                    style: TextStyle(
-                                                        color: Color(0xffECFAFF),
-                                                        fontWeight: FontWeight.w500,
-                                                        fontSize: 14),
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () => {},
-                              child: Card(
-                                child: Container(
-                                  width: 280,
-                                  decoration: const BoxDecoration(
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              'https://placeimg.com/640/480/any'),
-                                          fit: BoxFit.fitWidth,
-                                          alignment: Alignment.topCenter,
-                                          colorFilter: ColorFilter.mode(
-                                              Colors.black54, BlendMode.darken)),
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(5))),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: const <Widget>[
-                                          Padding(
-                                            padding: EdgeInsets.all(10.0),
-                                            child: Text(
-                                              'THB ' + '399.00',
-                                              style: TextStyle(
-                                                  color: Color(0xffECFAFF),
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.only(left: 10),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            // _buildRatingStars(5),
-                                            const Text(
-                                              'Peaberry Place, Stay Stylish in Quiet Neighborhood',
-                                              style: TextStyle(
-                                                  color: Color(0xffECFAFF),
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 14),
-                                            ),
-                                            Row(
-                                              children: const <Widget>[
-                                                Padding(
-                                                  padding: EdgeInsets.only(right: 5),
-                                                  child: Icon(Icons.location_pin,
-                                                      color: Color(0xffECFAFF),
-                                                      size: 18),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(top: 4),
-                                                  child: Text(
-                                                    'รัชดา, กรุงเทพมหานคร',
-                                                    style: TextStyle(
-                                                        color: Color(0xffECFAFF),
-                                                        fontWeight: FontWeight.w500,
-                                                        fontSize: 14),
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.only(top: 15, left: 30),
-                        child: const Text(
-                          "เที่ยวเกาะหนีคนใจร้าย ;-;",
-                          style: TextStyle(fontSize: 18, color: Color(0xff1D3557)),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 150.0,
-                        child: ListView(
-                          physics: const BouncingScrollPhysics(
-                              parent: AlwaysScrollableScrollPhysics()),
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          scrollDirection: Axis.horizontal,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () => {},
-                              child: Card(
-                                child: Container(
-                                  width: 280,
-                                  decoration: const BoxDecoration(
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              'https://placeimg.com/640/480/any'),
-                                          fit: BoxFit.fitWidth,
-                                          alignment: Alignment.topCenter,
-                                          colorFilter: ColorFilter.mode(
-                                              Colors.black54, BlendMode.darken)),
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(5))),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: const <Widget>[
-                                          Padding(
-                                            padding: EdgeInsets.all(10.0),
-                                            child: Text(
-                                              'THB ' + '399.00',
-                                              style: TextStyle(
-                                                  color: Color(0xffECFAFF),
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.only(left: 10),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            // _buildRatingStars(5),
-                                            const Text(
-                                              'Peaberry Place, Stay Stylish in Quiet Neighborhood',
-                                              style: TextStyle(
-                                                  color: Color(0xffECFAFF),
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 14),
-                                            ),
-                                            Row(
-                                              children: const <Widget>[
-                                                Padding(
-                                                  padding: EdgeInsets.only(right: 5),
-                                                  child: Icon(Icons.location_pin,
-                                                      color: Color(0xffECFAFF),
-                                                      size: 18),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(top: 4),
-                                                  child: Text(
-                                                    'รัชดา, กรุงเทพมหานคร',
-                                                    style: TextStyle(
-                                                        color: Color(0xffECFAFF),
-                                                        fontWeight: FontWeight.w500,
-                                                        fontSize: 14),
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () => {},
-                              child: Card(
-                                child: Container(
-                                  width: 280,
-                                  decoration: const BoxDecoration(
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              'https://placeimg.com/640/480/any'),
-                                          fit: BoxFit.fitWidth,
-                                          alignment: Alignment.topCenter,
-                                          colorFilter: ColorFilter.mode(
-                                              Colors.black54, BlendMode.darken)),
-                                      borderRadius:
-                                      BorderRadius.all(Radius.circular(5))),
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
-                                        children: const <Widget>[
-                                          Padding(
-                                            padding: EdgeInsets.all(10.0),
-                                            child: Text(
-                                              'THB ' + '399.00',
-                                              style: TextStyle(
-                                                  color: Color(0xffECFAFF),
-                                                  fontWeight: FontWeight.w500,
-                                                  fontSize: 14),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Container(
-                                        padding: const EdgeInsets.only(left: 10),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          children: <Widget>[
-                                            // _buildRatingStars(5),
-                                            const Text(
-                                              'Peaberry Place, Stay Stylish in Quiet Neighborhood',
-                                              style: TextStyle(
-                                                  color: Color(0xffECFAFF),
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 14),
-                                            ),
-                                            Row(
-                                              children: const <Widget>[
-                                                Padding(
-                                                  padding: EdgeInsets.only(right: 5),
-                                                  child: Icon(Icons.location_pin,
-                                                      color: Color(0xffECFAFF),
-                                                      size: 18),
-                                                ),
-                                                Padding(
-                                                  padding: EdgeInsets.only(top: 4),
-                                                  child: Text(
-                                                    'รัชดา, กรุงเทพมหานคร',
-                                                    style: TextStyle(
-                                                        color: Color(0xffECFAFF),
-                                                        fontWeight: FontWeight.w500,
-                                                        fontSize: 14),
-                                                  ),
-                                                )
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+
                 ],
               ),
             )

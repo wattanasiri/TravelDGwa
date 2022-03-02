@@ -9,6 +9,16 @@ const router = express.Router()
 
 router.get('/', (req,res) => {
     console.log('Hello')
+    
+    activity.find({star : "5"},(err , foundactivity) => {
+        if(err){
+            console.log(err)
+        } else {
+
+            res.json({foundactivity});
+            console.log(foundactivity)
+        }
+    })
 })
 
 router.post('/activity_partner',async (req,res) => { 
@@ -39,7 +49,7 @@ router.post('/update_activity',async (req,res) => {
     // const infouser = await User.findById(req.body.username)
     const updatepartner = await activity.findById(idactivitypartner)
     console.log(updatepartner)
-    for(i = 1;i<5;i++){
+    for(i = 1;i<4;i++){
         updatepartner.hilight.push(req.body.hilight[i])
     }
     for(i = 1;i<6;i++){
