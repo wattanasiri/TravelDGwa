@@ -29,7 +29,7 @@ router.get('/getuser',(req,res) => {
     })
 })
 
-router.delete('deleteuser/:id',(req,res) => {
+router.delete('/deleteuser/:id',(req,res) => {
     User.findByIdAndDelete(req.params.id,(err,deleted) => {
         if(err){
             console.log(err);
