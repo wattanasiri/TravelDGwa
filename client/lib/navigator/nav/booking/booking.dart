@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'booking_item.dart';
+import 'package:se_app2/Widgets/notif_ok.dart';
 
 class Booking extends StatefulWidget {
 
@@ -38,7 +39,22 @@ class _BookingState extends State<Booking> {
         'Accept': 'application/json;charSet=UTF-8',
         'Authorization': 'Bearer $token',
       },
-    );
+    ).timeout(const Duration(seconds: 3),
+      onTimeout: () {
+        // Time has run out, do what you wanted to do.
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            // Navigator.pushReplacementNamed(context, '/login',);
+            return notifBox(
+              title: 'Error',
+              text: 'Request timeout.',
+              fontSize: 14.0,
+            );
+          },
+        );
+        return http.Response('Error', 408); // Request Timeout response status code
+      },);
     data = json.decode(res.body);
     bookingData = data['booking'];
     print(bookingData);
@@ -59,6 +75,19 @@ class _BookingState extends State<Booking> {
           connectionFailed = false;
         });
       }
+    }
+    else if (res.statusCode == 401) {
+      Navigator.pushReplacementNamed(context, '/login',);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return notifBox(
+            title: 'Error',
+            text: 'Invalid token.',
+            fontSize: 14.0,
+          );
+        },
+      );
     }
     else {
       print('failure');

@@ -103,6 +103,11 @@ class _RegisterFormState extends State<RegisterForm> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'กรุณาใส่อีเมลของคุณ';
+                  } else {
+                    bool emailValidation = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
+                    if (!emailValidation) {
+                      return 'อีเมลต้องเป็นอีเมลจริง';
+                    }
                   }
                   return null;
                 },

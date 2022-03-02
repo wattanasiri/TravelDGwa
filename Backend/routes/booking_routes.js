@@ -11,12 +11,14 @@ const router = express.Router()
 
 // GET TOKEN
 router.get('/' , middleware.isLoggedIn, (req,res) => {
+    // the incoming token is 'Bearer #token#'
     var token = req.headers.authorization.split(' ')[1]
+    // we need to convert the string to JSON object first.
     var stringToken = JSON.parse(token)['token']
     var decodedtoken = jwt.decode(stringToken, secret)
     var bookingList = []
     var newElem
-    // console.log(decodedtoken._id)
+    // console.log(decodedtoken)
     AccomTransaction.find({}, function (err, foundBooking) {
         if (err) {
             console.log(err);
