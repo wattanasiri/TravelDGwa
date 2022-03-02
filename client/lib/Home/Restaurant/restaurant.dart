@@ -8,12 +8,23 @@ import '../Attraction/tourism_detail.dart';
 import 'dart:convert';
 
 class Restaurantpage extends StatefulWidget {
+
+  final result;
+  final result2;
+
+  Restaurantpage(
+      {Key key,
+        this.result,this.result2})
+      : super(key: key);
+
+
   @override
   _RestaurantpageState createState() => _RestaurantpageState();
 }
 
 class _RestaurantpageState extends State<Restaurantpage> {
   String word = '';
+  String selectid ;
   Map data;
   List restaurantData;
 
@@ -27,22 +38,25 @@ class _RestaurantpageState extends State<Restaurantpage> {
   final GlobalKey<FormState> _formKey = GlobalKey();
   final name = TextEditingController();
 
-  Future gettheozone() async {
-    Map data ;
-    word = "621be8a20460322d62492099";
+  Future getdatafromid() async {
+    Map data;
+    word = selectid;
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/query/" + word));
+    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/querydata/" + word));
     data = json.decode(res.body);
-    data = data["foundRes"];
+    data = data["foundRestaurant"];
     //restaurantData = data['restaurants'];
+    print(word);
+    print("datafromid");
     print(data);
     Navigator.pushReplacement(context, MaterialPageRoute(
-        builder: (context) => Restaudetail(
-          data : data,
-        ))
+        builder: (context) =>
+            Restaudetail(
+              data: data,
+            ))
     );
-
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -169,15 +183,17 @@ class _RestaurantpageState extends State<Restaurantpage> {
                   ),*/
                       SizedBox(
                         height: 280.0,
-                        child: ListView(
+                        child: ListView.builder(
                           physics: const BouncingScrollPhysics(
                               parent: AlwaysScrollableScrollPhysics()),
                           padding: const EdgeInsets.only( right: 20),
                           scrollDirection: Axis.horizontal,
-                          children: <Widget>[
-                            GestureDetector(
+                          itemCount: widget.result == null ? 0 : widget.result.length,
+                          itemBuilder: (BuildContext context, int index) {
+                           return GestureDetector(
                               onTap: () {
-                                gettheozone();
+                                selectid = widget.result[index]["_id"];
+                                getdatafromid();
                               },
                               child: Card(
                                 elevation: 3,
@@ -187,10 +203,10 @@ class _RestaurantpageState extends State<Restaurantpage> {
 
                                 child: Container(
                                   width: 220,
-                                  decoration: const BoxDecoration(
+                                  decoration:  BoxDecoration(
                                       image: DecorationImage(
                                         image: NetworkImage(
-                                            'https://placeimg.com/640/480/any'),
+                                          "${widget.result[index]['image'][0]}",),
                                         fit: BoxFit.fitWidth,
                                         alignment: Alignment.topCenter,
                                       ),
@@ -203,11 +219,11 @@ class _RestaurantpageState extends State<Restaurantpage> {
                                       Flexible(
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
-                                          children: const <Widget>[
+                                          children: <Widget>[
                                             Padding(
                                               padding: EdgeInsets.only(left: 15.0),
                                               child: Text(
-                                                'ดิโอโซนซีฟู้ด บุฟเฟ่ต์ สาขาบางขุนเทียน',
+                                                  "${widget.result[index]['name']}",
                                                 maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
@@ -224,7 +240,7 @@ class _RestaurantpageState extends State<Restaurantpage> {
                                           crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                           mainAxisAlignment: MainAxisAlignment.end,
-                                          children: const <Widget>[
+                                          children: <Widget>[
                                                 SizedBox(width: 7,),
                                             Flexible(
                                                 child : Padding(
@@ -244,7 +260,7 @@ class _RestaurantpageState extends State<Restaurantpage> {
                                                     child : Padding(
                                                       padding: EdgeInsets.only(top: 4 , left: 15),
                                                       child: Text(
-                                                        'THB 250',
+                                                        "${widget.result[index]['price']}",
                                                         maxLines: 1,
                                                         overflow: TextOverflow.ellipsis,
                                                         style: TextStyle(
@@ -261,8 +277,8 @@ class _RestaurantpageState extends State<Restaurantpage> {
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            );
+                          },
                         ),
                       ),
                     ],
@@ -284,17 +300,17 @@ class _RestaurantpageState extends State<Restaurantpage> {
                   ),*/
                       SizedBox(
                         height: 280.0,
-                        child: ListView(
+                        child: ListView.builder(
                           physics: const BouncingScrollPhysics(
                               parent: AlwaysScrollableScrollPhysics()),
                           padding: const EdgeInsets.only( right: 20),
                           scrollDirection: Axis.horizontal,
-                          children: <Widget>[
-                            GestureDetector(
+                          itemCount: widget.result2 == null ? 0 : widget.result2.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            return GestureDetector(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => Restaudetail())
-                                );
+                                selectid = widget.result2[index]["_id"];
+                                getdatafromid();
                               },
                               child: Card(
                                 elevation: 3,
@@ -304,10 +320,10 @@ class _RestaurantpageState extends State<Restaurantpage> {
 
                                 child: Container(
                                   width: 220,
-                                  decoration: const BoxDecoration(
+                                  decoration:  BoxDecoration(
                                       image: DecorationImage(
                                         image: NetworkImage(
-                                            'https://placeimg.com/640/480/any'),
+                                          "${widget.result2[index]['image'][0]}"),
                                         fit: BoxFit.fitWidth,
                                         alignment: Alignment.topCenter,
                                       ),
@@ -320,11 +336,11 @@ class _RestaurantpageState extends State<Restaurantpage> {
                                       Flexible(
                                         child: Column(
                                           mainAxisAlignment: MainAxisAlignment.start,
-                                          children: const <Widget>[
+                                          children:  <Widget>[
                                             Padding(
                                               padding: EdgeInsets.only(left: 15.0),
                                               child: Text(
-                                                'บัตรดินเนอร์ล่องเรือวันเดอร์ ฟูลเพิลร์',
+                                                  "${widget.result2[index]['name']}",
                                                 maxLines: 2,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: TextStyle(
@@ -341,7 +357,7 @@ class _RestaurantpageState extends State<Restaurantpage> {
                                           crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                           mainAxisAlignment: MainAxisAlignment.end,
-                                          children: const <Widget>[
+                                          children: <Widget>[
                                             SizedBox(width: 7,),
                                             Flexible(
                                                 child : Padding(
@@ -361,7 +377,7 @@ class _RestaurantpageState extends State<Restaurantpage> {
                                                 child : Padding(
                                                   padding: EdgeInsets.only(top: 4 , left: 15),
                                                   child: Text(
-                                                    'THB 690',
+                                                    "${widget.result2[index]['price']}",
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     style: TextStyle(
@@ -378,8 +394,8 @@ class _RestaurantpageState extends State<Restaurantpage> {
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
+                            );
+                          },
                         ),
                       ),
                     ],

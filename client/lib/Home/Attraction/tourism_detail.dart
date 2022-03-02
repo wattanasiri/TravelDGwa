@@ -1,5 +1,6 @@
 import 'dart:io';
-
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
@@ -7,25 +8,24 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:se_app2/Home/Attraction/tourism_result.dart';
+import 'package:se_app2/Home/Attraction/tourist_attraction.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 
 class Attractiondetail extends StatefulWidget {
+  bool check;
   final detail;
   Map data;
-  Attractiondetail({Key key,@required this.detail,this.data}) : super(key : key);
+  String word;
+  Attractiondetail({Key key,@required this.detail,this.data,this.word,this.check}) : super(key : key);
 
   @override
   _AttractiondetailState createState() => _AttractiondetailState();
 }
 
 int activeIndex = 0;
-final urlImages = [
-  'https://placeimg.com/640/480/any',
-  'https://placeimg.com/640/480/any',
-  'https://placeimg.com/640/480/any',
-  'https://placeimg.com/640/480/any',
-];
+
 
 Text _buildRatingStars(int rating) {
   String stars = '';
@@ -61,6 +61,69 @@ class _AttractiondetailState extends State<Attractiondetail> {
 
   final _controller = ScrollController();
 
+  List attractionData;
+  List seaattractiondata, museumattractiondata;
+
+  Future getseaattraction() async {
+    print("1");
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/" ));
+    data = json.decode(res.body);
+    print("this");
+    print(data);
+    seaattractiondata = data['seaattraction'];
+    print("this");
+    print(seaattractiondata);
+  }
+  Future getmuseum() async {
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getmuseum" ));
+    data = json.decode(res.body);
+    print("this");
+    print(data);
+    museumattractiondata = data['museumattraction'];
+    print("this");
+    print(museumattractiondata);
+  }
+
+  Future getItemAndNavigate() async {
+    if(widget.check == true){
+      print("test");
+      print(widget.word);
+      http.Response res =
+      await http.get(Uri.parse("http://10.0.2.2:8080/attraction/search/" + widget.word));
+      data = json.decode(res.body);
+      print ("this");
+      print (data);
+      attractionData = data["attraction"];
+      print ("this");
+      print (attractionData);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => AttractionResult(
+                result : attractionData,
+                nameHolder : widget.word.toString(),
+              )
+          )
+      );
+    }else{
+      await getseaattraction();
+      await getmuseum();
+      print("0");
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => Attractionpage(
+                result : seaattractiondata,
+                result2: museumattractiondata,
+              )
+          )
+      );
+    }
+    //restaurantData = data['restaurants'];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,14 +138,14 @@ class _AttractiondetailState extends State<Attractiondetail> {
               children: [
                 SizedBox(height: MediaQuery.of(context).size.height),
                 CarouselSlider.builder(
-                  itemCount: urlImages.length,
+                  itemCount: widget.data["image"].length,
                   options: CarouselOptions(
                       height: 400.0,
                       viewportFraction: 1,
                       onPageChanged: (index, reason) =>
                       {setState(() => activeIndex = index)}),
                   itemBuilder: (context, index, realIndex) {
-                    final urlImage = urlImages[index];
+                    final urlImage = widget.data["image"][index];
                     return buildImage(urlImage, index);
                   },
                 ),
@@ -96,7 +159,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
                     leading: IconButton(
                       icon: const Icon(Icons.arrow_back_ios_rounded,
                           color: Color(0xffECFAFF)),
-                      onPressed: () => Navigator.pop(context),
+                      onPressed: () => getItemAndNavigate(),
                     ),
                   ),
                 ),
@@ -681,23 +744,24 @@ class _AttractiondetailState extends State<Attractiondetail> {
     );
   }
   void navigatePop() => {setState(() {}), Navigator.of(context).pop()};
+  Widget buildImage(String urlImage, int index) => Container(
+    color: Colors.black,
+    child: Image.network(
+      urlImage,
+      fit: BoxFit.cover,
+    ),
+  );
+
+  Widget buildIndicator() => AnimatedSmoothIndicator(
+    activeIndex: activeIndex,
+    count: widget.data["image"].length,
+    effect: ScaleEffect(
+        dotWidth: 8,
+        dotHeight: 8,
+        activeDotColor: const Color(0xffECFAFF),
+        dotColor: const Color(0xffECFAFF).withOpacity(0.5)),
+  );
 }
 
-Widget buildImage(String urlImage, int index) => Container(
-  color: Colors.black,
-  child: Image.network(
-    urlImage,
-    fit: BoxFit.cover,
-  ),
-);
 
-Widget buildIndicator() => AnimatedSmoothIndicator(
-  activeIndex: activeIndex,
-  count: urlImages.length,
-  effect: ScaleEffect(
-      dotWidth: 8,
-      dotHeight: 8,
-      activeDotColor: const Color(0xffECFAFF),
-      dotColor: const Color(0xffECFAFF).withOpacity(0.5)),
-);
 

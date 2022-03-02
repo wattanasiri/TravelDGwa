@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:http/http.dart' as http;
 import 'package:se_app2/Home/Attraction/tourism_detail.dart';
+import 'package:se_app2/Home/Attraction/tourist_attraction.dart';
 import 'dart:convert';
 
 import '/Home/Accommodation/accommodation_result_item.dart';
@@ -42,6 +43,7 @@ class _AttractionResultState extends State<AttractionResult> {
   var restaurantData;
   String word = '';
   Map data;
+  List seaattractiondata, museumattractiondata;
 
   Future getRestaurant() async {
     http.Response res =
@@ -51,6 +53,7 @@ class _AttractionResultState extends State<AttractionResult> {
   }
 
   Future getData() async {
+    bool check = true ;
     http.Response res =
     await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getData/" + ID));
     data = json.decode(res.body);
@@ -59,9 +62,34 @@ class _AttractionResultState extends State<AttractionResult> {
     print (data);
     Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) => Attractiondetail(
+          word : widget.nameHolder,
           data : data,
+          check : check,
+
+
         ))
     );
+  }
+  Future getseaattraction() async {
+    print("1");
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/" ));
+    data = json.decode(res.body);
+    print("this");
+    print(data);
+    seaattractiondata = data['seaattraction'];
+    print("this");
+    print(seaattractiondata);
+  }
+  Future getmuseum() async {
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getmuseum" ));
+    data = json.decode(res.body);
+    print("this");
+    print(data);
+    museumattractiondata = data['museumattraction'];
+    print("this");
+    print(museumattractiondata);
   }
 
   var resData;
@@ -72,8 +100,8 @@ class _AttractionResultState extends State<AttractionResult> {
     nameEdit = TextEditingController(text: widget.nameHolder);
     word = nameEdit.text;
     resData = widget.result;
-    print ("this");
-    print (resData);
+    print("nameholder");
+    print(widget.nameHolder);
   }
 
   var sortBy = 'l-h';
@@ -98,7 +126,19 @@ class _AttractionResultState extends State<AttractionResult> {
             leading: IconButton(
               icon: const Icon(Icons.arrow_back_ios_rounded,
                   color: Color(0xffECFAFF)),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () async => {
+              await getseaattraction(),
+                await getmuseum(),
+        Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Attractionpage(
+              result : seaattractiondata,
+              result2: museumattractiondata,
+            )
+        )
+    ),
+              },
             ),
             title: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -165,7 +205,7 @@ class _AttractionResultState extends State<AttractionResult> {
                                     borderRadius: const BorderRadius.only(
                                         topLeft: Radius.circular(20),
                                         topRight: Radius.circular(20)),
-                                    child: Image.network('${resData[index]['image']}',
+                                    child: Image.network('${resData[index]['image'][0]}',
                                         height: 200,
                                         width: MediaQuery.of(context).size.width,
                                         fit: BoxFit.cover),

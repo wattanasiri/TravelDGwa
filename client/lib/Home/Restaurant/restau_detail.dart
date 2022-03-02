@@ -20,12 +20,6 @@ class Restaudetail extends StatefulWidget {
 }
 
 int activeIndex = 0;
-final urlImages = [
-  'https://placeimg.com/640/480/any',
-  'https://placeimg.com/640/480/any',
-  'https://placeimg.com/640/480/any',
-  'https://placeimg.com/640/480/any',
-];
 
 Text _buildRatingStars(int rating) {
   String stars = '';
@@ -75,14 +69,14 @@ class _RestaudetailState extends State<Restaudetail> {
               children: [
                 SizedBox(height: MediaQuery.of(context).size.height),
                 CarouselSlider.builder(
-                  itemCount: urlImages.length,
+                  itemCount: widget.data["image"].length,
                   options: CarouselOptions(
                       height: 400.0,
                       viewportFraction: 1,
                       onPageChanged: (index, reason) =>
                       {setState(() => activeIndex = index)}),
                   itemBuilder: (context, index, realIndex) {
-                    final urlImage = urlImages[index];
+                    final urlImage = widget.data["image"][index];
                     return buildImage(urlImage, index);
                   },
                 ),
@@ -681,23 +675,23 @@ class _RestaudetailState extends State<Restaudetail> {
     );
   }
   void navigatePop() => {setState(() {}), Navigator.of(context).pop()};
+  Widget buildImage(String urlImage, int index) => Container(
+    color: Colors.black,
+    child: Image.network(
+      urlImage,
+      fit: BoxFit.cover,
+    ),
+  );
+
+  Widget buildIndicator() => AnimatedSmoothIndicator(
+    activeIndex: activeIndex,
+    count: widget.data["image"].length,
+    effect: ScaleEffect(
+        dotWidth: 8,
+        dotHeight: 8,
+        activeDotColor: const Color(0xffECFAFF),
+        dotColor: const Color(0xffECFAFF).withOpacity(0.5)),
+  );
 }
 
-Widget buildImage(String urlImage, int index) => Container(
-  color: Colors.black,
-  child: Image.network(
-    urlImage,
-    fit: BoxFit.cover,
-  ),
-);
-
-Widget buildIndicator() => AnimatedSmoothIndicator(
-  activeIndex: activeIndex,
-  count: urlImages.length,
-  effect: ScaleEffect(
-      dotWidth: 8,
-      dotHeight: 8,
-      activeDotColor: const Color(0xffECFAFF),
-      dotColor: const Color(0xffECFAFF).withOpacity(0.5)),
-);
 

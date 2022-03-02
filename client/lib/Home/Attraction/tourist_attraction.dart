@@ -56,6 +56,7 @@ class _AttractionpageState extends State<Attractionpage> {
 
   Future gettheozone() async {
     Map data ;
+    bool Check = false;
     word = selectid;
     http.Response res =
     await http.get(Uri.parse("http://10.0.2.2:8080/attraction/query/" + word));
@@ -66,6 +67,7 @@ class _AttractionpageState extends State<Attractionpage> {
     Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) => Attractiondetail(
           data : data,
+          check : Check,
         ))
     );
 
@@ -93,7 +95,9 @@ class _AttractionpageState extends State<Attractionpage> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_rounded,
                 color: Color(0xffECFAFF)),
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: () => Navigator.pushNamed(
+              context, '/Navi',
+            ),
           ),
           title: const Text(
             'สถานที่ท่องเที่ยว',
@@ -231,10 +235,10 @@ class _AttractionpageState extends State<Attractionpage> {
 
                               child: Container(
                                 width: 220,
-                                decoration: const BoxDecoration(
+                                decoration: BoxDecoration(
                                     image: DecorationImage(
                                       image: NetworkImage(
-                                          'https://placeimg.com/640/480/any'),
+                                          "${seadata[index]['image'][0]}"),
                                       fit: BoxFit.fitWidth,
                                       alignment: Alignment.topCenter,
                                     ),
@@ -356,10 +360,10 @@ class _AttractionpageState extends State<Attractionpage> {
 
                             child: Container(
                               width: 220,
-                              decoration: const BoxDecoration(
+                              decoration: BoxDecoration(
                                   image: DecorationImage(
                                     image: NetworkImage(
-                                        'https://placeimg.com/640/480/any'),
+                                        "${widget.result2[index]['image'][0]}"),
                                     fit: BoxFit.fitWidth,
                                     alignment: Alignment.topCenter,
                                   ),
@@ -443,4 +447,5 @@ class _AttractionpageState extends State<Attractionpage> {
       ),
     );
   }
+
 }
