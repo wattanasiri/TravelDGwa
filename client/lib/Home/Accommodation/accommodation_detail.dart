@@ -243,11 +243,13 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                                   children: [
                                     Flexible(
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10),
                                         child: Text(
                                           detail['location'],
                                           style: TextStyle(
-                                              color: Color(0xff1D3557), fontSize: 14),
+                                              color: Color(0xff1D3557),
+                                              fontSize: 14),
                                         ),
                                       ),
                                     ),
@@ -277,11 +279,13 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                                   children: [
                                     Flexible(
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 10),
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: 10),
                                         child: Text(
                                           '${detail['desc']}',
                                           style: TextStyle(
-                                              color: Color(0xff1D3557), fontSize: 14),
+                                              color: Color(0xff1D3557),
+                                              fontSize: 14),
                                         ),
                                       ),
                                     ),
@@ -340,6 +344,7 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                             child: ElevatedButton(
                               onPressed: () async => {
                                 await getRoom(),
+
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(

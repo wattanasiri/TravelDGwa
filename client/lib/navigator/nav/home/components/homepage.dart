@@ -2,8 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:se_app2/Home/Accommodation/accommodation.dart';
-import 'package:se_app2/Home/Shuttle/shuttle.dart';
+import 'package:se_app2/Home/Activity/activity.dart';
+import 'package:se_app2/Home/Airport_Transfer/Airport_Transfer_driver_input.dart';
+import 'package:se_app2/Home/Rentcar/Rentcar_detail_car.dart';
+import 'package:se_app2/Home/Rentcar/Rentcar_main.dart';
 import 'package:se_app2/constants.dart';
+import '../../../../Home/Attraction/tourism_detail.dart';
+import '../../../../Home/Attraction/tourist_attraction.dart';
+import '../../../../Home/Restaurant/restau_detail.dart';
+import '../../../../Home/Restaurant/restaurant.dart';
 import 'home_button.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -72,7 +79,7 @@ class Home extends StatelessWidget {
               children: <Widget>[
                 HomeButton(icon: 'assets/icons/03.png', text: 'บริการรับ-ส่ง', route: ShuttlePage()),
                 SizedBox(width: 30),
-                HomeButton(icon: 'assets/icons/04.png', text: 'เช่ารถ', route: '/findhotel'),
+                HomeButton(icon: 'assets/icons/04.png', text: 'เช่ารถ', route: rentcar()),
                 SizedBox(width: 30),
                 HomeButton(icon: 'assets/icons/05.png', text: 'แผนที่', route: '/findhotel'),
               ],
@@ -81,11 +88,11 @@ class Home extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                HomeButton(icon: 'assets/icons/06.png', text: 'กิจกรรม', route: '/findhotel'),
+                HomeButton(icon: 'assets/icons/06.png', text: 'กิจกรรม', route: activity()),
                 SizedBox(width: 30),
-                HomeButton(icon: 'assets/icons/07.png', text: 'สถานที่ท่องเที่ยว', route: '/findhotel'),
+                HomeButton(icon: 'assets/icons/07.png', text: 'สถานที่ท่องเที่ยว', route: Attractionpage()),
                 SizedBox(width: 30),
-                HomeButton(icon: 'assets/icons/08.png', text: 'ร้านอาหาร', route: '/findhotel'),
+                HomeButton(icon: 'assets/icons/08.png', text: 'ร้านอาหาร', route: Restaurantpage()),
               ],
             ),
             SizedBox(height: size.height * 0.02),
