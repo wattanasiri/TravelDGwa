@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:getwidget/components/card/gf_card.dart';
 import 'package:se_app2/Home/Attraction/tourism_detail.dart';
 import 'package:http/http.dart' as http;
@@ -327,118 +328,101 @@ class _AttractionpageState extends State<Attractionpage> {
               Divider(thickness: 1, color: Color(0xff827E7E)),
               //เริ่มที่เที่ยวสายพิพิธ
               Text(" แนะนำที่เที่ยวสายพิพิธภัณฑ์  !", style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Color(0xff1D3557))),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  /*Container(
-                    padding: const EdgeInsets.only(top: 15, left: 30),
-                    child: const Text(
-                      "กำลังเป็นที่นิยม",
-                      style: TextStyle(fontSize: 18, color: Color(0xff1D3557)),
-                    ),
-                  ),*/
-                  SizedBox(
-                    height: 270.0,
-                    child: ListView.builder(
-                      physics: const BouncingScrollPhysics(
-                          parent: AlwaysScrollableScrollPhysics()),
-                      padding: const EdgeInsets.only( right: 20),
-                      scrollDirection: Axis.horizontal,
-                        itemCount: widget.result2 == null ? 0 : widget.result2.length,
-                        itemBuilder: (BuildContext context, int index) {
-
-                       return GestureDetector(
-                          onTap: () {
-                            selectid = widget.result2[index]["_id"];
-                            gettheozone();
-                          },
-                          child: Card(
-                            elevation: 3,
-                            color: const Color(0xffECFAFF),
-                            shape: RoundedRectangleBorder(
+              SizedBox(
+                height: 290,
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(
+                      parent: AlwaysScrollableScrollPhysics()),
+                  padding: const EdgeInsets.only( right: 20),
+                  scrollDirection: Axis.horizontal,
+                    itemCount: widget.result2 == null ? 0 : widget.result2.length,
+                    itemBuilder: (BuildContext context, int index) {
+                   return Padding(
+                     padding: const EdgeInsets.all(8.0),
+                     child: GestureDetector(
+                        onTap: () {
+                          selectid = widget.result2[index]["_id"];
+                          gettheozone();
+                        },
+                        child: Column(
+                          children: [
+                            Card(
+                              elevation: 3,
+                              color: const Color(0xffECFAFF),
+                              shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20)),
-
-                            child: Container(
-                              width: 220,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                    image: NetworkImage(
-                                        "${widget.result2[index]['image'][0]}"),
-                                    fit: BoxFit.fitWidth,
-                                    alignment: Alignment.topCenter,
-                                  ),
-                                  borderRadius: BorderRadius.only(topLeft:Radius.circular(20), topRight:Radius.circular(20))),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: <Widget>[
-                                  SizedBox(height: 120,),
-                                  Flexible(
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: <Widget>[
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 15.0),
-                                          child: Text(
-                                            "${widget.result2[index]['name']}",
-                                            maxLines: 1,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: TextStyle(
-                                                color: Color(0xff1D3557),
-                                                fontWeight: FontWeight.w900,
-                                                fontSize: 15),
-                                          ),
-                                        ),
-                                      ],
+                              child: Container(
+                                height: 260,
+                                width: 200,
+                                child: Column(
+                                  children: <Widget>[
+                                    ClipRRect(
+                                      borderRadius: const BorderRadius.only(
+                                          topLeft: Radius.circular(20),
+                                          topRight: Radius.circular(20)),
+                                      child: Image.network(
+                                          "${widget.result2[index]['image'][0]}",
+                                          height: 150,
+                                          width: MediaQuery.of(context).size.width,
+                                          fit: BoxFit.cover),
                                     ),
-                                  ),
-                                  Flexible(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: <Widget>[
-                                        Row(
-                                          children:  <Widget>[
-                                            Padding(
-                                              padding: EdgeInsets.only(left: 10),
-                                              child: Icon(Icons.location_pin,
+                                    SizedBox(
+                                      height: 100,
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 15.0, top: 10),
+                                            child: Text(
+                                              "${widget.result2[index]['name']} aaaaaaaaaaaaa",
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
                                                   color: Color(0xff1D3557),
-                                                  size: 18),
+                                                  fontWeight: FontWeight.w900,
+                                                  fontSize: 15),
                                             ),
-                                            SizedBox(width: 7,),
-                                            Flexible(
-                                                child : Padding(
-                                                  padding: EdgeInsets.only(top: 4),
-                                                  child: Text(
-                                                    "${widget.result2[index]['location']}",
-                                                    maxLines: 2,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                        color: Color(0xff1D3557),
-                                                        fontWeight: FontWeight.w500,
-                                                        fontSize: 14),
-                                                  ),
-                                                )
-                                            ),
-
-                                          ],
-                                        )
-                                      ],
+                                          ),
+                                          Row(
+                                            children:  <Widget>[
+                                              Padding(
+                                                padding: EdgeInsets.only(left: 10),
+                                                child: Icon(Icons.location_pin,
+                                                    color: Color(0xff1D3557),
+                                                    size: 18),
+                                              ),
+                                              SizedBox(width: 7,),
+                                              Flexible(
+                                                  child : Padding(
+                                                    padding: EdgeInsets.only(top: 4),
+                                                    child: Text(
+                                                      "${widget.result2[index]['location']}",
+                                                      maxLines: 1,
+                                                      overflow: TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                          color: Color(0xff1D3557),
+                                                          fontWeight: FontWeight.w500,
+                                                          fontSize: 14),
+                                                    ),
+                                                  )
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             ),
-                          ),
-                        );
-                       },
-                    ),
-                  ),
-                ],
+                          ],
+                        ),
+                      ),
+                   );
+                   },
+                ),
               ),
               //จบที่เที่ยวสายพิพิธ
-              SizedBox(height: 20,),
               Divider(thickness: 1, color: Color(0xff827E7E)),
             ],
           ),
