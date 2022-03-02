@@ -59,7 +59,7 @@ class _LoginFormState extends State<LoginForm>  {
       if (res.statusCode == 200) {
         print('success');
         // _getProfile(body);
-        Navigator.pushNamed(
+        Navigator.pushReplacementNamed(
           context, '/Navi',
         );
       }

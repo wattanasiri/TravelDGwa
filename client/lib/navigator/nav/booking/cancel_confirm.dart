@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:se_app2/constants.dart';
 import 'package:se_app2/functions.dart';
+import 'package:se_app2/navigator/nav.dart';
 import 'package:se_app2/navigator/nav/booking/components/cancel_notif.dart';
 
 import 'booking.dart';
@@ -157,10 +158,7 @@ class _confirmBoxState extends State<confirmCancelBox> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => Booking()));
+                                    Navigator.popUntil(context, ModalRoute.withName('/Navi'));
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) {

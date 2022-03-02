@@ -54,7 +54,7 @@ class _RegisterFormState extends State<RegisterForm> {
       print(sharedPref.getString('token'));
       if (res.statusCode == 200) {
         print('success');
-        Navigator.pushNamed(
+        Navigator.pushReplacementNamed(
             context, '/Navi',
         );
       }

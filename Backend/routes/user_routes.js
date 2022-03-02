@@ -70,7 +70,7 @@ router.post('/signin',(req,res,next) => {
 
                 // aoy's branch only
                 // return res.status(200).send(String(user._id));
-                // Job's branch only
+                // Job's branch only for booking
                 return res.status(200).json({"token" : token})
             })
             console.log(req.isAuthenticated())

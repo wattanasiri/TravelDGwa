@@ -1,13 +1,13 @@
 var midwareFunctions = {};
 
 midwareFunctions.isLoggedIn = function(req, res, next){
-    if(req.isAuthenticated()){
+  if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
       console.log('logged in')
       return next();
     } else {
       console.log('not logged in')
-      return next();
+      return res.json({success: false, message: 'invalid token'})
     }
 };
 
-module.exports = midwareFunctions; 
+module.exports = midwareFunctions;  
