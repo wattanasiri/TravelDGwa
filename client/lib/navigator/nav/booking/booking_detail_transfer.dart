@@ -310,6 +310,7 @@ class _TargetState extends State<transferDetail> {
                                             color: const Color(0xff1D3557),
                                             fontSize: 12),
                                       ),
+
                                       Text(
                                         detail['yourlocation'],
                                         style: GoogleFonts.poppins(

@@ -43,15 +43,11 @@ router.post('/signup',(req,res) => {
                         console.log(err)
                         return res.status(401).json(err)
                     } 
-                    req.login(user, function(err) {
-                        if (err) return next(err);
-                        console.log("Register successful.");
-                        res.json(user)
+                    console.log("Register successful.");
                         res.locals.currentUser = user
                         var token = jwt.encode(user, secret)
                         return res.status(200).json({"token" : token})
                     })
-                })
             } else {
                 return res.status(401).json({
                     'message' : 'email is not avaiable'
