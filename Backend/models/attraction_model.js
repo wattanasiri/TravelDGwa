@@ -10,6 +10,11 @@ var attractionSchema  = new mongoose.Schema({
     type : String,
     time : String,
     openday : String,
+    image : [
+        {
+            type: String,
+        }
+    ],
     comments : [
         {
             type: mongoose.Schema.Types.ObjectId,

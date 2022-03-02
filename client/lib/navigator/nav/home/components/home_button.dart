@@ -5,6 +5,8 @@ import 'package:se_app2/constants.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import '../../../../Home/Restaurant/restaurant.dart';
+
 class HomeButton extends StatelessWidget {
   HomeButton({
     Key key,
@@ -15,7 +17,8 @@ class HomeButton extends StatelessWidget {
 
   String word = '';
   Map data;
-  List seaattractiondata, museumattractiondata,recdata;
+
+  List seaattractiondata, museumattractiondata, seafoodrestaurantdata, cruiserestaurantdata;
 
 
   final String icon;
@@ -56,6 +59,28 @@ class HomeButton extends StatelessWidget {
     print(museumattractiondata);
   }
 
+  Future getseafood() async {
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant" ));
+    data = json.decode(res.body);
+    print("this");
+    print(data);
+    seafoodrestaurantdata = data['seafoodrestaurant'];
+    print("this");
+    print(seafoodrestaurantdata);
+  }
+
+  Future getcruise() async {
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/getcruise" ));
+    data = json.decode(res.body);
+    print("this");
+    print(data);
+    cruiserestaurantdata = data['cruiserestaurant'];
+    print("this");
+    print(cruiserestaurantdata);
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -88,6 +113,22 @@ class HomeButton extends StatelessWidget {
               )
           );
         } else {Navigator.push(context, MaterialPageRoute(builder: (context) => route));}
+       }
+       else if (route.toString() == "Restaurantpage"){
+         print("res");
+         await getseafood();
+         await getcruise();
+         Navigator.push(
+             context,
+             MaterialPageRoute(
+                 builder: (context) => Restaurantpage(
+                   result : seafoodrestaurantdata,
+                   result2: cruiserestaurantdata,
+                 )
+             )
+         );
+       }
+       else {Navigator.push(context, MaterialPageRoute(builder: (context) => route));}
       },
       child: Container(
           width: 90,
