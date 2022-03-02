@@ -6,6 +6,7 @@ const newSchema = new Schema({
     email : String,
     realname: { type: String, default: 'Name' },
     surname: { type: String, default: 'Surname' },
+    role : { type: String, default: 'user' },
     phone : String,
     password : String,
     creditcardid : [

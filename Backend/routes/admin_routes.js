@@ -19,7 +19,7 @@ router.post('/signin',(req,res,next) => {
 })
 
 router.get('/getuser',(req,res) => {
-    User.find({},(err,foundUser) => {
+    User.find({role:'user'},(err,foundUser) => {
         if(err){
             console.log(err)
         } else{
@@ -37,6 +37,20 @@ router.delete('/deleteuser/:id',(req,res) => {
             console.log(deleted);
             console.log('deleted');
             res.status(200).json()
+        }
+    })
+})
+
+router.post('/promote/:id',(req,res) => {
+    // ,{$set:{role:'admin'}}
+    User.findById(req.params.id,(err,foundUser) => {
+        if(err){
+            console.log(err)
+        } else {
+            // console.log(foundUser);
+            foundUser.role == 'admin';
+            foundUser.save();
+            res.json(foundUser);
         }
     })
 })
