@@ -121,7 +121,7 @@ class _ResultItemState extends State<ResultItem> {
               },
               child: GFCard(
                 elevation: 8,
-                color: const Color(0xff1D3557),
+                color: primaryColor,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20)),
                 padding: EdgeInsets.zero,
@@ -136,7 +136,7 @@ class _ResultItemState extends State<ResultItem> {
                             return LinearGradient(
                               begin: Alignment.centerLeft,
                               end: Alignment.centerRight,
-                              colors: [Colors.transparent, Color(0xff1D3557)],
+                              colors: [Colors.transparent, primaryColor],
                               ).createShader(Rect.fromLTRB(80, 0, rect.width*1, rect.height));
                             },
                             blendMode: BlendMode.srcATop,
@@ -164,7 +164,7 @@ class _ResultItemState extends State<ResultItem> {
                                   getBookingTitle(data[index]),
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
-                                      color: Color(0xffFFF4DC),
+                                      color: secondaryColor,
                                       fontWeight: FontWeight.bold,
                                       fontSize: 14),
                                 ),
@@ -172,7 +172,7 @@ class _ResultItemState extends State<ResultItem> {
                                   'UNDEFINED SUBTITLE',
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
-                                      color: Color(0xffFFF4DC),
+                                      color: secondaryColor,
                                       fontSize: 12),
                                 ),
                                 SizedBox(height: 3,),
@@ -180,14 +180,14 @@ class _ResultItemState extends State<ResultItem> {
                                   children: [
                                     if (data[index]['bookingType'] == 'accommodation')
                                       Icon(Icons.calendar_today_outlined,
-                                          color: Color(0xffECFAFF),
+                                          color: boxColor,
                                           size: 14),
                                     SizedBox(width: 3,),
                                     Text(
                                       getDateText1(data[index]),
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
-                                          color: Color(0xffECFAFF),
+                                          color: boxColor,
                                           fontSize: 10),
                                     ),
                                   ],
@@ -196,14 +196,14 @@ class _ResultItemState extends State<ResultItem> {
                                   children: [
                                     if (data[index]['bookingType'] == 'accommodation')
                                       Icon(Icons.alarm_off,
-                                          color: Color(0xffECFAFF),
+                                          color: boxColor,
                                           size: 14),
                                     SizedBox(width: 3,),
                                     Text(
                                       getDateText2(data[index]),
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
-                                          color: Color(0xffECFAFF),
+                                          color: boxColor,
                                           fontSize: 10),
                                     ),
                                   ],
@@ -223,7 +223,7 @@ class _ResultItemState extends State<ResultItem> {
                         width: 25,
                         height: 25,
                         decoration: const BoxDecoration(
-                          color: Color(0xffECFAFF),
+                          color: boxColor,
                           borderRadius: BorderRadius.all(Radius.circular(25),),
                         ),
                         child: BookingTypeIcon(type: data[index]['bookingType']),
@@ -239,7 +239,7 @@ class _ResultItemState extends State<ResultItem> {
                           textAlign: TextAlign.end,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
-                              color: Color(0xffECFAFF),
+                              color: boxColor,
                               fontSize: 9),
                         ),
                       ),

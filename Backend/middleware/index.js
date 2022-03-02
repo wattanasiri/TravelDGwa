@@ -13,22 +13,22 @@ midwareFunctions.isLoggedIn = function(req, res, next){
       var decodedtoken = jwt.decode(stringToken, secret)
       User.findById(decodedtoken._id, function (err, foundUser) {
         if (err){
-          console.log('not logged in')
+          // console.log('not logged in')
           return res.status(401).json({success: false, message: 'Invalid token.'})
         }
         else {
           if (!foundUser) {
-            console.log('not logged in')
+            // console.log('not logged in')
             return res.status(401).json({success: false, message: 'Invalid token.'})
           } else {
-            console.log('logged in')
+            // console.log('logged in')
             return next();
           }
         }
     });
       
     } else {
-      console.log('not logged in')
+      // console.log('not logged in')
       return res.status(401).json({success: false, message: 'Invalid token.'})
     }
 };

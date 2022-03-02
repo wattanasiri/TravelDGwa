@@ -16,11 +16,13 @@ import 'booking.dart';
 class confirmCancelBox extends StatefulWidget {
 
   final detail;
+  final type;
   final width;
   final height;
   const confirmCancelBox(
       {Key key,
-        this.detail,
+        @required this.detail,
+        this.type,
         this.width,
         this.height
       })
@@ -57,7 +59,7 @@ class _confirmBoxState extends State<confirmCancelBox> {
             height: 200,
             width: width - 50,
             decoration: BoxDecoration(
-                color: Color(0xFFECFAFF),
+                color: boxColor,
                 border: Border.all(width: 2, color: Colors.black),
                 borderRadius: BorderRadius.all(Radius.circular(15))
             ),
@@ -80,7 +82,7 @@ class _confirmBoxState extends State<confirmCancelBox> {
                         child: Text(
                           'ยกเลิกการจอง',
                           style: GoogleFonts.poppins(
-                              color: const Color(0xff1D3557),
+                              color: primaryColor,
                               fontSize: 20,
                               fontWeight: FontWeight.bold),
                         ),
@@ -127,7 +129,7 @@ class _confirmBoxState extends State<confirmCancelBox> {
                             const Divider(
                               height: 1,
                               thickness: 1,
-                              color: Color(0xff827E7E),
+                              color: grayColor,
                             ),
                             Row(
                               crossAxisAlignment: CrossAxisAlignment.end,

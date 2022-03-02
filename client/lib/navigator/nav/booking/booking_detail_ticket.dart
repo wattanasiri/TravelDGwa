@@ -38,9 +38,9 @@ class _TargetState extends State<ticketDetail> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: const Color(0xffFFF4DC),
+      backgroundColor: secondaryColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xffFFF4DC),
+        backgroundColor: secondaryColor,
         toolbarHeight: 70,
         elevation: 0.0,
         title: const Text('รถรับ - ส่งสนามบิน',
@@ -48,7 +48,7 @@ class _TargetState extends State<ticketDetail> {
         centerTitle: true,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
-            color: Color(0xff1d3557),
+            color: primaryColor,
             borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))
           ),
         ),
@@ -69,7 +69,7 @@ class _TargetState extends State<ticketDetail> {
                 child: Text(
                   'AAAAA',
                   style: GoogleFonts.poppins(
-                      color: const Color(0xff1D3557),
+                      color: primaryColor,
                       fontSize: 18,
                       fontWeight: FontWeight.bold),
                   textAlign: TextAlign.start,
@@ -92,8 +92,8 @@ class _TargetState extends State<ticketDetail> {
                         ),
                       },
                       style: ElevatedButton.styleFrom(
-                        onPrimary: const Color(0xff827E7E),
-                        primary: const Color(0xff827E7E),
+                        onPrimary: grayColor,
+                        primary: grayColor,
                         minimumSize: Size(size.width * 0.9, 50),
                         shape: const RoundedRectangleBorder(
                           borderRadius:

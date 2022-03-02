@@ -119,7 +119,7 @@ class _hotelDetailState extends State<hotelDetail> {
                     elevation: 0,
                     leading: IconButton(
                       icon: const Icon(Icons.arrow_back_ios_rounded,
-                          color: Color(0xffECFAFF)),
+                          color: boxColor),
                       onPressed: () => Navigator.pop(context),
                     ),
                   ),
@@ -134,7 +134,7 @@ class _hotelDetailState extends State<hotelDetail> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
                   decoration: const BoxDecoration(
-                      color: Color(0xffFFF4DC),
+                      color: secondaryColor,
                       borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(20),
                           topRight: Radius.circular(20))),
@@ -154,7 +154,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                 child: Text(
                                   detail["acc_name"],
                                   style: GoogleFonts.poppins(
-                                      color: const Color(0xff1D3557),
+                                      color: primaryColor,
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
                                 ),
@@ -165,12 +165,12 @@ class _hotelDetailState extends State<hotelDetail> {
                                   IconButton(
                                       onPressed: () => {},
                                       icon: const Icon(Boxicons.bxs_phone),
-                                      color: const Color(0xff1D3557),
+                                      color: primaryColor,
                                       iconSize: 30),
                                   IconButton(
                                       onPressed: () => {},
                                       icon: const Icon(Boxicons.bxs_chat),
-                                      color: const Color(0xff1D3557),
+                                      color: primaryColor,
                                       iconSize: 30)
                                 ],
                               )
@@ -183,7 +183,7 @@ class _hotelDetailState extends State<hotelDetail> {
                               Text(
                                 formatCheckIn(detail['checkIn']),
                                 style: TextStyle(
-                                  color: Color(0xff1D3557),
+                                  color: primaryColor,
                                   fontSize: 16,
                                 ),
                               ),
@@ -191,7 +191,7 @@ class _hotelDetailState extends State<hotelDetail> {
                               Text(
                                 '(XX.XX น.)',
                                 style: TextStyle(
-                                  color: Color(0xff827E7E),
+                                  color: grayColor,
                                   fontSize: 13,
                                 ),
                               ),
@@ -202,7 +202,7 @@ class _hotelDetailState extends State<hotelDetail> {
                               Text(
                                 formatCheckOut(detail['checkOut']),
                                 style: TextStyle(
-                                  color: Color(0xff1D3557),
+                                  color: primaryColor,
                                   fontSize: 16,
                                 ),
                               ),
@@ -210,7 +210,7 @@ class _hotelDetailState extends State<hotelDetail> {
                               Text(
                                 '(XX.XX น.)',
                                 style: TextStyle(
-                                  color: Color(0xff827E7E),
+                                  color: grayColor,
                                   fontSize: 13,
                                 ),
                               ),
@@ -220,7 +220,7 @@ class _hotelDetailState extends State<hotelDetail> {
                           const Divider(
                             height: 2,
                             thickness: 2,
-                            color: Color(0xff827E7E),
+                            color: grayColor,
                           ),
                           const SizedBox(height: 5,),
                           Container(
@@ -231,7 +231,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                 const Text(
                                   'รายละเอียดที่พัก',
                                   style: TextStyle(
-                                    color: Color(0xff827E7E),
+                                    color: grayColor,
                                     fontSize: 16,
                                   ),
                                 ),
@@ -241,7 +241,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                         child: Icon(Icons.arrow_forward_ios,
-                                            color: Color(0xff827E7E),
+                                            color: grayColor,
                                             size: 20),
                                       ),
                                     ),
@@ -251,7 +251,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                         child: Text(
                                           '26.0 ตร.ม',
                                           style: TextStyle(
-                                              color: Color(0xff827E7E), fontSize: 14),
+                                              color: grayColor, fontSize: 14),
                                         ),
                                       ),
                                     ),
@@ -263,7 +263,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                         child: Icon(Icons.people,
-                                            color: Color(0xff827E7E),
+                                            color: grayColor,
                                             size: 20),
                                       ),
                                     ),
@@ -273,7 +273,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                         child: Text(
                                           '2 ผู้เข้าพัก (เข้าพักสูงสุดได้ 2 คน)',
                                           style: TextStyle(
-                                              color: Color(0xff827E7E), fontSize: 14),
+                                              color: grayColor, fontSize: 14),
                                         ),
                                       ),
                                     ),
@@ -285,7 +285,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                         child: Icon(Icons.bed,
-                                            color: Color(0xff827E7E),
+                                            color: grayColor,
                                             size: 20),
                                       ),
                                     ),
@@ -295,7 +295,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                         child: Text(
                                           '2 เตียงเดี่ยว หรือ 1 เตียงใหญ่',
                                           style: TextStyle(
-                                              color: Color(0xff827E7E), fontSize: 14),
+                                              color: grayColor, fontSize: 14),
                                         ),
                                       ),
                                     ),
@@ -307,7 +307,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                         child: Icon(Icons.event_seat_rounded,
-                                            color: Color(0xff827E7E),
+                                            color: grayColor,
                                             size: 20),
                                       ),
                                     ),
@@ -317,7 +317,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                         child: Text(
                                           '2 โซฟา',
                                           style: TextStyle(
-                                              color: Color(0xff827E7E), fontSize: 14),
+                                              color: grayColor, fontSize: 14),
                                         ),
                                       ),
                                     ),
@@ -329,7 +329,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                       child: Padding(
                                         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                                         child: Icon(Icons.smoke_free,
-                                            color: Color(0xff827E7E),
+                                            color: grayColor,
                                             size: 20),
                                       ),
                                     ),
@@ -339,7 +339,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                         child: Text(
                                           'ห้ามสูบบุหรี่',
                                           style: TextStyle(
-                                              color: Color(0xff827E7E), fontSize: 14),
+                                              color: grayColor, fontSize: 14),
                                         ),
                                       ),
                                     ),
@@ -356,7 +356,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                 const Text(
                                   'สิ่งอำนวยความสะดวกภายในห้อง',
                                   style: TextStyle(
-                                    color: Color(0xff827E7E),
+                                    color: grayColor,
                                     fontSize: 16,
                                   ),
                                 ),
@@ -367,7 +367,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                       child: Text(
                                         '• เครื่องปรับอากาศ',
                                         style: TextStyle(
-                                            color: Color(0xff827E7E), fontSize: 14),
+                                            color: grayColor, fontSize: 14),
                                       ),
                                     ),
                                     Padding(
@@ -375,7 +375,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                       child: Text(
                                         '• เครื่องปรับอากาศ',
                                         style: TextStyle(
-                                            color: Color(0xff827E7E), fontSize: 14),
+                                            color: grayColor, fontSize: 14),
                                       ),
                                     ),
                                     Padding(
@@ -383,7 +383,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                       child: Text(
                                         '• เครื่องปรับอากาศ',
                                         style: TextStyle(
-                                            color: Color(0xff827E7E), fontSize: 14),
+                                            color: grayColor, fontSize: 14),
                                       ),
                                     ),
                                     Padding(
@@ -391,7 +391,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                       child: Text(
                                         '• เครื่องปรับอากาศ',
                                         style: TextStyle(
-                                            color: Color(0xff827E7E), fontSize: 14),
+                                            color: grayColor, fontSize: 14),
                                       ),
                                     ),
                                   ],
@@ -407,7 +407,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                 const Text(
                                   'สิ่งอำนวยความสะดวกภายในห้องน้ำ',
                                   style: TextStyle(
-                                    color: Color(0xff827E7E),
+                                    color: grayColor,
                                     fontSize: 16,
                                   ),
                                 ),
@@ -418,7 +418,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                       child: Text(
                                         '• น้ำอุ่น',
                                         style: TextStyle(
-                                            color: Color(0xff827E7E), fontSize: 14),
+                                            color: grayColor, fontSize: 14),
                                       ),
                                     ),
                                     Padding(
@@ -426,7 +426,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                       child: Text(
                                         '• ฝักบัว',
                                         style: TextStyle(
-                                            color: Color(0xff827E7E), fontSize: 14),
+                                            color: grayColor, fontSize: 14),
                                       ),
                                     ),
                                   ],
@@ -438,7 +438,7 @@ class _hotelDetailState extends State<hotelDetail> {
                           const Divider(
                             height: 2,
                             thickness: 2,
-                            color: Color(0xff827E7E),
+                            color: grayColor,
                           ),
 
                           const SizedBox(height: 10,),
@@ -451,13 +451,13 @@ class _hotelDetailState extends State<hotelDetail> {
                                 child: Text(
                                   'ทั้งหมด',
                                   style: TextStyle(
-                                      color: Color(0xff1D3557), fontSize: 20, fontWeight: FontWeight.bold),
+                                      color: primaryColor, fontSize: 20, fontWeight: FontWeight.bold),
                                 ),
                               ),
                               Text(
                                 'THB X,XXX',
                                 style: TextStyle(
-                                    color: Color(0xff1D3557), fontSize: 20, fontWeight: FontWeight.bold),
+                                    color: primaryColor, fontSize: 20, fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
@@ -480,8 +480,8 @@ class _hotelDetailState extends State<hotelDetail> {
                                     ),
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    onPrimary: const Color(0xff1D3557),
-                                    primary: const Color(0xff1D3557),
+                                    onPrimary: primaryColor,
+                                    primary: primaryColor,
                                     minimumSize: Size(size.width * 0.4, 50),
                                     shape: const RoundedRectangleBorder(
                                       borderRadius:
@@ -491,7 +491,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                   child: const Text(
                                     'ดูใบเสร็จการชำระ',
                                     style: TextStyle(
-                                        color: Color(0xffFFF4DC), fontSize: 18),
+                                        color: secondaryColor, fontSize: 18),
                                   ),
                                 ),
                               ),
@@ -506,13 +506,14 @@ class _hotelDetailState extends State<hotelDetail> {
                                       builder: (BuildContext context) {
                                         return confirmCancelBox(
                                           detail: detail,
+                                          type: 'hotel'
                                         );
                                       },
                                     ),
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    onPrimary: const Color(0xffF25B52),
-                                    primary: const Color(0xffF25B52),
+                                    onPrimary: redOrangeColor,
+                                    primary: redOrangeColor,
                                     minimumSize: Size(size.width * 0.4, 50),
                                     shape: const RoundedRectangleBorder(
                                       borderRadius:
@@ -522,7 +523,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                   child: const Text(
                                     'ยกเลิกการจอง',
                                     style: TextStyle(
-                                        color: Color(0xffECFAFF), fontSize: 18),
+                                        color: boxColor, fontSize: 18),
                                   ),
                                 ),
                               ),
@@ -557,7 +558,7 @@ class _hotelDetailState extends State<hotelDetail> {
         effect: ScaleEffect(
             dotWidth: 8,
             dotHeight: 8,
-            activeDotColor: const Color(0xffECFAFF),
-            dotColor: const Color(0xffECFAFF).withOpacity(0.5)),
+            activeDotColor: skyBlueColor,
+            dotColor: skyBlueColor.withOpacity(0.5)),
       );
 }

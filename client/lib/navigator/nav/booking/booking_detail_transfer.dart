@@ -68,9 +68,9 @@ class _TargetState extends State<transferDetail> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: const Color(0xffFFF4DC),
+      backgroundColor: secondaryColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xffFFF4DC),
+        backgroundColor: secondaryColor,
         toolbarHeight: 70,
         elevation: 0.0,
         title: const Text('รถรับ - ส่งสนามบิน',
@@ -78,7 +78,7 @@ class _TargetState extends State<transferDetail> {
         centerTitle: true,
         flexibleSpace: Container(
           decoration: const BoxDecoration(
-            color: Color(0xff1d3557),
+            color: primaryColor,
             borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))
           ),
         ),
@@ -101,7 +101,7 @@ class _TargetState extends State<transferDetail> {
                   child: Text(
                     'ข้อมูลคนขับ',
                     style: GoogleFonts.poppins(
-                        color: const Color(0xff1D3557),
+                        color: primaryColor,
                         fontSize: 18,
                         fontWeight: FontWeight.bold),
                     textAlign: TextAlign.start,
@@ -111,7 +111,7 @@ class _TargetState extends State<transferDetail> {
                 Container(
 
                   decoration: BoxDecoration(
-                      color: Color(0xFFECFAFF),
+                      color: boxColor,
                       border: Border.all(width: 2, color: Colors.black),
                       borderRadius: BorderRadius.all(Radius.circular(16))
                   ),
@@ -136,20 +136,20 @@ class _TargetState extends State<transferDetail> {
                               Text(
                               'นายสมปอง ดองงาน',
                               style: GoogleFonts.poppins(
-                                  color: const Color(0xff1D3557),
+                                  color: primaryColor,
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold),
                               ),
                               Text(
                                 'รถรุ่น : Unknown',
                                 style: GoogleFonts.poppins(
-                                    color: const Color(0xff1D3557),
+                                    color: primaryColor,
                                     fontSize: 14),
                               ),
                               Text(
                                 'ทะเบียน : ฟฟ6207',
                                 style: GoogleFonts.poppins(
-                                    color: const Color(0xff1D3557),
+                                    color: primaryColor,
                                     fontSize: 14),
                               ),
                               Row(
@@ -159,7 +159,7 @@ class _TargetState extends State<transferDetail> {
                                   Text(
                                     '(3.8)',
                                     style: TextStyle(
-                                      color: Color(0xff827E7E),
+                                      color: grayColor,
                                       fontSize: 13,
                                     ),
                                   ),
@@ -176,14 +176,14 @@ class _TargetState extends State<transferDetail> {
                             IconButton(
                                 onPressed: () => {},
                                 icon: const Icon(Boxicons.bxs_phone),
-                                color: const Color(0xff1D3557),
+                                color: primaryColor,
                                 padding: EdgeInsets.zero,
                                 constraints: BoxConstraints(),
                                 iconSize: 30),
                             IconButton(
                                 onPressed: () => {},
                                 icon: const Icon(Boxicons.bxs_chat),
-                                color: const Color(0xff1D3557),
+                                color: primaryColor,
                                 padding: EdgeInsets.zero,
                                 constraints: BoxConstraints(),
                                 iconSize: 30),
@@ -199,7 +199,7 @@ class _TargetState extends State<transferDetail> {
 
                 Container(
                   decoration: BoxDecoration(
-                      color: Color(0xFFECFAFF),
+                      color: boxColor,
                       border: Border.all(width: 2, color: Colors.black),
                       borderRadius: BorderRadius.all(Radius.circular(16))
                   ),
@@ -220,14 +220,14 @@ class _TargetState extends State<transferDetail> {
                               child: Text(
                                 'วันที่',
                                 style: GoogleFonts.poppins(
-                                  color: const Color(0xff1D3557),
+                                  color: primaryColor,
                                   fontSize: 18,),
                               ),
                             ),
                             Text(
                               formatDate(detail['startdate']),
                               style: GoogleFonts.poppins(
-                                color: const Color(0xff1D3557),
+                                color: primaryColor,
                                 fontSize: 18,),
                             ),
                           ],
@@ -241,14 +241,14 @@ class _TargetState extends State<transferDetail> {
                               child: Text(
                                 'เวลา',
                                 style: GoogleFonts.poppins(
-                                  color: const Color(0xff1D3557),
+                                  color: primaryColor,
                                   fontSize: 18,),
                               ),
                             ),
                             Text(
                               formatTime(detail['starttime']),
                               style: GoogleFonts.poppins(
-                                color: const Color(0xff1D3557),
+                                color: primaryColor,
                                 fontSize: 18,),
                             ),
                           ],
@@ -262,14 +262,14 @@ class _TargetState extends State<transferDetail> {
                               child: Text(
                                 'ประเภทรถ',
                                 style: GoogleFonts.poppins(
-                                  color: const Color(0xff1D3557),
+                                  color: primaryColor,
                                   fontSize: 18,),
                               ),
                             ),
                             Text(
                               detail['typeshuttle'],
                               style: GoogleFonts.poppins(
-                                color: const Color(0xff1D3557),
+                                color: primaryColor,
                                 fontSize: 18,),
                             ),
                           ],
@@ -307,15 +307,15 @@ class _TargetState extends State<transferDetail> {
                                       Text(
                                         'จาก',
                                         style: GoogleFonts.poppins(
-                                            color: const Color(0xff1D3557),
+                                            color: primaryColor,
                                             fontSize: 12),
                                       ),
 
                                       Text(
                                         detail['yourlocation'],
                                         style: GoogleFonts.poppins(
-                                            color: const Color(0xff1D3557),
-                                            fontSize: 9),
+                                            color: primaryColor,
+                                            fontSize: 10),
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
@@ -336,13 +336,13 @@ class _TargetState extends State<transferDetail> {
                                       Text(
                                         'ไป',
                                         style: GoogleFonts.poppins(
-                                            color: const Color(0xff1D3557),
+                                            color: primaryColor,
                                             fontSize: 12),
                                       ),
                                       Text(
                                         detail['destination'],
                                         style: GoogleFonts.poppins(
-                                            color: const Color(0xff1D3557),
+                                            color: primaryColor,
                                             fontSize: 12),
                                         overflow: TextOverflow.ellipsis,
                                       ),
@@ -354,7 +354,7 @@ class _TargetState extends State<transferDetail> {
                               const Divider(
                                 height: 1,
                                 thickness: 1,
-                                color: Color(0xff827E7E),
+                                color: grayColor,
                               ),
                               SizedBox(height: 15,),
                               Row(
@@ -365,7 +365,7 @@ class _TargetState extends State<transferDetail> {
                                     child: Text(
                                       'ราคา',
                                       style: GoogleFonts.poppins(
-                                        color: const Color(0xff1D3557),
+                                        color: primaryColor,
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -374,7 +374,7 @@ class _TargetState extends State<transferDetail> {
                                   Text(
                                     'THB 500.00',
                                     style: GoogleFonts.poppins(
-                                      color: const Color(0xff1D3557),
+                                      color: primaryColor,
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
                                     ),
@@ -410,8 +410,8 @@ class _TargetState extends State<transferDetail> {
                           ),
                         },
                         style: ElevatedButton.styleFrom(
-                          onPrimary: const Color(0xff1D3557),
-                          primary: const Color(0xff1D3557),
+                          onPrimary: primaryColor,
+                          primary: primaryColor,
                           minimumSize: Size(size.width * 0.4, 50),
                           shape: const RoundedRectangleBorder(
                             borderRadius:
@@ -421,7 +421,7 @@ class _TargetState extends State<transferDetail> {
                         child: const Text(
                           'ดูใบเสร็จการชำระ',
                           style: TextStyle(
-                              color: Color(0xffFFF4DC), fontSize: 18),
+                              color: secondaryColor, fontSize: 18),
                         ),
                       ),
                     ),
@@ -436,13 +436,14 @@ class _TargetState extends State<transferDetail> {
                             builder: (BuildContext context) {
                               return confirmCancelBox(
                                 detail: detail,
+                                type: 'transfer',
                               );
                             },
                           ),
                         },
                         style: ElevatedButton.styleFrom(
-                          onPrimary: const Color(0xffF25B52),
-                          primary: const Color(0xffF25B52),
+                          onPrimary: redOrangeColor,
+                          primary: redOrangeColor,
                           minimumSize: Size(size.width * 0.4, 50),
                           shape: const RoundedRectangleBorder(
                             borderRadius:
@@ -452,7 +453,7 @@ class _TargetState extends State<transferDetail> {
                         child: const Text(
                           'ยกเลิกการจอง',
                           style: TextStyle(
-                              color: Color(0xffECFAFF), fontSize: 18),
+                              color: boxColor, fontSize: 18),
                         ),
                       ),
                     ),

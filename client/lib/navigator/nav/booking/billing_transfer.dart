@@ -1,7 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:se_app2/constants.dart';
@@ -109,7 +109,7 @@ class _targetState extends State<transferBilling> {
                             borderRadius: BorderRadius.circular(100),
                             border: Border.all(width: 2, color: Colors.white)),
                         child: Icon(
-                          Icons.cancel,
+                          CupertinoIcons.clear,
                           color: Colors.white,
                         ),
                       ),

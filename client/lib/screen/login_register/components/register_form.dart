@@ -74,7 +74,7 @@ class _RegisterFormState extends State<RegisterForm> {
             context, '/Navi',
         );
       }
-      else {
+      else if (res.statusCode != 408) {
         setState((){
           _registerFailed = true;
         });

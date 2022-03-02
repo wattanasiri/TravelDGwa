@@ -125,7 +125,7 @@ class _BookingState extends State<Booking> {
     Size size = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: const Color(0xffFFF4DC),
+      backgroundColor: secondaryColor,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(70.0),
         child: AppBar(
@@ -383,7 +383,7 @@ class _BookingState extends State<Booking> {
                 thickness: 1,
                 indent: 10,
                 endIndent: 10,
-                color: Color(0xff827E7E),
+                color: grayColor,
             ),
             const SizedBox(height: 5,),
 
