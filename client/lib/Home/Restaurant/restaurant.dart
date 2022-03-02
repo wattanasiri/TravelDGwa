@@ -182,7 +182,7 @@ class _RestaurantpageState extends State<Restaurantpage> {
                     ),
                   ),*/
                       SizedBox(
-                        height: 280.0,
+                        height: 300.0,
                         child: ListView.builder(
                           physics: const BouncingScrollPhysics(
                               parent: AlwaysScrollableScrollPhysics()),
@@ -190,93 +190,115 @@ class _RestaurantpageState extends State<Restaurantpage> {
                           scrollDirection: Axis.horizontal,
                           itemCount: widget.result == null ? 0 : widget.result.length,
                           itemBuilder: (BuildContext context, int index) {
-                           return GestureDetector(
+                           return Padding(
+                             padding: const EdgeInsets.all(8.0),
+                           child : GestureDetector(
                               onTap: () {
                                 selectid = widget.result[index]["_id"];
                                 getdatafromid();
                               },
-                              child: Card(
-                                elevation: 3,
-                                color: const Color(0xffECFAFF),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
+                              child: Column(
+                                children: [
+                                  Card(
+                                    elevation: 3,
+                                    color: const Color(0xffECFAFF),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20)),
 
-                                child: Container(
-                                  width: 220,
-                                  decoration:  BoxDecoration(
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                          "${widget.result[index]['image'][0]}",),
-                                        fit: BoxFit.fitWidth,
-                                        alignment: Alignment.topCenter,
-                                      ),
-                                      borderRadius: BorderRadius.only(topLeft:Radius.circular(20), topRight:Radius.circular(20))),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      SizedBox(height: 165,),
-                                      Flexible(
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children: <Widget>[
-                                            Padding(
-                                              padding: EdgeInsets.only(left: 15.0),
-                                              child: Text(
-                                                  "${widget.result[index]['name']}",
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    color: Color(0xff1D3557),
-                                                    fontWeight: FontWeight.w900,
-                                                    fontSize: 15),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Flexible(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: <Widget>[
-                                                SizedBox(width: 7,),
-                                            Flexible(
-                                                child : Padding(
-                                                  padding: EdgeInsets.only(top: 4 , left: 15),
+                                    child: Container(
+                                      height: 260,
+                                      width: 200,
+                                      child : Column(
+                                        children: <Widget> [
+                                          ClipRRect(
+                                            borderRadius: const BorderRadius.only(
+                                                topLeft: Radius.circular(20),
+                                                topRight: Radius.circular(20)),
+                                            child: Image.network(
+                                                "${widget.result[index]['image'][0]}",
+                                                height: 150,
+                                                width: MediaQuery.of(context).size.width,
+                                                fit: BoxFit.cover),
+                                          ),
+                                          SizedBox(
+                                            height: 100,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.only(left: 15.0, top: 10),
                                                   child: Text(
-                                                    'ราคาเริ่มต้นที่',
+                                                    "${widget.result[index]['name']}",
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                         color: Color(0xff1D3557),
-                                                        fontWeight: FontWeight.w500,
-                                                        fontSize: 14),
+                                                        fontWeight: FontWeight.w900,
+                                                        fontSize: 15),
                                                   ),
-                                                )
-                                            ),
-                                                Flexible(
-                                                    child : Padding(
-                                                      padding: EdgeInsets.only(top: 4 , left: 15),
-                                                      child: Text(
-                                                        "${widget.result[index]['price']}",
-                                                        maxLines: 1,
-                                                        overflow: TextOverflow.ellipsis,
-                                                        style: TextStyle(
-                                                            color: Color(0xff66c57f),
-                                                            fontWeight: FontWeight.w500,
-                                                            fontSize: 15),
-                                                      ),
-                                                    )
                                                 ),
-                                          ],
-                                        ),
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      children:  const <Widget>[
+                                                        SizedBox(width: 15,),
+                                                        Flexible(
+                                                            child : Padding(
+                                                              padding: EdgeInsets.only(top: 4),
+                                                              child: Text(
+                                                                "ราคาเริ่มต้นที่",
+                                                                maxLines: 1,
+                                                                overflow: TextOverflow.ellipsis,
+                                                                style: TextStyle(
+                                                                    color: Color(0xff1D3557),
+                                                                    fontWeight: FontWeight.w500,
+                                                                    fontSize: 14),
+                                                              ),
+                                                            )
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children:  <Widget>[Padding(
+                                                        padding: EdgeInsets.only(left: 10),
+                                                        child: Icon(Icons.monetization_on_rounded,
+                                                            color: Color(0xff66c57f),
+                                                            size: 18),
+                                                      ),
+                                                        SizedBox(width: 7,),
+                                                        Flexible(
+                                                            child : Padding(
+                                                              padding: EdgeInsets.only(top: 4),
+                                                              child: Text(
+                                                                "${widget.result[index]['price']} บาท",
+                                                                maxLines: 1,
+                                                                overflow: TextOverflow.ellipsis,
+                                                                style: TextStyle(
+                                                                    color: Color(0xff66c57f),
+                                                                    fontWeight: FontWeight.w500,
+                                                                    fontSize: 14),
+                                                              ),
+                                                            )
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+
+                                              ],
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
+
+                            ),
                             );
                           },
                         ),
@@ -299,7 +321,7 @@ class _RestaurantpageState extends State<Restaurantpage> {
                     ),
                   ),*/
                       SizedBox(
-                        height: 280.0,
+                        height: 300.0,
                         child: ListView.builder(
                           physics: const BouncingScrollPhysics(
                               parent: AlwaysScrollableScrollPhysics()),
@@ -307,93 +329,114 @@ class _RestaurantpageState extends State<Restaurantpage> {
                           scrollDirection: Axis.horizontal,
                           itemCount: widget.result2 == null ? 0 : widget.result2.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return GestureDetector(
+                            return Padding(
+                              padding: const EdgeInsets.all(8.0),
+                             child : GestureDetector(
                               onTap: () {
                                 selectid = widget.result2[index]["_id"];
                                 getdatafromid();
                               },
-                              child: Card(
-                                elevation: 3,
-                                color: const Color(0xffECFAFF),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20)),
+                              child: Column(
+                                children: [
+                                  Card(
+                                    elevation: 3,
+                                    color: const Color(0xffECFAFF),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(20)),
 
-                                child: Container(
-                                  width: 220,
-                                  decoration:  BoxDecoration(
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                          "${widget.result2[index]['image'][0]}"),
-                                        fit: BoxFit.fitWidth,
-                                        alignment: Alignment.topCenter,
-                                      ),
-                                      borderRadius: BorderRadius.only(topLeft:Radius.circular(20), topRight:Radius.circular(20))),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      SizedBox(height: 165,),
-                                      Flexible(
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.start,
-                                          children:  <Widget>[
-                                            Padding(
-                                              padding: EdgeInsets.only(left: 15.0),
-                                              child: Text(
-                                                  "${widget.result2[index]['name']}",
-                                                maxLines: 2,
-                                                overflow: TextOverflow.ellipsis,
-                                                style: TextStyle(
-                                                    color: Color(0xff1D3557),
-                                                    fontWeight: FontWeight.w900,
-                                                    fontSize: 15),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      Flexible(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: <Widget>[
-                                            SizedBox(width: 7,),
-                                            Flexible(
-                                                child : Padding(
-                                                  padding: EdgeInsets.only(top: 4 , left: 15),
+                                    child: Container(
+                                      height: 260,
+                                      width: 200,
+                                      child : Column(
+                                        children: <Widget> [
+                                          ClipRRect(
+                                            borderRadius: const BorderRadius.only(
+                                                topLeft: Radius.circular(20),
+                                                topRight: Radius.circular(20)),
+                                            child: Image.network(
+                                                "${widget.result2[index]['image'][0]}",
+                                                height: 150,
+                                                width: MediaQuery.of(context).size.width,
+                                                fit: BoxFit.cover),
+                                          ),
+                                          SizedBox(
+                                            height: 100,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              children: [
+                                                Padding(
+                                                  padding: EdgeInsets.only(left: 15.0, top: 10),
                                                   child: Text(
-                                                    'ราคาเริ่มต้นที่',
+                                                    "${widget.result2[index]['name']}",
                                                     maxLines: 1,
                                                     overflow: TextOverflow.ellipsis,
                                                     style: TextStyle(
                                                         color: Color(0xff1D3557),
-                                                        fontWeight: FontWeight.w500,
-                                                        fontSize: 14),
-                                                  ),
-                                                )
-                                            ),
-                                            Flexible(
-                                                child : Padding(
-                                                  padding: EdgeInsets.only(top: 4 , left: 15),
-                                                  child: Text(
-                                                    "${widget.result2[index]['price']}",
-                                                    maxLines: 1,
-                                                    overflow: TextOverflow.ellipsis,
-                                                    style: TextStyle(
-                                                        color: Color(0xff66c57f),
-                                                        fontWeight: FontWeight.w500,
+                                                        fontWeight: FontWeight.w900,
                                                         fontSize: 15),
                                                   ),
-                                                )
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                  children: [
+                                                    Row(
+                                                      children:  const <Widget>[
+                                                        SizedBox(width: 15,),
+                                                        Flexible(
+                                                            child : Padding(
+                                                              padding: EdgeInsets.only(top: 4),
+                                                              child: Text(
+                                                                "ราคาเริ่มต้นที่",
+                                                                maxLines: 1,
+                                                                overflow: TextOverflow.ellipsis,
+                                                                style: TextStyle(
+                                                                    color: Color(0xff1D3557),
+                                                                    fontWeight: FontWeight.w500,
+                                                                    fontSize: 14),
+                                                              ),
+                                                            )
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children:  <Widget>[Padding(
+                                                        padding: EdgeInsets.only(left: 10),
+                                                        child: Icon(Icons.monetization_on_rounded,
+                                                            color: Color(0xff66c57f),
+                                                            size: 18),
+                                                      ),
+                                                        SizedBox(width: 7,),
+                                                        Flexible(
+                                                            child : Padding(
+                                                              padding: EdgeInsets.only(top: 4),
+                                                              child: Text(
+                                                                "${widget.result2[index]['price']} บาท",
+                                                                maxLines: 1,
+                                                                overflow: TextOverflow.ellipsis,
+                                                                style: TextStyle(
+                                                                    color: Color(0xff66c57f),
+                                                                    fontWeight: FontWeight.w500,
+                                                                    fontSize: 14),
+                                                              ),
+                                                            )
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+
+                                              ],
                                             ),
-                                          ],
-                                        ),
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
                                   ),
-                                ),
+                                ],
                               ),
+                             ),
                             );
                           },
                         ),

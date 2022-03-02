@@ -135,7 +135,7 @@ class _AttractionpageState extends State<Attractionpage> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("ค้นหาร้านอาหาร",
+                        const Text("ค้นหาสถานที่ท่องเที่ยว",
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.normal,
@@ -153,7 +153,7 @@ class _AttractionpageState extends State<Attractionpage> {
                           child: TextFormField(
                            controller: name,
                             decoration: const InputDecoration(
-                                hintText: 'ชื่อร้านอาหาร',
+                                hintText: 'ชื่อสถานที่ท่องเที่ยว',
                                 enabledBorder: UnderlineInputBorder(
                                     borderSide:
                                     BorderSide(color: Color(0xffECFAFF))),
@@ -161,7 +161,7 @@ class _AttractionpageState extends State<Attractionpage> {
                                 Icon(Icons.search, color: Color(0xff1D3557))),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
-                                return 'กรุณาระบุร้านอาหาร่';
+                                return 'กรุณาระบุสถานที่ท่องเที่ยว';
                               }
                               return null;
                             },
@@ -187,7 +187,7 @@ class _AttractionpageState extends State<Attractionpage> {
                         ),
                       ),
                       child: const Text(
-                        'ค้นหาร้านอาหาร',
+                        'ค้นหาสถานที่ท่องเที่ยว',
                         style: TextStyle(color: Color(0xffFFF4DC), fontSize: 20),
                       ),
                     ),
@@ -215,7 +215,7 @@ class _AttractionpageState extends State<Attractionpage> {
                     ),
                   ),*/
                   SizedBox(
-                    height: 270.0,
+                    height: 300.0,
                     child: ListView.builder(
                       physics: const BouncingScrollPhysics(
                           parent: AlwaysScrollableScrollPhysics()),
@@ -223,100 +223,90 @@ class _AttractionpageState extends State<Attractionpage> {
                       scrollDirection: Axis.horizontal,
                         itemCount: seadata == null ? 0 : seadata.length,
                         itemBuilder: (BuildContext context, int index) {
-                          return GestureDetector(
+                          return Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child : GestureDetector(
                             onTap: () {
                               selectid = seadata[index]["_id"];
                               gettheozone();
                             },
-                            child: Card(
-                              elevation: 3,
-                              color: const Color(0xffECFAFF),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
+                            child:  Column(
+                              children: [
+                                Card(
+                                  elevation: 3,
+                                  color: const Color(0xffECFAFF),
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
 
-                              child: Container(
-                                width: 220,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                      image: NetworkImage(
-                                          "${seadata[index]['image'][0]}"),
-                                      fit: BoxFit.fitWidth,
-                                      alignment: Alignment.topCenter,
-                                    ),
-                                    borderRadius: BorderRadius.only(
-                                        topLeft: Radius.circular(20),
-                                        topRight: Radius.circular(20))),
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    SizedBox(height: 120,),
-                                    Flexible(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .end,
-                                        children: <Widget>[
-                                          Padding(
-                                            padding: EdgeInsets.only(
-                                                left: 15.0),
-                                            child: Text(
-                                              "${seadata[index]['name']}",
-                                              maxLines: 1,
-                                              overflow: TextOverflow.ellipsis,
-                                              style: TextStyle(
-                                                  color: Color(0xff1D3557),
-                                                  fontWeight: FontWeight.w900,
-                                                  fontSize: 15),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                    Flexible(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                        mainAxisAlignment: MainAxisAlignment
-                                            .end,
-                                        children: <Widget>[
-                                          Row(
-                                            children:  <Widget>[
+                                  child: Container(
+                                    height: 260,
+                                    width: 200,
+                                    child: Column(
+                                      children: <Widget>[
+                                        ClipRRect(
+                                          borderRadius: const BorderRadius.only(
+                                              topLeft: Radius.circular(20),
+                                              topRight: Radius.circular(20)),
+                                          child: Image.network(
+                                              "${seadata[index]['image'][0]}",
+                                              height: 150,
+                                              width: MediaQuery.of(context).size.width,
+                                              fit: BoxFit.cover),
+                                        ),
+                                        SizedBox(
+                                          height: 100,
+                                          child: Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
                                               Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: 10),
-                                                child: Icon(Icons.location_pin,
-                                                    color: Color(0xff1D3557),
-                                                    size: 18),
+                                                padding: EdgeInsets.only(left: 15.0, top: 10),
+                                                child: Text(
+                                                  "${seadata[index]['name']}",
+                                                  maxLines: 2,
+                                                  overflow: TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                      color: Color(0xff1D3557),
+                                                      fontWeight: FontWeight.w900,
+                                                      fontSize: 15),
+                                                ),
                                               ),
-                                              SizedBox(width: 7,),
-                                              Flexible(
-                                                  child: Padding(
-                                                    padding: EdgeInsets.only(
-                                                        top: 4),
-                                                    child: Text(
-                                                      "${seadata[index]['location']}",
-                                                      maxLines: 2,
-                                                      overflow: TextOverflow
-                                                          .ellipsis,
-                                                      style: TextStyle(
-                                                          color: Color(
-                                                              0xff1D3557),
-                                                          fontWeight: FontWeight
-                                                              .w500,
-                                                          fontSize: 14),
-                                                    ),
-                                                  )
+                                              Row(
+                                                children:  <Widget>[
+                                                  Padding(
+                                                    padding: EdgeInsets.only(left: 10),
+                                                    child: Icon(Icons.location_pin,
+                                                        color: Color(0xff1D3557),
+                                                        size: 18),
+                                                  ),
+                                                  SizedBox(width: 7,),
+                                                  Flexible(
+                                                      child : Padding(
+                                                        padding: EdgeInsets.only(top: 4),
+                                                        child: Text(
+                                                          "${seadata[index]['location']}",
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow.ellipsis,
+                                                          style: TextStyle(
+                                                              color: Color(0xff1D3557),
+                                                              fontWeight: FontWeight.w500,
+                                                              fontSize: 14),
+                                                        ),
+                                                      )
+                                                  ),
+                                                ],
                                               ),
-
                                             ],
-                                          )
-                                        ],
-                                      ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ],
+                                  ),
                                 ),
-                              ),
-                            ),
+                              ],
+                            )
+
+                          ),
                           );
                         },
                     ),
@@ -329,7 +319,7 @@ class _AttractionpageState extends State<Attractionpage> {
               //เริ่มที่เที่ยวสายพิพิธ
               Text(" แนะนำที่เที่ยวสายพิพิธภัณฑ์  !", style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900, color: Color(0xff1D3557))),
               SizedBox(
-                height: 290,
+                height: 300,
                 child: ListView.builder(
                   physics: const BouncingScrollPhysics(
                       parent: AlwaysScrollableScrollPhysics()),
@@ -369,12 +359,13 @@ class _AttractionpageState extends State<Attractionpage> {
                                     SizedBox(
                                       height: 100,
                                       child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
                                           Padding(
                                             padding: EdgeInsets.only(left: 15.0, top: 10),
                                             child: Text(
-                                              "${widget.result2[index]['name']} aaaaaaaaaaaaa",
+                                              "${widget.result2[index]['name']}",
                                               maxLines: 2,
                                               overflow: TextOverflow.ellipsis,
                                               style: TextStyle(

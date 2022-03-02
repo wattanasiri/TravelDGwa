@@ -45,6 +45,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
     data = widget.detail;
     print ("this ");
     print  (widget.data["name"]);
+    print  (widget.data["star"]);
   }
   //จบเลือกแต่ละอันจาก ID
   void showWidget() {
@@ -218,7 +219,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
                               )*/
                             ],
                           ),
-                          _buildRatingStars(4),
+                          _buildRatingStars(widget.data['star']),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[

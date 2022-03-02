@@ -39,6 +39,7 @@ class _RestaudetailState extends State<Restaudetail> {
     data = widget.detail;
     print ("this ");
     print  (widget.data["name"]);
+    print  (widget.data["star"]);
   }
   //จบเลือกแต่ละอันจาก ID
   void showWidget() {
@@ -149,7 +150,7 @@ class _RestaudetailState extends State<Restaudetail> {
                               )*/
                             ],
                           ),
-                          _buildRatingStars(4),
+                          _buildRatingStars(widget.data['star']),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
