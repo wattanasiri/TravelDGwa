@@ -39,13 +39,11 @@ class _BookingState extends State<Booking> {
         'Accept': 'application/json;charSet=UTF-8',
         'Authorization': 'Bearer $token',
       },
-    ).timeout(const Duration(seconds: 3),
+    ).timeout(const Duration(seconds: timeoutDuration),
       onTimeout: () {
-        // Time has run out, do what you wanted to do.
         showDialog(
           context: context,
           builder: (BuildContext context) {
-            // Navigator.pushReplacementNamed(context, '/login',);
             return notifBox(
               title: 'Error',
               text: 'Request timeout.',
@@ -53,8 +51,9 @@ class _BookingState extends State<Booking> {
             );
           },
         );
-        return http.Response('Error', 408); // Request Timeout response status code
-      },);
+        return http.Response('Error', 408);
+      },)
+    ;
     data = json.decode(res.body);
     bookingData = data['booking'];
     print(bookingData);

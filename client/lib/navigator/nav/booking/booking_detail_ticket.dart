@@ -27,30 +27,6 @@ class _TargetState extends State<ticketDetail> {
 
   var detail;
 
-  Text _buildRatingStars(int rating) {
-    String stars = '';
-    for (int i = 0; i < rating; i++) {
-      stars += '⭐ ';
-    }
-    stars.trim();
-    return Text(stars);
-  }
-
-  RatingBarIndicator _buildRatingBar(double rating){
-    return RatingBarIndicator(
-        rating: rating,
-        direction: Axis.horizontal,
-        itemCount: 5,
-        itemPadding: EdgeInsets.only(right: 0.7),
-        itemBuilder: (context, _) => Icon(
-          Icons.star,
-          color: Colors.amber,
-        ),
-        itemSize: 20.0,
-    );
-  }
-
-
   @override
   void initState() {
     super.initState();

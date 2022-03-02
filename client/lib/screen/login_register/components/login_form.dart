@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:se_app2/navigator/nav.dart';
 
+import 'package:se_app2/Widgets/notif_ok.dart';
+
 class LoginForm extends StatefulWidget {
   const LoginForm({Key key}) : super(key: key);
 
@@ -46,7 +48,22 @@ class _LoginFormState extends State<LoginForm>  {
           body: <String, String>{
             "email": emailController.text,
             "password": passwordController.text,
-          });
+          }).timeout(const Duration(seconds: timeoutDuration),
+        onTimeout: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return notifBox(
+                title: 'Error',
+                text: 'Request timeout.',
+                fontSize: 14.0,
+              );
+            },
+          );
+          return http.Response('Error', 408);
+        },)
+      ;
+
       await sharedPref.setString('token', res.body);
       print(sharedPref.getString('token'));
       print(res.body);
@@ -63,7 +80,7 @@ class _LoginFormState extends State<LoginForm>  {
           context, '/Navi',
         );
       }
-      else {
+      else if (res.statusCode != 408) {
         setState((){
           _loginFailed = true;
         });

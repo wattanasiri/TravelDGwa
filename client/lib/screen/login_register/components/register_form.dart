@@ -4,6 +4,8 @@ import 'package:flutter/gestures.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:se_app2/Widgets/notif_ok.dart';
+
 class RegisterForm extends StatefulWidget {
   const RegisterForm({Key key}) : super(key: key);
 
@@ -49,7 +51,21 @@ class _RegisterFormState extends State<RegisterForm> {
             "realname": realnameController.text,
             "surname": surnameController.text,
             "password": passwordController.text,
-          });
+          }).timeout(const Duration(seconds: timeoutDuration),
+        onTimeout: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return notifBox(
+                title: 'Error',
+                text: 'Request timeout.',
+                fontSize: 14.0,
+              );
+            },
+          );
+          return http.Response('Error', 408);
+        },)
+      ;
       await sharedPref.setString('token', res.body);
       print(sharedPref.getString('token'));
       if (res.statusCode == 200) {

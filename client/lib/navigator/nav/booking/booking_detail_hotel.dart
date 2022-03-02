@@ -34,13 +34,6 @@ class _hotelDetailState extends State<hotelDetail> {
   Map data;
   String hotelName;
 
-  // Future getRoom() async {
-  //   http.Response res =
-  //       await http.get(Uri.parse("http://10.0.2.2:8080/hotel/" + id + '/room'));
-  //   data = json.decode(res.body);
-  //   hotelName = data['rooms']['name'];
-  // }
-
   int activeIndex = 0;
   final urlImages = [
     'https://placeimg.com/640/480/any',
