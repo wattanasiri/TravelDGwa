@@ -3,14 +3,40 @@ const Attraction = require('../models/attraction_model')
 
 const router = express.Router()
 
-router.get('/:id' , (req,res) => {
-    var attractionId = req.params.id
-    Attraction.findById(attractionId,(err,foundRes) => {
+// router.get('/:id' , (req,res) => {
+//     var attractionId = req.params.id
+//     Attraction.findById(attractionId,(err,foundRes) => {
+//         if(err){
+//             console.log(err)
+//         } else {
+//             res.json({res:foundRes})
+//             console.log(foundRes)
+//         }
+//     })
+// })
+
+router.get('/' , (req,res) => {
+    console.log("1")
+
+    Attraction.find({type : "sea"},(err , foundAttraction) => {
         if(err){
             console.log(err)
         } else {
-            res.json({res:foundRes})
-            console.log(foundRes)
+
+            res.json({seaattraction:foundAttraction});
+        }
+    })
+})
+
+router.get('/getmuseum' , (req,res) => {
+    console.log("museum")
+
+    Attraction.find({type : "museum"},(err , foundmuseum) => {
+        if(err){
+            console.log(err)
+        } else {
+
+            res.json({museumattraction:foundmuseum});
         }
     })
 })
@@ -57,7 +83,7 @@ router.get('/query/:word', (req,res) => {
 router.get('/getseaattraction/:word', (req,res) => {
     console.log("1")
 
-    Attraction.find({"type" : "sea"},(err , foundAttraction) => {
+    Attraction.find({type : "sea"},(err , foundAttraction) => {
         if(err){
             console.log(err)
         } else {

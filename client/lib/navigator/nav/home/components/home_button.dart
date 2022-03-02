@@ -14,7 +14,8 @@ class HomeButton extends StatelessWidget {
 
   String word = '';
   Map data;
-  List seaattractiondata;
+  List seaattractiondata, museumattractiondata;
+
 
   final String icon;
   final String text;
@@ -22,8 +23,9 @@ class HomeButton extends StatelessWidget {
 
 
   Future getseaattraction() async {
+    print("1");
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getseaattraction/" + word));
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/" ));
     data = json.decode(res.body);
     print("this");
     print(data);
@@ -31,25 +33,36 @@ class HomeButton extends StatelessWidget {
     print("this");
     print(seaattractiondata);
   }
+  Future getmuseum() async {
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getmuseum" ));
+    data = json.decode(res.body);
+    print("this");
+    print(data);
+    museumattractiondata = data['museumattraction'];
+    print("this");
+    print(museumattractiondata);
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
+      onTap: () async {
         print(route);
        if(route.toString() == "Attractionpage"){
-            getseaattraction();
+            await getseaattraction();
+            await getmuseum();
             print("0");
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => Attractionpage(
                       result : seaattractiondata,
+                      result2: museumattractiondata,
                     )
                 )
             );
-       }
-       Navigator.push(context, MaterialPageRoute(builder: (context) => route));
+       } else {Navigator.push(context, MaterialPageRoute(builder: (context) => route));}
       },
       child: Container(
           width: 90,
