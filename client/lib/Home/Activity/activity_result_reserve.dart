@@ -35,6 +35,7 @@ class _activity_reserveState extends State<activity_reserve> {
           "time": widget.timeActivity,
           "price": widget.data['foundAcc']['price'].toString(),
           "sum_price": widget.sum_price.toString(),
+          "detail" : widget.data['foundAcc']['detail'],
         });
     print(res.body);
   }
@@ -144,7 +145,7 @@ class _activity_reserveState extends State<activity_reserve> {
                               Container(
                                 width: 290,
                                 child: Text(
-                                  'บริการ :  ${ widget.data['foundAcc']['name']}',
+                                  'บริการ :  ${ widget.data['foundAcc']['detail']}',
                                   style: TextStyle(
                                       fontSize: 14.0,
                                       color: Color(0xff1D3557)
@@ -495,6 +496,7 @@ class _activity_reserveState extends State<activity_reserve> {
                         time: widget.timeActivity,
                         price: widget.data['foundAcc']['price'],
                         sum_price: widget.sum_price,
+                        detail: widget.data['foundAcc']['detail'],
                             ),));
                       },
                       child: Padding(

@@ -9,8 +9,8 @@ import 'package:se_app2/Home/Activity/activity_result_reserve.dart';
 
 class activity_receipt extends StatefulWidget {
   // const activity_receipt({Key? key}) : super(key: key);
-  activity_receipt({this.day,this.time,this.name,this.number,this.price,this.sum_price});
-  var number,day,time,name,price,sum_price;
+  activity_receipt({this.day,this.time,this.name,this.number,this.price,this.sum_price,this.detail});
+  var number,day,time,name,price,sum_price,detail;
 
   @override
   _activity_receiptState createState() => _activity_receiptState();
@@ -237,7 +237,8 @@ class _activity_receiptState extends State<activity_receipt> {
                                 Container(
                                   width : 230,
                                   child: Text(
-                                    '${widget.name} (${widget.number})',
+                                      // '${widget.name} (${widget.number})',
+                                    '${widget.detail} (${widget.number.toString()})',
                                     style: TextStyle(
                                         fontSize: 14.0,
                                         overflow: TextOverflow.ellipsis,
