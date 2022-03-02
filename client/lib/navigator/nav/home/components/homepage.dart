@@ -134,10 +134,12 @@ class Home extends StatelessWidget {
                   builder: (BuildContext context) {
                     return Container(
                         width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            color: Colors.amber
-                        ),
-                        child: Text('image no. $i', style: TextStyle(fontSize: 24.0),)
+                        // decoration: BoxDecoration(
+                        //     color: Colors.amber
+                        // ),
+                        child: Image.asset('assets/images/promotion$i.png',
+                          width: MediaQuery.of(context).size.width,
+                          ),
                     );
                   },
                 );
@@ -185,10 +187,13 @@ class Home extends StatelessWidget {
                         width: MediaQuery.of(context).size.width,
                         margin: EdgeInsets.symmetric(horizontal: 5.0),
                         decoration: BoxDecoration(
-                          color: Colors.amber,
+                          // color: Colors.amber,
                           borderRadius: BorderRadius.all(Radius.circular(8),),
                         ),
-                        child: Text('image no. $i', style: TextStyle(fontSize: 24.0),)
+                      child: Image.asset('assets/images/promotion$i.png',
+                        width: MediaQuery.of(context).size.width,
+                        height: size.height * 0.12,
+                      ),
                     );
                   },
                 );

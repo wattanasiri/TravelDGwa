@@ -18,7 +18,7 @@ class HomeButton extends StatelessWidget {
   String word = '';
   Map data;
 
-  List seaattractiondata, museumattractiondata, seafoodrestaurantdata, cruiserestaurantdata;
+  List seaattractiondata, museumattractiondata, seafoodrestaurantdata, cruiserestaurantdata,recdata;
 
 
   final String icon;
@@ -99,22 +99,20 @@ class HomeButton extends StatelessWidget {
                     )
                 )
             );
-       } else {Navigator.push(context, MaterialPageRoute(builder: (context) => route));}
-
-        if(route.toString() == "activity"){
-          await getrec();
-          print("0");
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => activity(
-                    result : recdata,
-                  )
-              )
-          );
-        } else {Navigator.push(context, MaterialPageRoute(builder: (context) => route));}
        }
-       else if (route.toString() == "Restaurantpage"){
+       else if(route.toString() == "activity"){
+         await getrec();
+         print("0");
+         Navigator.push(
+             context,
+             MaterialPageRoute(
+                 builder: (context) => activity(
+                   result : recdata,
+                 )
+             )
+         );
+       }
+       else  if (route.toString() == "Restaurantpage"){
          print("res");
          await getseafood();
          await getcruise();
@@ -127,8 +125,7 @@ class HomeButton extends StatelessWidget {
                  )
              )
          );
-       }
-       else {Navigator.push(context, MaterialPageRoute(builder: (context) => route));}
+       } else {Navigator.push(context, MaterialPageRoute(builder: (context) => route));}
       },
       child: Container(
           width: 90,

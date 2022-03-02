@@ -82,7 +82,7 @@ class _AttractionpageState extends State<Attractionpage> {
     print("result");
     print(widget.result);
     seadata = widget.result;
-    print(seadata.length);
+    // print(seadata.length);
   }
 
   Widget build(BuildContext context) {

@@ -775,7 +775,7 @@ class _cardetailState extends State<cardetail> {
                                   ),
                                 ),
                                 child: const Text(
-                                  'จองห้องพัก',
+                                  'จองรถ',
                                   style: TextStyle(
                                       color: Color(0xffFFF4DC),
                                       fontSize: 20,
