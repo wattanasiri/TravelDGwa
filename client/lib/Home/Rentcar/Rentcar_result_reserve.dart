@@ -397,6 +397,7 @@ class _result_reserveState extends State<result_reserve> {
                 padding: const EdgeInsets.fromLTRB(30.0, 0, 30.0, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Column(
                       children: [
@@ -440,58 +441,69 @@ class _result_reserveState extends State<result_reserve> {
                     padding: const EdgeInsets.fromLTRB(15.0, 10, 15.0, 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          children: [
-                            Text(
-                              'ราคาต่อวัน (${widget.dategetcar}->${widget.datesentcar})',
-                              style: TextStyle(
-                                  fontSize: 14.0,
-                                  color: Color(0xff1D3557)
-                              ),
-                            ),
-                            if(widget.result_price_extra != 0)
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            // mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
                               Text(
-                                'ราคาส่วนต่างเวลา (${widget.timegetcar}->${widget.timesentcar})',
+                                'ราคาต่อวัน (${widget.dategetcar}->${widget.datesentcar})',
                                 style: TextStyle(
                                     fontSize: 14.0,
+                                    overflow: TextOverflow.ellipsis,
                                     color: Color(0xff1D3557)
                                 ),
                               ),
-                            Text(
-                              'ราคาส่งรถที่ ${ widget.namedestination}',
-                              style: TextStyle(
-                                  fontSize: 14.0,
-                                  color: Color(0xff1D3557)
+                              if(widget.result_price_extra != 0)
+                                Text(
+                                  'ราคาส่วนต่างเวลา (${widget.timegetcar}->${widget.timesentcar})',
+                                  style: TextStyle(
+                                      fontSize: 14.0,
+                                      overflow: TextOverflow.ellipsis,
+                                      color: Color(0xff1D3557)
+                                  ),
+                                ),
+                              Text(
+                                'ราคาส่งรถที่ ${ widget.namedestination}',
+                                style: TextStyle(
+                                    fontSize: 14.0,
+                                    overflow: TextOverflow.ellipsis,
+                                    color: Color(0xff1D3557)
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
-                        Column(
-                          children: [
-                            Text(
-                              'THB ${ widget.data['foundCar']['car_price']*widget.result_date_time}',
-                              style: TextStyle(
-                                  fontSize: 14.0,
-                                  color: Color(0xff1D3557)
-                              ),
-                            ),
-                            if(widget.result_price_extra != 0)
+                        Flexible(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
                               Text(
-                                'THB  ${widget.result_price_extra_}',
+                                'THB ${ widget.data['foundCar']['car_price']*widget.result_date_time}',
                                 style: TextStyle(
                                     fontSize: 14.0,
                                     color: Color(0xff1D3557)
                                 ),
                               ),
-                            Text(
-                              'THB  ${widget.pricedestination}',
-                              style: TextStyle(
-                                  fontSize: 14.0,
-                                  color: Color(0xff1D3557)
+                              if(widget.result_price_extra != 0)
+                                Text(
+                                  'THB  ${widget.result_price_extra_}',
+                                  style: TextStyle(
+                                      fontSize: 14.0,
+                                      color: Color(0xff1D3557)
+                                  ),
+                                ),
+                              Text(
+                                'THB  ${widget.pricedestination}',
+                                style: TextStyle(
+                                    fontSize: 14.0,
+                                    color: Color(0xff1D3557)
+                                ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ],
                     ),

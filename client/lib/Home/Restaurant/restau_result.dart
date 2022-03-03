@@ -163,7 +163,7 @@ class _RestaurantResultState extends State<RestaurantResult> {
                                   borderRadius: const BorderRadius.only(
                                       topLeft: Radius.circular(20),
                                       topRight: Radius.circular(20)),
-                                  child: Image.network('${resData[index]['image']}',
+                                  child: Image.network('${resData[index]['image'][0]}',
                                       height: 200,
                                       width: MediaQuery.of(context).size.width,
                                       fit: BoxFit.cover),
