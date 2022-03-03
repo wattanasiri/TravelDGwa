@@ -6,10 +6,6 @@ var mongoose = require('mongoose');
 
 const router = express.Router()
 
-router.get('/', (req,res) => {
-    console.log('Hello')
-})
-
 router.post('/register_shuttlepartner',(req,res) => { 
     console.log('register_shuttlepartner')
     const infopartner = new airporttransferpartner({username: req.body.username,

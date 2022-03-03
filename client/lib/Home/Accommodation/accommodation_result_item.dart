@@ -42,12 +42,12 @@ class _ResultItemState extends State<ResultItem> {
   @override
   void initState() {
     super.initState();
-    data = widget.accommodationData;
     checkInEdit = TextEditingController(text: widget.checkInHolder);
     checkOutEdit = TextEditingController(text: widget.checkOutHolder);
     numberOfPeopleEdit =
         TextEditingController(text: widget.numberOfPeopleHolder);
     numberOfRoomsEdit = TextEditingController(text: widget.numberOfRoomsHolder);
+    data = widget.accommodationData;
   }
 
   @override

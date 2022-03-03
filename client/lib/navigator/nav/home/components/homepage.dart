@@ -33,83 +33,112 @@ class Home extends StatelessWidget {
         ),
         Column(
           children: <Widget>[
-            SizedBox(height: size.height * 0.05,),
+            SizedBox(
+              height: size.height * 0.05,
+            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Align(
-                    alignment: Alignment.center,
-                    child: Image.asset('assets/images/logo.png',
-                        width: 80.0, height: size.height * 0.08,),
+                  alignment: Alignment.center,
+                  child: Image.asset(
+                    'assets/images/logo.png',
+                    width: 80.0,
+                    height: size.height * 0.08,
                   ),
+                ),
                 SizedBox(width: 1),
-                Text("TravelDGwa",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 40,
-                      shadows: <Shadow>[
-                        Shadow(
-                          offset: Offset(-2.0, 2.0),
-                          color: primaryColor,
-                        ),
-                        Shadow(
-                          offset: Offset(-4.0, 4.0),
-                          blurRadius: 4.0,
-                          color: Color.fromARGB(128, 0, 0, 0),
-                        ),
-                      ],
-                    ),
-                    textAlign: TextAlign.center,
+                Text(
+                  "TravelDGwa",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 40,
+                    shadows: <Shadow>[
+                      Shadow(
+                        offset: Offset(-2.0, 2.0),
+                        color: primaryColor,
+                      ),
+                      Shadow(
+                        offset: Offset(-4.0, 4.0),
+                        blurRadius: 4.0,
+                        color: Color.fromARGB(128, 0, 0, 0),
+                      ),
+                    ],
                   ),
+                  textAlign: TextAlign.center,
+                ),
               ],
             ),
             SizedBox(height: size.height * 0.02),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                HomeButton(icon: 'assets/icons/01.png', text: 'ค้นหาที่พัก', route: AccommodationPage()),
+                HomeButton(
+                    icon: 'assets/icons/01.png',
+                    text: 'ค้นหาที่พัก',
+                    route: AccommodationPage()),
                 SizedBox(width: 40),
-                HomeButton(icon: 'assets/icons/02.png', text: 'เที่ยวบิน', route: '/findhotel'),
+                HomeButton(
+                    icon: 'assets/icons/02.png',
+                    text: 'เที่ยวบิน',
+                    route: '/findhotel'),
               ],
             ),
             SizedBox(height: size.height * 0.016),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                HomeButton(icon: 'assets/icons/03.png', text: 'บริการรับ-ส่ง', route: ShuttlePage()),
+                HomeButton(
+                    icon: 'assets/icons/03.png',
+                    text: 'บริการรับ-ส่ง',
+                    route: ShuttlePage()),
                 SizedBox(width: 30),
-                HomeButton(icon: 'assets/icons/04.png', text: 'เช่ารถ', route: rentcar()),
+                HomeButton(
+                    icon: 'assets/icons/04.png',
+                    text: 'เช่ารถ',
+                    route: rentcar()),
                 SizedBox(width: 30),
-                HomeButton(icon: 'assets/icons/05.png', text: 'แผนที่', route: '/findhotel'),
+                HomeButton(
+                    icon: 'assets/icons/05.png',
+                    text: 'แผนที่',
+                    route: '/findhotel'),
               ],
             ),
             SizedBox(height: size.height * 0.016),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                HomeButton(icon: 'assets/icons/06.png', text: 'กิจกรรม', route: activity()),
+                HomeButton(
+                    icon: 'assets/icons/06.png',
+                    text: 'กิจกรรม',
+                    route: activity()),
                 SizedBox(width: 30),
-                HomeButton(icon: 'assets/icons/07.png', text: 'สถานที่ท่องเที่ยว', route: Attractionpage()),
+                HomeButton(
+                    icon: 'assets/icons/07.png',
+                    text: 'สถานที่ท่องเที่ยว',
+                    route: Attractionpage()),
                 SizedBox(width: 30),
-                HomeButton(icon: 'assets/icons/08.png', text: 'ร้านอาหาร', route: Restaurantpage()),
+                HomeButton(
+                    icon: 'assets/icons/08.png',
+                    text: 'ร้านอาหาร',
+                    route: Restaurantpage()),
               ],
             ),
             SizedBox(height: size.height * 0.02),
-
             Container(
               width: double.infinity,
               padding: EdgeInsets.only(
                 left: paddingValue / 2,
                 right: paddingValue / 2,
               ),
-
               child: Row(
                 children: [
                   Image.asset('assets/icons/promotion.png',
-                      width: 20.0, height: 20.0, fit:BoxFit.fill),
+                      width: 20.0, height: 20.0, fit: BoxFit.fill),
                   SizedBox(width: 10),
-                  Text("Promotion",
+                  Text(
+                    "Promotion",
                     style: TextStyle(
                       color: grayColor,
                       fontSize: 14,
@@ -119,9 +148,7 @@ class Home extends StatelessWidget {
                 ],
               ),
             ),
-
             SizedBox(height: 5),
-
             CarouselSlider(
               options: CarouselOptions(
                 height: size.height * 0.16,
@@ -129,38 +156,37 @@ class Home extends StatelessWidget {
                 enableInfiniteScroll: true,
                 autoPlay: true,
               ),
-              items: [1,2,3,4,5].map((i) {
+              items: [1, 2, 3, 4, 5].map((i) {
                 return Builder(
                   builder: (BuildContext context) {
                     return Container(
+                      width: MediaQuery.of(context).size.width,
+                      // decoration: BoxDecoration(
+                      //     color: Colors.amber
+                      // ),
+                      child: Image.asset(
+                        'assets/images/promotion$i.png',
                         width: MediaQuery.of(context).size.width,
-                        // decoration: BoxDecoration(
-                        //     color: Colors.amber
-                        // ),
-                        child: Image.asset('assets/images/promotion$i.png',
-                          width: MediaQuery.of(context).size.width,
-                          ),
+                      ),
                     );
                   },
                 );
               }).toList(),
             ),
-
             SizedBox(height: 10),
-
             Container(
               width: double.infinity,
               padding: EdgeInsets.only(
                 left: paddingValue / 2,
                 right: paddingValue / 2,
               ),
-
               child: Row(
                 children: [
                   Image.asset('assets/icons/compass.png',
-                      width: 20.0, height: 20.0, fit:BoxFit.fill),
+                      width: 20.0, height: 20.0, fit: BoxFit.fill),
                   SizedBox(width: 10),
-                  Text("Recommended",
+                  Text(
+                    "Recommended",
                     style: TextStyle(
                       color: grayColor,
                       fontSize: 14,
@@ -170,9 +196,7 @@ class Home extends StatelessWidget {
                 ],
               ),
             ),
-
             SizedBox(height: 10),
-
             CarouselSlider(
               options: CarouselOptions(
                 height: size.height * 0.12,
@@ -180,17 +204,20 @@ class Home extends StatelessWidget {
                 enableInfiniteScroll: true,
                 autoPlay: true,
               ),
-              items: [1,2,3,4,5].map((i) {
+              items: [1, 2, 3, 4, 5].map((i) {
                 return Builder(
                   builder: (BuildContext context) {
                     return Container(
-                        width: MediaQuery.of(context).size.width,
-                        margin: EdgeInsets.symmetric(horizontal: 5.0),
-                        decoration: BoxDecoration(
-                          // color: Colors.amber,
-                          borderRadius: BorderRadius.all(Radius.circular(8),),
+                      width: MediaQuery.of(context).size.width,
+                      margin: EdgeInsets.symmetric(horizontal: 5.0),
+                      decoration: BoxDecoration(
+                        // color: Colors.amber,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(8),
                         ),
-                      child: Image.asset('assets/images/promotion$i.png',
+                      ),
+                      child: Image.asset(
+                        'assets/images/promotion$i.png',
                         width: MediaQuery.of(context).size.width,
                         height: size.height * 0.12,
                       ),
@@ -199,13 +226,9 @@ class Home extends StatelessWidget {
                 );
               }).toList(),
             ),
-
           ],
         ),
       ],
-
-
     );
   }
 }
-
