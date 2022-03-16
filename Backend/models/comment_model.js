@@ -9,10 +9,13 @@ var commentSchema = mongoose.Schema({
         username : String,
         image:String
     },
+    type: String,
     text: String,
     date: String,
     time: String,
-    rating : Number
+    rating : { type: Number, default: 3 },
+    like: { type: Number, default: 0 },
+    dislike: { type: Number, default: 0 },
 })
 
 module.exports = mongoose.model('Comment', commentSchema)

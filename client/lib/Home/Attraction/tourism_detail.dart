@@ -8,10 +8,12 @@ import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:se_app2/constants.dart';
 import 'package:se_app2/functions.dart';
 import 'package:se_app2/Home/Attraction/tourism_result.dart';
 import 'package:se_app2/Home/Attraction/tourist_attraction.dart';
+import 'package:se_app2/Widgets/notif_ok.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 
@@ -26,11 +28,16 @@ class Attractiondetail extends StatefulWidget {
   _AttractiondetailState createState() => _AttractiondetailState();
 }
 
+double currentRating = 3;
 int activeIndex = 0;
 
 class _AttractiondetailState extends State<Attractiondetail> {
+  GlobalKey<FormState> _formKey = GlobalKey();
   bool viewVisible = false;
   var data;
+
+  TextEditingController commentController = TextEditingController();
+
   @override
   //เลือกแต่ละอันจาก ID
   List sample = [
@@ -55,6 +62,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
 
   void initState(){
     data = widget.detail;
+    print(widget.data['_id']);
     print ("this ");
     print  (widget.data["name"]);
     print  (widget.data["star"]);
@@ -88,7 +96,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
 
   RatingBar _buildRatingSelector() {
     return RatingBar(
-      initialRating: 3,
+      initialRating: currentRating,
       minRating: 1,
       itemSize: 40,
       direction: Axis.horizontal,
@@ -107,6 +115,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
       itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
       onRatingUpdate: (rating) {
         print(rating);
+        currentRating = rating;
       },
     );
   }
@@ -175,6 +184,92 @@ class _AttractiondetailState extends State<Attractiondetail> {
     }
     //restaurantData = data['restaurants'];
   }
+  Future postComment() async {
+    // ---------------
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
+
+    final now = DateTime.now();
+
+    String formattedDate = '${now.day}-${now.month}-${now.year}';
+    String formattedTime = '${now.hour}:${now.minute}';
+
+    final body = {
+    "id": widget.data['_id'],
+    "type": 'hotel', // IMPORTANT: CHANGE THIS WHEN YOU COPY THIS CODE
+    "text": commentController.text,
+    "date": formattedDate,
+    "time": formattedTime,
+    "rating": currentRating,
+    // "list": room_detail.toJson()
+    };
+
+    http.Response res = await http.post(
+      Uri.parse("http://10.0.2.2:8080/attraction/${widget.data['_id']}/comment"),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+        body: jsonEncode(body),
+    ).timeout(const Duration(seconds: timeoutDuration),
+      onTimeout: () {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return notifBox(
+              title: 'Error',
+              text: 'Request timeout.',
+              fontSize: 14.0,
+            );
+          },
+        );
+        return http.Response('Error', 408);
+      },)
+    ;
+
+    if (res.statusCode == 200) {
+      print('success');
+      commentController.text = "";
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return notifBox(
+            title: 'Success',
+            text: 'comment เรียบร้อย',
+            fontSize: 14.0,
+          );
+        },
+      );
+    }
+    else if (res.statusCode == 401) {
+      Navigator.pushReplacementNamed(context, '/login',);
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return notifBox(
+            title: 'Error',
+            text: 'Invalid token.',
+            fontSize: 14.0,
+          );
+        },
+      );
+    }
+    else {
+      print('failure');
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return notifBox(
+            title: 'Error',
+            text: 'Cannot post comment.',
+            fontSize: 14.0,
+          );
+        },
+      );
+    }
+  }
+  // ---------------
 
   @override
   Widget build(BuildContext context) {
@@ -270,7 +365,20 @@ class _AttractiondetailState extends State<Attractiondetail> {
                               )*/
                             ],
                           ),
-                          _buildRatingBar(numberToDouble(widget.data['star'])),
+                          Row(
+                            children: [
+                              _buildRatingBar(numberToDouble(widget.data['star'])),
+                              SizedBox(width: 5,),
+                              Text(
+                                '(${formatStar(widget.data['star'])})',
+                                style: TextStyle(
+                                  color: grayColor,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
@@ -463,36 +571,48 @@ class _AttractiondetailState extends State<Attractiondetail> {
                           const Divider(color: Color(0xff827E7E), thickness: 1.5),
                           SizedBox(height: 10,),
                           //กล่องเพิ่มความเห็น
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16, vertical: 2),
-                            //width: 350,
-                            height: 50,
-                            decoration: BoxDecoration(
-                                color: const Color(0xffECFAFF),
-                                borderRadius: BorderRadius.circular(25),
-                                border: Border.all(
-                                    color: const Color(0xff1D3557), width: 2)),
-                            child: TextFormField(
-                              //controller: name,
-                              decoration: const InputDecoration(
+                          Form(
+                            key: _formKey,
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 2),
+                              //width: 350,
+                              height: 50,
+                              decoration: BoxDecoration(
+                                  color: const Color(0xffECFAFF),
+                                  borderRadius: BorderRadius.circular(25),
+                                  border: Border.all(
+                                      color: const Color(0xff1D3557), width: 2)),
+                              child: TextFormField(
+                                decoration: InputDecoration(
                                   hintText: 'เขียนและให้คะแนน...',
                                   enabledBorder: UnderlineInputBorder(
                                       borderSide:
                                       BorderSide(color: Color(0xffECFAFF))),
                                   suffixIcon:
-                                  Icon(Icons.send, color: Color(0xff1D3557))),
-                              /*validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'กรุณาระบุร้านอาหาร่';
-                                }
-                                return null;
-                              },*/
-                              onChanged: (value) {
-                                //word = value;
-                              },
+                                  IconButton(onPressed: () {
+                                    if(_formKey.currentState.validate()){
+                                      postComment();
+                                    }
+                                  },
+                                      padding: EdgeInsets.zero,
+                                      alignment: Alignment.centerRight,
+                                      icon: Icon(Icons.send, color: Color(0xff1D3557))),
+                                ),
+                                validator: (value) {
+                                  if (value == null || value.isEmpty) {
+                                    return 'กรุณาระบุข้อความ';
+                                  }
+                                  return null;
+                                },
+                                controller: commentController,
+                                onChanged: (value) {
+                                  //word = value;
+                                },
+                              ),
                             ),
                           ),
+
                           //จบกล่องเพิ่มความเห็น
                           SizedBox(height: 10,),
                           Align(
@@ -554,7 +674,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
                               ),
                               const Divider(color: Color(0xff827E7E), thickness: 1.5),
                               Container(
-                                height: viewVisible ? 300 : 0,
+                                height: viewVisible ? 600 : 0,
                                 margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
                                 padding: const EdgeInsets.all(10),
                                 decoration: const BoxDecoration(

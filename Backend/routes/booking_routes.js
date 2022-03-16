@@ -17,10 +17,10 @@ router.get('/' , middleware.isLoggedIn, (req,res) => {
     var token = req.headers.authorization.split(' ')[1]
     // we need to convert the string to JSON object first.
     var stringToken = JSON.parse(token)['token']
-    var decodedtoken = jwt.decode(stringToken, secret)
+    var user = jwt.decode(stringToken, secret)
     var bookingList = []
     var newElem
-    // console.log(decodedtoken)
+    // console.log(user)
     AccomTransaction.find({}, function (err, foundAccom) { // get Accom
         if (err) {
             console.log(err);
@@ -31,7 +31,7 @@ router.get('/' , middleware.isLoggedIn, (req,res) => {
                 newElem.bookingType = 'accommodation'
                 bookingList.push(newElem);
             });
-            airporttransferreceipt.find({"usernameID" : decodedtoken._id}, function (err, foundTransferRecipt) {  // get transfer receipt
+            airporttransferreceipt.find({"usernameID" : user._id}, function (err, foundTransferRecipt) {  // get transfer receipt
                 if (err) {
                     console.log(err);
                 }

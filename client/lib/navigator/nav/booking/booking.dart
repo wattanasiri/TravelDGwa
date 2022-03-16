@@ -57,7 +57,7 @@ class _BookingState extends State<Booking> {
       },)
     ;
     data = json.decode(res.body);
-    // ---------------
+
     bookingData = data['booking'];
     print(bookingData);
 
@@ -99,6 +99,7 @@ class _BookingState extends State<Booking> {
       });
     }
   }
+  // ---------------
 
   void filterStatusData(statusIndex) {
     // TODO

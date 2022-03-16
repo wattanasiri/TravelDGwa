@@ -57,3 +57,11 @@ int convertYearToBE (int year) {
 String formatPrice(double input) {
   return input.toStringAsFixed(2);
 }
+
+String formatStar(var input) {
+  if (input is int) {
+    return input.toDouble().toStringAsFixed(1);
+  } else {
+    return input.toStringAsFixed(1);
+  }
+}
