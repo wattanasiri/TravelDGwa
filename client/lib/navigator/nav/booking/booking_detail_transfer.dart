@@ -275,9 +275,7 @@ class _TargetState extends State<transferDetail> {
                           ],
                         ),
                         SizedBox(height: 10,),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Column(
+                        Column(
                             children: [
                               Row(
                                 children: [
@@ -310,12 +308,11 @@ class _TargetState extends State<transferDetail> {
                                             color: primaryColor,
                                             fontSize: 12),
                                       ),
-
                                       Text(
                                         detail['yourlocation'],
                                         style: GoogleFonts.poppins(
                                             color: primaryColor,
-                                            fontSize: 10),
+                                            fontSize: 11),
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                     ],
@@ -384,7 +381,6 @@ class _TargetState extends State<transferDetail> {
 
                             ],
                           ),
-                        ),
 
                       ],
 
