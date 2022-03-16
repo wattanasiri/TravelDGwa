@@ -11,6 +11,7 @@ var commentSchema = mongoose.Schema({
     },
     text: String,
     date: String,
+    time: String,
     rating : Number
 })
 

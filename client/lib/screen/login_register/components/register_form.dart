@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:se_app2/Data/data_currentuser.dart';
 import 'package:se_app2/constants.dart';
 import 'package:flutter/gestures.dart';
 import 'package:http/http.dart' as http;
@@ -66,10 +67,10 @@ class _RegisterFormState extends State<RegisterForm> {
           return http.Response('Error', 408);
         },)
       ;
-      await sharedPref.setString('token', res.body);
-      print(sharedPref.getString('token'));
+
       if (res.statusCode == 200) {
         print('success');
+        await sharedPref.setString('token', res.body);
         Navigator.pushReplacementNamed(
             context, '/Navi',
         );

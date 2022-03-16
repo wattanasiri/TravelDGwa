@@ -64,16 +64,15 @@ router.post('/signin',(req,res,next) => {
         if (user) {
             req.login(user, function(err) {
                 if (err) return next(err);
-                console.log("Login successful.");
+                console.log("Login successful.")
                 var token = jwt.encode(user, secret)
-                console.log(res.locals.currentUser)
+                // console.log(res.locals.currentUser)
 
                 // aoy's branch only
                 // return res.status(200).send(String(user._id));
                 // Job's branch only for booking
                 return res.status(200).json({"token" : token})
             })
-            console.log(req.isAuthenticated())
         } else {
             console.log('user not found or wrong password')
             return res.status(401).json(info);

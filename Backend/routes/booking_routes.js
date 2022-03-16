@@ -21,22 +21,22 @@ router.get('/' , middleware.isLoggedIn, (req,res) => {
     var bookingList = []
     var newElem
     // console.log(decodedtoken)
-    AccomTransaction.find({}, function (err, foundBooking) {
+    AccomTransaction.find({}, function (err, foundAccom) { // get Accom
         if (err) {
             console.log(err);
         }
         else {
-            foundBooking.forEach((elem) => {
+            foundAccom.forEach((elem) => { 
                 newElem = JSON.parse(JSON.stringify(elem));
                 newElem.bookingType = 'accommodation'
                 bookingList.push(newElem);
             });
-            airporttransferreceipt.find({"usernameID" : decodedtoken._id}, function (err, foundTransferRecipt) {
+            airporttransferreceipt.find({"usernameID" : decodedtoken._id}, function (err, foundTransferRecipt) {  // get transfer receipt
                 if (err) {
                     console.log(err);
                 }
                 else {
-                    foundTransferRecipt.forEach((elem) => {
+                    foundTransferRecipt.forEach((elem) => { 
                         newElem = JSON.parse(JSON.stringify(elem));
                         newElem.bookingType = 'transferrecipt'
                         bookingList.push(newElem);

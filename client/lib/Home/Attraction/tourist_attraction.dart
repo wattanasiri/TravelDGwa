@@ -38,10 +38,7 @@ class _AttractionpageState extends State<Attractionpage> {
     http.Response res =
     await http.get(Uri.parse("http://10.0.2.2:8080/attraction/search/" + word));
     data = json.decode(res.body);
-    print ("this");
-    print (data);
     attractionData = data["attraction"];
-    print ("this");
     print (attractionData);
     Navigator.push(
         context,
@@ -65,7 +62,7 @@ class _AttractionpageState extends State<Attractionpage> {
     data = data["foundAttraction"];
     //restaurantData = data['restaurants'];
     print(data);
-    Navigator.pushReplacement(context, MaterialPageRoute(
+    Navigator.push(context, MaterialPageRoute(
         builder: (context) => Attractiondetail(
           data : data,
           check : Check,

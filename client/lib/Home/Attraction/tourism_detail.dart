@@ -2,12 +2,14 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:intl/intl.dart';
+import 'package:se_app2/constants.dart';
+import 'package:se_app2/functions.dart';
 import 'package:se_app2/Home/Attraction/tourism_result.dart';
 import 'package:se_app2/Home/Attraction/tourist_attraction.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -26,21 +28,31 @@ class Attractiondetail extends StatefulWidget {
 
 int activeIndex = 0;
 
-
-Text _buildRatingStars(int rating) {
-  String stars = '';
-  for (int i = 0; i < rating; i++) {
-    stars += '⭐ ';
-  }
-  stars.trim();
-  return Text(stars);
-}
-
 class _AttractiondetailState extends State<Attractiondetail> {
   bool viewVisible = false;
   var data;
   @override
   //เลือกแต่ละอันจาก ID
+  List sample = [
+    {
+      "image": 'unknown',
+      "username": 'Sedtawut Chalothronnarumit',
+      "date": "29-10-2021",
+      "time": "12:10",
+      "text": 'อาหารอร่อยสดใหม่มาก',
+      "rating": 5,
+      "like": 321,
+      "dislike": 24,
+    },
+  ];
+
+  String formatDate(String date) {
+    var inputFormat = DateFormat('dd-MM-yyyy');
+    DateTime parsedDate = inputFormat.parse(date);
+    var text = parsedDate.day.toString() + ' ' + getMonthName(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
+    return text;
+  }
+
   void initState(){
     data = widget.detail;
     print ("this ");
@@ -58,6 +70,45 @@ class _AttractiondetailState extends State<Attractiondetail> {
     setState(() {
       viewVisible = false;
     });
+  }
+
+  RatingBarIndicator _buildRatingBar(double rating){
+    return RatingBarIndicator(
+      rating: rating,
+      direction: Axis.horizontal,
+      itemCount: 5,
+      itemPadding: EdgeInsets.only(right: 0.7),
+      itemBuilder: (context, _) => Icon(
+        Icons.star,
+        color: Colors.amber,
+      ),
+      itemSize: 20.0,
+    );
+  }
+
+  RatingBar _buildRatingSelector() {
+    return RatingBar(
+      initialRating: 3,
+      minRating: 1,
+      itemSize: 40,
+      direction: Axis.horizontal,
+      allowHalfRating: false,
+      itemCount: 5,
+      ratingWidget: RatingWidget(
+        full: Icon(
+          Icons.star,
+          color: Colors.amber,
+        ),
+        empty: Icon(
+          Icons.star,
+          color: Colors.grey,
+        ),
+      ),
+      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+      onRatingUpdate: (rating) {
+        print(rating);
+      },
+    );
   }
 
   final _controller = ScrollController();
@@ -219,7 +270,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
                               )*/
                             ],
                           ),
-                          _buildRatingStars(widget.data['star']),
+                          _buildRatingBar(numberToDouble(widget.data['star'])),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
@@ -444,7 +495,11 @@ class _AttractiondetailState extends State<Attractiondetail> {
                           ),
                           //จบกล่องเพิ่มความเห็น
                           SizedBox(height: 10,),
-                          _buildRatingStars(5),
+                          Align(
+                            alignment: Alignment.center,
+                            child: _buildRatingSelector(),
+                          ),
+
                           SizedBox(height: 10,),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -508,225 +563,136 @@ class _AttractiondetailState extends State<Attractiondetail> {
                                 child : MediaQuery.removePadding(
                                   removeTop: true,
                                   context: context,
-                                  child: ListView(
-                                    children: [
-                                      Container(
-                                        margin: EdgeInsets.symmetric(vertical: 10),
-                                        padding: EdgeInsets.all(20),
-                                        decoration: BoxDecoration(
-                                          color: Color(0xff1D3557),
-                                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black.withOpacity(0.3),
-                                              spreadRadius: 1,
-                                              blurRadius: 6,
-                                              offset: const Offset(1, 6),
-                                            ),
-                                          ],
-                                        ),
-                                        child : Column(
-                                          children: [
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              crossAxisAlignment: CrossAxisAlignment.start,
-                                              children: [
-                                                const CircleAvatar(
-                                                  backgroundColor: Color(0xFFECFAFF),
-                                                  radius: 25,
-                                                  child: Text(
-                                                    "SC",
-                                                    style: TextStyle(
-                                                        fontSize: 20,
-                                                        color: Color(0xFF1d3557)
+                                  child: ListView.builder(
+                                      shrinkWrap: true,
+                                      physics: const BouncingScrollPhysics(
+                                          parent: NeverScrollableScrollPhysics()),
+                                      itemCount: sample == null ? 0 : sample.length,
+                                      itemBuilder: (BuildContext context, int index) {
+                                        return Container(
+                                          margin: EdgeInsets.symmetric(vertical: 10),
+                                          padding: EdgeInsets.all(20),
+                                          decoration: BoxDecoration(
+                                            color: Color(0xff1D3557),
+                                            borderRadius: BorderRadius.all(Radius.circular(15)),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black.withOpacity(0.3),
+                                                spreadRadius: 1,
+                                                blurRadius: 6,
+                                                offset: const Offset(1, 6),
+                                              ),
+                                            ],
+                                          ),
+                                          child : Column(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  const CircleAvatar(
+                                                    backgroundColor: Color(0xFFECFAFF),
+                                                    radius: 25,
+                                                    child: Text(
+                                                      "SC",
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          color: Color(0xFF1d3557)
+                                                      ),
                                                     ),
                                                   ),
-                                                ),
-                                                SizedBox(width: 10),
-                                                Flexible(
-                                                  child: Column(
-                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                  SizedBox(width: 10),
+                                                  Expanded(
+                                                    child: Container(
+                                                      child: Column(
+                                                        mainAxisAlignment: MainAxisAlignment.start,
+                                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                            children: [
+                                                              Flexible(
+                                                                child: Column(
+                                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                    children: [
+                                                                      Text(
+                                                                        "${sample[index]['username']}",
+                                                                        style: TextStyle(
+                                                                          color: Color(0xffFFF4DC),
+                                                                          fontSize: 16,
+                                                                        ),
+                                                                      ),
+                                                                      Text(
+                                                                        '${formatDate(sample[index]['date'])}, เวลา ${sample[index]['time']} น.',
+                                                                        style: TextStyle(
+                                                                          color: Color(0xffFFF4DC),
+                                                                          fontSize: 10,
+                                                                        ),
+                                                                      ),
+                                                                    ]
+                                                                ),
+                                                              ),
+                                                              Align(
+                                                                alignment: Alignment.topRight,
+                                                                child: IconButton(
+                                                                  onPressed: () => {},
+                                                                  alignment: Alignment.topRight,
+                                                                  padding: EdgeInsets.all(0),
+                                                                  icon: const Icon(Icons.keyboard_arrow_down_rounded,
+                                                                      size: 30
+                                                                  ),
+                                                                  color: Color(0xffFFF4DC),
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+
+                                                          SizedBox(height: 5),
+                                                          Text(
+                                                            '${sample[index]['text']}',
+                                                            style: TextStyle(
+                                                              color: Color(0xffFFF4DC),
+                                                              fontSize: 14,
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+
+                                                  ),
+                                                ],
+                                              ),
+                                              SizedBox(height: 10,),
+                                              Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: <Widget>[
+                                                  Row(
                                                     children: [
+                                                      const Icon(Icons.thumb_up_alt_outlined, color: Color(0xffFFF4DC), size: 20,),
+                                                      SizedBox(width: 7,),
                                                       Text(
-                                                        'Sedtawut Chalothronnarumit',
-                                                        style: TextStyle(
-                                                          color: Color(0xffFFF4DC),
-                                                          fontSize: 16,
-                                                        ),
-                                                      ),
+                                                          "${sample[index]['like']}" ,
+                                                          style: TextStyle(
+                                                              color: Color(0xffFFF4DC), fontSize: 16)),
+                                                      SizedBox(width: 7,),
+                                                      const Icon(Icons.thumb_down_alt_outlined, color: Color(0xffFFF4DC), size: 20,),
+                                                      SizedBox(width: 7,),
                                                       Text(
-                                                        '29 พฤศจิกายน พ.ศ. 2564, เวลา 12.10 น.',
-                                                        style: TextStyle(
-                                                          color: Color(0xffFFF4DC),
-                                                          fontSize: 10,
-                                                        ),
-                                                      ),
-                                                      SizedBox(height: 5),
-                                                      Text(
-                                                        'อาหารอร่อยสดใหม่มาก',
-                                                        style: TextStyle(
-                                                          color: Color(0xffFFF4DC),
-                                                          fontSize: 14,
-                                                        ),
-                                                      )
+                                                          "${sample[index]['dislike']}" ,
+                                                          style: TextStyle(
+                                                              color: Color(0xffFFF4DC), fontSize: 16)),
                                                     ],
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                            SizedBox(height: 10,),
-                                            Row(
-                                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                              children: <Widget>[
-                                                Row(
-                                                  children: [
-                                                    const Icon(Icons.thumb_up_alt_outlined, color: Color(0xffFFF4DC), size: 20,),
-                                                    SizedBox(width: 7,),
-                                                    Text(
-                                                        "325" ,
-                                                        style: TextStyle(
-                                                            color: Color(0xffFFF4DC), fontSize: 16)),
-                                                    SizedBox(width: 7,),
-                                                    const Icon(Icons.thumb_down_alt_outlined, color: Color(0xffFFF4DC), size: 20,),
-                                                    SizedBox(width: 7,),
-                                                    Text(
-                                                        "325" ,
-                                                        style: TextStyle(
-                                                            color: Color(0xffFFF4DC), fontSize: 16)),
-                                                  ],
-                                                ),
-                                                /*Text(
-                                                    "fdfd" ,
-                                                    style: TextStyle(
-                                                        color: Color(0xffFFF4DC), fontSize: 16)),
-                                                Text(
-                                                    'price',
-                                                    style: TextStyle(
-                                                        color: Color(0xffFFF4DC), fontSize: 16)),*/
-                                                _buildRatingStars(5),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
+                                                  _buildRatingBar(numberToDouble(sample[index]['rating'])),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
 
-                                      ),
-                                      //จบกล่องรีวิว1
-                                      //กล่องรีวิว2
-                                      Container(
-                                        margin: EdgeInsets.symmetric(vertical: 10),
-                                        padding: EdgeInsets.all(20),
-                                        decoration: BoxDecoration(
-                                          color: Color(0xff1D3557),
-                                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black.withOpacity(0.3),
-                                              spreadRadius: 1,
-                                              blurRadius: 6,
-                                              offset: const Offset(1, 6),
-                                            ),
-                                          ],
-                                        ),
-                                        child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            const CircleAvatar(
-                                              backgroundColor: Color(0xFFECFAFF),
-                                              radius: 25,
-                                              child: Text(
-                                                "SC",
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Color(0xFF1d3557)
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: 10),
-                                            Flexible(
-                                              child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    'อพาร์ทเม้น',
-                                                    style: TextStyle(
-                                                      color: Color(0xffECFAFF),
-                                                      fontSize: 16,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    'ที่อยู่อาศัยตกแต่งในอาคารอพาร์ตเมนต์ที่มีห้องพักส่วนตัวพร้อม บริการเหมือนโรงแรม',
-                                                    style: TextStyle(
-                                                      color: Color(0xffECFAFF),
-                                                      fontSize: 14,
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                      //จบรีวิวกล่อง2
-                                      //กล่องรีวิว3
-                                      Container(
-                                        margin: EdgeInsets.symmetric(vertical: 10),
-                                        padding: EdgeInsets.all(20),
-                                        decoration: BoxDecoration(
-                                          color: Color(0xff1D3557),
-                                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: Colors.black.withOpacity(0.3),
-                                              spreadRadius: 1,
-                                              blurRadius: 6,
-                                              offset: const Offset(1, 6),
-                                            ),
-                                          ],
-                                        ),
-                                        child: Row(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            const CircleAvatar(
-                                              backgroundColor: Color(0xFFECFAFF),
-                                              radius: 25,
-                                              child: Text(
-                                                "SC",
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Color(0xFF1d3557)
-                                                ),
-                                              ),
-                                            ),
-                                            SizedBox(width: 10),
-                                            Flexible(
-                                              child: Column(
-                                                mainAxisAlignment: MainAxisAlignment.start,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  Text(
-                                                    'อพาร์ทเม้น',
-                                                    style: TextStyle(
-                                                      color: Color(0xffECFAFF),
-                                                      fontSize: 16,
-                                                    ),
-                                                  ),
-                                                  Text(
-                                                    'ที่อยู่อาศัยตกแต่งในอาคารอพาร์ตเมนต์ที่มีห้องพักส่วนตัวพร้อม บริการเหมือนโรงแรม',
-                                                    style: TextStyle(
-                                                      color: Color(0xffECFAFF),
-                                                      fontSize: 14,
-                                                    ),
-                                                  )
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                                        );
+                                  }),
                                 ),
                               ),
                             ],

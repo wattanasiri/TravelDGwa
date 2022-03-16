@@ -30,6 +30,7 @@ class _BookingState extends State<Booking> {
 
   Future getBookingData() async {
 
+    // ---------------
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
 
@@ -51,10 +52,12 @@ class _BookingState extends State<Booking> {
             );
           },
         );
+        connectionFailed = true;
         return http.Response('Error', 408);
       },)
     ;
     data = json.decode(res.body);
+    // ---------------
     bookingData = data['booking'];
     print(bookingData);
 

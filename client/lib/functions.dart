@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 String getMonthName (int monthZ) {
   var month = monthZ + 1;
   switch (month) {
@@ -37,6 +39,14 @@ String getMonthNameShort (int monthZ) {
     default: {
       return 'ERROR';
     }
+  }
+}
+
+double numberToDouble (var input) {
+  if (input is int) {
+    return input.toDouble();
+  } else {
+    return input;
   }
 }
 
