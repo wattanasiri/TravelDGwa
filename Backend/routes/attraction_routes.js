@@ -1,5 +1,4 @@
 const express  = require('express');
-const _  = require('lodash');
 const middleware = require('../middleware')
 const Attraction = require('../models/attraction_model')
 const Comment = require('../models/comment_model')
