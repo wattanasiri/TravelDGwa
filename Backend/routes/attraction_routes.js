@@ -1,10 +1,10 @@
 const express  = require('express');
+const _  = require('lodash');
 const middleware = require('../middleware')
 const Attraction = require('../models/attraction_model')
 const Comment = require('../models/comment_model')
 const User = require('../models/user_model')
 const jwt = require('jwt-simple');
-const _ = require('passport-local-mongoose');
 const secret = require('..').SecretText
 
 const router = express.Router()
@@ -99,6 +99,47 @@ router.get('/getseaattraction/:word', (req,res) => {
     })
 })
 
+// get Comment
+router.get('/:id/comment' , middleware.isLoggedIn, (req,res) => {
+    var token = req.headers.authorization.split(' ')[1]
+    var stringToken = JSON.parse(token)['token']
+    var user = jwt.decode(stringToken, secret)
+    var commentList = []
+
+    Attraction.findById(req.params.id).populate('comments').exec(function(err, foundModel) {
+        if (err) return console.log(err)
+        if (foundModel) {
+            foundModel.comments.forEach(function(comment) {
+
+                // comment.likedby.forEach(function(like) {
+                //     console.log()
+                // })
+
+                var newComment = {
+                    // did this because i can't assign key to comment element directly
+                    id: comment._id,
+                    username: comment.author.username,
+                    type: comment.type,
+                    text: comment.text,
+                    date: comment.date,
+                    time: comment.time,
+                    rating : comment.rating,
+                    like: comment.like,
+                    dislike: comment.dislike,
+                    userLiked: false,
+                    userDisliked: false,
+                    belongToUser: user._id == comment.author.id,
+                }
+                commentList.push(newComment)
+            });
+            console.log(commentList);
+            res.json({comment:commentList})
+        } else {
+            console.log(err)    
+        }
+    });
+})
+
 router.post('/:id/comment' , middleware.isLoggedIn , (req,res) => {
 
     var token = req.headers.authorization.split(' ')[1]
@@ -121,10 +162,9 @@ router.post('/:id/comment' , middleware.isLoggedIn , (req,res) => {
                 newComment.type = req.body.type
                 newComment.text = req.body.text
                 newComment.date = req.body.date
+                newComment.time = req.body.time
                 newComment.rating = req.body.rating
-                newComment.save()
                 foundAttraction.comments.push(newComment)
-                foundAttraction.save()
 
                 var averageRating = 0
 
@@ -138,8 +178,16 @@ router.post('/:id/comment' , middleware.isLoggedIn , (req,res) => {
                             totalRating += comment.rating
                             // console.log(comment)
                         });
-                        averageRating = totalRating / commentCount
+                        if (commentCount == 0) {
+                            averageRating = req.body.rating
+                        } else {
+                            averageRating = (totalRating+req.body.rating) / ( commentCount + 1 )
+                        } 
+                        
+                        console.log(averageRating)
                         foundAttraction.updateOne({ $set: { star : averageRating }}).exec()
+                        newComment.save()
+                        foundAttraction.save()
                     } else {
                         return console.log(err);
                     }

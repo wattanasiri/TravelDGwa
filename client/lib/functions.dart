@@ -54,6 +54,14 @@ int convertYearToBE (int year) {
   return year + 543;
 }
 
+String formatMinute (int input) {
+  if (input < 10) {
+    return input.toString();
+  } else {
+    return '0' + input.toString();
+  }
+}
+
 String formatPrice(double input) {
   return input.toStringAsFixed(2);
 }

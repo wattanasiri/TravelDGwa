@@ -16,6 +16,8 @@ import 'package:se_app2/Home/Attraction/tourist_attraction.dart';
 import 'package:se_app2/Widgets/notif_ok.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import 'comment_item.dart';
+
 
 class Attractiondetail extends StatefulWidget {
   bool check;
@@ -36,6 +38,11 @@ class _AttractiondetailState extends State<Attractiondetail> {
   bool viewVisible = false;
   var data;
 
+  var commentBody;
+  var commentData;
+
+  bool commentsLoaded = false;
+
   TextEditingController commentController = TextEditingController();
 
   @override
@@ -50,6 +57,22 @@ class _AttractiondetailState extends State<Attractiondetail> {
       "rating": 5,
       "like": 321,
       "dislike": 24,
+      "userLiked": true,
+      "userDisliked": false,
+      "belongToUser": true,
+    },
+    {
+      "image": 'unknown',
+      "username": 'Sedtawut Chalothronnarumit',
+      "date": "29-10-2021",
+      "time": "12:05",
+      "text": 'อาหารอร่อยสดใหม่มาก',
+      "rating": 5,
+      "like": 321,
+      "dislike": 24,
+      "userLiked": true,
+      "userDisliked": false,
+      "belongToUser": true,
     },
   ];
 
@@ -62,6 +85,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
 
   void initState(){
     data = widget.detail;
+
     print(widget.data['_id']);
     print ("this ");
     print  (widget.data["name"]);
@@ -184,6 +208,34 @@ class _AttractiondetailState extends State<Attractiondetail> {
     }
     //restaurantData = data['restaurants'];
   }
+  Future loadComment() async {
+    // ---------------
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
+
+
+    http.Response res = await http.get(Uri.parse
+      ("http://10.0.2.2:8080/attraction/${widget.data['_id']}/comment"),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (res.statusCode == 200) {
+      commentBody = json.decode(res.body);
+      print(commentBody['comment']);
+      setState(() {
+        commentData = commentBody['comment'];
+        commentsLoaded = true;
+      });
+    }
+
+
+
+  }
+
   Future postComment() async {
     // ---------------
     var _prefs = await SharedPreferences.getInstance();
@@ -192,11 +244,11 @@ class _AttractiondetailState extends State<Attractiondetail> {
     final now = DateTime.now();
 
     String formattedDate = '${now.day}-${now.month}-${now.year}';
-    String formattedTime = '${now.hour}:${now.minute}';
+    String formattedTime = '${now.hour}:${formatMinute(now.minute)}';
 
     final body = {
     "id": widget.data['_id'],
-    "type": 'hotel', // IMPORTANT: CHANGE THIS WHEN YOU COPY THIS CODE
+    "type": 'attraction', // IMPORTANT: CHANGE THIS WHEN YOU COPY THIS CODE
     "text": commentController.text,
     "date": formattedDate,
     "time": formattedTime,
@@ -577,18 +629,20 @@ class _AttractiondetailState extends State<Attractiondetail> {
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 16, vertical: 2),
                               //width: 350,
-                              height: 50,
+                              height: 150,
                               decoration: BoxDecoration(
                                   color: const Color(0xffECFAFF),
                                   borderRadius: BorderRadius.circular(25),
                                   border: Border.all(
                                       color: const Color(0xff1D3557), width: 2)),
                               child: TextFormField(
+                                minLines: 2,
+                                maxLines: 5,
+                                keyboardType: TextInputType.multiline,
                                 decoration: InputDecoration(
                                   hintText: 'เขียนและให้คะแนน...',
-                                  enabledBorder: UnderlineInputBorder(
-                                      borderSide:
-                                      BorderSide(color: Color(0xffECFAFF))),
+                                  border: InputBorder.none,
+
                                   suffixIcon:
                                   IconButton(onPressed: () {
                                     if(_formKey.currentState.validate()){
@@ -596,7 +650,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
                                     }
                                   },
                                       padding: EdgeInsets.zero,
-                                      alignment: Alignment.centerRight,
+                                      alignment: Alignment.topRight,
                                       icon: Icon(Icons.send, color: Color(0xff1D3557))),
                                 ),
                                 validator: (value) {
@@ -628,6 +682,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
                               InkWell(
                                 onTap: () {
                                   viewVisible ? hideWidget() : showWidget();
+                                  if (!commentsLoaded) loadComment();
                                   if(viewVisible){
                                     _controller.animateTo(
                                         MediaQuery.of(context).size.height,
@@ -651,6 +706,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
                                       IconButton(
                                         onPressed: () {
                                           viewVisible ? hideWidget() : showWidget();
+                                          if (!commentsLoaded) loadComment();
                                           if(viewVisible){
                                             _controller.animateTo(
                                                 MediaQuery.of(context).size.height,
@@ -673,148 +729,44 @@ class _AttractiondetailState extends State<Attractiondetail> {
                                 ),
                               ),
                               const Divider(color: Color(0xff827E7E), thickness: 1.5),
-                              Container(
-                                height: viewVisible ? 600 : 0,
-                                margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                                padding: const EdgeInsets.all(10),
-                                decoration: const BoxDecoration(
-                                    color: Color(0xffFFEEC9),
-                                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                                child : MediaQuery.removePadding(
-                                  removeTop: true,
-                                  context: context,
-                                  child: ListView.builder(
-                                      shrinkWrap: true,
-                                      physics: const BouncingScrollPhysics(
-                                          parent: NeverScrollableScrollPhysics()),
-                                      itemCount: sample == null ? 0 : sample.length,
-                                      itemBuilder: (BuildContext context, int index) {
-                                        return Container(
-                                          margin: EdgeInsets.symmetric(vertical: 10),
-                                          padding: EdgeInsets.all(20),
-                                          decoration: BoxDecoration(
-                                            color: Color(0xff1D3557),
-                                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black.withOpacity(0.3),
-                                                spreadRadius: 1,
-                                                blurRadius: 6,
-                                                offset: const Offset(1, 6),
-                                              ),
-                                            ],
-                                          ),
-                                          child : Column(
-                                            children: [
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  const CircleAvatar(
-                                                    backgroundColor: Color(0xFFECFAFF),
-                                                    radius: 25,
-                                                    child: Text(
-                                                      "SC",
-                                                      style: TextStyle(
-                                                          fontSize: 20,
-                                                          color: Color(0xFF1d3557)
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  SizedBox(width: 10),
-                                                  Expanded(
-                                                    child: Container(
-                                                      child: Column(
-                                                        mainAxisAlignment: MainAxisAlignment.start,
-                                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                                        children: [
-                                                          Row(
-                                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                            crossAxisAlignment: CrossAxisAlignment.start,
-                                                            children: [
-                                                              Flexible(
-                                                                child: Column(
-                                                                    mainAxisAlignment: MainAxisAlignment.start,
-                                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                                    children: [
-                                                                      Text(
-                                                                        "${sample[index]['username']}",
-                                                                        style: TextStyle(
-                                                                          color: Color(0xffFFF4DC),
-                                                                          fontSize: 16,
-                                                                        ),
-                                                                      ),
-                                                                      Text(
-                                                                        '${formatDate(sample[index]['date'])}, เวลา ${sample[index]['time']} น.',
-                                                                        style: TextStyle(
-                                                                          color: Color(0xffFFF4DC),
-                                                                          fontSize: 10,
-                                                                        ),
-                                                                      ),
-                                                                    ]
-                                                                ),
-                                                              ),
-                                                              Align(
-                                                                alignment: Alignment.topRight,
-                                                                child: IconButton(
-                                                                  onPressed: () => {},
-                                                                  alignment: Alignment.topRight,
-                                                                  padding: EdgeInsets.all(0),
-                                                                  icon: const Icon(Icons.keyboard_arrow_down_rounded,
-                                                                      size: 30
-                                                                  ),
-                                                                  color: Color(0xffFFF4DC),
-                                                                ),
-                                                              ),
-                                                            ],
-                                                          ),
 
-                                                          SizedBox(height: 5),
-                                                          Text(
-                                                            '${sample[index]['text']}',
-                                                            style: TextStyle(
-                                                              color: Color(0xffFFF4DC),
-                                                              fontSize: 14,
-                                                            ),
-                                                          )
-                                                        ],
-                                                      ),
-                                                    ),
+                              // กล่องคอมเมนต์
+                              if (commentsLoaded)
+                                SingleChildScrollView(
+                                  child: Container(
+                                    height: viewVisible ? 600 : 0,
+                                    margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                                    padding: const EdgeInsets.all(10),
+                                    decoration: const BoxDecoration(
+                                        color: Color(0xffFFEEC9),
+                                        borderRadius: BorderRadius.all(Radius.circular(10))),
+                                    child : MediaQuery.removePadding(
+                                      removeTop: true,
+                                      context: context,
+                                      child: ListView.builder(
+                                          shrinkWrap: true,
+                                          physics: const BouncingScrollPhysics(),
+                                          itemCount: commentData == null ? 0 : commentData.length,
+                                          itemBuilder: (BuildContext context, int index) {
+                                            return commentItem(
+                                              detail: commentData[index],
+                                              like: commentData[index]['like'],
+                                              dislike: commentData[index]['dislike'],
+                                              userLiked: commentData[index]['userLiked'],
+                                              userDisliked: commentData[index]['userDisliked'],
+                                              belongToUser: commentData[index]['belongToUser'],
+                                            );
+                                          }),
+                                    ),
+                                  )
+                                )
+                              else
+                                Container(
+                                  height: viewVisible ? 100 : 0,
+                                  child: Center(child: CircularProgressIndicator()),
+                                )
+                              ,
 
-                                                  ),
-                                                ],
-                                              ),
-                                              SizedBox(height: 10,),
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                children: <Widget>[
-                                                  Row(
-                                                    children: [
-                                                      const Icon(Icons.thumb_up_alt_outlined, color: Color(0xffFFF4DC), size: 20,),
-                                                      SizedBox(width: 7,),
-                                                      Text(
-                                                          "${sample[index]['like']}" ,
-                                                          style: TextStyle(
-                                                              color: Color(0xffFFF4DC), fontSize: 16)),
-                                                      SizedBox(width: 7,),
-                                                      const Icon(Icons.thumb_down_alt_outlined, color: Color(0xffFFF4DC), size: 20,),
-                                                      SizedBox(width: 7,),
-                                                      Text(
-                                                          "${sample[index]['dislike']}" ,
-                                                          style: TextStyle(
-                                                              color: Color(0xffFFF4DC), fontSize: 16)),
-                                                    ],
-                                                  ),
-                                                  _buildRatingBar(numberToDouble(sample[index]['rating'])),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-
-                                        );
-                                  }),
-                                ),
-                              ),
                             ],
                           )
                         ],
