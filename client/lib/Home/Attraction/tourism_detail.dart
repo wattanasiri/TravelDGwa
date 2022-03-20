@@ -215,7 +215,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
 
 
     http.Response res = await http.get(Uri.parse
-      ("http://10.0.2.2:8080/attraction/${widget.data['_id']}/comment"),
+      ("http://10.0.2.2:8080/comment/attraction/${widget.data['_id']}"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -257,7 +257,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
     };
 
     http.Response res = await http.post(
-      Uri.parse("http://10.0.2.2:8080/attraction/${widget.data['_id']}/comment"),
+      Uri.parse("http://10.0.2.2:8080/comment/attraction/${widget.data['_id']}"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -283,6 +283,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
     if (res.statusCode == 200) {
       print('success');
       commentController.text = "";
+      FocusScope.of(context).unfocus();
       showDialog(
         context: context,
         builder: (BuildContext context) {
