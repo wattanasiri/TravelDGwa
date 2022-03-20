@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Get Month Name when the input starts January at 0
 String getMonthName (int monthZ) {
   var month = monthZ + 1;
   switch (month) {
@@ -19,6 +20,11 @@ String getMonthName (int monthZ) {
       return 'ERROR';
     }
   }
+}
+
+// when the input starts value one at January
+String getMonthNameStartOne (int monthZ) {
+  return getMonthName (monthZ - 1);
 }
 
 String getMonthNameShort (int monthZ) {

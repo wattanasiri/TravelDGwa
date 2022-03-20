@@ -16,6 +16,7 @@ import 'comment_delete.dart';
 
 
 class commentItem extends StatefulWidget {
+  final id;
   final detail;
   final like;
   final dislike;
@@ -25,6 +26,7 @@ class commentItem extends StatefulWidget {
 
   commentItem({
     Key key,
+    @required this.id,
     @required this.detail,
     this.like = 0,
     this.dislike = 0,
@@ -40,8 +42,10 @@ class commentItem extends StatefulWidget {
 class _itemState extends State<commentItem> {
 
   var detail;
+  bool debounce = false;
   int like = 0;
   int dislike = 0;
+  String id;
 
   bool userLiked = false;
   bool userDisliked = false;
@@ -66,48 +70,81 @@ class _itemState extends State<commentItem> {
   String formatDate(String date) {
     var inputFormat = DateFormat('dd-MM-yyyy');
     DateTime parsedDate = inputFormat.parse(date);
-    var text = parsedDate.day.toString() + ' ' + getMonthName(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
+    var text = parsedDate.day.toString() + ' ' + getMonthNameStartOne(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
     return text;
   }
 
   Future actionLike() async {
     int newLike;
-    if (userDisliked) {
-      setState((){
-        dislike -= 1;
-        userDisliked = !userDisliked;
-      });
-    }
-    if (userLiked) {
-      newLike = like -= 1;
-    } else {
-      newLike = like += 1;
-    }
-    setState(() {
-      newLike;
-      userLiked = !userLiked;
-    });
-    // Insert code
-  }
 
-  Future actionDislike() async {
-    int newDislike;
-    if (userLiked) {
-      setState((){
-        like -= 1;
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
+    final body = {
+    };
+
+    http.Response res = await http.post(
+      Uri.parse("http://10.0.2.2:8080/comment/$id/like"),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(body),
+    );
+    if (res.statusCode == 200) {
+      if (userDisliked) {
+        setState((){
+          dislike -= 1;
+          userDisliked = !userDisliked;
+        });
+      }
+      if (userLiked) {
+        newLike = like -= 1;
+      } else {
+        newLike = like += 1;
+      }
+      setState(() {
+        newLike;
         userLiked = !userLiked;
       });
     }
-    if (userDisliked) {
-      newDislike = dislike -= 1;
-    } else {
-      newDislike = dislike += 1;
+  }
+
+  Future actionDislike() async {
+
+    int newDislike;
+
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
+    final body = {
+    };
+
+    http.Response res = await http.post(
+      Uri.parse("http://10.0.2.2:8080/comment/$id/dislike"),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(body),
+    );
+    if (res.statusCode == 200) {
+      if (userLiked) {
+        setState((){
+          like -= 1;
+          userLiked = !userLiked;
+        });
+      }
+      if (userDisliked) {
+        newDislike = dislike -= 1;
+      } else {
+        newDislike = dislike += 1;
+      }
+      setState(() {
+        newDislike;
+        userDisliked = !userDisliked;
+      });
     }
-    setState(() {
-      newDislike;
-      userDisliked = !userDisliked;
-    });
-    // Insert code
   }
 
   void initState(){
@@ -117,7 +154,7 @@ class _itemState extends State<commentItem> {
     userLiked = widget.userLiked;
     userDisliked = widget.userDisliked;
     belongToUser = widget.belongToUser;
-
+    id = widget.id;
   }
 
   @override

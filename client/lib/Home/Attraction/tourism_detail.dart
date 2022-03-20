@@ -195,7 +195,6 @@ class _AttractiondetailState extends State<Attractiondetail> {
     }else{
       await getseaattraction();
       await getmuseum();
-      print("0");
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -215,7 +214,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
 
 
     http.Response res = await http.get(Uri.parse
-      ("http://10.0.2.2:8080/comment/attraction/${widget.data['_id']}"),
+      ("http://10.0.2.2:8080/comment/${widget.data['_id']}/model/attraction"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -243,8 +242,11 @@ class _AttractiondetailState extends State<Attractiondetail> {
 
     final now = DateTime.now();
 
-    String formattedDate = '${now.day}-${now.month}-${now.year}';
-    String formattedTime = '${now.hour}:${formatMinute(now.minute)}';
+    var dateFormat = DateFormat('dd-MM-yyyy');
+    String formattedDate = dateFormat.format(now);
+
+    var timeFormat = DateFormat('HH:mm'); // uppercase H for 24h format
+    String formattedTime = timeFormat.format(now);
 
     final body = {
     "id": widget.data['_id'],
@@ -257,7 +259,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
     };
 
     http.Response res = await http.post(
-      Uri.parse("http://10.0.2.2:8080/comment/attraction/${widget.data['_id']}"),
+      Uri.parse("http://10.0.2.2:8080/comment/${widget.data['_id']}/model/attraction"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -751,6 +753,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
                                           itemBuilder: (BuildContext context, int index) {
                                             return commentItem(
                                               detail: commentData[index],
+                                              id: commentData[index]['id'],
                                               like: commentData[index]['like'],
                                               dislike: commentData[index]['dislike'],
                                               userLiked: commentData[index]['userLiked'],

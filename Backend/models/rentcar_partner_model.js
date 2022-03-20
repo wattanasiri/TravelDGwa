@@ -28,13 +28,13 @@ const rentcarpartnerSchema = new Schema({
     comment:[
         {
             type : mongoose.Schema.Types.ObjectId,
-            ref : 'comment'   
+            ref : 'Comment'   
         }
     ],
     carinfoID:[
         {
             type : mongoose.Schema.Types.ObjectId,
-            ref : 'comment'   
+            ref : 'CarInfo'   
         }
     ],
     image: [
