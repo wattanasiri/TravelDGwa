@@ -55,7 +55,8 @@ int convertYearToBE (int year) {
 }
 
 String formatMinute (int input) {
-  if (input < 10) {
+  print(input);
+  if (input > 10) {
     return input.toString();
   } else {
     return '0' + input.toString();
