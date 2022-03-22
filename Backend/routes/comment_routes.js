@@ -11,7 +11,21 @@ const secret = require('..').SecretText
 
 const router = express.Router()
 
-// TODO: insert code for like, dislike and editing
+// get Model
+function getModelType(type) {
+    if (type == 'attraction') {
+        return Attraction
+    } else if (type == 'hotel') {
+        return Hotel
+    } else if (type == 'restaurant') {
+        return Restaurant
+    } else if (type == 'rentcarpartner') {
+        return rentcar_partner_model
+    }
+    else {
+        return 1;
+    }
+}
 
 // get Comment
 router.get('/:id/model/:type' , middleware.isLoggedIn, (req,res) => {
@@ -20,19 +34,8 @@ router.get('/:id/model/:type' , middleware.isLoggedIn, (req,res) => {
     var user = jwt.decode(stringToken, secret)
     var commentList = []
 
-    var Model
-    if (req.params.type == 'attraction') {
-        Model = Attraction
-    } else if (req.params.type == 'hotel') {
-        Model = Hotel
-    } else if (req.params.type == 'restaurant') {
-        Model = Restaurant
-    } else if (req.params.type == 'rentcarpartner') {
-        Model = rentcar_partner_model
-    }
-    else {
-        return console.log('Invalid comment type')
-    }
+    var Model = getModelType(req.params.type)
+    if (Model === 1) return console.log('Invalid model type')
 
     Model.findById(req.params.id).populate('comments').exec(function(err, foundModel) {
         if (err) return console.log(err)
@@ -41,6 +44,9 @@ router.get('/:id/model/:type' , middleware.isLoggedIn, (req,res) => {
 
         if (foundModel) {
             foundModel.comments.forEach(function(comment) {
+                // reset variable every loop
+                userLikedState = false
+                userDislikedState = false
 
                 // get variable if the user has liked the comment or not
                 comment.likedby.some(userElem => {
@@ -60,7 +66,6 @@ router.get('/:id/model/:type' , middleware.isLoggedIn, (req,res) => {
                     })
                 }
                 
-
                 var newComment = {
                     // did this because i can't assign key to comment element directly
                     id: comment._id,
@@ -92,19 +97,8 @@ router.post('/:id/model/:type' , middleware.isLoggedIn , (req,res) => {
     var stringToken = JSON.parse(token)['token']
     var user = jwt.decode(stringToken, secret)
 
-    var Model
-    if (req.params.type == 'attraction') {
-        Model = Attraction
-    } else if (req.params.type == 'hotel') {
-        Model = Hotel
-    } else if (req.params.type == 'restaurant') {
-        Model = Restaurant
-    } else if (req.params.type == 'rentcarpartner') {
-        Model = rentcar_partner_model
-    }
-    else {
-        return console.log('Invalid comment type')
-    }
+    var Model = getModelType(req.params.type)
+    if (Model === 1) return console.log('Invalid model type')
 
     Model.findById(req.params.id, function(err, foundModel) {
         if (err) return console.log(err);
@@ -131,6 +125,7 @@ router.post('/:id/model/:type' , middleware.isLoggedIn , (req,res) => {
                 Model.findById(req.params.id).populate('comments').exec(function(err, foundModel2) {
                     if (err) return console.log(err);
                     if (foundModel2) {
+                        // calculate rating before updating one
                         var commentCount = 0
                         var totalRating = 0
                         foundModel2.comments.forEach(function(comment) {
@@ -152,14 +147,105 @@ router.post('/:id/model/:type' , middleware.isLoggedIn , (req,res) => {
                         return console.log(err);
                     }
                 });
-
-
                 res.status(200).json()
-
             });
         } else {
             return res.status(404).json()
         }
+    });
+})
+
+router.put('/:commentid' , middleware.isLoggedIn , (req,res) => {
+
+    var token = req.headers.authorization.split(' ')[1]
+    var stringToken = JSON.parse(token)['token']
+    var user = jwt.decode(stringToken, secret)
+
+    Comment.findByIdAndUpdate(req.params.commentid, req.body, function(err, updatedComment) {
+        if (err) return console.log(err)
+        if (updatedComment) {
+            var Model = getModelType(updatedComment.type)
+            if (Model === 1) return res.status(401).json()
+            Model.findById(req.body.id).populate('comments').exec(function(err, foundModel) {
+                if (err) return console.log(err);
+                if (foundModel) {
+                    // calculate rating before updating one
+                    var averageRating = 0
+                    var commentCount = 0
+                    var totalRating = 0
+                    foundModel.comments.forEach(function(comment) {
+                        commentCount += 1 
+                        totalRating += comment.rating
+                        // console.log(comment)
+                    });
+                    if (commentCount == 0) {
+                        // should not happen ever
+                        averageRating = req.body.rating
+                    } else {
+                        averageRating = (totalRating) / ( commentCount )
+                    } 
+                    
+                    console.log(averageRating)
+                    foundModel.updateOne({ $set: { star : averageRating }}).exec()
+                    foundModel.save()
+                } else {
+                    return console.log(err);
+                }
+            });
+            return res.status(200).json()
+        } else {
+            return res.status(404).json()
+        }
+    })
+})
+
+router.delete('/:commentid' , middleware.isLoggedIn , (req,res) => {
+
+    var token = req.headers.authorization.split(' ')[1]
+    var stringToken = JSON.parse(token)['token']
+    var user = jwt.decode(stringToken, secret)
+
+    var commentType;
+
+    Comment.findById(
+        req.params.commentid
+        , function(err, targetComment) {
+        if (err) return console.log(err)
+        commentType = targetComment.type
+
+        Comment.findByIdAndDelete(req.params.commentid, function(err) {
+            if (err) return console.log(err)
+            console.log(commentType)
+            console.log(typeof(commentType))
+            var Model = getModelType(commentType)
+            if (Model === 1) return console.log('Invalid model');
+            Model.findById(req.body.id).populate('comments').exec(function(err, foundModel) {
+                if (err) return console.log(err);
+                if (foundModel) {
+                    // calculate rating before updating one
+                    var averageRating = 0
+                    var commentCount = 0
+                    var totalRating = 0
+                    foundModel.comments.forEach(function(comment) {
+                        commentCount += 1 
+                        totalRating += comment.rating
+                        // console.log(comment)
+                    });
+                    if (commentCount == 0) {
+                        averageRating = 0
+                    } else {
+                        averageRating = (totalRating) / ( commentCount )
+                    } 
+                    
+                    console.log(averageRating)
+                    foundModel.updateOne({ $set: { star : averageRating }}).exec()
+                    foundModel.save()
+                } else {
+                    return console.log(err);
+                }
+            });
+            return res.status(200).json()
+        })
     });
 })
 

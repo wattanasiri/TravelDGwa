@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -19,12 +20,15 @@ class confirmDeleteBox extends StatefulWidget {
   final type;
   final width;
   final height;
+  final Function deleteFunction;
+
   const confirmDeleteBox(
       {Key key,
         @required this.detail,
         this.type,
         this.width,
-        this.height
+        this.height,
+        @required this.deleteFunction,
       })
       : super(key: key);
 
@@ -64,7 +68,7 @@ class _confirmBoxState extends State<confirmDeleteBox> {
                 borderRadius: BorderRadius.all(Radius.circular(15))
             ),
             child: Stack(
-              overflow: Overflow.visible,
+              clipBehavior: Clip.none,
               children: <Widget>[
                 Container(
                   padding: const EdgeInsets.only(
@@ -73,14 +77,14 @@ class _confirmBoxState extends State<confirmDeleteBox> {
                       right: 0,
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Align(
                         alignment: Alignment.center,
                         child: Text(
-                          'ยกเลิกการจอง',
+                          'ยืนยัน',
                           style: GoogleFonts.poppins(
                               color: primaryColor,
                               fontSize: 20,
@@ -94,20 +98,16 @@ class _confirmBoxState extends State<confirmDeleteBox> {
                           right: 40,
                         ),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            RichText(
-                              text: TextSpan(
-                                style: GoogleFonts.poppins(
-                                  color: primaryColor,
-                                  fontSize: 12,),
-                                children: <TextSpan>[
-                                  TextSpan(text:
-                                  'คุณต้องการจะลบความคิดเห็นนี้หรือไม่?',),
-                                ],
-                              ),
+                            Text(
+                            'คุณต้องการจะลบความคิดเห็นนี้หรือไม่?',
+                              style: GoogleFonts.poppins(
+                                color: primaryColor,
+                                fontSize: 14,),
+                              textAlign: TextAlign.center,
                             ),
                           ],
                         ),
@@ -150,6 +150,7 @@ class _confirmBoxState extends State<confirmDeleteBox> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
+                                    widget.deleteFunction();
                                     Navigator.of(context).pop();
                                   },
                                   child: Container(

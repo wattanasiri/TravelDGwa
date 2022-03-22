@@ -39,7 +39,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
   var data;
 
   var commentBody;
-  var commentData;
+  List commentData;
 
   bool commentsLoaded = false;
 
@@ -47,34 +47,34 @@ class _AttractiondetailState extends State<Attractiondetail> {
 
   @override
   //เลือกแต่ละอันจาก ID
-  List sample = [
-    {
-      "image": 'unknown',
-      "username": 'Sedtawut Chalothronnarumit',
-      "date": "29-10-2021",
-      "time": "12:10",
-      "text": 'อาหารอร่อยสดใหม่มาก',
-      "rating": 5,
-      "like": 321,
-      "dislike": 24,
-      "userLiked": true,
-      "userDisliked": false,
-      "belongToUser": true,
-    },
-    {
-      "image": 'unknown',
-      "username": 'Sedtawut Chalothronnarumit',
-      "date": "29-10-2021",
-      "time": "12:05",
-      "text": 'อาหารอร่อยสดใหม่มาก',
-      "rating": 5,
-      "like": 321,
-      "dislike": 24,
-      "userLiked": true,
-      "userDisliked": false,
-      "belongToUser": true,
-    },
-  ];
+  // List sample = [
+  //   {
+  //     "image": 'unknown',
+  //     "username": 'Sedtawut Chalothronnarumit',
+  //     "date": "29-10-2021",
+  //     "time": "12:10",
+  //     "text": 'อาหารอร่อยสดใหม่มาก',
+  //     "rating": 5,
+  //     "like": 321,
+  //     "dislike": 24,
+  //     "userLiked": true,
+  //     "userDisliked": false,
+  //     "belongToUser": true,
+  //   },
+  //   {
+  //     "image": 'unknown',
+  //     "username": 'Sedtawut Chalothronnarumit',
+  //     "date": "29-10-2021",
+  //     "time": "12:05",
+  //     "text": 'อาหารอร่อยสดใหม่มาก',
+  //     "rating": 5,
+  //     "like": 321,
+  //     "dislike": 24,
+  //     "userLiked": true,
+  //     "userDisliked": false,
+  //     "belongToUser": true,
+  //   },
+  // ];
 
   String formatDate(String date) {
     var inputFormat = DateFormat('dd-MM-yyyy');
@@ -101,6 +101,15 @@ class _AttractiondetailState extends State<Attractiondetail> {
   void hideWidget() {
     setState(() {
       viewVisible = false;
+    });
+  }
+
+  // use this while delete comment
+  void removeDataInList(String id) {
+    print(commentData);
+    print(id);
+    setState(() {
+      commentData.removeWhere((value) => value["id"] == id);
     });
   }
 
@@ -224,14 +233,12 @@ class _AttractiondetailState extends State<Attractiondetail> {
 
     if (res.statusCode == 200) {
       commentBody = json.decode(res.body);
-      print(commentBody['comment']);
       setState(() {
         commentData = commentBody['comment'];
         commentsLoaded = true;
       });
+      print(commentData);
     }
-
-
 
   }
 
@@ -752,6 +759,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
                                           itemCount: commentData == null ? 0 : commentData.length,
                                           itemBuilder: (BuildContext context, int index) {
                                             return commentItem(
+                                              modelid: widget.data['_id'],
                                               detail: commentData[index],
                                               id: commentData[index]['id'],
                                               like: commentData[index]['like'],
@@ -759,6 +767,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
                                               userLiked: commentData[index]['userLiked'],
                                               userDisliked: commentData[index]['userDisliked'],
                                               belongToUser: commentData[index]['belongToUser'],
+                                              removeItemFunction: removeDataInList,
                                             );
                                           }),
                                     ),
