@@ -1,11 +1,12 @@
 const express  = require('express');
 const middleware = require('../middleware')
-const Attraction = require('../models/attraction_model')
 const Comment = require('../models/comment_model')
 const User = require('../models/user_model')
 const jwt = require('jwt-simple');
 const Hotel = require('../models/hotel_model');
 const Restaurant = require('../models/restau_model');
+const Attraction = require('../models/attraction_model')
+const Activity = require('../models/activity_model')
 const rentcarpartner = require('../models/rentcar_partner_model');
 const secret = require('..').SecretText
 
@@ -21,6 +22,8 @@ function getModelType(type) {
         return Restaurant
     } else if (type == 'rentcarpartner') {
         return rentcar_partner_model
+    } else if (type == 'activity') {
+        return Activity
     }
     else {
         return 1;
@@ -215,8 +218,6 @@ router.delete('/:commentid' , middleware.isLoggedIn , (req,res) => {
 
         Comment.findByIdAndDelete(req.params.commentid, function(err) {
             if (err) return console.log(err)
-            console.log(commentType)
-            console.log(typeof(commentType))
             var Model = getModelType(commentType)
             if (Model === 1) return console.log('Invalid model');
             Model.findById(req.body.id).populate('comments').exec(function(err, foundModel) {

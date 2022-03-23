@@ -16,7 +16,7 @@ import 'package:se_app2/Home/Attraction/tourist_attraction.dart';
 import 'package:se_app2/Widgets/notif_ok.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import 'comment_item.dart';
+import '../Comment/comment_item.dart';
 
 
 class Attractiondetail extends StatefulWidget {
@@ -35,6 +35,7 @@ int activeIndex = 0;
 
 class _AttractiondetailState extends State<Attractiondetail> {
   GlobalKey<FormState> _formKey = GlobalKey();
+  var type = 'attraction'; // IMPORTANT
   bool viewVisible = false;
   var data;
 
@@ -46,35 +47,6 @@ class _AttractiondetailState extends State<Attractiondetail> {
   TextEditingController commentController = TextEditingController();
 
   @override
-  //เลือกแต่ละอันจาก ID
-  // List sample = [
-  //   {
-  //     "image": 'unknown',
-  //     "username": 'Sedtawut Chalothronnarumit',
-  //     "date": "29-10-2021",
-  //     "time": "12:10",
-  //     "text": 'อาหารอร่อยสดใหม่มาก',
-  //     "rating": 5,
-  //     "like": 321,
-  //     "dislike": 24,
-  //     "userLiked": true,
-  //     "userDisliked": false,
-  //     "belongToUser": true,
-  //   },
-  //   {
-  //     "image": 'unknown',
-  //     "username": 'Sedtawut Chalothronnarumit',
-  //     "date": "29-10-2021",
-  //     "time": "12:05",
-  //     "text": 'อาหารอร่อยสดใหม่มาก',
-  //     "rating": 5,
-  //     "like": 321,
-  //     "dislike": 24,
-  //     "userLiked": true,
-  //     "userDisliked": false,
-  //     "belongToUser": true,
-  //   },
-  // ];
 
   String formatDate(String date) {
     var inputFormat = DateFormat('dd-MM-yyyy');
@@ -161,7 +133,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
   Future getseaattraction() async {
     print("1");
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/" ));
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/"));
     data = json.decode(res.body);
     print("this");
     print(data);
@@ -223,7 +195,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
 
 
     http.Response res = await http.get(Uri.parse
-      ("http://10.0.2.2:8080/comment/${widget.data['_id']}/model/attraction"),
+      ("http://10.0.2.2:8080/comment/${widget.data['_id']}/model/$type"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -257,7 +229,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
 
     final body = {
     "id": widget.data['_id'],
-    "type": 'attraction', // IMPORTANT: CHANGE THIS WHEN YOU COPY THIS CODE
+    "type": type, // IMPORTANT: CHANGE THIS WHEN YOU COPY THIS CODE
     "text": commentController.text,
     "date": formattedDate,
     "time": formattedTime,
@@ -266,7 +238,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
     };
 
     http.Response res = await http.post(
-      Uri.parse("http://10.0.2.2:8080/comment/${widget.data['_id']}/model/attraction"),
+      Uri.parse("http://10.0.2.2:8080/comment/${widget.data['_id']}/model/$type"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -410,21 +382,6 @@ class _AttractiondetailState extends State<Attractiondetail> {
                                       fontWeight: FontWeight.bold),
                                 ),
                               ),
-                              /*Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  IconButton(
-                                      onPressed: () => {},
-                                      icon: const Icon(Boxicons.bxs_phone),
-                                      color: const Color(0xff1D3557),
-                                      iconSize: 30),
-                                  IconButton(
-                                      onPressed: () => {},
-                                      icon: const Icon(Boxicons.bxs_chat),
-                                      color: const Color(0xff1D3557),
-                                      iconSize: 30)
-                                ],
-                              )*/
                             ],
                           ),
                           Row(
@@ -636,9 +593,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
                           Form(
                             key: _formKey,
                             child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 16, vertical: 2),
-                              //width: 350,
+                              padding: const EdgeInsets.fromLTRB(16.0, 0.0, 8.0, 10.0),
                               height: 150,
                               decoration: BoxDecoration(
                                   color: const Color(0xffECFAFF),
@@ -646,22 +601,22 @@ class _AttractiondetailState extends State<Attractiondetail> {
                                   border: Border.all(
                                       color: const Color(0xff1D3557), width: 2)),
                               child: TextFormField(
-                                minLines: 2,
+                                minLines: 1,
                                 maxLines: 5,
                                 keyboardType: TextInputType.multiline,
                                 decoration: InputDecoration(
-                                  hintText: 'เขียนและให้คะแนน...',
+                                  hintText: 'เขียนรีวิวและให้คะแนน...',
                                   border: InputBorder.none,
+                                  contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
 
-                                  suffixIcon:
+                                  suffix:
                                   IconButton(onPressed: () {
                                     if(_formKey.currentState.validate()){
                                       postComment();
                                     }
                                   },
-                                      padding: EdgeInsets.zero,
                                       alignment: Alignment.topRight,
-                                      icon: Icon(Icons.send, color: Color(0xff1D3557))),
+                                      icon: Icon(Icons.send, color: Color(0xff1D3557), size: 24,)),
                                 ),
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {

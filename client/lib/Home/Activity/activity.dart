@@ -85,9 +85,9 @@ class _activityState extends State<activity> {
     http.Response res =
     await http.get(Uri.parse("http://10.0.2.2:8080/activity/" + names + '/queryactivity'));
     dataafterquery = json.decode(res.body);
-    print(dataafterquery);
-    print(dataafterquery['foundAcc']);
-    print(dataafterquery['foundAcc']['name']);
+    //print(dataafterquery);
+    //print(dataafterquery['foundAcc']);
+    //print(dataafterquery['foundAcc']['name']);
     // print(dataafterquery['foundAcc'][0]['name']);
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => activity_result(
       name: name.text,

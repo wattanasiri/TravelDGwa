@@ -11,7 +11,7 @@ import 'package:se_app2/functions.dart';
 import 'package:se_app2/navigator/nav.dart';
 import 'package:se_app2/navigator/nav/booking/components/cancel_notif.dart';
 
-import 'tourism_detail.dart';
+import '../Attraction/tourism_detail.dart';
 
 
 class confirmDeleteBox extends StatefulWidget {

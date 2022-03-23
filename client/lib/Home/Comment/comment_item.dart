@@ -56,6 +56,7 @@ class _itemState extends State<commentItem> {
   int index;
   String id;
   String modelid;
+  String type;
 
   double currentEditRating = 3;
 
@@ -311,6 +312,7 @@ class _itemState extends State<commentItem> {
 
   void initState(){
     detail = widget.detail;
+    type = detail['type'];
     like = widget.like;
     dislike = widget.dislike;
     userLiked = widget.userLiked;
