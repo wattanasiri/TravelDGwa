@@ -47,14 +47,7 @@ app.use('/',require('./routes/user_routes'))
 app.use('/airport_transfer', require('./routes/airport_transfer_routes'))
 app.use('/hotel',require('./routes/hotel_routes'))
 app.use('/rentcar',require('./routes/rentcar_routes'))
-<<<<<<< Updated upstream
-=======
-app.use('/activity',require('./routes/activity_routes'))
-app.use('/restaurant',require('./routes/restau_routes'))
-app.use('/attraction',require('./routes/attraction_routes'))
-app.use('/admin',require('./routes/admin_routes'))
 app.use('/map',require('./routes/map_routes'))
->>>>>>> Stashed changes
 
 // seedDB()
 
