@@ -60,6 +60,7 @@ class _ShuttlePageState extends State<ShuttlePage> {
 
   @override
   void initState() {
+
     // save();
     super.initState();
     _timecontroller = TextEditingController();
@@ -69,6 +70,7 @@ class _ShuttlePageState extends State<ShuttlePage> {
   }
 
   Future save() async {
+
     var res = await http.post(Uri.parse('http://10.0.2.2:8080/airport_transfer/register_shuttlepartner'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'

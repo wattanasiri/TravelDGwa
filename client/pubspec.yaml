@@ -29,6 +29,10 @@ dependencies:
   animations: ^2.0.2
 
   cupertino_icons: ^1.0.2
+  google_place: ^0.4.7
+  google_maps_flutter: ^2.1.2
+  font_awesome_flutter: ^10.0.0
+  ml_algo: ^16.5.2
 
 dev_dependencies:
   flutter_test:
@@ -42,3 +46,4 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/dataset/

@@ -3,9 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:se_app2/Home/Accommodation/accommodation.dart';
 import 'package:se_app2/Home/Airport_Transfer/Airport_Transfer_driver_input.dart';
+import 'package:se_app2/Home/Map/mapmain.dart';
 import 'package:se_app2/Home/Rentcar/Rentcar_detail_car.dart';
 import 'package:se_app2/Home/Rentcar/Rentcar_main.dart';
 import 'package:se_app2/constants.dart';
+<<<<<<< Updated upstream
+=======
+import '../../../../Home/Attraction/tourism_detail.dart';
+import '../../../../Home/Attraction/tourist_attraction.dart';
+import '../../../../Home/Map/map.dart';
+import '../../../../Home/Restaurant/restau_detail.dart';
+import '../../../../Home/Restaurant/restaurant.dart';
+>>>>>>> Stashed changes
 import 'home_button.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -76,7 +85,7 @@ class Home extends StatelessWidget {
                 SizedBox(width: 30),
                 HomeButton(icon: 'assets/icons/04.png', text: 'เช่ารถ', route: rentcar()),
                 SizedBox(width: 30),
-                HomeButton(icon: 'assets/icons/05.png', text: 'แผนที่', route: '/findhotel'),
+                HomeButton(icon: 'assets/icons/05.png', text: 'แผนที่', route: Mapmain()),
               ],
             ),
             SizedBox(height: size.height * 0.016),

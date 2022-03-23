@@ -1,0 +1,4 @@
+class Dataselectlocation {
+  List selectlocation = [
+  ];
+}
