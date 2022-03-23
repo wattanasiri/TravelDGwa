@@ -2,19 +2,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:se_app2/Home/Accommodation/accommodation.dart';
+import 'package:se_app2/Home/Activity/activity.dart';
 import 'package:se_app2/Home/Airport_Transfer/Airport_Transfer_driver_input.dart';
-import 'package:se_app2/Home/Map/mapmain.dart';
 import 'package:se_app2/Home/Rentcar/Rentcar_detail_car.dart';
 import 'package:se_app2/Home/Rentcar/Rentcar_main.dart';
 import 'package:se_app2/constants.dart';
-<<<<<<< Updated upstream
-=======
 import '../../../../Home/Attraction/tourism_detail.dart';
 import '../../../../Home/Attraction/tourist_attraction.dart';
-import '../../../../Home/Map/map.dart';
 import '../../../../Home/Restaurant/restau_detail.dart';
 import '../../../../Home/Restaurant/restaurant.dart';
->>>>>>> Stashed changes
 import 'home_button.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -85,18 +81,18 @@ class Home extends StatelessWidget {
                 SizedBox(width: 30),
                 HomeButton(icon: 'assets/icons/04.png', text: 'เช่ารถ', route: rentcar()),
                 SizedBox(width: 30),
-                HomeButton(icon: 'assets/icons/05.png', text: 'แผนที่', route: Mapmain()),
+                HomeButton(icon: 'assets/icons/05.png', text: 'แผนที่', route: '/findhotel'),
               ],
             ),
             SizedBox(height: size.height * 0.016),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                HomeButton(icon: 'assets/icons/06.png', text: 'กิจกรรม', route: '/findhotel'),
+                HomeButton(icon: 'assets/icons/06.png', text: 'กิจกรรม', route: activity()),
                 SizedBox(width: 30),
-                HomeButton(icon: 'assets/icons/07.png', text: 'สถานที่ท่องเที่ยว', route: '/findhotel'),
+                HomeButton(icon: 'assets/icons/07.png', text: 'สถานที่ท่องเที่ยว', route: Attractionpage()),
                 SizedBox(width: 30),
-                HomeButton(icon: 'assets/icons/08.png', text: 'ร้านอาหาร', route: '/findhotel'),
+                HomeButton(icon: 'assets/icons/08.png', text: 'ร้านอาหาร', route: Restaurantpage()),
               ],
             ),
             SizedBox(height: size.height * 0.02),
@@ -138,10 +134,12 @@ class Home extends StatelessWidget {
                   builder: (BuildContext context) {
                     return Container(
                         width: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                            color: Colors.amber
-                        ),
-                        child: Text('image no. $i', style: TextStyle(fontSize: 24.0),)
+                        // decoration: BoxDecoration(
+                        //     color: Colors.amber
+                        // ),
+                        child: Image.asset('assets/images/promotion$i.png',
+                          width: MediaQuery.of(context).size.width,
+                          ),
                     );
                   },
                 );
@@ -189,10 +187,13 @@ class Home extends StatelessWidget {
                         width: MediaQuery.of(context).size.width,
                         margin: EdgeInsets.symmetric(horizontal: 5.0),
                         decoration: BoxDecoration(
-                          color: Colors.amber,
+                          // color: Colors.amber,
                           borderRadius: BorderRadius.all(Radius.circular(8),),
                         ),
-                        child: Text('image no. $i', style: TextStyle(fontSize: 24.0),)
+                      child: Image.asset('assets/images/promotion$i.png',
+                        width: MediaQuery.of(context).size.width,
+                        height: size.height * 0.12,
+                      ),
                     );
                   },
                 );
