@@ -38,7 +38,7 @@ router.get('/' , middleware.isLoggedIn, (req,res) => {
                 else {
                     foundTransferRecipt.forEach((elem) => { 
                         newElem = JSON.parse(JSON.stringify(elem));
-                        newElem.bookingType = 'transferrecipt'
+                        newElem.bookingType = 'transfer'
                         bookingList.push(newElem);
                     });
                     res.json({booking:bookingList})

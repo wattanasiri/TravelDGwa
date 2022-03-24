@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:se_app2/constants.dart';
 import 'package:se_app2/functions.dart';
 
-import 'booking_item.dart';
 import 'billing_transfer.dart';
 import 'cancel_confirm.dart';
 

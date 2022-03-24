@@ -1,12 +1,19 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:se_app2/constants.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
+import 'package:se_app2/functions.dart';
 
-import 'booking_item.dart';
 import 'package:se_app2/Widgets/notif_ok.dart';
+import 'booking_detail_hotel.dart';
+import 'booking_detail_ticket.dart';
+import 'booking_detail_transfer.dart';
+import 'components/booking_type_icon.dart';
 
 class Booking extends StatefulWidget {
 
@@ -25,8 +32,63 @@ class _BookingState extends State<Booking> {
   var done = false;
 
   var bookingData;
+  var currentData;
   var filteredData;
-  Map data;
+
+  Map data; // changes based on filter
+
+  String formatCheckIn(String date) {
+    var inputFormat = DateFormat('dd-MM-yyyy');
+    DateTime parsedDate = inputFormat.parse(date);
+    var text = 'วันที่ ' + parsedDate.day.toString() + ' ' +
+        getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
+        convertYearToBE(parsedDate.year).toString();
+    return text;
+  }
+  String formatCheckOut(String date) {
+    var inputFormat = DateFormat('dd-MM-yyyy');
+    DateTime parsedDate = inputFormat.parse(date);
+    var text = 'วันที่ ' + parsedDate.day.toString() + ' ' +
+        getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
+        convertYearToBE(parsedDate.year).toString();
+    return text;
+  }
+
+  String getBookingTitle(Map dataIndex) {
+    if (dataIndex['bookingType'] == 'accommodation') {
+      return dataIndex['acc_name'];
+    } else if (dataIndex['bookingType'] == 'transfer') {
+      return 'DRIVER UNKNOWN';
+    }
+    else {
+      return 'text error';
+    }
+  }
+
+  String getDateText1(Map dataIndex) {
+    if (dataIndex['bookingType'] == 'accommodation') {
+      return formatCheckIn(dataIndex['checkIn']);
+    } else if (dataIndex['bookingType'] == 'transfer') {
+      var inputFormat = DateFormat('dd-MM-yyyy');
+      DateTime parsedDate = inputFormat.parse(dataIndex['startdate']);
+      var text = 'วันที่ ' + parsedDate.day.toString() + ' ' +
+          getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
+          convertYearToBE(parsedDate.year).toString() + ' เวลา ' +
+          dataIndex['starttime'] + ' น.';
+      return text;
+    }
+    else {
+      return '';
+    }
+  }
+
+  String getDateText2(Map dataIndex) {
+    if (dataIndex['bookingType'] == 'accommodation') {
+      return formatCheckOut(dataIndex['checkOut']);
+    } else {
+      return '';
+    }
+  }
 
   Future getBookingData() async {
 
@@ -58,9 +120,11 @@ class _BookingState extends State<Booking> {
     ;
     data = json.decode(res.body);
 
+    // static
     bookingData = data['booking'];
-    print(bookingData);
-
+    // changes
+    currentData = data['booking'];
+    print(currentData);
 
     if (res.statusCode == 200) {
       var itemCount = data.length;
@@ -105,23 +169,41 @@ class _BookingState extends State<Booking> {
     // TODO
     setState(() => {
       bookingStatus = statusIndex,
-      ResultItem(bookingData: bookingData),
+      currentData = filteredData,
     });
   }
 
   void filterTypeData(typeIndex) {
-    filteredData = [...bookingData].where((row) => (row['bookingType'] == 'transferrecipt'));
-    setState(() => {
-      ResultItem(bookingData: filteredData),
-      bookingType = typeIndex,
-    });
-    // print(filteredData);
+    String filteringType;
+    switch (typeIndex) {
+      case 1: filteringType = 'accommodation'; break;
+      case 2: filteringType = 'flight'; break;
+      case 3: filteringType = 'transfer'; break;
+      case 4: filteringType = 'rentcar'; break;
+      case 5: filteringType = 'activity'; break;
+      default:
+        filteringType = 'any';
+    }
+    if (filteringType == 'any') {
+      setState(() => {
+        bookingType = typeIndex,
+        currentData = bookingData,
+      });
+    } else {
+      filteredData = [...bookingData].where((row) => (row['bookingType'] == filteringType)).toList();
+      setState(() => {
+        bookingType = typeIndex,
+        currentData = filteredData,
+      });
+    }
+
   }
 
   @override
   void initState() {
     super.initState();
     getBookingData();
+
   }
 
   @override
@@ -392,10 +474,164 @@ class _BookingState extends State<Booking> {
             const SizedBox(height: 5,),
 
             if (done)
-                Container(
-                alignment: Alignment.center,
-                child: ResultItem(bookingData: bookingData),
-              )
+              Container(
+                  padding: const EdgeInsets.only(bottom: 80),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(
+                        parent: NeverScrollableScrollPhysics()),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    itemCount: currentData == null ? 0 : currentData.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () => {
+                          if (currentData[index]['bookingType'] == 'accommodation') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => hotelDetail(
+                                        detail: currentData[index])))
+                          } else {
+                            // print('not accom'),
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => transferDetail(
+                                        detail: currentData[index])))
+                          },
+
+                        },
+                        child: GFCard(
+                          elevation: 8,
+                          color: primaryColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          padding: EdgeInsets.zero,
+                          content: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Stack(alignment: Alignment.bottomRight, children: <Widget>[
+                                Row(
+                                  crossAxisAlignment : CrossAxisAlignment.start,
+                                  children: [
+                                    ShaderMask(shaderCallback: (rect) {
+                                      return LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        colors: [Colors.transparent, primaryColor],
+                                      ).createShader(Rect.fromLTRB(80, 0, rect.width*1, rect.height));
+                                    },
+                                      blendMode: BlendMode.srcATop,
+                                      child: ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20)),
+                                        child: Image.asset('assets/images/homebg.png',
+                                            height: 110,
+                                            width: 160,
+                                            fit: BoxFit.cover),
+                                      ),
+                                    ),
+                                    Flexible(child: Container(
+                                      padding: EdgeInsets.only(
+                                        top: 5,
+                                        bottom: 5,
+                                        left: 5,
+                                        right: 20,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment : CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            getBookingTitle(currentData[index]),
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                                color: secondaryColor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 14),
+                                          ),
+                                          Text(
+                                            'UNDEFINED SUBTITLE',
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                                color: secondaryColor,
+                                                fontSize: 12),
+                                          ),
+                                          SizedBox(height: 3,),
+                                          Row(
+                                            children: [
+                                              if (currentData[index]['bookingType'] == 'accommodation')
+                                                Icon(Icons.calendar_today_outlined,
+                                                    color: boxColor,
+                                                    size: 14),
+                                              SizedBox(width: 3,),
+                                              Text(
+                                                getDateText1(currentData[index]),
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                    color: boxColor,
+                                                    fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              if (currentData[index]['bookingType'] == 'accommodation')
+                                                Icon(Icons.alarm_off,
+                                                    color: boxColor,
+                                                    size: 14),
+                                              SizedBox(width: 3,),
+                                              Text(
+                                                getDateText2(currentData[index]),
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                    color: boxColor,
+                                                    fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+
+                                        ],
+                                      ),
+                                    ),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                    bottom: 78,
+                                    right: 7,
+                                  ),
+                                  width: 25,
+                                  height: 25,
+                                  decoration: const BoxDecoration(
+                                    color: boxColor,
+                                    borderRadius: BorderRadius.all(Radius.circular(25),),
+                                  ),
+                                  child: BookingTypeIcon(type: currentData[index]['bookingType']),
+                                ),
+                                Container(
+                                  alignment: Alignment.centerRight,
+                                  margin: const EdgeInsets.only(
+                                    bottom: 5,
+                                    right: 5,
+                                  ),
+                                  child: Text(
+                                    'กดเพื่อดูรายละเอียดเพิ่มเติม >>',
+                                    textAlign: TextAlign.end,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        color: boxColor,
+                                        fontSize: 9),
+                                  ),
+                                ),
+                              ]),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ))
             else
               Center(child: CircularProgressIndicator())
             ,

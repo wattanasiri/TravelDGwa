@@ -7,7 +7,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:se_app2/constants.dart';
 
-import 'booking_item.dart';
 import 'cancel_confirm.dart';
 
 class ticketDetail extends StatefulWidget {

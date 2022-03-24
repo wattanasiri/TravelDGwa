@@ -13,7 +13,7 @@ const airporttransferreceiptSchema = new Schema({
     startdate: String,
     starttime: String,
     sum_price: String,
-    
+    canceled : { type: Boolean, default: false },
 })
 
 module.exports = mongoose.model('airporttransferreceipt',airporttransferreceiptSchema)

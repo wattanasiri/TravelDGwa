@@ -18,7 +18,8 @@ var accommTransactionSchema = mongoose.Schema({
             room_name : String,
             price : Number
         }
-    ]
+    ],
+    canceled : { type: Boolean, default: false },
 })
 
 module.exports = mongoose.model('AccomTransaction', accommTransactionSchema)

@@ -5,13 +5,13 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:intl/intl.dart';
 import 'package:se_app2/constants.dart';
 import 'package:se_app2/functions.dart';
 
 import 'billing_hotel.dart';
 import 'cancel_confirm.dart';
-import 'booking_item.dart';
 
 class hotelDetail extends StatefulWidget {
 
@@ -42,14 +42,6 @@ class _hotelDetailState extends State<hotelDetail> {
     'https://placeimg.com/640/480/any',
   ];
 
-  Text _buildRatingStars(int rating) {
-    String stars = '';
-    for (int i = 0; i < rating; i++) {
-      stars += '⭐ ';
-    }
-    stars.trim();
-    return Text(stars);
-  }
 
   bool viewVisible = false;
 
@@ -65,6 +57,11 @@ class _hotelDetailState extends State<hotelDetail> {
     });
   }
 
+  String formatPricing(double price) {
+    var text = formatPrice(price) + ' THB';
+    return text;
+  }
+
   String formatCheckIn(String date) {
     var inputFormat = DateFormat('dd-MM-yyyy');
     DateTime parsedDate = inputFormat.parse(date);
@@ -76,6 +73,20 @@ class _hotelDetailState extends State<hotelDetail> {
     DateTime parsedDate = inputFormat.parse(date);
     var text = 'วันที่เช็คเอาท์ : ' + parsedDate.day.toString() + ' ' + getMonthName(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
     return text;
+  }
+
+  RatingBarIndicator _buildRatingBar(double rating){
+    return RatingBarIndicator(
+      rating: rating,
+      direction: Axis.horizontal,
+      itemCount: 5,
+      itemPadding: EdgeInsets.only(right: 0.7),
+      itemBuilder: (context, _) => Icon(
+        Icons.star,
+        color: Colors.amber,
+      ),
+      itemSize: 20.0,
+    );
   }
 
   @override
@@ -176,7 +187,19 @@ class _hotelDetailState extends State<hotelDetail> {
                               )
                             ],
                           ),
-                          _buildRatingStars(5),
+                          // Row(
+                          //   children: [
+                          //     _buildRatingBar(numberToDouble(detail['star'])),
+                          //     SizedBox(width: 5,),
+                          //     Text(
+                          //       '(${formatStar(detail['star'])})',
+                          //       style: TextStyle(
+                          //         color: grayColor,
+                          //         fontSize: 14,
+                          //       ),
+                          //     ),
+                          //   ],
+                          // ),
                           SizedBox(height: 5,),
                           Row(
                             children: [
@@ -446,7 +469,7 @@ class _hotelDetailState extends State<hotelDetail> {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const <Widget>[
+                            children: <Widget>[
                               Flexible(
                                 child: Text(
                                   'ทั้งหมด',
@@ -455,7 +478,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                 ),
                               ),
                               Text(
-                                'THB X,XXX',
+                                formatPricing(3300.00),
                                 style: TextStyle(
                                     color: primaryColor, fontSize: 20, fontWeight: FontWeight.bold),
                               ),
