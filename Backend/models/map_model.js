@@ -14,8 +14,7 @@ const newSchema = new Schema({
     BagPack: Number,
     Budget: Number,
     social: Number,
-    age: Number,
     
 })
 
-module.exports = mongoose.model('map',newSchema)
+module.exports = mongoose.model('lifestye',newSchema)

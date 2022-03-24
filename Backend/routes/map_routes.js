@@ -1,5 +1,5 @@
 const express  = require('express')
-const mapinfo = require('../models/map_model.js')
+const lifestye = require('../models/map_model.js')
 var mongoose = require('mongoose');
 const ObjectId = require('mongodb').ObjectId; 
 
@@ -10,27 +10,37 @@ router.post('/register_mapinfo',async (req,res) => {
     console.log(req.body.usernameID)
     // const infouser = await User.findById(req.body.username)
     
-    const infomap = await new mapinfo({
-        usernameID: mongoose.Types.ObjectId(req.body.usernameid),
+    const infomap = await new lifestye({
+        usernameID: mongoose.Types.ObjectId(req.body.usernameID),
         // price_extrapay: ,
         // document_require: ,
         // comment: ,
-        namepartner: req.body.partnername,
-        phone: req.body.phone,
-        email: req.body.email,
-        opening_day: req.body.opening_day,
-        opening_time: req.body.opening_time,
-        Weather: req.body.partnername.weather,
-        Adventure: req.body.partnername.adventure,
-        Sea : req.body.partnername.sea,
-        Confidence: req.body.partnername.confidence,
-        BagPack: req.body.partnername.bagpack,
-        Budget: req.body.partnername.budget,
-        social: req.body.partnername.social,
-        age: req.body.partnername.age,
+        Weather: req.body.weather,
+        Adventure: req.body.adventure,
+        Sea : req.body.sea,
+        Confidence: req.body.confidence,
+        BagPack: req.body.bagpack,
+        Budget: req.body.budget,
+        social: req.body.social,
     })
     infomap.save()
    
 })
+
+router.get('/:id' + '/infolifestyleuser', (req,res) => {
+    console.log('getdetailuser')
+    var id = req.params.id;
+    console.log(id)
+    lifestye.find({ "usernameID": id }).exec((err,foundinfo) => {
+        if(err){
+            console.log(err)
+        } else {
+            res.json({foundinfo})
+            console.log(foundinfo)
+        }
+    })
+   
+})
+
 
 module.exports = router

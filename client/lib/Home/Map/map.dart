@@ -91,11 +91,11 @@ class MapSampleState extends State<MapSample> {
 
   Future<void> _minus(double zoomVal) async {
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(40.712776, -74.005974), zoom: zoomVal)));
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(widget.data[0]['lat'],  widget.data[0]['lng']), zoom: zoomVal)));
   }
   Future<void> _plus(double zoomVal) async {
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(40.712776, -74.005974), zoom: zoomVal)));
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(widget.data[0]['lat'],  widget.data[0]['lng']), zoom: zoomVal)));
   }
   Text _buildRatingStars(int rating) {
     String stars = '';
@@ -232,7 +232,7 @@ class MapSampleState extends State<MapSample> {
       width: MediaQuery.of(context).size.width,
       child: GoogleMap(
         mapType: MapType.normal,
-        initialCameraPosition:  CameraPosition(target: LatLng(12.7499141, 100.9618801), zoom: 13),
+        initialCameraPosition:  CameraPosition(target: LatLng( widget.data[0]['lat'],  widget.data[0]['lng']), zoom: 13),
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);
         },
@@ -298,7 +298,7 @@ class MapSampleState extends State<MapSample> {
 
   Future<void> _resetLocation() async {
     final GoogleMapController controller = await _controller.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(12.7499141, 100.9618801), zoom: 13),
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(widget.data[0]['lat'],  widget.data[0]['lng']), zoom: 13),
      ));
   }
 }
