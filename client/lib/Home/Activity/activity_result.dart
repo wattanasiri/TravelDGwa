@@ -6,7 +6,6 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'activity.dart';
@@ -16,6 +15,7 @@ import 'package:se_app2/constants.dart';
 import 'package:se_app2/functions.dart';
 import 'package:se_app2/Widgets/notif_ok.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import '../Comment/comment_add.dart';
 import '../Comment/comment_item.dart';
 
 class activity_result extends StatefulWidget {
@@ -52,7 +52,6 @@ class _activity_resultState extends State<activity_result> {
   var commentBody;
   List commentData;
   bool commentsLoaded = false;
-  TextEditingController commentController = TextEditingController();
   double currentRating = 3;
 
   final _controller = ScrollController();
@@ -90,15 +89,6 @@ class _activity_resultState extends State<activity_result> {
     setState(() {
       commentData.removeWhere((value) => value["id"] == id);
     });
-  }
-
-  Text _buildRatingStars(int rating) {
-    String stars = '';
-    for (int i = 0; i < rating; i++) {
-      stars += '⭐ ';
-    }
-    stars.trim();
-    return Text(stars);
   }
 
   Future getrec() async {
@@ -150,32 +140,6 @@ class _activity_resultState extends State<activity_result> {
     );
   }
 
-  RatingBar _buildRatingSelector() {
-    return RatingBar(
-      initialRating: currentRating,
-      minRating: 1,
-      itemSize: 40,
-      direction: Axis.horizontal,
-      allowHalfRating: false,
-      itemCount: 5,
-      ratingWidget: RatingWidget(
-        full: Icon(
-          Icons.star,
-          color: Colors.amber,
-        ),
-        empty: Icon(
-          Icons.star,
-          color: Colors.grey,
-        ),
-      ),
-      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-      onRatingUpdate: (rating) {
-        print(rating);
-        currentRating = rating;
-      },
-    );
-  }
-
   Future loadComment() async {
     // ---------------
     var _prefs = await SharedPreferences.getInstance();
@@ -200,95 +164,6 @@ class _activity_resultState extends State<activity_result> {
       print(commentData);
     }
 
-  }
-
-  Future postComment() async {
-    // ---------------
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
-
-    final now = DateTime.now();
-
-    var dateFormat = DateFormat('dd-MM-yyyy');
-    String formattedDate = dateFormat.format(now);
-
-    var timeFormat = DateFormat('HH:mm'); // uppercase H for 24h format
-    String formattedTime = timeFormat.format(now);
-
-    final body = {
-      "id": widget.data['foundAcc']['_id'],
-      "type": type, // IMPORTANT: CHANGE THIS WHEN YOU COPY THIS CODE
-      "text": commentController.text,
-      "date": formattedDate,
-      "time": formattedTime,
-      "rating": currentRating,
-    };
-
-    http.Response res = await http.post(
-      Uri.parse("http://10.0.2.2:8080/comment/${widget.data['foundAcc']['_id']}/model/$type"),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-      body: jsonEncode(body),
-    ).timeout(const Duration(seconds: timeoutDuration),
-      onTimeout: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return notifBox(
-              title: 'Error',
-              text: 'Request timeout.',
-              fontSize: 14.0,
-            );
-          },
-        );
-        return http.Response('Error', 408);
-      },)
-    ;
-
-    if (res.statusCode == 200) {
-      print('success');
-      commentController.text = "";
-      FocusScope.of(context).unfocus();
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return notifBox(
-            title: 'Success',
-            text: 'comment เรียบร้อย',
-            fontSize: 14.0,
-          );
-        },
-      );
-    }
-    else if (res.statusCode == 401) {
-      Navigator.pushReplacementNamed(context, '/login',);
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return notifBox(
-            title: 'Error',
-            text: 'Invalid token.',
-            fontSize: 14.0,
-          );
-        },
-      );
-    }
-    else {
-      print('failure');
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return notifBox(
-            title: 'Error',
-            text: 'Cannot post comment.',
-            fontSize: 14.0,
-          );
-        },
-      );
-    }
   }
 
   @override
@@ -372,14 +247,15 @@ class _activity_resultState extends State<activity_result> {
                                   ),
                                   Row(
                                     children: [
-                                      _buildRatingStars(widget.data['foundAcc']['star']),
+                                      _buildRatingBar(numberToDouble(widget.data['foundAcc']['star'])),
                                       SizedBox(width: 5,),
                                       Text(
-                                          "(${widget.data['foundAcc']['star'].toString()})",
-                                          style: GoogleFonts.poppins(
-                                              color: const Color(0xff827E7E),
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold))
+                                        '(${formatStar(widget.data['foundAcc']['star'])})',
+                                        style: TextStyle(
+                                          color: grayColor,
+                                          fontSize: 14,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                   // Container(
@@ -588,65 +464,7 @@ class _activity_resultState extends State<activity_result> {
                                   SizedBox(height: 10,),
                                   const Divider(color: Color(0xff827E7E), thickness: 1.5),
                                   SizedBox(height: 10,),
-                                  Form(
-                                    child: Container(
-                                      padding: const EdgeInsets.fromLTRB(16.0, 0.0, 8.0, 10.0),
-                                      height: 150,
-                                      decoration: BoxDecoration(
-                                          color: const Color(0xffECFAFF),
-                                          borderRadius: BorderRadius.circular(25),
-                                          border: Border.all(
-                                              color: const Color(0xff1D3557), width: 2)),
-                                    ),
-                                  ),
-                                  // Form(
-                                  //   key: _formKey,
-                                  //   child: Container(
-                                  //     padding: const EdgeInsets.fromLTRB(16.0, 0.0, 8.0, 10.0),
-                                  //     height: 150,
-                                  //     decoration: BoxDecoration(
-                                  //         color: const Color(0xffECFAFF),
-                                  //         borderRadius: BorderRadius.circular(25),
-                                  //         border: Border.all(
-                                  //             color: const Color(0xff1D3557), width: 2)),
-                                  //     child: TextFormField(
-                                  //       minLines: 1,
-                                  //       maxLines: 5,
-                                  //       keyboardType: TextInputType.multiline,
-                                  //       decoration: InputDecoration(
-                                  //         hintText: 'เขียนรีวิวและให้คะแนน...',
-                                  //         border: InputBorder.none,
-                                  //         contentPadding: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 0.0),
-                                  //
-                                  //         suffix:
-                                  //         IconButton(onPressed: () {
-                                  //           if(_formKey.currentState.validate()){
-                                  //             postComment();
-                                  //           }
-                                  //         },
-                                  //             alignment: Alignment.topRight,
-                                  //             icon: Icon(Icons.send, color: Color(0xff1D3557), size: 24,)),
-                                  //       ),
-                                  //       validator: (value) {
-                                  //         if (value == null || value.isEmpty) {
-                                  //           return 'กรุณาระบุข้อความ';
-                                  //         }
-                                  //         return null;
-                                  //       },
-                                  //       controller: commentController,
-                                  //       onChanged: (value) {
-                                  //         //word = value;
-                                  //       },
-                                  //     ),
-                                  //   ),
-                                  // ),
-
-                                  //จบกล่องเพิ่มความเห็น
-                                  SizedBox(height: 10,),
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: _buildRatingSelector(),
-                                  ),
+                                  commentAdd(detail: widget.data['foundAcc'], type: type),
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: <Widget>[

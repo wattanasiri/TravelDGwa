@@ -103,6 +103,7 @@ class HomeButton extends StatelessWidget {
        else if(route.toString() == "activity"){
          await getrec();
          print("0");
+         print(recdata);
          Navigator.push(
              context,
              MaterialPageRoute(

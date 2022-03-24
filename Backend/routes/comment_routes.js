@@ -21,7 +21,7 @@ function getModelType(type) {
     } else if (type == 'restaurant') {
         return Restaurant
     } else if (type == 'rentcarpartner') {
-        return rentcar_partner_model
+        return rentcarpartner
     } else if (type == 'activity') {
         return Activity
     }
