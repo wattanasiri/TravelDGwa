@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -17,7 +18,8 @@ import '../../Data/data_locations.dart';
 import '../../Data/data_selectlocation2.dart';
 
 class Mapmain extends StatefulWidget {
-
+  Map datalifestyle;
+  Mapmain({this.datalifestyle});
   @override
   State<Mapmain> createState() => _MapmainState();
 }
@@ -29,32 +31,34 @@ class _MapmainState extends State<Mapmain> {
   List<String> typelocation = <String>[];
   List<int> listtarget = <int>[];
   Map dataafterquery;
-  bool checklifestyleis;
   double group;
+  bool checklifestyleis;
 
+
+  // Future checklifestyle() async {
+  //   print('check');
+  //   Map dataafterquery;
+  //   Datauser datauser = Datauser();
+  //   http.Response res =
+  //   await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/infolifestyleuser'));
+  //   dataafterquery = json.decode(res.body);
+  //   print(dataafterquery['foundinfo'].length);
+  //   if(dataafterquery['foundinfo'].length != 0){
+  //     checklifestyleis = true;
+  //     print('true');
+  //     // model();
+  //   }else{
+  //     checklifestyleis = false;
+  //     print('false');
+  //     savedata();
+  //   }
+  // }
   String durationToString(int minutes) {
     var d = Duration(minutes:minutes);
     List<String> parts = d.toString().split(':');
     return '${parts[0].padLeft(2, '0')}:${parts[1].padLeft(2, '0')}';
   }
 
-  Future checklifestyle() async {
-    print('check');
-    Datauser datauser = Datauser();
-    http.Response res =
-        await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/infolifestyleuser'));
-    dataafterquery = json.decode(res.body);
-    print(dataafterquery['foundinfo'].length);
-    if(dataafterquery['foundinfo'].length != 0){
-      checklifestyleis = true;
-      print('true');
-      model();
-    }else{
-      checklifestyleis = false;
-      print('false');
-      savedata();
-    }
-  }
   Future model() async{
     final rawCsvContent = await rootBundle.loadString("assets/dataset/diabetes.csv");
     // print(rawCsvContent);
@@ -80,23 +84,24 @@ class _MapmainState extends State<Mapmain> {
     print(classifier);
     // class 1 = park
     // class 2 = cafe,village,museum
-    int userweather = dataafterquery['foundinfo'][0]['Weather']*200;
-    int useradventure = dataafterquery['foundinfo'][0]['Adventure']*200;
-    int usersea = dataafterquery['foundinfo'][0]['Sea']*200;
-    int userconfidence = dataafterquery['foundinfo'][0]['Confidence']*200;
-    int userbagpack = dataafterquery['foundinfo'][0]['BagPack']*200;
-    int userbudget = dataafterquery['foundinfo'][0]['Budget']*200;
-    int usersocial = dataafterquery['foundinfo'][0]['social']*200;
+    int userweather = widget.datalifestyle['foundinfo'][0]['Weather']*200;
+    int useradventure = widget.datalifestyle['foundinfo'][0]['Adventure']*200;
+    int usersea = widget.datalifestyle['foundinfo'][0]['Sea']*200;
+    int userconfidence = widget.datalifestyle['foundinfo'][0]['Confidence']*200;
+    int userbagpack = widget.datalifestyle['foundinfo'][0]['BagPack']*200;
+    int userbudget = widget.datalifestyle['foundinfo'][0]['Budget']*200;
+    int usersocial = widget.datalifestyle['foundinfo'][0]['social']*200;
     final unlabelledData = DataFrame(<Iterable<num>>[
       // [0,1000,200,400,400,600,800],
       // [1000,1000,200,400,400,600,800],
-      [1000,0,200,400,400,600,800],
-      // [userweather,useradventure,usersea,userconfidence,userbagpack,userbudget,usersocial]
+      // [1000,0,200,400,400,600,800],
+      [userweather,useradventure,usersea,userconfidence,userbagpack,userbudget,usersocial]
     ], headerExists: false);
     final prediction = classifier.predict(unlabelledData);
     print(prediction);
     print(prediction.rows.first.first);
     group = prediction.rows.first.first as double;
+    print('group');
     print(group);
     typelocation.clear();
     if (group == 1.0){
@@ -126,7 +131,7 @@ class _MapmainState extends State<Mapmain> {
     var date_time_starttime,date_time_endtime,date_time_default;
     var timedefault = '00:00';
     var starttime = '09:00';
-    var endtime = '18:00';
+    var endtime = '19:00';
     var alltime;
     int numlocation;
     date_time_default = '0000-00-00 ' + timedefault;
@@ -160,7 +165,7 @@ class _MapmainState extends State<Mapmain> {
     print(typelocation);
     print(typelocation[0]);
     double distanceImMeter = 0.0;
-    String picklocation = 'ร้านกาแฟ Mushroom pattaya';
+    String picklocation = 'เดอะเซียนวิวคาเฟ่';
     double storelat,storeendlat = 0.0;
     double storelng,storeendlng = 0.0;
     String endlocation = 'Aran Café';
@@ -224,12 +229,12 @@ class _MapmainState extends State<Mapmain> {
     //sort distance
     selectlocation2.sort((a, b) => a['distance'].compareTo(b['distance']) as int);
     print('selection 2');
-    print(selectlocation2[0]['distance']);
-    print(selectlocation2[1]['distance']);
-    print(selectlocation2[2]['name']);
-    print(selectlocation2[2]['distance']);
-    print(selectlocation2[3]['name']);
-    print(selectlocation2[3]['distance']);
+    // print(selectlocation2[0]['distance']);
+    // print(selectlocation2[1]['distance']);
+    // print(selectlocation2[2]['name']);
+    // print(selectlocation2[2]['distance']);
+    // print(selectlocation2[3]['name']);
+    // print(selectlocation2[3]['distance']);
     for (int i = 0; i < selectlocation2.length; i++) {
       selectlocation.add(
           selectlocation2[i]
@@ -254,68 +259,971 @@ class _MapmainState extends State<Mapmain> {
 
   }
 
-  Future savedata() async {
-    Datauser datauser = Datauser();
-    print('save data');
-    print('id');
-    print(datauser.id);
-    String weather,adventure,sea,confidence,bagpack,budget,social;
-    weather = '1';
-    adventure = '1';
-    sea = '2';
-    confidence = '2';
-    bagpack = '2';
-    budget = '2';
-    social = '4';
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/map/register_mapinfo'),
-        headers: <String, String>{
-          'Context-Type': 'application/json;charSet=UTF-8'
-        },
-        body: <String, String>{
-          "usernameID" : datauser.id,
-          "weather": weather,
-          "adventure": adventure,
-          "sea" : sea,
-          "confidence": confidence,
-          "bagpack": bagpack,
-          "budget": budget,
-          "social": social,
-        });
-  }
+
 
   Future _submit() async{
-
-
-    await checklifestyle();
-    // await model();
+    print('submit');
+    print(widget.datalifestyle);
+    await model();
     // await savedata();
     // print(data.location);
     // print(data.location[0]);
     // print(data.location[0]['name']);
     // selectlocation.addAll(data.location[0]);
+  }
 
-
+  void initState() {
+    super.initState();
+    print('datalifestyle');
+    print(widget.datalifestyle);
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xffFFF4DC),
-        toolbarHeight: 70,
-        elevation: 0.0,
-        title: const Text('แผนที่ทริป'),
-        centerTitle: true,
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-              color: Color(0xff1d3557),
-              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20))
+      backgroundColor : const Color(0xFFFFF4DC),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(400.0),
+        /* AppBar(
+          centerTitle: true,
+          backgroundColor: const Color(0xff1D3557),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_rounded,
+                color: Color(0xffECFAFF)),
+            onPressed: () => Navigator.pushNamed(
+              context, '/Navi',
+            ),
           ),
+          title: const Text(
+            'ไลฟ์ไสตล์การเที่ยว',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          flexibleSpace: const SizedBox(
+            height: 20,
+          ),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(12),
+            ),
+          ),
+        ),*/
+        child: AppBar(
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          backgroundColor: const Color(0xff1D3557),
+          flexibleSpace: Container(
+            padding: const EdgeInsets.only(top: 50, right: 20, left: 20, bottom: 0),
+            decoration: const BoxDecoration(
+                color : Color(0xFF1d3557),
+                borderRadius : BorderRadius.only(bottomRight: Radius.circular(10),bottomLeft: Radius.circular(10)
+                )
+            ),
+
+            child: Column(
+              children: [
+                const SizedBox(width: 15),
+                Flexible(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //ต้นทาง
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Boxicons.bxs_circle,
+                              color: const Color(0xff1BC3FF),
+                              size: 30),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'ต้นทาง',
+                                style: TextStyle(fontWeight: FontWeight.w900,
+                                    fontSize: 15,color: Color(0xffFFF4DC) ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 2),
+                                width: 300,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffECFAFF),
+                                  borderRadius: BorderRadius.circular(40),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.3),
+                                      spreadRadius: 1,
+                                      blurRadius: 4,
+                                      offset: const Offset(2, 4),
+                                    ),
+                                  ],
+                                  /*border: Border.all(
+                                    color: const Color(0xff1D3557), width: 2)*/),
+                                child: TextFormField(
+                                  //controller: name,
+                                  decoration: const InputDecoration(
+                                    hintText: 'สถานที่ต้นทาง',
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide:
+                                        BorderSide(color: Color(0xffECFAFF))),
+                                    /*suffixIcon:
+                                      Icon(Icons.search, color: Color(0xff1D3557))*/
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'กรุณาระบุสถานที่ต้นทาง';
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    //word = value;
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Column(
+                        children: [
+                          Icon(Boxicons.bx_dots_vertical_rounded,
+                              color: const Color(0xffFFF4DC),
+                              size: 30),
+                        ],
+                      ),
+                      //ปลายทาง
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+
+                          Icon(Boxicons.bxs_been_here,
+                              color: const Color(0xffFF0000),
+                              size: 30),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'ปลายทาง',
+                                style: TextStyle(fontWeight: FontWeight.w900,
+                                    fontSize: 15,color: Color(0xffFFF4DC) ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 2),
+                                width: 300,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffECFAFF),
+                                  borderRadius: BorderRadius.circular(40),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.3),
+                                      spreadRadius: 1,
+                                      blurRadius: 4,
+                                      offset: const Offset(2, 4),
+                                    ),
+                                  ],
+                                  /*border: Border.all(
+                                    color: const Color(0xff1D3557), width: 2)*/),
+                                child: TextFormField(
+                                  //controller: name,
+                                  decoration: const InputDecoration(
+                                    hintText: 'สถานที่ปลายทาง',
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide:
+                                        BorderSide(color: Color(0xffECFAFF))),
+                                    /*suffixIcon:
+                                      Icon(Icons.search, color: Color(0xff1D3557))*/
+                                  ),
+                                  validator: (value) {
+                                    if (value == null || value.isEmpty) {
+                                      return 'กรุณาระบุสถานที่ต้นทาง';
+                                    }
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    //word = value;
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 10,),
+                      //เวลา
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'เวลาเริ่มต้น',
+                                style: TextStyle(fontWeight: FontWeight.w900,
+                                    fontSize: 15,color: Color(0xffFFF4DC) ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 2),
+                                width: 170,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffECFAFF),
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.3),
+                                      spreadRadius: 1,
+                                      blurRadius: 4,
+                                      offset: const Offset(2, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: TextFormField(
+                                  readOnly: true,
+                                  decoration: const InputDecoration(
+                                    contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
+                                    hintText: 'ชม./น./วินาที',
+                                    prefixIcon: Icon(Icons.access_time_outlined,color: Colors.black,),
+                                    errorStyle: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 12,
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.white)),
+                                  ),
+                                  validator: (value) {
+                                    if (value.isEmpty || value == null) {
+                                      return 'กรุณาระบุเวลารับรถ';
+                                    }
+                                    return null;
+                                  },
+                                  //controller: _timegetcarcontroller,
+                                  //focusNode: myFocusNode2,
+                                  onTap: () async {
+                                    TimeOfDay pickedTime =  await showTimePicker(
+                                      initialTime: TimeOfDay.now(),
+                                      context: context,
+                                    );
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
+
+                                    if(pickedTime != null ){
+                                      //DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
+                                      //String formattedTime = DateFormat('HH:mm').format(parsedTime);
+                                      //_timegetcarcontroller.text = formattedTime.toString();
+
+                                    }else{
+                                      print("Time is not selected");
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'เวลาสิ้นสุด',
+                                style: TextStyle(fontWeight: FontWeight.w900,
+                                    fontSize: 15,color: Color(0xffFFF4DC) ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 5, vertical: 2),
+                                width: 170,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffECFAFF),
+                                  borderRadius: BorderRadius.circular(20),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.3),
+                                      spreadRadius: 1,
+                                      blurRadius: 4,
+                                      offset: const Offset(2, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: TextFormField(
+                                  readOnly: true,
+                                  decoration: const InputDecoration(
+                                    contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
+                                    hintText: 'ชม./น./วินาที',
+                                    prefixIcon: Icon(Icons.access_time_outlined,color: Colors.black,),
+                                    errorStyle: TextStyle(
+                                      color: Colors.red,
+                                      fontSize: 12,
+                                    ),
+                                    enabledBorder: UnderlineInputBorder(
+                                        borderSide: BorderSide(color: Colors.white)),
+                                  ),
+                                  validator: (value) {
+                                    if (value.isEmpty || value == null) {
+                                      return 'กรุณาระบุเวลารับรถ';
+                                    }
+                                    return null;
+                                  },
+                                  //controller: _timegetcarcontroller,
+                                  //focusNode: myFocusNode2,
+                                  onTap: () async {
+                                    TimeOfDay pickedTime =  await showTimePicker(
+                                      initialTime: TimeOfDay.now(),
+                                      context: context,
+                                    );
+                                    FocusScope.of(context)
+                                        .requestFocus(FocusNode());
+
+                                    if(pickedTime != null ){
+                                      //DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
+                                      //String formattedTime = DateFormat('HH:mm').format(parsedTime);
+                                      //_timegetcarcontroller.text = formattedTime.toString();
+
+                                    }else{
+                                      print("Time is not selected");
+                                    }
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: 20,),
+                      //ปุ่มกดสร้าง
+                      ElevatedButton(
+                        /*onPressed: () {},
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(Color(0xff7BEE99)),
+                            shadowColor: MaterialStateProperty.all<Color>(Color(0xff7BEE99)),
+                        ),*/
+                        onPressed: () {},
+                        style: ElevatedButton.styleFrom(
+                          onPrimary: const Color(0xff7BEE99),
+                          primary: const Color(0xff7BEE99),
+                          minimumSize: const Size(350, 60),
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(16)),
+                          ),
+                        ),
+                        child: const Text(
+                          'ค้นหาสถานที่ท่องเที่ยว',
+                          style: TextStyle(color: Color(0xff1D3557), fontSize: 20),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              bottom: Radius.circular(12),
+            ),
+          ),
+          title: const Text(
+            'การจัดทริป',
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+          actions: [
+            TextButton(
+              onPressed: (){
+                _submit();
+                //Navigator.of(context).pop();
+              },
+              child: Text(
+                'บันทึกทริป',
+                style: TextStyle(
+                  fontSize: 17,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xffFF9A62),
+                ),
+              ),)
+          ],
+
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _submit,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+      body:  SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+        physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+        child: Column(
+          children: [
+            //กำลังดำเนินการ
+            //ไม่มีทริปที่กำลัง
+            //เอาให้ส่วนนี้หายไปเลย
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'กำลังดำเนินการ',
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                ),
+                Row(
+                  children: [
+                    //กล่องด้านหน้าเวลา
+                    Container(
+                      width: 80,
+                      height: 80,
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Color(0xff1D3557),
+                        /*border: Border.all(
+                            color: Colors.red,
+                            width: 5,
+                          ),*/
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 6,
+                            offset: const Offset(1, 6),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '8 H',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xffECFAFF),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 10,),
+                    //ตกแต่ง
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 7,
+                          height: 15,
+                          decoration: BoxDecoration(
+                            color: Color(0xff1D3557),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                spreadRadius: 1,
+                                blurRadius: 6,
+                                offset: const Offset(1, 6),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 5,),
+                        Container(
+                          width: 7,
+                          height: 15,
+                          decoration: BoxDecoration(
+                            color: Color(0xff1D3557),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                spreadRadius: 1,
+                                blurRadius: 6,
+                                offset: const Offset(1, 6),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 5,),
+                        Container(
+                          width: 7,
+                          height: 15,
+                          decoration: BoxDecoration(
+                            color: Color(0xff1D3557),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                spreadRadius: 1,
+                                blurRadius: 6,
+                                offset: const Offset(1, 6),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 5,),
+                        Container(
+                          width: 7,
+                          height: 15,
+                          decoration: BoxDecoration(
+                            color: Color(0xff1D3557),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                spreadRadius: 1,
+                                blurRadius: 6,
+                                offset: const Offset(1, 6),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: 10,),
+                    //กล่องหลังข้อมูลทริป
+                    Container(
+                      width: 225,
+                      height: 80,
+                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Color(0xff1D3557),
+                        borderRadius: const BorderRadius.all(Radius.circular(20)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 6,
+                            offset: const Offset(1, 6),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          //ชื่อทริป
+                          Flexible(child: Text(
+                            'ไปไหนก็ได้ทริป',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xffECFAFF),
+                            ),
+                          ),),
+                          SizedBox(height: 5,),
+                          //สถานที่
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              //ต้นทาง
+                              Flexible(child: Text(
+                                'เขาเขียว',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xffECFAFF),
+                                ),
+                              ), ),
+                              Icon(Boxicons.bx_right_arrow_alt,
+                                  color: const Color(0xffFF9A62),
+                                  size: 30),
+                              //ปลายทาง
+                              Flexible(child: Text(
+                                'บางแสน',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xffECFAFF),
+                                ),
+                              ),),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+              ],
+            ),
+            SizedBox(height: 10,),
+            //ทริปล่าสุด
+            //ไม่มรทริปล่าสุด
+            /*Text(
+                  'ไม่มีทริปล่าสุด',
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                ),*/
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'ทริปล่าสุด',
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                ),
+                Row(
+                  children: [
+                    //กล่องด้านหน้าเวลา
+                    Container(
+                      width: 80,
+                      height: 80,
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Color(0xffECFAFF),
+                        /*border: Border.all(
+                            color: Colors.red,
+                            width: 5,
+                          ),*/
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 6,
+                            offset: const Offset(1, 6),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '8 H',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff1D3557),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 10,),
+                    //ตกแต่ง
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 7,
+                          height: 15,
+                          decoration: BoxDecoration(
+                            color: Color(0xffECFAFF),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                spreadRadius: 1,
+                                blurRadius: 6,
+                                offset: const Offset(1, 6),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 5,),
+                        Container(
+                          width: 7,
+                          height: 15,
+                          decoration: BoxDecoration(
+                            color: Color(0xffECFAFF),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                spreadRadius: 1,
+                                blurRadius: 6,
+                                offset: const Offset(1, 6),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 5,),
+                        Container(
+                          width: 7,
+                          height: 15,
+                          decoration: BoxDecoration(
+                            color: Color(0xffECFAFF),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                spreadRadius: 1,
+                                blurRadius: 6,
+                                offset: const Offset(1, 6),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 5,),
+                        Container(
+                          width: 7,
+                          height: 15,
+                          decoration: BoxDecoration(
+                            color: Color(0xffECFAFF),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                spreadRadius: 1,
+                                blurRadius: 6,
+                                offset: const Offset(1, 6),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: 10,),
+                    //กล่องหลังข้อมูลทริป
+                    Container(
+                      width: 225,
+                      height: 80,
+                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Color(0xffECFAFF),
+                        borderRadius: const BorderRadius.all(Radius.circular(20)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 6,
+                            offset: const Offset(1, 6),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          //ชื่อทริป
+                          Flexible(child: Text(
+                            'ไปไหนก็ได้ทริป',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff1D3557),
+                            ),
+                          ),),
+                          SizedBox(height: 5,),
+                          //สถานที่
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              //ต้นทาง
+                              Flexible(child: Text(
+                                'เขาเขียว',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xff1D3557),
+                                ),
+                              ), ),
+                              Icon(Boxicons.bx_right_arrow_alt,
+                                  color: const Color(0xffFF9A62),
+                                  size: 30),
+                              //ปลายทาง
+                              Flexible(child: Text(
+                                'บางแสน',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xff1D3557),
+                                ),
+                              ),),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 10,),
+                Row(
+                  children: [
+                    //กล่องด้านหน้าเวลา
+                    Container(
+                      width: 80,
+                      height: 80,
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Color(0xffECFAFF),
+                        /*border: Border.all(
+                            color: Colors.red,
+                            width: 5,
+                          ),*/
+                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 6,
+                            offset: const Offset(1, 6),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            '8 H',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff1D3557),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(width: 10,),
+                    //ตกแต่ง
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 7,
+                          height: 15,
+                          decoration: BoxDecoration(
+                            color: Color(0xffECFAFF),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                spreadRadius: 1,
+                                blurRadius: 6,
+                                offset: const Offset(1, 6),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 5,),
+                        Container(
+                          width: 7,
+                          height: 15,
+                          decoration: BoxDecoration(
+                            color: Color(0xffECFAFF),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                spreadRadius: 1,
+                                blurRadius: 6,
+                                offset: const Offset(1, 6),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 5,),
+                        Container(
+                          width: 7,
+                          height: 15,
+                          decoration: BoxDecoration(
+                            color: Color(0xffECFAFF),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                spreadRadius: 1,
+                                blurRadius: 6,
+                                offset: const Offset(1, 6),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(height: 5,),
+                        Container(
+                          width: 7,
+                          height: 15,
+                          decoration: BoxDecoration(
+                            color: Color(0xffECFAFF),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.3),
+                                spreadRadius: 1,
+                                blurRadius: 6,
+                                offset: const Offset(1, 6),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(width: 10,),
+                    //กล่องหลังข้อมูลทริป
+                    Container(
+                      width: 225,
+                      height: 80,
+                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                        color: Color(0xffECFAFF),
+                        borderRadius: const BorderRadius.all(Radius.circular(20)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 6,
+                            offset: const Offset(1, 6),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          //ชื่อทริป
+                          Flexible(child: Text(
+                            'ไปไหนก็ได้ทริป',
+                            style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: Color(0xff1D3557),
+                            ),
+                          ),),
+                          SizedBox(height: 5,),
+                          //สถานที่
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              //ต้นทาง
+                              Flexible(child: Text(
+                                'เขาเขียว',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xff1D3557),
+                                ),
+                              ), ),
+                              Icon(Boxicons.bx_right_arrow_alt,
+                                  color: const Color(0xffFF9A62),
+                                  size: 30),
+                              //ปลายทาง
+                              Flexible(child: Text(
+                                'บางแสน',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xff1D3557),
+                                ),
+                              ),),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }

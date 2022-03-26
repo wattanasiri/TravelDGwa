@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:se_app2/Home/Activity/activity.dart';
 import 'package:se_app2/Home/Attraction/tourist_attraction.dart';
+import 'package:se_app2/Home/Map/lifestyle.dart';
+import 'package:se_app2/Home/Map/mapmain.dart';
 import 'package:se_app2/constants.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
+import '../../../../Data/data_currentuser.dart';
 import '../../../../Home/Restaurant/restaurant.dart';
 
 class HomeButton extends StatelessWidget {
@@ -24,6 +27,8 @@ class HomeButton extends StatelessWidget {
   final String icon;
   final String text;
   final route;
+  bool checklifestyleis;
+  Map dataafterquery;
 
 
   Future getrec() async {
@@ -81,6 +86,32 @@ class HomeButton extends StatelessWidget {
     print(cruiserestaurantdata);
   }
 
+
+  Future checklifestyle() async {
+    try{
+      print('check');
+      Datauser datauser = Datauser();
+      http.Response res =
+      await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/infolifestyleuser'));
+      dataafterquery = json.decode(res.body);
+      print(dataafterquery['foundinfo'].length);
+      print(dataafterquery['foundinfo']);
+      if(dataafterquery['foundinfo'].length != 0){
+        checklifestyleis = true;
+        print('true');
+
+        // model();
+      }else{
+        checklifestyleis = false;
+        print('false');
+        // savedata();
+      }
+    }catch(e){
+      print(e);
+      checklifestyleis = false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -125,7 +156,29 @@ class HomeButton extends StatelessWidget {
                  )
              )
          );
-       } else {Navigator.push(context, MaterialPageRoute(builder: (context) => route));}
+       } else if(route.toString() == "Mapmain"){
+         await checklifestyle();
+         print(checklifestyleis);
+         if(checklifestyleis){
+           Navigator.push(
+               context,
+               MaterialPageRoute(
+                   builder: (context) => Mapmain(
+                     datalifestyle : dataafterquery,
+                   )
+               )
+           );
+         }else{
+           Navigator.push(
+               context,
+               MaterialPageRoute(
+                   builder: (context) => lifestyle(
+                   )
+               )
+           );
+         }
+       }
+       else {Navigator.push(context, MaterialPageRoute(builder: (context) => route));}
       },
       child: Container(
           width: 90,
