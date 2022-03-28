@@ -10,14 +10,6 @@ class Addpostgallery extends StatefulWidget {
   @override
   State<Addpostgallery> createState() => _AddpostgalleryState();
 }
-Text _buildRatingStars(int rating) {
-  String stars = '';
-  for (int i = 0; i < rating; i++) {
-    stars += '⭐ ';
-  }
-  stars.trim();
-  return Text(stars);
-}
 
 class _AddpostgalleryState extends State<Addpostgallery> {
   bool viewVisible = false;
@@ -109,8 +101,9 @@ class _AddpostgalleryState extends State<Addpostgallery> {
                     Container(
                       width: double.infinity,
                       height: double.infinity,
+                      //เลือกรูปขึ้นรูปใหญ่
                       child: Image(
-                        image: NetworkImage(Utils.listOfImageUrl.elementAt(0)),
+                        image: NetworkImage(Utils.listOfImageUrl.elementAt(3)),
                         fit: BoxFit.cover,
                       ),
                     ),

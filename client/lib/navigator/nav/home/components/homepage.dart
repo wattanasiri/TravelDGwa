@@ -14,6 +14,7 @@ import '../../../../Home/Restaurant/restau_detail.dart';
 import '../../../../Home/Restaurant/restaurant.dart';
 import '../../blog/blogpost/add_post_detail.dart';
 import '../../blog/blogpost/add_post_gall.dart';
+import '../../tripwithAI/lifestyle.dart';
 import 'home_button.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -105,7 +106,7 @@ class Home extends StatelessWidget {
                 HomeButton(
                     icon: 'assets/icons/05.png',
                     text: 'แผนที่',
-                    route: Addpostgallery()),
+                    route: lifestyle()),
               ],
             ),
             SizedBox(height: size.height * 0.016),
