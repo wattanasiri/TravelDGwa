@@ -21,7 +21,9 @@ class _tripdetailState extends State<tripdetail> {
   final List<Map> checkbox = List.generate(100,
           (index) => {'id': index, 'name': 'Item $index', 'isSelected': false});
 
-  int btw = 1;
+  //เอาไว้สร้างตัวระหว่างทางเพิ่ม
+  int btw = 0;
+  //เอาไว้สร้างตัวระหว่างทางเพิ่ม
 
   @override
 
@@ -432,6 +434,7 @@ class _tripdetailState extends State<tripdetail> {
             ListView.builder(
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
+                //สร้างตัวระหว่างทาง
                 itemCount: btw,
                 itemBuilder: (context,index){
                   return  Column(
@@ -658,6 +661,9 @@ class _tripdetailState extends State<tripdetail> {
                           Icon(Boxicons.bx_check_square,
                               color: const Color(0xff1D3557),
                               size: 30),
+                          /*Icon(Boxicons.bxs_trash,
+                        color: const Color(0xffF24E1E),
+                        size: 30),*/
                         ],
                       ),
                       SizedBox(height: 10,),
@@ -666,6 +672,7 @@ class _tripdetailState extends State<tripdetail> {
                 }
             ), //จบเวลา
             SizedBox(height: 20,),
+            //ปุ่มสร้างที่แวะเพิ่ม
             ElevatedButton(
               /*onPressed: () {},
                         style: ButtonStyle(
