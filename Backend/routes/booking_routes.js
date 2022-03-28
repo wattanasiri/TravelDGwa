@@ -5,6 +5,7 @@ const airporttransferreceipt = require('../models/airport_transfer_receipt_model
 const activityreceip = require('../models/activity_receipt_model')
 const rentcarreceipt = require('../models/rentcar_transaction_model')
 const User = require('../models/user_model')
+const Room = require('../models/room_model')
 const jwt = require('jwt-simple')
 const secret = require('..').SecretText
 
@@ -18,18 +19,19 @@ router.get('/' , middleware.isLoggedIn, (req,res) => {
     // we need to convert the string to JSON object first.
     var stringToken = JSON.parse(token)['token']
     var user = jwt.decode(stringToken, secret)
+
     var bookingList = []
     var newElem
     // console.log(user)
-    AccomTransaction.find({}, function (err, foundAccom) { // get Accom
+    AccomTransaction.find({}, function (err, foundAccom) { // get Accom TODO: populate list with updated model.
         if (err) {
             console.log(err);
         }
         else {
             foundAccom.forEach((elem) => { 
-                newElem = JSON.parse(JSON.stringify(elem));
+                newElem = JSON.parse(JSON.stringify(elem))
                 newElem.bookingType = 'accommodation'
-                bookingList.push(newElem);
+                bookingList.push(newElem)
             });
             airporttransferreceipt.find({"usernameID" : user._id}, function (err, foundTransferRecipt) {  // get transfer receipt
                 if (err) {
@@ -37,11 +39,35 @@ router.get('/' , middleware.isLoggedIn, (req,res) => {
                 }
                 else {
                     foundTransferRecipt.forEach((elem) => { 
-                        newElem = JSON.parse(JSON.stringify(elem));
+                        newElem = JSON.parse(JSON.stringify(elem))
                         newElem.bookingType = 'transfer'
-                        bookingList.push(newElem);
+                        bookingList.push(newElem)
                     });
-                    res.json({booking:bookingList})
+                    rentcarreceipt.find({"usernameID" : user._id}, function (err, foundRentcarRecipt) {  // get transfer receipt
+                        if (err) {
+                            console.log(err);
+                        }
+                        else {
+                            foundRentcarRecipt.forEach((elem) => { 
+                                newElem = JSON.parse(JSON.stringify(elem))
+                                newElem.bookingType = 'rentcar'
+                                bookingList.push(newElem)
+                            });
+                            activityreceip.find({"usernameID" : user._id}, function (err, foundActivityRecipt) {  // get transfer receipt
+                                if (err) {
+                                    console.log(err);
+                                }
+                                else {
+                                    foundActivityRecipt.forEach((elem) => { 
+                                        newElem = JSON.parse(JSON.stringify(elem))
+                                        newElem.bookingType = 'activity'
+                                        bookingList.push(newElem)
+                                    });
+                                    res.json({booking:bookingList})
+                                }
+                            });
+                        }
+                    });
                 }
             });
         }

@@ -59,6 +59,10 @@ class _BookingState extends State<Booking> {
       return dataIndex['acc_name'];
     } else if (dataIndex['bookingType'] == 'transfer') {
       return 'DRIVER UNKNOWN';
+    } else if (dataIndex['bookingType'] == 'rentcar') {
+      return 'PARTNER UNKNOWN';
+    } else if (dataIndex['bookingType'] == 'activity') {
+      return 'ACTIVITY UNKNOWN';
     }
     else {
       return 'text error';
@@ -76,6 +80,10 @@ class _BookingState extends State<Booking> {
           convertYearToBE(parsedDate.year).toString() + ' เวลา ' +
           dataIndex['starttime'] + ' น.';
       return text;
+    } else if (dataIndex['bookingType'] == 'rentcar') {
+      return 'PLACEHOLDER';
+    } else if (dataIndex['bookingType'] == 'activity') {
+      return 'PLACEHOLDER';
     }
     else {
       return '';
@@ -85,7 +93,10 @@ class _BookingState extends State<Booking> {
   String getDateText2(Map dataIndex) {
     if (dataIndex['bookingType'] == 'accommodation') {
       return formatCheckOut(dataIndex['checkOut']);
-    } else {
+    } else if (dataIndex['bookingType'] == 'rentcar') {
+      return 'PLACEHOLDER';
+    }
+    else {
       return '';
     }
   }
