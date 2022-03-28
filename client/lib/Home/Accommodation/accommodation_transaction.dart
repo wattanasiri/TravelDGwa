@@ -8,9 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:se_app2/Home/Accommodation/accommodation_receipt.dart';
 import 'package:http/http.dart' as http;
 import 'package:se_app2/Home/Accommodation/accommodation_transaction_info.dart';
-<<<<<<< Updated upstream
 import 'package:shared_preferences/shared_preferences.dart';
-=======
 
 class AccommodationTransaction extends StatefulWidget {
   final checkInHolder;
@@ -73,7 +71,7 @@ class _AccommodationTransactionState extends State<AccommodationTransaction> {
           'Context-Type': 'application/json;charSet=UTF-8'
         },
         body: <String, String>{
-          "usernameId": datauser.id,
+          "usernameId": '',
           "acc_name": hotel_name,
           "checkIn": checkInEdit.text,
           "checkOut": checkOutEdit.text,
