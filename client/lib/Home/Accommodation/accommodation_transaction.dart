@@ -8,7 +8,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:se_app2/Home/Accommodation/accommodation_receipt.dart';
 import 'package:http/http.dart' as http;
 import 'package:se_app2/Home/Accommodation/accommodation_transaction_info.dart';
+<<<<<<< Updated upstream
 import 'package:shared_preferences/shared_preferences.dart';
+=======
+import 'package:se_app2/Data/data_currentuser.dart';
+>>>>>>> Stashed changes
 
 class AccommodationTransaction extends StatefulWidget {
   final checkInHolder;
@@ -51,6 +55,7 @@ class _AccommodationTransactionState extends State<AccommodationTransaction> {
   var promotionCode = TextEditingController();
   var room_detail;
   var hotel_name;
+  Datauser datauser = Datauser();
 
   FocusNode promotionFocusNode = FocusNode();
   FocusNode userNameFocusNode = FocusNode();
@@ -64,7 +69,6 @@ class _AccommodationTransactionState extends State<AccommodationTransaction> {
   Map data;
 
   Future addTransaction() async {
-    print(room_detail);
     // allRooms = room_detail;
     // data = json.encode(allRooms);
     var res = await http.post(Uri.parse("http://10.0.2.2:8080/transaction"),
@@ -72,10 +76,16 @@ class _AccommodationTransactionState extends State<AccommodationTransaction> {
           'Context-Type': 'application/json;charSet=UTF-8'
         },
         body: <String, String>{
+          "usernameId": datauser.id,
           "acc_name": hotel_name,
           "checkIn": checkInEdit.text,
           "checkOut": checkOutEdit.text,
-          // "list": room_detail.toJson()
+          "room": room_detail['room_name'],
+          'numberOfRoom': numberOfRoomsEdit.text,
+          'priceOfRoom': room_detail['price'].toString(),
+          'totalPrice':
+              (int.parse(numberOfRoomsEdit.text) * room_detail['price'])
+                  .toString(),
         });
     print(res.body);
   }
@@ -218,7 +228,8 @@ class _AccommodationTransactionState extends State<AccommodationTransaction> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
-                                    '(1x) ${room_detail['room_name']}',
+                                    '(${numberOfRoomsEdit.text}x) ' +
+                                        '${room_detail['room_name']}',
                                     style: GoogleFonts.poppins(
                                         color: const Color(0xff1D3557),
                                         fontSize: 16,
@@ -520,6 +531,8 @@ class _AccommodationTransactionState extends State<AccommodationTransaction> {
                                   checkOutHolder: checkOutEdit.text,
                                   numberOfPeopleHolder: numberOfPeopleEdit.text,
                                   numberOfRoomsHolder: numberOfRoomsEdit.text,
+                                  hotel_name: hotel_name,
+                                  room_detail: room_detail,
                                 )))
                   },
                   style: ElevatedButton.styleFrom(

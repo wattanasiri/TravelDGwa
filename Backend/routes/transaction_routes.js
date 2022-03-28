@@ -5,11 +5,15 @@ const router = express.Router()
 
 router.post('/' , (req,res) => {
     var details = []
-    
-    AccomTransaction.create({   acc_name : req.body.acc_name,
+    AccomTransaction.create({
+    usernameId : req.body.usernameId,
+    acc_name : req.body.acc_name,
     checkIn : req.body.checkIn,
     checkOut : req.body.checkOut,
-    list : req.body.list} , (err,createdTransaction) => {
+    room : req.body.room,
+    numberOfRoom : req.body.numberOfRoom,
+    priceOfRoom : req.body.priceOfRoom,
+    totalPrice: req.body.totalPrice} , (err,createdTransaction) => {
         if(err) {
             console.log(err)
             res.json(err)

@@ -14,14 +14,14 @@ class ResultItem extends StatefulWidget {
   final numberOfPeopleHolder;
   final numberOfRoomsHolder;
   final accommodationData;
-  const ResultItem(
-      {Key key,
-      @required this.accommodationData,
-      this.checkInHolder,
-      this.checkOutHolder,
-      this.numberOfPeopleHolder,
-      this.numberOfRoomsHolder})
-      : super(key: key);
+  const ResultItem({
+    Key key,
+    @required this.accommodationData,
+    this.checkInHolder,
+    this.checkOutHolder,
+    this.numberOfPeopleHolder,
+    this.numberOfRoomsHolder,
+  }) : super(key: key);
   @override
   State<ResultItem> createState() => _ResultItemState();
 }
@@ -56,6 +56,7 @@ class _ResultItemState extends State<ResultItem> {
         TextEditingController(text: widget.numberOfPeopleHolder);
     numberOfRoomsEdit = TextEditingController(text: widget.numberOfRoomsHolder);
     data = widget.accommodationData;
+    print(numberOfRoomsEdit.text);
   }
 
   @override
