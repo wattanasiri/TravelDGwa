@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:se_app2/Home/Accommodation/accommodation_receipt.dart';
 import 'package:http/http.dart' as http;
 import 'package:se_app2/Home/Accommodation/accommodation_transaction_info.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccommodationTransaction extends StatefulWidget {
   final checkInHolder;
