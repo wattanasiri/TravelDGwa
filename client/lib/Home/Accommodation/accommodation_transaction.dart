@@ -66,12 +66,15 @@ class _AccommodationTransactionState extends State<AccommodationTransaction> {
   Future addTransaction() async {
     // allRooms = room_detail;
     // data = json.encode(allRooms);
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
     var res = await http.post(Uri.parse("http://10.0.2.2:8080/transaction"),
         headers: <String, String>{
-          'Context-Type': 'application/json;charSet=UTF-8'
+          'Context-Type': 'application/json;charSet=UTF-8',
+          'Accept': 'application/json;charSet=UTF-8',
+          'Authorization': 'Bearer $token',
         },
         body: <String, String>{
-          "usernameId": '',
           "acc_name": hotel_name,
           "checkIn": checkInEdit.text,
           "checkOut": checkOutEdit.text,

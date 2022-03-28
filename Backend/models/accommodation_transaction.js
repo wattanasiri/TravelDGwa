@@ -8,26 +8,12 @@ var accommTransactionSchema = mongoose.Schema({
     acc_name : String,
     checkIn : String,
     checkOut : String,
-<<<<<<< Updated upstream
-    list : [
-        {
-            roomId : {
-              type : mongoose.Schema.Types.ObjectId,
-              ref : 'Room'  
-            },
-            numberOfRoom : Number,
-            room_name : String,
-            price : Number
-        }
-    ],
-    canceled : { type: Boolean, default: false },
-=======
     room : String,
     numberOfRoom : Number,
     priceOfRoom : Number,
     numberOfDay : Number,
-    totalPrice : Number
->>>>>>> Stashed changes
+    totalPrice : Number,
+    canceled : { type: Boolean, default: false },
 })
 
 module.exports = mongoose.model('AccomTransaction', accommTransactionSchema)
