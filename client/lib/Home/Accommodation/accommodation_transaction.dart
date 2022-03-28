@@ -11,8 +11,6 @@ import 'package:se_app2/Home/Accommodation/accommodation_transaction_info.dart';
 <<<<<<< Updated upstream
 import 'package:shared_preferences/shared_preferences.dart';
 =======
-import 'package:se_app2/Data/data_currentuser.dart';
->>>>>>> Stashed changes
 
 class AccommodationTransaction extends StatefulWidget {
   final checkInHolder;
@@ -55,7 +53,6 @@ class _AccommodationTransactionState extends State<AccommodationTransaction> {
   var promotionCode = TextEditingController();
   var room_detail;
   var hotel_name;
-  Datauser datauser = Datauser();
 
   FocusNode promotionFocusNode = FocusNode();
   FocusNode userNameFocusNode = FocusNode();
