@@ -9,10 +9,25 @@ const Room = require('../models/room_model')
 const jwt = require('jwt-simple')
 const secret = require('..').SecretText
 
-
 const router = express.Router()
 
-// GET TOKEN
+// get Model
+function getModelType(type) {
+    if (type == 'hotel') {
+        return AccomTransaction
+    } else if (type == 'transfer') {
+        return airporttransferreceipt
+    } else if (type == 'rentcar') {
+        return rentcarreceipt
+    } else if (type == 'activity') {
+        return activityreceip
+    }
+    else {
+        return 1;
+    }
+}
+
+// get booking list
 router.get('/' , middleware.isLoggedIn, (req,res) => {
     // the incoming token is 'Bearer #token#'
     var token = req.headers.authorization.split(' ')[1]
@@ -23,7 +38,7 @@ router.get('/' , middleware.isLoggedIn, (req,res) => {
     var bookingList = []
     var newElem
     // console.log(user)
-    AccomTransaction.find({}, function (err, foundAccom) { // get Accom TODO: populate list with updated model.
+    AccomTransaction.find({"usernameId" : user._id}, function (err, foundAccom) { // get Accom TODO: populate list with updated model.
         if (err) {
             console.log(err);
         }
@@ -72,8 +87,22 @@ router.get('/' , middleware.isLoggedIn, (req,res) => {
             });
         }
     });
+})
 
+// cancel booking
+router.post('/cancel/:id' , middleware.isLoggedIn , (req,res) => {
 
+    var Model = getModelType(req.body.type)
+    if (Model === 1) return console.log('Invalid model type')
+
+    Model.findByIdAndUpdate(req.params.id, { canceled: true }, function(err, updatedBooking) {
+        if (err) return console.log(err)
+        if (updatedBooking) {
+            return res.status(200).json()
+        } else {
+            return res.status(404).json()
+        }
+    })
 })
 
 module.exports = router

@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:se_app2/constants.dart';
@@ -9,12 +10,12 @@ import 'package:se_app2/functions.dart';
 
 import 'components/dash_separator.dart';
 
-class transferBilling extends StatefulWidget {
+class hotelBilling extends StatefulWidget {
 
   final detail;
   final width;
   final height;
-  const transferBilling(
+  const hotelBilling(
       {Key key,
         this.detail,
         this.width,
@@ -23,18 +24,12 @@ class transferBilling extends StatefulWidget {
       : super(key: key);
 
   @override
-  _targetState createState() => _targetState();
+  _hotelBillingState createState() => _hotelBillingState();
 }
 
-class _targetState extends State<transferBilling> {
+class _hotelBillingState extends State<hotelBilling> {
   var detail;
-
-  List sample = [
-    {
-      "time": 1,
-      "info": "ค่าบริการเช่ารถรับ - ส่งสนามบิน",
-    },
-  ];
+  List pricelist;
 
   String formatDate(String date) {
     var inputFormat = DateFormat('dd-MM-yyyy');
@@ -43,23 +38,8 @@ class _targetState extends State<transferBilling> {
     return text;
   }
 
-  String formatTime(String time) {
-    var text = 'เวลา : ' + time + ' น.';
-    return text;
-  }
-
-  String formatPricing(String price) {
-    var text = formatPrice(double.parse(price)) + ' THB';
-    return text;
-  }
-
-  String from(String inputText) {
-    var text = 'จาก : ' + inputText;
-    return text;
-  }
-
-  String to(String inputText) {
-    var text = 'ไป : ' + inputText;
+  String formatPricing(var price) {
+    var text = formatPrice(price) + ' THB';
     return text;
   }
 
@@ -67,7 +47,16 @@ class _targetState extends State<transferBilling> {
   void initState() {
     super.initState();
     detail = widget.detail;
+
+    pricelist = [
+      {
+        "info": "${detail['detail']}",
+        "price": detail['sum_price'],
+      },
+    ];
+
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -152,11 +141,16 @@ class _targetState extends State<transferBilling> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Flexible(
-                                  child: Text(
-                                    'บริการเช่ารถรับ - ส่ง TravelDGwa',
-                                    style: GoogleFonts.poppins(
-                                      color: const Color(0xff1D3557),
-                                      fontSize: 14,),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        detail['name'],
+                                        style: GoogleFonts.poppins(
+                                          color: const Color(0xff1D3557),
+                                          fontSize: 14,),
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 Text(
@@ -174,43 +168,13 @@ class _targetState extends State<transferBilling> {
                                 fontSize: 12,),
                             ),
                             Text(
-                              formatDate(detail['startdate']),
+                              formatDate(detail['day']),
                               style: GoogleFonts.poppins(
                                 color: const Color(0xff827E7E),
                                 fontSize: 12,),
                             ),
                             Text(
-                              formatTime(detail['starttime']),
-                              style: GoogleFonts.poppins(
-                                color: const Color(0xff827E7E),
-                                fontSize: 12,),
-                            ),
-                            Text(
-                              from(detail['yourlocation']),
-                              style: GoogleFonts.poppins(
-                                color: const Color(0xff827E7E),
-                                fontSize: 12,),
-                            ),
-                            Text(
-                              to(detail['destination']),
-                              style: GoogleFonts.poppins(
-                                color: const Color(0xff827E7E),
-                                fontSize: 12,),
-                            ),
-                            Text(
-                              'ชื่อคนขับ : นายสมปอง ดองงาน',
-                              style: GoogleFonts.poppins(
-                                color: const Color(0xff827E7E),
-                                fontSize: 12,),
-                            ),
-                            Text(
-                              'รถรุ่น : Honda City',
-                              style: GoogleFonts.poppins(
-                                color: const Color(0xff827E7E),
-                                fontSize: 12,),
-                            ),
-                            Text(
-                              'ทะเบียนรถ : ฟฟ 6207',
+                              "เวลา : ${detail['time']} น.",
                               style: GoogleFonts.poppins(
                                 color: const Color(0xff827E7E),
                                 fontSize: 12,),
@@ -221,53 +185,85 @@ class _targetState extends State<transferBilling> {
                       SizedBox(height: 10,),
                       const DashDivider(height: 1,),
                       SizedBox(height: 10,),
-                      Row(
+                      Column(
                         children: [
-                          Container(
-                            padding: const EdgeInsets.only(
-                              left: 16,
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.book,
-                                  color: primaryColor,
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.only(
+                                  left: 16,
                                 ),
-                                SizedBox(width: 4,),
-                                SizedBox(
-                                  width: width * 0.25,
-                                  child: Text(
-                                    'รวมประกันภัยพื้นฐาน',
-                                    style: GoogleFonts.poppins(
-                                      color: const Color(0xff827E7E),
-                                      fontSize: 10,),
-                                  ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.receipt_rounded,
+                                      color: primaryColor,
+                                    ),
+                                    SizedBox(width: 4,),
+                                    SizedBox(
+                                      width: width * 0.25,
+                                      child: Text(
+                                        'แสดงใบเสร็จที่หน้าร้าน เพื่อเข้าใช้บริการ',
+                                        style: GoogleFonts.poppins(
+                                          color: const Color(0xff827E7E),
+                                          fontSize: 10,),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.only(
+                                  left: 8,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.info,
+                                      color: primaryColor,
+                                    ),
+                                    SizedBox(width: 4,),
+                                    SizedBox(
+                                      width: width * 0.28,
+                                      child: Text(
+                                        'ใบเสร็จจะหมดอายุทันทีเมื่อพ้นเวลาที่จองเอาไว้',
+                                        style: GoogleFonts.poppins(
+                                          color: const Color(0xff827E7E),
+                                          fontSize: 10,),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
-                          Container(
-                            padding: const EdgeInsets.only(
-                              left: 8,
-                            ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.directions_car_rounded,
-                                  color: primaryColor,
+                          SizedBox(height: 5,),
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.only(
+                                  left: 16,
                                 ),
-                                SizedBox(width: 4,),
-                                SizedBox(
-                                  width: width * 0.28,
-                                  child: Text(
-                                    'บริการรับ  - ส่งรถตามจุดที่ให้บริการ',
-                                    style: GoogleFonts.poppins(
-                                      color: const Color(0xff827E7E),
-                                      fontSize: 10,),
-                                  ),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.access_time_outlined,
+                                      color: primaryColor,
+                                    ),
+                                    SizedBox(width: 4,),
+                                    SizedBox(
+                                      width: width * 0.25,
+                                      child: Text(
+                                        'เวลาที่ระบุทั้งหมดเป็นเวลา ท้องถิ่น',
+                                        style: GoogleFonts.poppins(
+                                          color: const Color(0xff827E7E),
+                                          fontSize: 10,),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ],
                       ),
@@ -318,57 +314,57 @@ class _targetState extends State<transferBilling> {
                         ],
                       ),
                       ListView.builder(
-                          shrinkWrap: true,
-                          physics: const BouncingScrollPhysics(
-                              parent: NeverScrollableScrollPhysics()),
-                          itemCount: sample == null ? 0 : sample.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Container(
-                              child: Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.only(
-                                      left: 16,
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(
+                      parent: NeverScrollableScrollPhysics()),
+                      itemCount: pricelist == null ? 0 : pricelist.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.only(
+                                  left: 16,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: width * 0.08,
+                                      child: Text(
+                                        (index + 1).toString(),
+                                        style: GoogleFonts.poppins(
+                                          color: const Color(0xff1D3557),
+                                          fontSize: 12,),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: width * 0.08,
-                                          child: Text(
-                                            sample[index]['time'].toString(),
-                                            style: GoogleFonts.poppins(
-                                              color: const Color(0xff1D3557),
-                                              fontSize: 12,),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                        Container(
-                                          width: width * 0.45,
-                                          child: Text(
-                                            sample[index]['info'],
-                                            style: GoogleFonts.poppins(
-                                              color: const Color(0xff1D3557),
-                                              fontSize: 12,),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                        Container(
-                                          width: width * 0.19,
-                                          child: Text(
-                                            formatPricing(detail['sum_price']),
-                                            style: GoogleFonts.poppins(
-                                              color: const Color(0xff1D3557),
-                                              fontSize: 12,),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      ],
+                                    Container(
+                                      width: width * 0.45,
+                                      child: Text(
+                                        pricelist[index]['info'],
+                                        style: GoogleFonts.poppins(
+                                          color: const Color(0xff1D3557),
+                                          fontSize: 12,),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    Container(
+                                      width: width * 0.19,
+                                      child: Text(
+                                        formatPricing(pricelist[index]['price']),
+                                        style: GoogleFonts.poppins(
+                                          color: const Color(0xff1D3557),
+                                          fontSize: 12,),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            );
-                          }),
+                            ],
+                          ),
+                        );
+                      }),
                       Row(
                         children: [
                           Container(
@@ -394,7 +390,7 @@ class _targetState extends State<transferBilling> {
                                 Container(
                                   width: width * 0.19,
                                   child: Text(
-                                    formatPricing(detail['sum_price']),
+                                    "${detail['sum_price']} THB",
                                     style: GoogleFonts.poppins(
                                       color: const Color(0xff1D3557),
                                       fontWeight: FontWeight.bold,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 // Get Month Name when the input starts January at 0
 String getMonthName (int monthZ) {
-  var month = monthZ + 1;
+  var month = monthZ;
   switch (month) {
     case 1: return 'มกราคม'; break;
     case 2: return 'กุมภาพันธ์'; break;
@@ -28,11 +28,11 @@ String getMonthNameStartOne (int monthZ) {
 }
 
 String getMonthNameShort (int monthZ) {
-  var month = monthZ + 1;
+  var month = monthZ;
   switch (month) {
     case 1: return 'ม.ค'; break;
     case 2: return 'ก.พ'; break;
-    case 3: return 'มี.ย'; break;
+    case 3: return 'มี.ค'; break;
     case 4: return 'เม.ย'; break;
     case 5: return 'พ.ค.'; break;
     case 6: return 'มิ.ย'; break;
@@ -60,6 +60,12 @@ int convertYearToBE (int year) {
   return year + 543;
 }
 
+int daysBetween(DateTime from, DateTime to) {
+  from = DateTime(from.year, from.month, from.day);
+  to = DateTime(to.year, to.month, to.day);
+  return (to.difference(from).inHours / 24).round();
+}
+
 String formatMinute (int input) {
   print(input);
   if (input > 10) {
@@ -69,8 +75,12 @@ String formatMinute (int input) {
   }
 }
 
-String formatPrice(double input) {
-  return input.toStringAsFixed(2);
+String formatPrice(var input) {
+  if (input is int) {
+    return input.toDouble().toStringAsFixed(2);
+  } else {
+    return input.toStringAsFixed(2);
+  }
 }
 
 String formatStar(var input) {

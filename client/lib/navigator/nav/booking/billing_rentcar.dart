@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:cupertino_icons/cupertino_icons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:se_app2/constants.dart';
@@ -9,12 +10,12 @@ import 'package:se_app2/functions.dart';
 
 import 'components/dash_separator.dart';
 
-class transferBilling extends StatefulWidget {
+class hotelBilling extends StatefulWidget {
 
   final detail;
   final width;
   final height;
-  const transferBilling(
+  const hotelBilling(
       {Key key,
         this.detail,
         this.width,
@@ -23,43 +24,36 @@ class transferBilling extends StatefulWidget {
       : super(key: key);
 
   @override
-  _targetState createState() => _targetState();
+  _hotelBillingState createState() => _hotelBillingState();
 }
 
-class _targetState extends State<transferBilling> {
+class _hotelBillingState extends State<hotelBilling> {
   var detail;
+  List pricelist;
 
-  List sample = [
-    {
-      "time": 1,
-      "info": "ค่าบริการเช่ารถรับ - ส่งสนามบิน",
-    },
-  ];
-
-  String formatDate(String date) {
-    var inputFormat = DateFormat('dd-MM-yyyy');
+  String formatGetCar(String date) {
+    var inputFormat = DateFormat('yyyy-MM-dd');
     DateTime parsedDate = inputFormat.parse(date);
-    var text = 'วันที่ : ' + parsedDate.day.toString() + ' ' + getMonthName(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
+    var text = 'วันที่รับรถ : ' + parsedDate.day.toString() + ' ' + getMonthName(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
+    return text;
+  }
+  String formatSentCar(String date) {
+    var inputFormat = DateFormat('yyyy-MM-dd');
+    DateTime parsedDate = inputFormat.parse(date);
+    var text = 'วันที่คืนรถ : ' + parsedDate.day.toString() + ' ' + getMonthName(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
     return text;
   }
 
-  String formatTime(String time) {
-    var text = 'เวลา : ' + time + ' น.';
+  String formatPricing(var price) {
+    var text = formatPrice(price) + ' THB';
     return text;
   }
 
-  String formatPricing(String price) {
-    var text = formatPrice(double.parse(price)) + ' THB';
-    return text;
-  }
-
-  String from(String inputText) {
-    var text = 'จาก : ' + inputText;
-    return text;
-  }
-
-  String to(String inputText) {
-    var text = 'ไป : ' + inputText;
+  String getDayCount(String getDate, String sendDate) {
+    var inputFormat = DateFormat('yyyy-MM-dd');
+    DateTime myGetDate = inputFormat.parse(getDate);
+    DateTime mySendDate = inputFormat.parse(sendDate);
+    var text = (daysBetween(myGetDate, mySendDate) + 1).toString();
     return text;
   }
 
@@ -67,7 +61,24 @@ class _targetState extends State<transferBilling> {
   void initState() {
     super.initState();
     detail = widget.detail;
+
+    pricelist = [
+      {
+        "info": "ค่าเช่ารถสำหรับ ${getDayCount(detail['date_getcar'], detail['date_sentcar'])} วัน",
+        "price": detail['sum_detail_pricedate'] + detail['sum_detail_pricetime'],
+      },
+    ];
+
+    if (detail['sum_detail_pricelocation'] > 0) {
+      pricelist.add(
+        {
+          "info": "ค่าบริการรับส่งรถนอกสถานที่ : ${detail['location_getsentcar']}",
+          "price": detail['sum_detail_pricelocation'],
+        }
+      );
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -152,11 +163,22 @@ class _targetState extends State<transferBilling> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Flexible(
-                                  child: Text(
-                                    'บริการเช่ารถรับ - ส่ง TravelDGwa',
-                                    style: GoogleFonts.poppins(
-                                      color: const Color(0xff1D3557),
-                                      fontSize: 14,),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        detail['car_name'],
+                                        style: GoogleFonts.poppins(
+                                          color: const Color(0xff1D3557),
+                                          fontSize: 14,),
+                                      ),
+                                      Text(
+                                        detail['partnername'],
+                                        style: GoogleFonts.poppins(
+                                          color: const Color(0xff1D3557),
+                                          fontSize: 14,),
+                                      ),
+                                    ],
                                   ),
                                 ),
                                 Text(
@@ -174,43 +196,25 @@ class _targetState extends State<transferBilling> {
                                 fontSize: 12,),
                             ),
                             Text(
-                              formatDate(detail['startdate']),
+                              "ทะเบียนรถ : ${detail['car_license']}",
                               style: GoogleFonts.poppins(
                                 color: const Color(0xff827E7E),
                                 fontSize: 12,),
                             ),
                             Text(
-                              formatTime(detail['starttime']),
+                              formatGetCar(detail['date_getcar']) + " (${detail['time_getcar']} น.)",
                               style: GoogleFonts.poppins(
                                 color: const Color(0xff827E7E),
                                 fontSize: 12,),
                             ),
                             Text(
-                              from(detail['yourlocation']),
+                              formatSentCar(detail['date_sentcar']) + " (${detail['time_sentcar']} น.)",
                               style: GoogleFonts.poppins(
                                 color: const Color(0xff827E7E),
                                 fontSize: 12,),
                             ),
                             Text(
-                              to(detail['destination']),
-                              style: GoogleFonts.poppins(
-                                color: const Color(0xff827E7E),
-                                fontSize: 12,),
-                            ),
-                            Text(
-                              'ชื่อคนขับ : นายสมปอง ดองงาน',
-                              style: GoogleFonts.poppins(
-                                color: const Color(0xff827E7E),
-                                fontSize: 12,),
-                            ),
-                            Text(
-                              'รถรุ่น : Honda City',
-                              style: GoogleFonts.poppins(
-                                color: const Color(0xff827E7E),
-                                fontSize: 12,),
-                            ),
-                            Text(
-                              'ทะเบียนรถ : ฟฟ 6207',
+                              "จุดรับรถ : ${detail['location_getsentcar']}",
                               style: GoogleFonts.poppins(
                                 color: const Color(0xff827E7E),
                                 fontSize: 12,),
@@ -318,57 +322,57 @@ class _targetState extends State<transferBilling> {
                         ],
                       ),
                       ListView.builder(
-                          shrinkWrap: true,
-                          physics: const BouncingScrollPhysics(
-                              parent: NeverScrollableScrollPhysics()),
-                          itemCount: sample == null ? 0 : sample.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            return Container(
-                              child: Row(
-                                children: [
-                                  Container(
-                                    padding: const EdgeInsets.only(
-                                      left: 16,
+                      shrinkWrap: true,
+                      physics: const BouncingScrollPhysics(
+                      parent: NeverScrollableScrollPhysics()),
+                      itemCount: pricelist == null ? 0 : pricelist.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        return Container(
+                          child: Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.only(
+                                  left: 16,
+                                ),
+                                child: Row(
+                                  children: [
+                                    Container(
+                                      width: width * 0.08,
+                                      child: Text(
+                                        (index + 1).toString(),
+                                        style: GoogleFonts.poppins(
+                                          color: const Color(0xff1D3557),
+                                          fontSize: 12,),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: width * 0.08,
-                                          child: Text(
-                                            sample[index]['time'].toString(),
-                                            style: GoogleFonts.poppins(
-                                              color: const Color(0xff1D3557),
-                                              fontSize: 12,),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                        Container(
-                                          width: width * 0.45,
-                                          child: Text(
-                                            sample[index]['info'],
-                                            style: GoogleFonts.poppins(
-                                              color: const Color(0xff1D3557),
-                                              fontSize: 12,),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                        Container(
-                                          width: width * 0.19,
-                                          child: Text(
-                                            formatPricing(detail['sum_price']),
-                                            style: GoogleFonts.poppins(
-                                              color: const Color(0xff1D3557),
-                                              fontSize: 12,),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                      ],
+                                    Container(
+                                      width: width * 0.45,
+                                      child: Text(
+                                        pricelist[index]['info'],
+                                        style: GoogleFonts.poppins(
+                                          color: const Color(0xff1D3557),
+                                          fontSize: 12,),
+                                        textAlign: TextAlign.center,
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                    Container(
+                                      width: width * 0.19,
+                                      child: Text(
+                                        formatPricing(pricelist[index]['price']),
+                                        style: GoogleFonts.poppins(
+                                          color: const Color(0xff1D3557),
+                                          fontSize: 12,),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
-                            );
-                          }),
+                            ],
+                          ),
+                        );
+                      }),
                       Row(
                         children: [
                           Container(
@@ -394,7 +398,7 @@ class _targetState extends State<transferBilling> {
                                 Container(
                                   width: width * 0.19,
                                   child: Text(
-                                    formatPricing(detail['sum_price']),
+                                    "${detail['total_price']} THB",
                                     style: GoogleFonts.poppins(
                                       color: const Color(0xff1D3557),
                                       fontWeight: FontWeight.bold,
