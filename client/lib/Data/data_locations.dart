@@ -144,7 +144,7 @@ class Datalocation {
       "lng": 100.9609810
     },
     {
-      "name": "Aran Café",
+      "name": "Aran Café จอมเทียน",
       "address": "99/20 Moo 6 Najomtien, อำเภอสัตหีบ ชลบุรี 20250",
       "image": "https://lh5.googleusercontent.com/p/AF1QipPc6xHX1VzswWjwI8cs-99RMq3Bbemwd3djnX6K=w408-h612-k-no",
       "category": "cafe",

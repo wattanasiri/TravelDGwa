@@ -33,6 +33,7 @@ dependencies:
   google_maps_flutter: ^2.1.2
   font_awesome_flutter: ^10.0.0
   ml_algo: ^16.5.2
+  flutter_rating_bar: ^4.0.0
 
 dev_dependencies:
   flutter_test:
