@@ -14,8 +14,8 @@ import '../../Data/data_currentuser.dart';
 import 'mapmain.dart';
 
 class lifestyle extends StatefulWidget {
-  // Map datalifestyle;
-  // lifestyle({this.datalifestyle});
+   Map dataquerymap;
+  lifestyle({this.dataquerymap});
 
   @override
   State<lifestyle> createState() => _lifestyleState();
@@ -27,13 +27,14 @@ class _lifestyleState extends State<lifestyle> {
   Map dataafterquery;
   Datauser datauser = Datauser();
 
-  Future readdata() async{
-    http.Response res2 =
-        await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/infolifestyleuser'));
-    dataafterquery = json.decode(res2.body);
-    print('dataafterquery');
-    print(dataafterquery);
-  }
+  // Future readdata() async{
+  //   http.Response res2 =
+  //       await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/infolifestyleuser'));
+  //   dataafterquery = json.decode(res2.body);
+  //   print('dataafterquery');
+  //   print(dataafterquery);
+  //
+  // }
   Future savedata() async {
     print('save data');
     print('id');
@@ -241,7 +242,7 @@ class _lifestyleState extends State<lifestyle> {
                       },
                       //function
                       onRatingUpdate: (rating) {
-                        weather = rating.toString();
+                        weather = rating.toInt().toString();
                         print(rating);
                       },
                     ),
@@ -354,7 +355,7 @@ class _lifestyleState extends State<lifestyle> {
                       },
                       //function
                       onRatingUpdate: (rating) {
-                        adventure = rating.toString();
+                        adventure = rating.toInt().toString();
                       },
                     ),
                   ],
@@ -464,7 +465,7 @@ class _lifestyleState extends State<lifestyle> {
                       },
                       //function
                       onRatingUpdate: (rating) {
-                        sea = rating.toString();
+                        sea = rating.toInt().toString();
                       },
                     ),
                   ],
@@ -574,7 +575,7 @@ class _lifestyleState extends State<lifestyle> {
                       },
                       //function
                       onRatingUpdate: (rating) {
-                        confidence = rating.toString();
+                        confidence = rating.toInt().toString();
                       },
                     ),
                   ],
@@ -684,7 +685,7 @@ class _lifestyleState extends State<lifestyle> {
                       },
                       //function
                       onRatingUpdate: (rating) {
-                        bagpack = rating.toString();
+                        bagpack = rating.toInt().toString();
                       },
                     ),
                   ],
@@ -794,7 +795,7 @@ class _lifestyleState extends State<lifestyle> {
                       },
                       //function
                       onRatingUpdate: (rating) {
-                        budget = rating.toString();
+                        budget = rating.toInt().toString();
                       },
                     ),
                   ],
@@ -904,7 +905,7 @@ class _lifestyleState extends State<lifestyle> {
                       },
                       //function
                       onRatingUpdate: (rating) {
-                        social = rating.toString();
+                        social = rating.toInt().toString();
                       },
                     ),
                   ],
@@ -929,12 +930,19 @@ class _lifestyleState extends State<lifestyle> {
                         child: RaisedButton(
                           onPressed: () {
                            savedata();
-                           readdata();
+                           // readdata();
                            Navigator.push(
                                context,
                                MaterialPageRoute(
                                    builder: (context) => Mapmain(
-                                     datalifestyle : dataafterquery,
+                                     dataquerymap: widget.dataquerymap,
+                                     weather : weather.toString(),
+                                       adventure :  adventure.toString(),
+                                       sea : sea.toString(),
+                                       confidence: confidence.toString(),
+                                       bagpack: bagpack.toString(),
+                                       budget: budget.toString(),
+                                       social : social.toString(),
                                    )
                                )
                            );

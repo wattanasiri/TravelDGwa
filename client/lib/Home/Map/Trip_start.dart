@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
@@ -5,95 +7,78 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
-
-import 'package:se_app2/Home/Attraction/tourism_result.dart';
 import 'package:http/http.dart' as http;
+import 'package:se_app2/Home/Attraction/tourism_result.dart';
+
 import '../../Data/data_currentuser.dart';
+import 'Trip_detail.dart';
 import 'Trip_edit.dart';
-import 'Trip_start.dart';
+import 'Trip_log.dart';
 import 'map.dart';
-class tripdetail extends StatefulWidget {
+import 'mapmain.dart';
+class tripstart extends StatefulWidget {
   List<dynamic> data;
-  Map dataquerymap;
   var alltime,title;
   String weather,adventure,sea,confidence,bagpack,budget,social ;
-  tripdetail({this.weather,this.adventure,this.sea,this.confidence,this.social,this.bagpack,this.budget,this.data,this.alltime,this.title,this.dataquerymap});
+  Map dataquerymap;
+  tripstart({this.weather,this.adventure,this.sea,this.confidence,this.social,this.bagpack,this.budget,this.data,this.alltime,this.title,this.dataquerymap});
   @override
 
-  _tripdetailState createState() => _tripdetailState();
+  _tripstartState createState() => _tripstartState();
 }
 
-class _tripdetailState extends State<tripdetail> {
+class _tripstartState extends State<tripstart> {
   // Generating a long list to fill the ListView
-  // bool begincheck = false;
-  // bool sdiecheck = false;
-  // bool endcheck = false;
+  Map querydata2;
+  bool begincheck = false;
+  bool sdiecheck = false;
+  bool endcheck = false;
+  List<bool> checkboxs = [false, false, false, false, false, false, false, false, false];
   // Generating a long list to fill the ListView
   final List<Map> checkbox = List.generate(100,
           (index) => {'id': index, 'name': 'Item $index', 'isSelected': false});
   //เอาไว้สร้างตัวระหว่างทางเพิ่ม
   int btw = 0;
   //เอาไว้สร้างตัวระหว่างทางเพิ่ม
-  Datauser datauser = Datauser();
-  // Future save() async {
-  //   var res = await http.post(Uri.parse('http://10.0.2.2:8080/map/savetrip'),
-  //       headers: <String, String>{
-  //         'Context-Type': 'application/json;charSet=UTF-8'
-  //       },
-  //       body: <String, String>{
-  //         "usernameID" : datauser.id,
-  //         "title": widget.title,
-  //       });
-  //
-  // }
+  Future save() async {
+    http.Response res2 =
+        await http.get(Uri.parse("http://10.0.2.2:8080/map/updatestatus"));
+  }
+  Future querydata() async{
+    Datauser datauser = Datauser();
+    print('querydata');
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/querydatamapandupdatstatus'));
+    querydata2 = json.decode(res.body);
+    print(querydata2);
+  }
 
-  Future update() async {
-    print('update');
-    print(widget.data);
-    print(widget.data[0]['name']);
-    print(widget.data[1]['name']);
-    List<String> location ;
-    List<String> starttime;
-    List<String> endtime ;
-    List<String> title ;
-    List<String> usernameID ;
-    List<String> alltime ;
-    Map<String,String> data;
-    data={
-      "location[]": location.toString(),
-      "starttime[]": starttime.toString(),
-      "endtime[]": endtime.toString(),
-      "title[]": title.toString(),
-      "usernameID[]": usernameID.toString(),
-      "alltimeID[]": alltime.toString(),
-    };
-    for(int i = 0;i < widget.data.length ; i++){
-      data.addAll({"location[$i]": widget.data[i]['name']});
+  Future querydatafromcancel() async{
+    Datauser datauser = Datauser();
+    print('querydata');
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/querydatamap'));
+    querydata2 = json.decode(res.body);
+    print(querydata2);
+  }
+  Future check() async {
+    print('check');
+    for(int i=1 ; i<widget.data.length-1;i++){
+      print(checkboxs[i]);
+      if(checkboxs[i]){
+        sdiecheck = true;
+      }else{
+        sdiecheck = false;
+      }
     }
-    for(int i = 0;i < widget.data.length ; i++){
-      data.addAll({"starttime[$i]": widget.data[i]['starttime']});
-    }
-    for(int i = 0;i < widget.data.length ; i++){
-      data.addAll({"endtime[$i]": widget.data[i]['endtime']});
-    }
-    int i =0;
-    data.addAll({"title[$i]": widget.title});
-    data.addAll({"usernameID[$i]": datauser.id});
-    data.addAll({"alltime[$i]": widget.alltime});
-    // for(int i = 0;i < name_extrapay.length ; i++){
-    //   data.addAll({"name_extrapay[$i]":name_extrapay[i]});
-    // }
-    // for(int i = 0;i < price_extrapay.length ; i++){
-    //   data.addAll({"price_extrapay[$i]":price_extrapay[i]});
-    // }
+    if(endcheck == true && sdiecheck == true && begincheck == true){
+      // save();
+      await querydata();
+      Navigator.push(context, MaterialPageRoute(builder: (context) => triplog(
 
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/map/updatetrip'),
-        headers: <String, String>{
-          'Context-Type': 'application/json;charSet=UTF-8'
-        },
-      body: data,
-    );
-    print(res.body);
+        dataquerymap: querydata2,
+      ),));
+    }
   }
 
   @override
@@ -134,34 +119,7 @@ class _tripdetailState extends State<tripdetail> {
               bottom: Radius.circular(12),
             ),
           ),
-          actions: [
-            TextButton(
-              onPressed: (){
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => tripedit(
-                      data: widget.data,
-                      alltime: widget.alltime,
-                      title: widget.title,
-                      dataquerymap: widget.dataquerymap,
-                      weather : widget.weather,
-                      adventure :  widget.adventure,
-                      sea : widget.sea,
-                      confidence: widget.confidence,
-                      bagpack: widget.bagpack,
-                      budget: widget.budget,
-                      social : widget.social,
-                    ))
-                );
-              },
-              child: Text(
-                'แก้ไข',
-                style: TextStyle(
-                  fontSize: 17,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xffFF9A62),
-                ),
-              ),)
-          ],
+
         ),
       ),
       body: SingleChildScrollView(
@@ -269,12 +227,11 @@ class _tripdetailState extends State<tripdetail> {
                     children: <Widget>[
                       InkWell(
                         onTap: () => {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => MapSample(
-                        data: widget.data,
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => MapSample(
+                            data: widget.data,
+                          ),))
 
-                        ),))
-
-                      },
+                        },
                         child: Container(
                           margin:
                           const EdgeInsets.symmetric(vertical: 10),
@@ -444,10 +401,15 @@ class _tripdetailState extends State<tripdetail> {
                         ),
                       ],
                     ),
-                    // Checkbox(
-                    //   value: begincheck,
-                    //   onChanged: (begincheck) => setState(() => this.begincheck = begincheck),
-                    // )
+                    Checkbox(
+                      value: begincheck,
+                      onChanged: (begincheck){
+                        setState(() {
+                          this.begincheck = begincheck;
+                        });
+                        begincheck = true;
+                      },
+                    )
                   ],
                 ),
               ],
@@ -593,10 +555,16 @@ class _tripdetailState extends State<tripdetail> {
                               ),
                             ],
                           ),
-                          // Checkbox(
-                          //   value: sdiecheck,
-                          //   onChanged: (sdiecheck) => setState(() => this.sdiecheck = sdiecheck),
-                          // )
+                          Checkbox(
+                            value: checkboxs[index+1],
+                            onChanged: (sdiecheck)
+                            {
+                              setState(() {
+                                this.checkboxs[index+1] = sdiecheck;
+                              });
+
+                            },
+                          )
                         ],
                       ),
                       SizedBox(height: 10,),
@@ -745,10 +713,16 @@ class _tripdetailState extends State<tripdetail> {
                               ),
                             ],
                           ),
-                          // Checkbox(
-                          //   value: endcheck,
-                          //   onChanged: (endcheck) => setState(() => this.endcheck = endcheck),
-                          // )
+                          Checkbox(
+                            value: endcheck,
+                            onChanged: (endcheck) {
+                              setState(() {
+                                this.endcheck = endcheck;
+                              });
+                              endcheck = true;
+                              check();
+                            },
+                          )
                         ],
                       ),
                     ],
@@ -767,20 +741,16 @@ class _tripdetailState extends State<tripdetail> {
                             shadowColor: MaterialStateProperty.all<Color>(Color(0xff7BEE99)),
                         ),*/
               onPressed: () async {
-                // save();
-                update();
-                Navigator.push(context, MaterialPageRoute(builder: (context) => tripstart(
-                  data: widget.data,
-                  alltime: widget.alltime,
-                  title: widget.title,
-                  dataquerymap: widget.dataquerymap,
-                  weather : widget.weather,
-                  adventure :  widget.adventure,
-                  sea : widget.sea,
-                  confidence: widget.confidence,
-                  bagpack: widget.bagpack,
-                  budget: widget.budget,
-                  social : widget.social,
+                await querydatafromcancel();
+                Navigator.push(context, MaterialPageRoute(builder: (context) => Mapmain(
+                  dataquerymap: querydata2,
+                  weather : widget.weather.toString(),
+                  adventure :  widget.adventure.toString(),
+                  sea : widget.sea.toString(),
+                  confidence: widget.confidence.toString(),
+                  bagpack: widget.bagpack.toString(),
+                  budget: widget.budget.toString(),
+                  social : widget.social.toString(),
                 ),));
               },
               style: ElevatedButton.styleFrom(
@@ -792,7 +762,7 @@ class _tripdetailState extends State<tripdetail> {
                 ),
               ),
               child: const Text(
-                'เริ่มทริป',
+                'ยกเลิกทริป',
                 style: TextStyle(color: Color(0xff1D3557), fontSize: 20),
               ),
             ),

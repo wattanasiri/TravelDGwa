@@ -28,8 +28,8 @@ class HomeButton extends StatelessWidget {
   final String text;
   final route;
   bool checklifestyleis;
-  Map dataafterquery;
-
+  Map dataafterquery,dataquerymap;
+  String weather,adventure,sea,confidence,bagpack,budget,social = '0';
 
   Future getrec() async {
     print("1");
@@ -86,6 +86,15 @@ class HomeButton extends StatelessWidget {
     print(cruiserestaurantdata);
   }
 
+  Future querydata() async{
+    Datauser datauser = Datauser();
+    print('querydata');
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/querydatamap'));
+    dataquerymap = json.decode(res.body);
+    print(dataquerymap);
+  }
+
 
   Future checklifestyle() async {
     try{
@@ -97,6 +106,13 @@ class HomeButton extends StatelessWidget {
       print(dataafterquery['foundinfo'].length);
       print(dataafterquery['foundinfo']);
       if(dataafterquery['foundinfo'].length != 0){
+        weather = dataafterquery['foundinfo'][0]['Weather'].toString();
+        adventure = dataafterquery['foundinfo'][0]['Adventure'].toString();
+        sea = dataafterquery['foundinfo'][0]['Sea'].toString();
+        confidence = dataafterquery['foundinfo'][0]['Confidence'].toString();
+        bagpack = dataafterquery['foundinfo'][0]['BagPack'].toString();
+        budget = dataafterquery['foundinfo'][0]['Budget'].toString();
+        social = dataafterquery['foundinfo'][0]['social'].toString();
         checklifestyleis = true;
         print('true');
 
@@ -159,12 +175,20 @@ class HomeButton extends StatelessWidget {
        } else if(route.toString() == "Mapmain"){
          await checklifestyle();
          print(checklifestyleis);
+         await querydata();
          if(checklifestyleis){
            Navigator.push(
                context,
                MaterialPageRoute(
                    builder: (context) => Mapmain(
-                     datalifestyle : dataafterquery,
+                     dataquerymap: dataquerymap,
+                     weather : weather,
+                     adventure :  adventure,
+                     sea : sea,
+                     confidence: confidence,
+                     bagpack: bagpack,
+                     budget: budget,
+                     social : social,
                    )
                )
            );
@@ -173,6 +197,7 @@ class HomeButton extends StatelessWidget {
                context,
                MaterialPageRoute(
                    builder: (context) => lifestyle(
+                     dataquerymap: dataquerymap,
                    )
                )
            );

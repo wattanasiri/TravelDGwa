@@ -15,8 +15,10 @@ import 'Trip_detail.dart';
 
 class tripedit extends StatefulWidget {
   List<dynamic> data;
-  var alltime;
-  tripedit({this.data,this.alltime});
+  var alltime,title;
+  Map dataquerymap;
+  String weather,adventure,sea,confidence,bagpack,budget,social ;
+  tripedit({this.weather,this.adventure,this.sea,this.confidence,this.social,this.bagpack,this.budget,this.data,this.alltime,this.title,this.dataquerymap});
 
   @override
 
@@ -68,6 +70,15 @@ class _tripeditState extends State<tripedit> {
                 Navigator.push(context, MaterialPageRoute(builder: (context) => tripdetail(
                   data: widget.data,
                   alltime: widget.alltime,
+                  title: widget.title,
+                  dataquerymap: widget.dataquerymap,
+                  weather : widget.weather,
+                  adventure :  widget.adventure,
+                  sea : widget.sea,
+                  confidence: widget.confidence,
+                  bagpack: widget.bagpack,
+                  budget: widget.budget,
+                  social : widget.social,
                 ),));
               },
               child: Text(
@@ -107,7 +118,7 @@ class _tripeditState extends State<tripedit> {
                       child:Row(
                         children: [
                           Flexible(child: Text(
-                            'ไปไหนก็ได้ที่อยากไปไม่ต้องรู้หรอกว่าจะไปไหน',
+                            widget.title,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
