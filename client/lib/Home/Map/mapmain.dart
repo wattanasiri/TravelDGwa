@@ -130,10 +130,10 @@ class _MapmainState extends State<Mapmain> {
     print('time');
     var date_time_starttime,date_time_endtime,date_time_default;
     var timedefault = '00:00';
-    var starttime = '10:00';
-    var endtime = '17:00';
-    // var starttime = stattimecontroller.text;
-    // var endtime = endtimecontroller.text;
+    var starttime;
+    var endtime;
+    starttime = stattimecontroller.text;
+    endtime = endtimecontroller.text;
     int numlocation;
     date_time_default = '0000-00-00 ' + timedefault;
     date_time_starttime = '0000-00-00 ' + starttime;
@@ -167,11 +167,16 @@ class _MapmainState extends State<Mapmain> {
     print(typelocation);
     print(typelocation[0]);
     double distanceImMeter = 0.0;
-    String picklocation = 'เดอะเซียนวิวคาเฟ่';
+
     double storelat,storeendlat = 0.0;
     double storelng,storeendlng = 0.0;
-    String endlocation = 'Aran Café จอมเทียน';
+    String picklocation;
+    String endlocation;
+    // String picklocation = 'เดอะเซียนวิวคาเฟ่';
+    // String endlocation = 'Aran Café จอมเทียน';
     int target = 0;
+    picklocation = startlocationcontroller.text;
+    endlocation = endlocationcontroller.text;
     Datalocation data = Datalocation();
     Dataselectlocation selectdata = Dataselectlocation();
     selectlocation = selectdata.selectlocation;
@@ -322,16 +327,10 @@ class _MapmainState extends State<Mapmain> {
 
   Future _submit() async{
     print('submit');
-    // if (!_formKey.currentState.validate()) {
-    //   return;
-    // }
-    // _formKey.currentState.save();
-    print(widget.weather);
-    print(widget.sea);
-    print(startlocationcontroller.text);
-    print(endlocationcontroller.text);
-    print(stattimecontroller.text);
-    print(endtimecontroller.text);
+    if (!_formKey.currentState.validate()) {
+      return;
+    }
+    _formKey.currentState.save();
     await model();
   }
   FocusNode myFocusNode = FocusNode();
@@ -706,7 +705,13 @@ class _MapmainState extends State<Mapmain> {
               bottom: Radius.circular(12),
             ),
           ),
-
+          leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_rounded,
+                  color: Color(0xffECFAFF)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }
+          ),
           title: const Text(
             'การจัดทริป',
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -944,14 +949,11 @@ class _MapmainState extends State<Mapmain> {
                             ),
                           ],
                         ),
-                        SizedBox(height: 10,),
+                        SizedBox(height: 5,),
                       ],
 
                     );
                   }
-                ),
-                const SizedBox(
-                  height: 5,
                 ),
 
                 Text(

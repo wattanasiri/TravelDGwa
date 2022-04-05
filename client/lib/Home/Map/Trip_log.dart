@@ -79,10 +79,11 @@ class _triplogState extends State<triplog> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'กำลังดำเนินการ',
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
-                ),
+                if(widget.dataquerymap['foundinfo'].length > 0)
+                  Text(
+                    'กำลังดำเนินการ',
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                  ),
                 ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
@@ -290,6 +291,24 @@ class _triplogState extends State<triplog> {
                   'ประวัติการสร้างทริป',
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                 ),
+                if(widget.dataquerymap['foundinfo'].length == 0)
+                  Row(
+                    children: [
+                      Icon(Icons.map_outlined  ,
+                          color: Color(0xff1D3557),
+                          size: 30),
+                      SizedBox(width: 10,),
+                      Text(
+                        'ไม่มีประวัติการสร้างทริป',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff1D3557),
+                        ),
+                      ),
+
+                    ],
+                  ),
                 ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
