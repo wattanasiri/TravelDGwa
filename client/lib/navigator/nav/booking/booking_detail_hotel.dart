@@ -534,7 +534,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                 margin: const EdgeInsets.symmetric(vertical: 10),
                                 child: ElevatedButton(
                                   onPressed: () async => {
-                                    if (detail['canceled'] == false) showDialog(
+                                    if (detail['canceled'] == false && detail['status'] == 'soon') showDialog(
                                       context: context,
                                       builder: (BuildContext context) {
                                         return confirmCancelBox(
@@ -545,7 +545,9 @@ class _hotelDetailState extends State<hotelDetail> {
                                     ),
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    primary: detail['canceled'] ? grayColor : redOrangeColor,
+                                    primary:
+                                    detail['canceled'] ? grayColor :
+                                    detail['status'] == 'completed' ? grayColor : redOrangeColor,
                                     minimumSize: Size(size.width * 0.4, 50),
                                     shape: const RoundedRectangleBorder(
                                       borderRadius:
@@ -553,7 +555,8 @@ class _hotelDetailState extends State<hotelDetail> {
                                     ),
                                   ),
                                   child: Text(
-                                    detail['canceled'] ? 'การจองถูกยกเลิก' : 'ยกเลิกการจอง',
+                                    detail['canceled'] ? 'การจองถูกยกเลิก' :
+                                    detail['status'] == 'completed' ? 'การจองเสร็จสิ้น' : 'ยกเลิกการจอง',
                                     style: TextStyle(
                                         color: boxColor, fontSize: 18),
                                   ),

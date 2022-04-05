@@ -37,6 +37,9 @@ class _BookingState extends State<Booking> {
   var currentData;
   var filteredData;
 
+  String filteringStatus = 'soon'; // soon, completed, canceled
+  String filteringType = 'any';
+
   Map data; // changes based on filter
 
   String formatCheckIn(String date) {
@@ -169,7 +172,9 @@ class _BookingState extends State<Booking> {
     // static
     bookingData = data['booking'];
     // changes
-    currentData = data['booking'];
+    currentData = [...bookingData].where(
+            (row) => (row['status'] == 'soon')
+    ).toList();
     print(currentData);
 
     if (res.statusCode == 200) {
@@ -212,7 +217,22 @@ class _BookingState extends State<Booking> {
   // ---------------
 
   void filterStatusData(statusIndex) {
-    // TODO
+    switch (statusIndex) {
+      case 1: filteringStatus = 'completed'; break;
+      case 2: filteringStatus = 'canceled'; break;
+      default:
+        filteringStatus = 'soon';
+    }
+    if (filteringType == 'any') {
+      filteredData = [...bookingData].where(
+              (row) => (row['status'] == filteringStatus)
+      ).toList();
+    } else {
+      filteredData = [...bookingData].where(
+              (row) => (row['bookingType'] == filteringType && row['status'] == filteringStatus)
+      ).toList();
+    }
+    print(filteredData);
     setState(() => {
       bookingStatus = statusIndex,
       currentData = filteredData,
@@ -220,7 +240,6 @@ class _BookingState extends State<Booking> {
   }
 
   void filterTypeData(typeIndex) {
-    String filteringType;
     switch (typeIndex) {
       case 1: filteringType = 'accommodation'; break;
       case 2: filteringType = 'flight'; break;
@@ -231,17 +250,19 @@ class _BookingState extends State<Booking> {
         filteringType = 'any';
     }
     if (filteringType == 'any') {
-      setState(() => {
-        bookingType = typeIndex,
-        currentData = bookingData,
-      });
+      filteredData = [...bookingData].where(
+              (row) => (row['status'] == filteringStatus)
+      ).toList();
     } else {
-      filteredData = [...bookingData].where((row) => (row['bookingType'] == filteringType)).toList();
-      setState(() => {
-        bookingType = typeIndex,
-        currentData = filteredData,
-      });
+      filteredData = [...bookingData].where(
+              (row) => (row['bookingType'] == filteringType && row['status'] == filteringStatus)
+      ).toList();
     }
+    print(filteredData);
+    setState(() => {
+      bookingType = typeIndex,
+      currentData = filteredData,
+    });
 
   }
 
@@ -249,7 +270,6 @@ class _BookingState extends State<Booking> {
   void initState() {
     super.initState();
     getBookingData();
-
   }
 
   @override
@@ -284,9 +304,7 @@ class _BookingState extends State<Booking> {
                     splashFactory: NoSplash.splashFactory,
                   ),
                   onPressed: () {
-                    setState(() => {
-                      bookingStatus = 0,
-                    });
+                    filterStatusData(0);
                   },
                   child: Text('เร็วๆ นี้',
                     style: TextStyle(
@@ -306,9 +324,7 @@ class _BookingState extends State<Booking> {
                     splashFactory: NoSplash.splashFactory,
                   ),
                   onPressed: () {
-                    setState(() => {
-                      bookingStatus = 1,
-                    });
+                    filterStatusData(1);
                   },
                   child: Text('เรียบร้อยแล้ว',
                     style: TextStyle(
@@ -329,9 +345,7 @@ class _BookingState extends State<Booking> {
                     splashFactory: NoSplash.splashFactory,
                   ),
                   onPressed: () {
-                    setState(() => {
-                      bookingStatus = 2,
-                    });
+                    filterStatusData(2);
                   },
                   child: Text('ที่ยกเลิก',
                     style: TextStyle(
@@ -586,7 +600,7 @@ class _BookingState extends State<Booking> {
                                         borderRadius: const BorderRadius.only(
                                             topLeft: Radius.circular(20),
                                             topRight: Radius.circular(20)),
-                                        child: Image.asset('assets/images/homebg.png',
+                                        child: Image.network(getImageUrl(currentData[index]['bookingType']),
                                             height: 110,
                                             width: 160,
                                             fit: BoxFit.cover),
@@ -710,4 +724,18 @@ class _BookingState extends State<Booking> {
       ),
     );
   }
+
+  String getImageUrl(type) {
+    if (type == 'accommodation')
+      return 'https://placeimg.com/640/480/any';
+    else if (type == 'transfer')
+      return 'https://t1.blockdit.com/photos/2020/11/5fb952383d4b9b0cc0fd7d2e_800x0xcover_3aaaqsST.jpg';
+    else if (type == 'rentcar')
+      return 'https://www.toyota.co.th/media/product/feature/large/e8d2cc60fa1d5467bc3a8b2b944677faa9c42502.jpg';
+    else if (type == 'activity')
+      return 'https://ik.imagekit.io/tvlk/xpe-asset/AyJ40ZAo1DOyPyKLZ9c3RGQHTP2oT4ZXW+QmPVVkFQiXFSv42UaHGzSmaSzQ8DO5QIbWPZuF+VkYVRk6gh-Vg4ECbfuQRQ4pHjWJ5Rmbtkk=/2000785513283/Health%2520Land%2520Pradit%2520Manutham%2520Spa%2520Treatments-f3388649-4fee-4630-8c1c-cec1fd1f36f7.jpeg?_src=imagekit&tr=c-at_max';
+    else
+      return 'https://placeimg.com/640/480/any';
+  }
+
 }
