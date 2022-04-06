@@ -22,7 +22,6 @@ Text _buildRatingStars(int rating) {
 }
 
 class _AddpostdetailState extends State<Addpostdetail> {
-  bool viewVisible = false;
 
   final topic = TextEditingController();
   final location = TextEditingController();
@@ -31,8 +30,6 @@ class _AddpostdetailState extends State<Addpostdetail> {
   FocusNode locationFocusNode = FocusNode();
   FocusNode descFocusNode = FocusNode();
 
-  final ScrollController _gridScrollController = ScrollController();
-  final ScrollController _singleChildController = ScrollController();
 
   Future addBlog() async {
     // allRooms = room_detail;
@@ -55,35 +52,16 @@ class _AddpostdetailState extends State<Addpostdetail> {
     print(res.body);
   }
 
-  void _gridListener() {
-    if (_gridScrollController.offset <
-        _gridScrollController.position.minScrollExtent - 50) {
-      _singleChildController.animateTo(_gridScrollController.offset,
-          duration: Duration(milliseconds: 100), curve: Curves.linear);
-    }
-  }
-  void showWidget() {
-    setState(() {
-      viewVisible = true;
-    });
-  }
 
-  void hideWidget() {
-    setState(() {
-      viewVisible = false;
-    });
-  }
 
-  final _controller = ScrollController();
+
   /// Variables
   File imageFile;
 
 
   @override
   Widget build(BuildContext context) {
-    _gridScrollController.addListener(_gridListener);
-    _singleChildController.addListener(_gridListener);
-    Size _screen = MediaQuery.of(context).size;
+
     return Scaffold(
       backgroundColor : Color(0xFF1D3557),
       appBar: PreferredSize(
@@ -124,11 +102,10 @@ class _AddpostdetailState extends State<Addpostdetail> {
         ),
       ),
       body: Container(
-        height: _screen.height,
-        width: _screen.width,
+
         child: SingleChildScrollView(
           //physics: const BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
-          controller: _singleChildController,
+
           child: Column(
             children: <Widget>[
               //AddPostAppBar(screenName: 'gallery', height: 45),
@@ -180,7 +157,7 @@ class _AddpostdetailState extends State<Addpostdetail> {
                   ],
                 ),
               ),
-
+              //รูปใหญ่ด้านบน
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 10),
                 child : Column(
@@ -287,16 +264,16 @@ class _AddpostdetailState extends State<Addpostdetail> {
                                             borderRadius: BorderRadius.circular(15),
                                             border: Border.all(color: const Color(0xffECFAFF), width: 2)
                                         ),
-                                        child: Flexible(child:
-                                        TextFormField(
+                                        child: TextFormField(
+                                          maxLines: null,
                                           decoration: const InputDecoration(
                                             hintText: 'เนื้อหา ',
+
                                             enabledBorder: UnderlineInputBorder(
                                                 borderSide: BorderSide(color: Color(0xffECFAFF))),
                                           ),
                                           controller: desc,
                                           focusNode: descFocusNode,
-                                        ),
                                         )
                                     ),
                                   ]

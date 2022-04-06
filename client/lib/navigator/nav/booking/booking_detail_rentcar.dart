@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -10,27 +11,27 @@ import 'package:intl/intl.dart';
 import 'package:se_app2/constants.dart';
 import 'package:se_app2/functions.dart';
 
-import 'billing_hotel.dart';
+import 'billing_rentcar.dart';
 import 'cancel_confirm.dart';
 
-class hotelDetail extends StatefulWidget {
+class rentCarDetail extends StatefulWidget {
 
   final detail;
-  const hotelDetail(
+  const rentCarDetail(
       {Key key,
       this.detail,
       })
       : super(key: key);
 
   @override
-  _hotelDetailState createState() => _hotelDetailState();
+  _rentCarDetailState createState() => _rentCarDetailState();
 }
 
-class _hotelDetailState extends State<hotelDetail> {
+class _rentCarDetailState extends State<rentCarDetail> {
 
   var detail;
 
-  String type = 'hotel';
+  String type = 'rentcar';
   String id;
   String hotelName;
 
@@ -42,38 +43,20 @@ class _hotelDetailState extends State<hotelDetail> {
     'https://placeimg.com/640/480/any',
   ];
 
-  List<String> facilitiesInRoom = ['เครื่องปรับอากาศ', 'โทรทัศน์', 'ตู้เย็น', 'ไมโครเวฟ', 'อินเทอร์เน็ต WIFI'];
-  List<String> facilitiesInBathRoom = ['น้ำอุ่น', 'ห้องน้ำส่วนตัว', 'อุปกรณ์อาบน้ำ'];
+  List<String> devices = ['FM/AM Radio', 'Bluetooth', 'USB/AUX', 'CD/MP3'];
 
   bool viewVisible = false;
 
-  void showWidget() {
-    setState(() {
-      viewVisible = true;
-    });
-  }
-
-  void hideWidget() {
-    setState(() {
-      viewVisible = false;
-    });
-  }
-
-  String formatPricing(var price) {
-    var text = 'THB ' + formatPrice(price);
+  String formatGetCar(String date) {
+    var inputFormat = DateFormat('yyyy-MM-dd');
+    DateTime parsedDate = inputFormat.parse(date);
+    var text = 'วันที่รับรถ : ' + parsedDate.day.toString() + ' ' + getMonthName(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
     return text;
   }
-
-  String formatCheckIn(String date) {
-    var inputFormat = DateFormat('dd-MM-yyyy');
+  String formatSentCar(String date) {
+    var inputFormat = DateFormat('yyyy-MM-dd');
     DateTime parsedDate = inputFormat.parse(date);
-    var text = 'วันที่เช็คอิน : ' + parsedDate.day.toString() + ' ' + getMonthName(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
-    return text;
-  }
-  String formatCheckOut(String date) {
-    var inputFormat = DateFormat('dd-MM-yyyy');
-    DateTime parsedDate = inputFormat.parse(date);
-    var text = 'วันที่เช็คเอาท์ : ' + parsedDate.day.toString() + ' ' + getMonthName(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
+    var text = 'วันที่คืนรถ : ' + parsedDate.day.toString() + ' ' + getMonthName(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
     return text;
   }
 
@@ -168,14 +151,14 @@ class _hotelDetailState extends State<hotelDetail> {
                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      detail["acc_name"],
+                                      detail["car_name"],
                                       style: GoogleFonts.poppins(
                                           color: primaryColor,
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Text(
-                                      "ห้อง " + detail["room"],
+                                      "ให้บริการโดย: " + detail["partnername"],
                                       style: GoogleFonts.poppins(
                                         color: primaryColor,
                                         fontSize: 16,),
@@ -217,32 +200,39 @@ class _hotelDetailState extends State<hotelDetail> {
                           Row(
                             children: [
                               Text(
-                                formatCheckIn(detail['checkIn']),
+                                formatGetCar(detail['date_getcar']),
                                 style: TextStyle(
                                   color: primaryColor,
                                   fontSize: 16,
                                 ),
                               ),
                               SizedBox(width: 3,),
-                              // Text(
-                              //   '(XX.XX น.)',
-                              //   style: TextStyle(
-                              //     color: grayColor,
-                              //     fontSize: 13,
-                              //   ),
-                              // ),
+                              Text(
+                                '(${detail['time_getcar']} น.)',
+                                style: TextStyle(
+                                  color: grayColor,
+                                  fontSize: 13,
+                                ),
+                              ),
                             ],
                           ),
                           Row(
                             children: [
                               Text(
-                                formatCheckOut(detail['checkOut']),
+                                formatSentCar(detail['date_sentcar']),
                                 style: TextStyle(
                                   color: primaryColor,
                                   fontSize: 16,
                                 ),
                               ),
                               SizedBox(width: 3,),
+                              Text(
+                                '(${detail['time_sentcar']} น.)',
+                                style: TextStyle(
+                                  color: grayColor,
+                                  fontSize: 13,
+                                ),
+                              ),
                             ],
                           ),
                           const SizedBox(height: 5,),
@@ -251,124 +241,107 @@ class _hotelDetailState extends State<hotelDetail> {
                             thickness: 2,
                             color: grayColor,
                           ),
-                          const SizedBox(height: 5,),
                           Container(
                             margin: const EdgeInsets.symmetric(vertical: 10),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 const Text(
-                                  'รายละเอียดที่พัก',
+                                  'ข้อมูลรถ',
                                   style: TextStyle(
                                     color: grayColor,
-                                    fontSize: 16,
+                                    fontSize: 18,
                                   ),
                                 ),
                                 Row(
-                                  children: const [
+                                  children: [
                                     Flexible(
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                        child: Icon(Icons.arrow_forward_ios,
-                                            color: grayColor,
-                                            size: 20),
-                                      ),
-                                    ),
-                                    Flexible(
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                                        child: Text(
-                                          '26.0 ตร.ม',
-                                          style: TextStyle(
-                                              color: grayColor, fontSize: 14),
+                                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              'ปีจดทะเบียน',
+                                              style: TextStyle(
+                                                  color: grayColor, fontSize: 14),
+                                            ),
+                                            Text(
+                                              'จำนวนที่นั่ง',
+                                              style: TextStyle(
+                                                  color: grayColor, fontSize: 14),
+                                            ),
+                                            Text(
+                                              'กระเป๋าใบใหญ่',
+                                              style: TextStyle(
+                                                  color: grayColor, fontSize: 14),
+                                            ),
+                                            Text(
+                                              'กระเป๋าใบเล็ก',
+                                              style: TextStyle(
+                                                  color: grayColor, fontSize: 14),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                                Row(
-                                  children: const [
                                     Flexible(
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                        child: Icon(Icons.people,
-                                            color: grayColor,
-                                            size: 20),
-                                      ),
-                                    ),
-                                    Flexible(
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                                        child: Text(
-                                          '2 ผู้เข้าพัก (เข้าพักสูงสุดได้ 2 คน)',
-                                          style: TextStyle(
-                                              color: grayColor, fontSize: 14),
+                                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              ':',
+                                              style: TextStyle(
+                                                  color: grayColor, fontSize: 14),
+                                            ),
+                                            Text(
+                                              ':',
+                                              style: TextStyle(
+                                                  color: grayColor, fontSize: 14),
+                                            ),
+                                            Text(
+                                              ':',
+                                              style: TextStyle(
+                                                  color: grayColor, fontSize: 14),
+                                            ),
+                                            Text(
+                                              ':',
+                                              style: TextStyle(
+                                                  color: grayColor, fontSize: 14),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                                Row(
-                                  children: const [
                                     Flexible(
                                       child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                        child: Icon(Icons.bed,
-                                            color: grayColor,
-                                            size: 20),
-                                      ),
-                                    ),
-                                    Flexible(
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                                        child: Text(
-                                          '2 เตียงเดี่ยว หรือ 1 เตียงใหญ่',
-                                          style: TextStyle(
-                                              color: grayColor, fontSize: 14),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: const [
-                                    Flexible(
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                        child: Icon(Icons.event_seat_rounded,
-                                            color: grayColor,
-                                            size: 20),
-                                      ),
-                                    ),
-                                    Flexible(
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                                        child: Text(
-                                          '2 โซฟา',
-                                          style: TextStyle(
-                                              color: grayColor, fontSize: 14),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                Row(
-                                  children: const [
-                                    Flexible(
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                                        child: Icon(Icons.smoke_free,
-                                            color: grayColor,
-                                            size: 20),
-                                      ),
-                                    ),
-                                    Flexible(
-                                      child: Padding(
-                                        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 5),
-                                        child: Text(
-                                          'ห้ามสูบบุหรี่',
-                                          style: TextStyle(
-                                              color: grayColor, fontSize: 14),
+                                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              '2563',
+                                              style: TextStyle(
+                                                  color: grayColor, fontSize: 14),
+                                            ),
+                                            Text(
+                                              '4',
+                                              style: TextStyle(
+                                                  color: grayColor, fontSize: 14),
+                                            ),
+                                            Text(
+                                              '1',
+                                              style: TextStyle(
+                                                  color: grayColor, fontSize: 14),
+                                            ),
+                                            Text(
+                                              '2',
+                                              style: TextStyle(
+                                                  color: grayColor, fontSize: 14),
+                                            ),
+                                          ],
                                         ),
                                       ),
                                     ),
@@ -383,10 +356,10 @@ class _hotelDetailState extends State<hotelDetail> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
                                 const Text(
-                                  'สิ่งอำนวยความสะดวกภายในห้อง',
+                                  'อุปกรณ์ภายในรถ',
                                   style: TextStyle(
                                     color: grayColor,
-                                    fontSize: 16,
+                                    fontSize: 18,
                                   ),
                                 ),
                                 Padding(
@@ -397,7 +370,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                     child: ListView.builder(
                                       shrinkWrap: true,
                                       physics: const NeverScrollableScrollPhysics(),
-                                      itemCount: facilitiesInRoom.length,
+                                      itemCount: devices.length,
                                       itemBuilder: (context, int index) =>
                                           Row(
                                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -405,7 +378,7 @@ class _hotelDetailState extends State<hotelDetail> {
                                             children: [
                                               Flexible(
                                                   child: Text(
-                                                      "• ${facilitiesInRoom[index]}",
+                                                      "• ${devices[index]}",
                                                       maxLines: 1,
                                                       overflow: TextOverflow.ellipsis,
                                                       style: TextStyle(
@@ -422,50 +395,87 @@ class _hotelDetailState extends State<hotelDetail> {
                               ],
                             ),
                           ),
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 10),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                const Text(
-                                  'สิ่งอำนวยความสะดวกภายในห้องน้ำ',
-                                  style: TextStyle(
-                                    color: grayColor,
-                                    fontSize: 16,
+
+                          const Divider(
+                            height: 2,
+                            thickness: 2,
+                            color: grayColor,
+                          ),
+
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                viewVisible = !viewVisible;
+                              });
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  Flexible(
+                                      child: Text(
+                                        'จุดรับรถ - คืนรถ (จุดเดียวกัน)',
+                                        style: GoogleFonts.poppins(
+                                            color: const Color(0xff1D3557),
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      )),
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        viewVisible = !viewVisible;
+                                      });
+                                    },
+                                    iconSize: 35,
+                                    padding: EdgeInsets.zero,
+                                    splashRadius: 20,
+                                    constraints: const BoxConstraints(),
+                                    icon: viewVisible
+                                        ? const Icon(Icons.keyboard_arrow_up_rounded)
+                                        : const Icon(
+                                        Icons.keyboard_arrow_down_rounded),
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10),
-                                  child: MediaQuery.removePadding(
-                                    removeTop: true,
-                                    context: context,
-                                    child: ListView.builder(
-                                      shrinkWrap: true,
-                                      physics: const NeverScrollableScrollPhysics(),
-                                      itemCount: facilitiesInBathRoom.length,
-                                      itemBuilder: (context, int index) =>
-                                          Row(
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            mainAxisAlignment: MainAxisAlignment.start,
-                                            children: [
-                                              Flexible(
-                                                  child: Text(
-                                                      "• ${facilitiesInBathRoom[index]}",
-                                                      maxLines: 1,
-                                                      overflow: TextOverflow.ellipsis,
-                                                      style: TextStyle(
-                                                        color: grayColor,
-                                                        fontSize: 14,
-                                                      )
-                                                  )
-                                              )
-                                            ],
+
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          Visibility(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Column(
+                                    children: [
+                                      ElevatedButton(
+                                        onPressed: () => {
+                                          print('nothing')
+                                        },
+                                        style: ElevatedButton.styleFrom(
+                                          primary: primaryColor,
+                                          minimumSize: const Size(350, 60),
+                                          shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(Radius.circular(16)),
                                           ),
-                                    ),
-                                  ),
-                                )
+                                        ),
+                                        child:
+                                        SizedBox(
+                                          width: 310,
+                                          child: Text(
+                                            '${detail['detail_pricelocation']} (THB +${detail['sum_detail_pricelocation']})',
+                                            style: TextStyle(
+                                                color: Color(0xFFECFAFF), fontSize: 16),
+                                          ),
+                                        ),
+
+                                      ),
+                                      SizedBox(height: 10,),
+                                    ]
+                                ),
                               ],
                             ),
+                            visible: viewVisible,
                           ),
 
                           const Divider(
@@ -482,13 +492,13 @@ class _hotelDetailState extends State<hotelDetail> {
                             children: <Widget>[
                               Flexible(
                                 child: Text(
-                                  'ทั้งหมด',
+                                  'ราคา',
                                   style: TextStyle(
                                       color: primaryColor, fontSize: 20, fontWeight: FontWeight.bold),
                                 ),
                               ),
                               Text(
-                                formatPricing(detail['totalPrice']),
+                                "THB ${detail['total_price']}",
                                 style: TextStyle(
                                     color: primaryColor, fontSize: 20, fontWeight: FontWeight.bold),
                               ),

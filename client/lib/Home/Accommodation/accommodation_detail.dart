@@ -64,7 +64,6 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
     data = json.decode(res.body);
     accommodationRoomData = data['rooms']['room'];
     hotelName = data['rooms']['name'];
-    print(accommodationRoomData);
   }
 
   int activeIndex = 0;
@@ -132,9 +131,7 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
         commentData = commentBody['comment'];
         commentsLoaded = true;
       });
-      print(commentData);
     }
-
   }
 
   @override
@@ -368,7 +365,7 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                           SizedBox(height: 10,),
                           const Divider(color: Color(0xff827E7E), thickness: 1.5),
                           SizedBox(height: 10,),
-                          commentAdd(detail: detail, type: type),
+                          commentAdd(detail: detail, type: type,loadComment: loadComment()),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[

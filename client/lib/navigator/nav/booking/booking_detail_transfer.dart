@@ -29,6 +29,8 @@ class _TargetState extends State<transferDetail> {
 
   var detail;
 
+  String type = 'transfer';
+
   String formatDate(String date) {
     var inputFormat = DateFormat('dd-MM-yyyy');
     DateTime parsedDate = inputFormat.parse(date);
@@ -140,13 +142,13 @@ class _TargetState extends State<transferDetail> {
                                   fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                'รถรุ่น : Unknown',
+                                'รถรุ่น : Honda City',
                                 style: GoogleFonts.poppins(
                                     color: primaryColor,
                                     fontSize: 14),
                               ),
                               Text(
-                                'ทะเบียน : ฟฟ6207',
+                                'ทะเบียน : ฟฟ 6207',
                                 style: GoogleFonts.poppins(
                                     color: primaryColor,
                                     fontSize: 14),
@@ -368,7 +370,7 @@ class _TargetState extends State<transferDetail> {
                                     ),
                                   ),
                                   Text(
-                                    'THB 500.00',
+                                    'THB ${detail['sum_price']}',
                                     style: GoogleFonts.poppins(
                                       color: primaryColor,
                                       fontSize: 18,
@@ -426,27 +428,29 @@ class _TargetState extends State<transferDetail> {
                       margin: const EdgeInsets.symmetric(vertical: 10),
                       child: ElevatedButton(
                         onPressed: () async => {
-                          showDialog(
+                          if (detail['canceled'] == false && detail['status'] == 'soon') showDialog(
                             context: context,
                             builder: (BuildContext context) {
                               return confirmCancelBox(
                                 detail: detail,
-                                type: 'transfer',
+                                type: type,
                               );
                             },
                           ),
                         },
                         style: ElevatedButton.styleFrom(
-                          onPrimary: redOrangeColor,
-                          primary: redOrangeColor,
+                          primary:
+                          detail['canceled'] ? grayColor :
+                          detail['status'] == 'completed' ? grayColor : redOrangeColor,
                           minimumSize: Size(size.width * 0.4, 50),
                           shape: const RoundedRectangleBorder(
                             borderRadius:
                             BorderRadius.all(Radius.circular(16)),
                           ),
                         ),
-                        child: const Text(
-                          'ยกเลิกการจอง',
+                        child: Text(
+                          detail['canceled'] ? 'การจองถูกยกเลิก' :
+                          detail['status'] == 'completed' ? 'การจองเสร็จสิ้น' : 'ยกเลิกการจอง',
                           style: TextStyle(
                               color: boxColor, fontSize: 18),
                         ),

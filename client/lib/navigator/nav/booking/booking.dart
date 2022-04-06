@@ -13,6 +13,8 @@ import 'package:se_app2/Widgets/notif_ok.dart';
 import 'booking_detail_hotel.dart';
 import 'booking_detail_ticket.dart';
 import 'booking_detail_transfer.dart';
+import 'booking_detail_rentcar.dart';
+import 'booking_detail_activity.dart';
 import 'components/booking_type_icon.dart';
 
 class Booking extends StatefulWidget {
@@ -34,6 +36,9 @@ class _BookingState extends State<Booking> {
   var bookingData;
   var currentData;
   var filteredData;
+
+  String filteringStatus = 'soon'; // soon, completed, canceled
+  String filteringType = 'any';
 
   Map data; // changes based on filter
 
@@ -58,7 +63,26 @@ class _BookingState extends State<Booking> {
     if (dataIndex['bookingType'] == 'accommodation') {
       return dataIndex['acc_name'];
     } else if (dataIndex['bookingType'] == 'transfer') {
-      return 'DRIVER UNKNOWN';
+      return 'นายสมปอง ดองงาน';
+    } else if (dataIndex['bookingType'] == 'rentcar') {
+      return dataIndex['car_name'];
+    } else if (dataIndex['bookingType'] == 'activity') {
+      return dataIndex['name'];
+    }
+    else {
+      return 'text error';
+    }
+  }
+
+  String getBookingSubtitle(Map dataIndex) {
+    if (dataIndex['bookingType'] == 'accommodation') {
+      return 'ห้อง ' + dataIndex['room'];
+    } else if (dataIndex['bookingType'] == 'transfer') {
+      return 'Honda City : ฟฟ 6207';
+    } else if (dataIndex['bookingType'] == 'rentcar') {
+      return dataIndex['partnername'];
+    } else if (dataIndex['bookingType'] == 'activity') {
+      return '';
     }
     else {
       return 'text error';
@@ -76,6 +100,22 @@ class _BookingState extends State<Booking> {
           convertYearToBE(parsedDate.year).toString() + ' เวลา ' +
           dataIndex['starttime'] + ' น.';
       return text;
+    } else if (dataIndex['bookingType'] == 'rentcar') {
+      var inputFormat = DateFormat('yyyy-MM-dd');
+      DateTime parsedDate = inputFormat.parse(dataIndex['date_getcar']);
+      var text = 'วันที่ ' + parsedDate.day.toString() + ' ' +
+          getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
+          convertYearToBE(parsedDate.year).toString() + ' เวลา ' +
+          dataIndex['time_getcar'] + ' น.';
+      return text;
+    } else if (dataIndex['bookingType'] == 'activity') {
+      var inputFormat = DateFormat('dd-MM-yyyy');
+      DateTime parsedDate = inputFormat.parse(dataIndex['day']);
+      var text = 'วันที่ ' + parsedDate.day.toString() + ' ' +
+          getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
+          convertYearToBE(parsedDate.year).toString() + ' เวลา ' +
+          dataIndex['time'] + ' น.';
+      return text;
     }
     else {
       return '';
@@ -85,7 +125,16 @@ class _BookingState extends State<Booking> {
   String getDateText2(Map dataIndex) {
     if (dataIndex['bookingType'] == 'accommodation') {
       return formatCheckOut(dataIndex['checkOut']);
-    } else {
+    } else if (dataIndex['bookingType'] == 'rentcar') {
+      var inputFormat = DateFormat('yyyy-MM-dd');
+      DateTime parsedDate = inputFormat.parse(dataIndex['date_sentcar']);
+      var text = 'วันที่ ' + parsedDate.day.toString() + ' ' +
+          getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
+          convertYearToBE(parsedDate.year).toString() + ' เวลา ' +
+          dataIndex['time_sentcar'] + ' น.';
+      return text;
+    }
+    else {
       return '';
     }
   }
@@ -123,7 +172,9 @@ class _BookingState extends State<Booking> {
     // static
     bookingData = data['booking'];
     // changes
-    currentData = data['booking'];
+    currentData = [...bookingData].where(
+            (row) => (row['status'] == 'soon')
+    ).toList();
     print(currentData);
 
     if (res.statusCode == 200) {
@@ -166,7 +217,22 @@ class _BookingState extends State<Booking> {
   // ---------------
 
   void filterStatusData(statusIndex) {
-    // TODO
+    switch (statusIndex) {
+      case 1: filteringStatus = 'completed'; break;
+      case 2: filteringStatus = 'canceled'; break;
+      default:
+        filteringStatus = 'soon';
+    }
+    if (filteringType == 'any') {
+      filteredData = [...bookingData].where(
+              (row) => (row['status'] == filteringStatus)
+      ).toList();
+    } else {
+      filteredData = [...bookingData].where(
+              (row) => (row['bookingType'] == filteringType && row['status'] == filteringStatus)
+      ).toList();
+    }
+    print(filteredData);
     setState(() => {
       bookingStatus = statusIndex,
       currentData = filteredData,
@@ -174,7 +240,6 @@ class _BookingState extends State<Booking> {
   }
 
   void filterTypeData(typeIndex) {
-    String filteringType;
     switch (typeIndex) {
       case 1: filteringType = 'accommodation'; break;
       case 2: filteringType = 'flight'; break;
@@ -185,17 +250,19 @@ class _BookingState extends State<Booking> {
         filteringType = 'any';
     }
     if (filteringType == 'any') {
-      setState(() => {
-        bookingType = typeIndex,
-        currentData = bookingData,
-      });
+      filteredData = [...bookingData].where(
+              (row) => (row['status'] == filteringStatus)
+      ).toList();
     } else {
-      filteredData = [...bookingData].where((row) => (row['bookingType'] == filteringType)).toList();
-      setState(() => {
-        bookingType = typeIndex,
-        currentData = filteredData,
-      });
+      filteredData = [...bookingData].where(
+              (row) => (row['bookingType'] == filteringType && row['status'] == filteringStatus)
+      ).toList();
     }
+    print(filteredData);
+    setState(() => {
+      bookingType = typeIndex,
+      currentData = filteredData,
+    });
 
   }
 
@@ -203,7 +270,6 @@ class _BookingState extends State<Booking> {
   void initState() {
     super.initState();
     getBookingData();
-
   }
 
   @override
@@ -238,9 +304,7 @@ class _BookingState extends State<Booking> {
                     splashFactory: NoSplash.splashFactory,
                   ),
                   onPressed: () {
-                    setState(() => {
-                      bookingStatus = 0,
-                    });
+                    filterStatusData(0);
                   },
                   child: Text('เร็วๆ นี้',
                     style: TextStyle(
@@ -260,9 +324,7 @@ class _BookingState extends State<Booking> {
                     splashFactory: NoSplash.splashFactory,
                   ),
                   onPressed: () {
-                    setState(() => {
-                      bookingStatus = 1,
-                    });
+                    filterStatusData(1);
                   },
                   child: Text('เรียบร้อยแล้ว',
                     style: TextStyle(
@@ -283,9 +345,7 @@ class _BookingState extends State<Booking> {
                     splashFactory: NoSplash.splashFactory,
                   ),
                   onPressed: () {
-                    setState(() => {
-                      bookingStatus = 2,
-                    });
+                    filterStatusData(2);
                   },
                   child: Text('ที่ยกเลิก',
                     style: TextStyle(
@@ -491,13 +551,27 @@ class _BookingState extends State<Booking> {
                                 MaterialPageRoute(
                                     builder: (context) => hotelDetail(
                                         detail: currentData[index])))
-                          } else {
-                            // print('not accom'),
+                          } else if (currentData[index]['bookingType'] == 'transfer') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => transferDetail(
+                                  detail: currentData[index])))
+                          } else if (currentData[index]['bookingType'] == 'rentcar') {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => transferDetail(
+                                    builder: (context) => rentCarDetail(
                                         detail: currentData[index])))
+                          } else if (currentData[index]['bookingType'] == 'activity') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => activityDetail(
+                                        detail: currentData[index])))
+                          }
+                          else {
+                            print('INVALID TYPE'),
                           },
 
                         },
@@ -526,7 +600,7 @@ class _BookingState extends State<Booking> {
                                         borderRadius: const BorderRadius.only(
                                             topLeft: Radius.circular(20),
                                             topRight: Radius.circular(20)),
-                                        child: Image.asset('assets/images/homebg.png',
+                                        child: Image.network(getImageUrl(currentData[index]['bookingType']),
                                             height: 110,
                                             width: 160,
                                             fit: BoxFit.cover),
@@ -551,7 +625,7 @@ class _BookingState extends State<Booking> {
                                                 fontSize: 14),
                                           ),
                                           Text(
-                                            'UNDEFINED SUBTITLE',
+                                            getBookingSubtitle(currentData[index]),
                                             overflow: TextOverflow.ellipsis,
                                             style: const TextStyle(
                                                 color: secondaryColor,
@@ -562,6 +636,10 @@ class _BookingState extends State<Booking> {
                                             children: [
                                               if (currentData[index]['bookingType'] == 'accommodation')
                                                 Icon(Icons.calendar_today_outlined,
+                                                    color: boxColor,
+                                                    size: 14),
+                                              if (currentData[index]['bookingType'] == 'rentcar')
+                                                Icon(Icons.directions_car,
                                                     color: boxColor,
                                                     size: 14),
                                               SizedBox(width: 3,),
@@ -575,9 +653,14 @@ class _BookingState extends State<Booking> {
                                             ],
                                           ),
                                           Row(
+
                                             children: [
                                               if (currentData[index]['bookingType'] == 'accommodation')
                                                 Icon(Icons.alarm_off,
+                                                    color: boxColor,
+                                                    size: 14),
+                                              if (currentData[index]['bookingType'] == 'rentcar')
+                                                Icon(Icons.cancel_rounded,
                                                     color: boxColor,
                                                     size: 14),
                                               SizedBox(width: 3,),
@@ -641,4 +724,18 @@ class _BookingState extends State<Booking> {
       ),
     );
   }
+
+  String getImageUrl(type) {
+    if (type == 'accommodation')
+      return 'https://placeimg.com/640/480/any';
+    else if (type == 'transfer')
+      return 'https://t1.blockdit.com/photos/2020/11/5fb952383d4b9b0cc0fd7d2e_800x0xcover_3aaaqsST.jpg';
+    else if (type == 'rentcar')
+      return 'https://www.toyota.co.th/media/product/feature/large/e8d2cc60fa1d5467bc3a8b2b944677faa9c42502.jpg';
+    else if (type == 'activity')
+      return 'https://ik.imagekit.io/tvlk/xpe-asset/AyJ40ZAo1DOyPyKLZ9c3RGQHTP2oT4ZXW+QmPVVkFQiXFSv42UaHGzSmaSzQ8DO5QIbWPZuF+VkYVRk6gh-Vg4ECbfuQRQ4pHjWJ5Rmbtkk=/2000785513283/Health%2520Land%2520Pradit%2520Manutham%2520Spa%2520Treatments-f3388649-4fee-4630-8c1c-cec1fd1f36f7.jpeg?_src=imagekit&tr=c-at_max';
+    else
+      return 'https://placeimg.com/640/480/any';
+  }
+
 }
