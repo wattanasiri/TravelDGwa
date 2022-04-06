@@ -365,7 +365,7 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                           SizedBox(height: 10,),
                           const Divider(color: Color(0xff827E7E), thickness: 1.5),
                           SizedBox(height: 10,),
-                          commentAdd(detail: detail, type: type),
+                          commentAdd(detail: detail, type: type,loadComment: loadComment()),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: <Widget>[

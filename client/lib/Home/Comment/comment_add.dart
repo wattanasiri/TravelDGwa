@@ -15,11 +15,13 @@ import 'package:se_app2/Widgets/notif_ok.dart';
 class commentAdd extends StatefulWidget {
   final detail;
   final type;
+  final Future loadComment;
 
   commentAdd({
     Key key,
     @required this.detail,
     @required this.type,
+    @required this.loadComment
   }) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class _itemState extends State<commentAdd> {
   var detail;
   bool debounce = false;
   String type;
+  Future loadComment;
 
   double currentRating = 3;
 
@@ -155,6 +158,7 @@ class _itemState extends State<commentAdd> {
   void initState() {
     detail = widget.detail;
     type = widget.type;
+    loadComment = widget.loadComment;
   }
 
   @override
@@ -185,6 +189,7 @@ class _itemState extends State<commentAdd> {
                       onPressed: () {
                         if (_formKey.currentState.validate()) {
                           postComment();
+                          loadComment;
                         }
                       },
                       alignment: Alignment.topRight,
