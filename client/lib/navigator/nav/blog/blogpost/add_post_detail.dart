@@ -157,7 +157,7 @@ class _AddpostdetailState extends State<Addpostdetail> {
                   ],
                 ),
               ),
-
+              //รูปใหญ่ด้านบน
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 10),
                 child : Column(
