@@ -4,11 +4,21 @@ import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 
 import 'package:se_app2/Home/Attraction/tourism_result.dart';
 
+import '../../../Data/data_locations.dart';
+import 'Trip_detail.dart';
+
+
 class tripedit extends StatefulWidget {
+  List<dynamic> data;
+  var alltime,title;
+  Map dataquerymap;
+  String weather,adventure,sea,confidence,bagpack,budget,social ;
+  tripedit({this.weather,this.adventure,this.sea,this.confidence,this.social,this.bagpack,this.budget,this.data,this.alltime,this.title,this.dataquerymap});
 
   @override
 
@@ -23,7 +33,8 @@ class _tripeditState extends State<tripedit> {
   //เอาไว้สร้างตัวระหว่างทางเพิ่ม
   int btw = 2;
   //เอาไว้สร้างตัวระหว่างทางเพิ่ม
-
+  var currentstarttime,currentendtime;
+  Datalocation datalocation = Datalocation();
   @override
 
   Widget build(BuildContext context) {
@@ -56,9 +67,19 @@ class _tripeditState extends State<tripedit> {
           actions: [
             TextButton(
               onPressed: (){
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => tripedit())
-                );
+                Navigator.push(context, MaterialPageRoute(builder: (context) => tripdetail(
+                  data: widget.data,
+                  alltime: widget.alltime,
+                  title: widget.title,
+                  dataquerymap: widget.dataquerymap,
+                  weather : widget.weather,
+                  adventure :  widget.adventure,
+                  sea : widget.sea,
+                  confidence: widget.confidence,
+                  bagpack: widget.bagpack,
+                  budget: widget.budget,
+                  social : widget.social,
+                ),));
               },
               child: Text(
                 'บันทึก',
@@ -97,7 +118,7 @@ class _tripeditState extends State<tripedit> {
                       child:Row(
                         children: [
                           Flexible(child: Text(
-                            'ไปไหนก็ได้ที่อยากไปไม่ต้องรู้หรอกว่าจะไปไหน',
+                            widget.title,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -112,9 +133,7 @@ class _tripeditState extends State<tripedit> {
                               Boxicons.bxs_edit_alt,
                               color: Color(0xff1D3557),
                             ),
-                            onPressed: () {
-                              openEditNameDialog(context);
-                            },
+                            onPressed: () {},
                           ),
                         ],
                       ),
@@ -131,66 +150,26 @@ class _tripeditState extends State<tripedit> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
+                      SizedBox(width: 2,),
                       Text(
                         'เวลารวมของทริป',
                         style: TextStyle(fontWeight: FontWeight.w900,
                             fontSize: 17,color: Color(0xff1D3557) ),
                       ),
                       Container(
-
                         width: 170,
                         height: 60,
-                        decoration: BoxDecoration(
-                          color: const Color(0xffECFAFF),
-                          borderRadius: BorderRadius.circular(17),
-                          border: Border.all(color: const Color(0xff1D3557), width: 4),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
-                              spreadRadius: 1,
-                              blurRadius: 4,
-                              offset: const Offset(2, 4),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.access_time_outlined,color: Colors.black,),
+                            SizedBox(width: 10,),
+                            Text(
+                              widget.alltime + ' น.',
+                              style: TextStyle(fontWeight: FontWeight.w900,
+                                  fontSize: 17,color: Color(0xff1D3557) ),
                             ),
                           ],
-                        ),
-                        child: TextFormField(
-                          readOnly: true,
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
-                            hintText: 'ชั่วโมง/นาที',
-                            prefixIcon: Icon(Icons.access_time_outlined,color: Colors.black,),
-                            errorStyle: TextStyle(
-                              color: Colors.red,
-                              fontSize: 12,
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.transparent)),
-                          ),
-                          validator: (value) {
-                            if (value.isEmpty || value == null) {
-                              return 'กรุณาระบุเวลา';
-                            }
-                            return null;
-                          },
-                          //controller: _timegetcarcontroller,
-                          //focusNode: myFocusNode2,
-                          onTap: () async {
-                            TimeOfDay pickedTime =  await showTimePicker(
-                              initialTime: TimeOfDay.now(),
-                              context: context,
-                            );
-                            FocusScope.of(context)
-                                .requestFocus(FocusNode());
-
-                            if(pickedTime != null ){
-                              //DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
-                              //String formattedTime = DateFormat('HH:mm').format(parsedTime);
-                              //_timegetcarcontroller.text = formattedTime.toString();
-
-                            }else{
-                              print("Time is not selected");
-                            }
-                          },
                         ),
                       ),
                     ],
@@ -200,60 +179,7 @@ class _tripeditState extends State<tripedit> {
             ),
             //จบเวลารวม
             SizedBox(height: 10,),
-            //แผนที่
-            Container(
-              margin: const EdgeInsets.symmetric(
-                  horizontal: 10, vertical: 2),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    'เส้นทางและแผนที่',
-                    style: TextStyle(fontWeight: FontWeight.w900,
-                        fontSize: 17,color: Color(0xff1D3557) ),
-                  ),
-                  //ปุ่มเปิดแผนที่
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      InkWell(
-                        onTap: () => {},
-                        child: Container(
-                          margin:
-                          const EdgeInsets.symmetric(vertical: 10),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15),
-                          width: 168,
-                          height: 40,
-                          decoration: const BoxDecoration(
-                            color: Color(0xff1D3557),
-                            borderRadius:
-                            BorderRadius.all(Radius.circular(15)),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const <Widget>[
-                              Icon(Icons.map_rounded,
-                                  color: Color(0xffFF9A62)),
-                              SizedBox(width: 10),
-                              Text(
-                                'เปิดแผนที่',
-                                style: TextStyle(
-                                    color: Color(0xffECFAFF),
-                                    fontSize: 16),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  //จบปุ่มเปิดแผนที่
-                ],
-              ),
-            ),
-            //จบแผนที่
+
             SizedBox(height: 10,),
             //ต้นทาง
             Column(
@@ -302,9 +228,9 @@ class _tripeditState extends State<tripedit> {
                                       /*border: Border.all(
                                         color: const Color(0xff1D3557), width: 2)*/),
                                     child: TextFormField(
-                                      //controller: name,
-                                      decoration: const InputDecoration(
-                                        hintText: 'สถานที่ต้นทาง',
+                                      initialValue: widget.data[0]['name'],
+                                      decoration: InputDecoration(
+                                        hintText: widget.data[0]['name'],
                                         enabledBorder: UnderlineInputBorder(
                                             borderSide:
                                             BorderSide(color: Color(0xffECFAFF))),
@@ -317,7 +243,18 @@ class _tripeditState extends State<tripedit> {
                                         }
                                         return null;
                                       },
-                                      onChanged: (value) {
+                                      onFieldSubmitted: (value) {
+                                        print('1');
+                                        print(value);
+                                        currentstarttime =  widget.data[0]['starttime'];
+                                        currentendtime = widget.data[0]['endtime'];
+                                        for (int i = 0; i < datalocation.location.length; i++) {
+                                          if(value == datalocation.location[i]['name']) {
+                                            widget.data[0] = datalocation.location[i];
+                                          }
+                                        }
+                                        widget.data[0]['starttime'] = currentstarttime;
+                                        widget.data[0]['endtime'] = currentendtime;
                                         //word = value;
                                       },
                                     ),
@@ -369,9 +306,9 @@ class _tripeditState extends State<tripedit> {
                           ),
                           child: TextFormField(
                             readOnly: true,
-                            decoration: const InputDecoration(
+                            decoration:InputDecoration(
                               contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
-                              hintText: 'ชั่วโมง/นาที',
+                              hintText:  widget.data[0]['starttime'],
                               prefixIcon: Icon(Icons.access_time_outlined,color: Colors.black,),
                               errorStyle: TextStyle(
                                 color: Colors.red,
@@ -397,9 +334,10 @@ class _tripeditState extends State<tripedit> {
                                   .requestFocus(FocusNode());
 
                               if(pickedTime != null ){
-                                //DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
-                                //String formattedTime = DateFormat('HH:mm').format(parsedTime);
+                                DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
+                                String formattedTime = DateFormat('HH:mm').format(parsedTime);
                                 //_timegetcarcontroller.text = formattedTime.toString();
+                                widget.data[0]['starttime'] = formattedTime;
 
                               }else{
                                 print("Time is not selected");
@@ -413,7 +351,7 @@ class _tripeditState extends State<tripedit> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'เวลาจบของทริป',
+                          'เวลาสิ้นสุด',
                           style: TextStyle(fontWeight: FontWeight.w900,
                               fontSize: 15,color: Color(0xff1D3557) ),
                         ),
@@ -437,9 +375,9 @@ class _tripeditState extends State<tripedit> {
                           ),
                           child: TextFormField(
                             readOnly: true,
-                            decoration: const InputDecoration(
+                            decoration: InputDecoration(
                               contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
-                              hintText: 'ชั่วโมง/นาที',
+                              hintText: widget.data[0]['endtime'],
                               prefixIcon: Icon(Icons.access_time_outlined,color: Colors.black,),
                               errorStyle: TextStyle(
                                 color: Colors.red,
@@ -465,10 +403,10 @@ class _tripeditState extends State<tripedit> {
                                   .requestFocus(FocusNode());
 
                               if(pickedTime != null ){
-                                //DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
-                                //String formattedTime = DateFormat('HH:mm').format(parsedTime);
+                                DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
+                                String formattedTime = DateFormat('HH:mm').format(parsedTime);
                                 //_timegetcarcontroller.text = formattedTime.toString();
-
+                                widget.data[0]['endtime'] = formattedTime;
                               }else{
                                 print("Time is not selected");
                               }
@@ -491,7 +429,7 @@ class _tripeditState extends State<tripedit> {
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 //สร้างตัวระหว่างทาง
-                itemCount: btw,
+                itemCount: widget.data.length-2,
                 itemBuilder: (context,index){
                   return  Column(
                     children: [
@@ -540,8 +478,9 @@ class _tripeditState extends State<tripedit> {
                                         color: const Color(0xff1D3557), width: 2)*/),
                                           child: TextFormField(
                                             //controller: name,
-                                            decoration: const InputDecoration(
-                                              hintText: 'สถานที่ระหว่างทาง',
+                                            initialValue:widget.data[index+1]['name'] ,
+                                            decoration: InputDecoration(
+                                              hintText: widget.data[index+1]['name'],
                                               enabledBorder: UnderlineInputBorder(
                                                   borderSide:
                                                   BorderSide(color: Color(0xffECFAFF))),
@@ -554,7 +493,18 @@ class _tripeditState extends State<tripedit> {
                                               }
                                               return null;
                                             },
-                                            onChanged: (value) {
+                                            onFieldSubmitted: (value) {
+                                              print('1');
+                                              print(value);
+                                              currentstarttime =  widget.data[index+1]['starttime'];
+                                              currentendtime = widget.data[index+1]['endtime'];
+                                              for (int i = 0; i < datalocation.location.length; i++) {
+                                                if(value == datalocation.location[i]['name']) {
+                                                  widget.data[index+1] = datalocation.location[i];
+                                                }
+                                              }
+                                              widget.data[index+1]['starttime'] = currentstarttime;
+                                              widget.data[index+1]['endtime'] = currentendtime;
                                               //word = value;
                                             },
                                           ),
@@ -606,9 +556,9 @@ class _tripeditState extends State<tripedit> {
                                 ),
                                 child: TextFormField(
                                   readOnly: true,
-                                  decoration: const InputDecoration(
+                                  decoration: InputDecoration(
                                     contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
-                                    hintText: 'ชั่วโมง/นาที',
+                                    hintText: widget.data[index+1]['starttime'],
                                     prefixIcon: Icon(Icons.access_time_outlined,color: Colors.black,),
                                     errorStyle: TextStyle(
                                       color: Colors.red,
@@ -634,10 +584,10 @@ class _tripeditState extends State<tripedit> {
                                         .requestFocus(FocusNode());
 
                                     if(pickedTime != null ){
-                                      //DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
-                                      //String formattedTime = DateFormat('HH:mm').format(parsedTime);
+                                      DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
+                                      String formattedTime = DateFormat('HH:mm').format(parsedTime);
                                       //_timegetcarcontroller.text = formattedTime.toString();
-
+                                      widget.data[index+1]['starttime'] = formattedTime;
                                     }else{
                                       print("Time is not selected");
                                     }
@@ -650,7 +600,7 @@ class _tripeditState extends State<tripedit> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'เวลาจบของทริป',
+                                'เวลาสิ้นสุด',
                                 style: TextStyle(fontWeight: FontWeight.w900,
                                     fontSize: 15,color: Color(0xff1D3557) ),
                               ),
@@ -674,9 +624,9 @@ class _tripeditState extends State<tripedit> {
                                 ),
                                 child: TextFormField(
                                   readOnly: true,
-                                  decoration: const InputDecoration(
+                                  decoration: InputDecoration(
                                     contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
-                                    hintText: 'ชั่วโมง/นาที',
+                                    hintText: widget.data[index+1]['endtime'],
                                     prefixIcon: Icon(Icons.access_time_outlined,color: Colors.black,),
                                     errorStyle: TextStyle(
                                       color: Colors.red,
@@ -702,10 +652,10 @@ class _tripeditState extends State<tripedit> {
                                         .requestFocus(FocusNode());
 
                                     if(pickedTime != null ){
-                                      //DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
-                                      //String formattedTime = DateFormat('HH:mm').format(parsedTime);
+                                      DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
+                                      String formattedTime = DateFormat('HH:mm').format(parsedTime);
                                       //_timegetcarcontroller.text = formattedTime.toString();
-
+                                      widget.data[index+1]['endtime'] = formattedTime;
                                     }else{
                                       print("Time is not selected");
                                     }
@@ -714,9 +664,10 @@ class _tripeditState extends State<tripedit> {
                               ),
                             ],
                           ),
-                          Icon(Boxicons.bxs_trash,
-                        color: const Color(0xffF24E1E),
-                        size: 30),
+                          SizedBox(width: 20,),
+                          // Icon(Boxicons.bxs_trash,
+                          //     color: const Color(0xffF24E1E),
+                          //     size: 30),
                         ],
                       ),
                       SizedBox(height: 10,),
@@ -724,7 +675,7 @@ class _tripeditState extends State<tripedit> {
                   );
                 }
             ), //จบเวลา
-    /*SizedBox(height: 20,),
+            /*SizedBox(height: 20,),
             //ปุ่มสร้างที่แวะเพิ่ม
             ElevatedButton(
               /*onPressed: () {},
@@ -797,8 +748,9 @@ class _tripeditState extends State<tripedit> {
                                     color: const Color(0xff1D3557), width: 2)*/),
                                 child: TextFormField(
                                   //controller: name,
-                                  decoration: const InputDecoration(
-                                    hintText: 'สถานที่ปลายทาง',
+                                  initialValue: widget.data[widget.data.length - 1]['name'],
+                                  decoration: InputDecoration(
+                                    hintText: widget.data[widget.data.length - 1]['name'],
                                     enabledBorder: UnderlineInputBorder(
                                         borderSide:
                                         BorderSide(color: Color(0xffECFAFF))),
@@ -811,7 +763,16 @@ class _tripeditState extends State<tripedit> {
                                     }
                                     return null;
                                   },
-                                  onChanged: (value) {
+                                  onFieldSubmitted: (value) {
+                                    currentstarttime =  widget.data[widget.data.length - 1]['starttime'];
+                                    currentendtime = widget.data[widget.data.length - 1]['endtime'];
+                                    for (int i = 0; i < datalocation.location.length; i++) {
+                                      if(value == datalocation.location[i]['name']) {
+                                        widget.data[widget.data.length - 1] = datalocation.location[i];
+                                      }
+                                    }
+                                    widget.data[widget.data.length - 1]['starttime'] = currentstarttime;
+                                    widget.data[widget.data.length - 1]['endtime'] = currentendtime;
                                     //word = value;
                                   },
                                 ),
@@ -862,9 +823,9 @@ class _tripeditState extends State<tripedit> {
                       ),
                       child: TextFormField(
                         readOnly: true,
-                        decoration: const InputDecoration(
+                        decoration: InputDecoration(
                           contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
-                          hintText: 'ชั่วโมง/นาที',
+                          hintText: widget.data[widget.data.length - 1]['starttime'],
                           prefixIcon: Icon(Icons.access_time_outlined,color: Colors.black,),
                           errorStyle: TextStyle(
                             color: Colors.red,
@@ -890,9 +851,10 @@ class _tripeditState extends State<tripedit> {
                               .requestFocus(FocusNode());
 
                           if(pickedTime != null ){
-                            //DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
-                            //String formattedTime = DateFormat('HH:mm').format(parsedTime);
+                            DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
+                            String formattedTime = DateFormat('HH:mm').format(parsedTime);
                             //_timegetcarcontroller.text = formattedTime.toString();
+                            widget.data[widget.data.length - 1]['starttime'] = formattedTime;
 
                           }else{
                             print("Time is not selected");
@@ -906,31 +868,74 @@ class _tripeditState extends State<tripedit> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'เวลาจบของทริป',
+                      'เวลาสิ้นสุด',
                       style: TextStyle(fontWeight: FontWeight.w900,
                           fontSize: 15,color: Color(0xff1D3557) ),
                     ),
                     Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 2),
                       width: 140,
                       height: 60,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(Icons.access_time_outlined,color: Colors.black,),
-                          SizedBox(width: 10,),
-                          Text(
-                            '12:00 น.',
-                            style: TextStyle(fontWeight: FontWeight.w900,
-                                fontSize: 17,color: Color(0xff1D3557) ),
+                      decoration: BoxDecoration(
+                        color: const Color(0xffECFAFF),
+                        border: Border.all(color: const Color(0xff1D3557), width: 4),
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.3),
+                            spreadRadius: 1,
+                            blurRadius: 4,
+                            offset: const Offset(2, 4),
                           ),
                         ],
+                      ),
+                      child: TextFormField(
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
+                          hintText: widget.data[widget.data.length - 1]['endtime'],
+                          prefixIcon: Icon(Icons.access_time_outlined,color: Colors.black,),
+                          errorStyle: TextStyle(
+                            color: Colors.red,
+                            fontSize: 12,
+                          ),
+                          enabledBorder: UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.transparent)),
+                        ),
+                        validator: (value) {
+                          if (value.isEmpty || value == null) {
+                            return 'กรุณาระบุเวลา';
+                          }
+                          return null;
+                        },
+                        //controller: _timegetcarcontroller,
+                        //focusNode: myFocusNode2,
+                        onTap: () async {
+                          TimeOfDay pickedTime =  await showTimePicker(
+                            initialTime: TimeOfDay.now(),
+                            context: context,
+                          );
+                          FocusScope.of(context)
+                              .requestFocus(FocusNode());
+
+                          if(pickedTime != null ){
+                            DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
+                            String formattedTime = DateFormat('HH:mm').format(parsedTime);
+                            //_timegetcarcontroller.text = formattedTime.toString();
+                            widget.data[widget.data.length - 1]['endtime'] = formattedTime;
+
+                          }else{
+                            print("Time is not selected");
+                          }
+                        },
                       ),
                     ),
                   ],
                 ),
                 Icon(Boxicons.bxs_trash,
-                        color: const Color(0xffFFF4DC),
-                        size: 30),
+                    color: const Color(0xffFFF4DC),
+                    size: 30),
               ],
             ),
             //จบปลายทาง
@@ -939,27 +944,5 @@ class _tripeditState extends State<tripedit> {
       ),
     );
   }
-  Future openEditNameDialog(BuildContext context) => showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text(
-          'ชื่อทริป',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-        content: TextFormField(
-          autofocus: true,
-        ),
-        actions: [
-          TextButton(
-              onPressed: () async {
-                setState(() {
-                  //word = nameEdit.text;
-                });
-                //ดึงข้อมูล
-                //get....();
-                Navigator.of(context).pop();
-              },
-              child: const Text('ตกลง'))
-        ],
-      ));
+
 }

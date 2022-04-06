@@ -7,28 +7,105 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 
 import 'package:se_app2/Home/Attraction/tourism_result.dart';
-import 'package:se_app2/navigator/nav/tripwithAI/trip_edit.dart';
-
+import 'package:http/http.dart' as http;
+import '../../../Data/data_currentuser.dart';
+import 'Trip_edit.dart';
+import 'Trip_start.dart';
+import 'map.dart';
 class tripdetail extends StatefulWidget {
-
+  List<dynamic> data;
+  Map dataquerymap;
+  var alltime,title;
+  String weather,adventure,sea,confidence,bagpack,budget,social ;
+  tripdetail({this.weather,this.adventure,this.sea,this.confidence,this.social,this.bagpack,this.budget,this.data,this.alltime,this.title,this.dataquerymap});
   @override
 
   _tripdetailState createState() => _tripdetailState();
 }
 
 class _tripdetailState extends State<tripdetail> {
-  bool begincheck = false;
-  bool sdiecheck = false;
-  bool endcheck = false;
+  // Generating a long list to fill the ListView
+  // bool begincheck = false;
+  // bool sdiecheck = false;
+  // bool endcheck = false;
   // Generating a long list to fill the ListView
   final List<Map> checkbox = List.generate(100,
           (index) => {'id': index, 'name': 'Item $index', 'isSelected': false});
+  //เอาไว้สร้างตัวระหว่างทางเพิ่ม
+  int btw = 0;
+  //เอาไว้สร้างตัวระหว่างทางเพิ่ม
+  Datauser datauser = Datauser();
+  // Future save() async {
+  //   var res = await http.post(Uri.parse('http://10.0.2.2:8080/map/savetrip'),
+  //       headers: <String, String>{
+  //         'Context-Type': 'application/json;charSet=UTF-8'
+  //       },
+  //       body: <String, String>{
+  //         "usernameID" : datauser.id,
+  //         "title": widget.title,
+  //       });
+  //
+  // }
 
-  //เอาไว้สร้างตัวระหว่างทางเพิ่ม
-  int btw = 2;
-  //เอาไว้สร้างตัวระหว่างทางเพิ่ม
+  Future update() async {
+    print('update');
+    print(widget.data);
+    print(widget.data[0]['name']);
+    print(widget.data[1]['name']);
+    List<String> location ;
+    List<String> starttime;
+    List<String> endtime ;
+    List<String> title ;
+    List<String> usernameID ;
+    List<String> alltime ;
+    Map<String,String> data;
+    data={
+      "location[]": location.toString(),
+      "starttime[]": starttime.toString(),
+      "endtime[]": endtime.toString(),
+      "title[]": title.toString(),
+      "usernameID[]": usernameID.toString(),
+      "alltimeID[]": alltime.toString(),
+    };
+    for(int i = 0;i < widget.data.length ; i++){
+      data.addAll({"location[$i]": widget.data[i]['name']});
+    }
+    for(int i = 0;i < widget.data.length ; i++){
+      data.addAll({"starttime[$i]": widget.data[i]['starttime']});
+    }
+    for(int i = 0;i < widget.data.length ; i++){
+      data.addAll({"endtime[$i]": widget.data[i]['endtime']});
+    }
+    int i =0;
+    data.addAll({"title[$i]": widget.title});
+    data.addAll({"usernameID[$i]": datauser.id});
+    data.addAll({"alltime[$i]": widget.alltime});
+    // for(int i = 0;i < name_extrapay.length ; i++){
+    //   data.addAll({"name_extrapay[$i]":name_extrapay[i]});
+    // }
+    // for(int i = 0;i < price_extrapay.length ; i++){
+    //   data.addAll({"price_extrapay[$i]":price_extrapay[i]});
+    // }
+
+    var res = await http.post(Uri.parse('http://10.0.2.2:8080/map/updatetrip'),
+        headers: <String, String>{
+          'Context-Type': 'application/json;charSet=UTF-8'
+        },
+      body: data,
+    );
+    print(res.body);
+  }
 
   @override
+  void initState() {
+    super.initState();
+    print('data');
+    print(widget.data);
+    print(widget.data[widget.data.length - 1]);
+    print(widget.alltime);
+    print(widget.data.length);
+    // widget.data.removeAt(0);
+  }
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,11 +116,11 @@ class _tripdetailState extends State<tripdetail> {
           centerTitle: true,
           backgroundColor: const Color(0xff1D3557),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_rounded,
-                color: Color(0xffECFAFF)),
-            onPressed: () {
-              Navigator.of(context).pop();
-            }
+              icon: const Icon(Icons.arrow_back_ios_rounded,
+                  color: Color(0xffECFAFF)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }
           ),
           title: const Text(
             'ข้อมูลทริป',
@@ -61,7 +138,19 @@ class _tripdetailState extends State<tripdetail> {
             TextButton(
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => tripedit())
+                    builder: (context) => tripedit(
+                      data: widget.data,
+                      alltime: widget.alltime,
+                      title: widget.title,
+                      dataquerymap: widget.dataquerymap,
+                      weather : widget.weather,
+                      adventure :  widget.adventure,
+                      sea : widget.sea,
+                      confidence: widget.confidence,
+                      bagpack: widget.bagpack,
+                      budget: widget.budget,
+                      social : widget.social,
+                    ))
                 );
               },
               child: Text(
@@ -85,23 +174,23 @@ class _tripdetailState extends State<tripdetail> {
             Column(
               children: [
                 Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(width: 30,),
-                      Text(
-                        'ชื่อ  ทริป',
-                        style: TextStyle(
-                          fontSize: 17,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xff1D3557),
-                        ),
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(width: 30,),
+                    Text(
+                      'ชื่อ  ทริป',
+                      style: TextStyle(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xff1D3557),
                       ),
-                      SizedBox(width: 50,),
-                      Flexible(
-                        child:Row(
+                    ),
+                    SizedBox(width: 50,),
+                    Flexible(
+                      child:Row(
                         children: [
                           Flexible(child: Text(
-                            'ไปไหนก็ได้ที่อยากไปไม่ต้องรู้หรอกว่าจะไปไหน',
+                            widget.title,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -111,24 +200,24 @@ class _tripdetailState extends State<tripdetail> {
                             ),
                           ),
                           ),
-                          /*IconButton(
+                          IconButton(
                             icon: const Icon(
                               Boxicons.bxs_edit_alt,
                               color: Color(0xff1D3557),
                             ),
                             onPressed: () {},
-                          ),*/
+                          ),
                         ],
                       ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
+                ),
                 //จบชื่อทริป
                 SizedBox(height: 10,),
                 //เวลารวม
                 Container(
                   margin: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 2),
+                      horizontal: 10, vertical: 2),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -147,13 +236,13 @@ class _tripdetailState extends State<tripdetail> {
                             Icon(Icons.access_time_outlined,color: Colors.black,),
                             SizedBox(width: 10,),
                             Text(
-                              '12:00 น.',
+                              widget.alltime + ' น.',
                               style: TextStyle(fontWeight: FontWeight.w900,
                                   fontSize: 17,color: Color(0xff1D3557) ),
                             ),
                           ],
-                          ),
                         ),
+                      ),
                     ],
                   ),
                 ),
@@ -179,7 +268,13 @@ class _tripdetailState extends State<tripdetail> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       InkWell(
-                        onTap: () => {},
+                        onTap: () => {
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => MapSample(
+                        data: widget.data,
+
+                        ),))
+
+                      },
                         child: Container(
                           margin:
                           const EdgeInsets.symmetric(vertical: 10),
@@ -256,27 +351,27 @@ class _tripdetailState extends State<tripdetail> {
                         size: 30),
                     SizedBox(width: 2,),
                     Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 2),
-                        width: 320,
-                        height: 60,
-                        decoration: BoxDecoration(
-                          color: const Color(0xffFCD88D),
-                          borderRadius: BorderRadius.circular(25),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16, vertical: 2),
+                      width: 320,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        color: const Color(0xffFCD88D),
+                        borderRadius: BorderRadius.circular(25),
 
-                          /*border: Border.all(
+                        /*border: Border.all(
                                         color: const Color(0xff1D3557), width: 2)*/),
-                        child:Row(
-                          children : [
-                            Text(
-                              'สถานที่ต้นทาง',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontWeight: FontWeight.w900,
-                                  fontSize: 17,color: Color(0xff1D3557) ),
-                            ),
-                          ],
-                        ),
+                      child:Row(
+                        children : [
+                          Text(
+                      widget.data[0]['name'].length > 35 ? widget.data[0]['name'].substring(0,35)+'...' : widget.data[0]['name'],
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.w900,
+                                fontSize: 17,color: Color(0xff1D3557) ),
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -310,7 +405,7 @@ class _tripdetailState extends State<tripdetail> {
                               Icon(Icons.access_time_outlined,color: Colors.black,),
                               SizedBox(width: 10,),
                               Text(
-                                '12:00 น.',
+                                '${widget.data[0]['starttime']} น.',
                                 style: TextStyle(fontWeight: FontWeight.w900,
                                     fontSize: 17,color: Color(0xff1D3557) ),
                               ),
@@ -324,7 +419,7 @@ class _tripdetailState extends State<tripdetail> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'เวลาจบของทริป',
+                          'เวลาสิ้นสุด',
                           style: TextStyle(fontWeight: FontWeight.w900,
                               fontSize: 15,color: Color(0xff1D3557) ),
                         ),
@@ -340,7 +435,7 @@ class _tripdetailState extends State<tripdetail> {
                               Icon(Icons.access_time_outlined,color: Colors.black,),
                               SizedBox(width: 10,),
                               Text(
-                                '12:00 น.',
+                                '${widget.data[0]['endtime']} น.',
                                 style: TextStyle(fontWeight: FontWeight.w900,
                                     fontSize: 17,color: Color(0xff1D3557) ),
                               ),
@@ -349,10 +444,10 @@ class _tripdetailState extends State<tripdetail> {
                         ),
                       ],
                     ),
-                    Checkbox(
-                        value: begincheck,
-                        onChanged: (begincheck) => setState(() => this.begincheck = begincheck),
-                    )
+                    // Checkbox(
+                    //   value: begincheck,
+                    //   onChanged: (begincheck) => setState(() => this.begincheck = begincheck),
+                    // )
                   ],
                 ),
               ],
@@ -364,7 +459,7 @@ class _tripdetailState extends State<tripdetail> {
                 physics: NeverScrollableScrollPhysics(),
                 shrinkWrap: true,
                 //สร้างตัวระหว่างทาง
-                itemCount: btw,
+                itemCount: widget.data.length - 2,
                 itemBuilder: (context,index){
                   return  Column(
                     children: [
@@ -418,7 +513,7 @@ class _tripdetailState extends State<tripdetail> {
                             child:Row(
                               children : [
                                 Text(
-                                  'สถานที่ระหว่างทาง',
+                                  widget.data[index+1]['name'].length > 35 ? widget.data[index+1]['name'].substring(0,35)+'...' : widget.data[index+1]['name'],
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(fontWeight: FontWeight.w900,
@@ -459,7 +554,7 @@ class _tripdetailState extends State<tripdetail> {
                                     Icon(Icons.access_time_outlined,color: Colors.black,),
                                     SizedBox(width: 10,),
                                     Text(
-                                      '12:00 น.',
+                                      '${widget.data[index+1]['starttime']} น.',
                                       style: TextStyle(fontWeight: FontWeight.w900,
                                           fontSize: 17,color: Color(0xff1D3557) ),
                                     ),
@@ -473,7 +568,7 @@ class _tripdetailState extends State<tripdetail> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'เวลาจบของทริป',
+                                'เวลาสิ้นสุด',
                                 style: TextStyle(fontWeight: FontWeight.w900,
                                     fontSize: 15,color: Color(0xff1D3557) ),
                               ),
@@ -489,7 +584,7 @@ class _tripdetailState extends State<tripdetail> {
                                     Icon(Icons.access_time_outlined,color: Colors.black,),
                                     SizedBox(width: 10,),
                                     Text(
-                                      '12:00 น.',
+                                      '${widget.data[index+1]['endtime']} น.',
                                       style: TextStyle(fontWeight: FontWeight.w900,
                                           fontSize: 17,color: Color(0xff1D3557) ),
                                     ),
@@ -498,10 +593,10 @@ class _tripdetailState extends State<tripdetail> {
                               ),
                             ],
                           ),
-                          Checkbox(
-                            value: sdiecheck,
-                            onChanged: (sdiecheck) => setState(() => this.sdiecheck = sdiecheck),
-                          )
+                          // Checkbox(
+                          //   value: sdiecheck,
+                          //   onChanged: (sdiecheck) => setState(() => this.sdiecheck = sdiecheck),
+                          // )
                         ],
                       ),
                       SizedBox(height: 10,),
@@ -570,7 +665,7 @@ class _tripdetailState extends State<tripdetail> {
                             child:Row(
                               children : [
                                 Text(
-                                  'สถานที่ปลายทาง',
+                                  widget.data[widget.data.length - 1]['name'].length > 35 ? widget.data[widget.data.length - 1]['name'].substring(0,35)+'...' : widget.data[widget.data.length - 1]['name'],
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(fontWeight: FontWeight.w900,
@@ -611,7 +706,7 @@ class _tripdetailState extends State<tripdetail> {
                                     Icon(Icons.access_time_outlined,color: Colors.black,),
                                     SizedBox(width: 10,),
                                     Text(
-                                      '12:00 น.',
+                                      '${widget.data[widget.data.length - 1]['starttime']} น.',
                                       style: TextStyle(fontWeight: FontWeight.w900,
                                           fontSize: 17,color: Color(0xff1D3557) ),
                                     ),
@@ -625,7 +720,7 @@ class _tripdetailState extends State<tripdetail> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'เวลาจบของทริป',
+                                'เวลาสิ้นสุด',
                                 style: TextStyle(fontWeight: FontWeight.w900,
                                     fontSize: 15,color: Color(0xff1D3557) ),
                               ),
@@ -641,7 +736,7 @@ class _tripdetailState extends State<tripdetail> {
                                     Icon(Icons.access_time_outlined,color: Colors.black,),
                                     SizedBox(width: 10,),
                                     Text(
-                                      '12:00 น.',
+                                      '${widget.data[widget.data.length - 1]['endtime']} น.',
                                       style: TextStyle(fontWeight: FontWeight.w900,
                                           fontSize: 17,color: Color(0xff1D3557) ),
                                     ),
@@ -650,10 +745,10 @@ class _tripdetailState extends State<tripdetail> {
                               ),
                             ],
                           ),
-                          Checkbox(
-                            value: endcheck,
-                            onChanged: (endcheck) => setState(() => this.endcheck = endcheck),
-                          )
+                          // Checkbox(
+                          //   value: endcheck,
+                          //   onChanged: (endcheck) => setState(() => this.endcheck = endcheck),
+                          // )
                         ],
                       ),
                     ],
@@ -671,7 +766,23 @@ class _tripdetailState extends State<tripdetail> {
                             backgroundColor: MaterialStateProperty.all<Color>(Color(0xff7BEE99)),
                             shadowColor: MaterialStateProperty.all<Color>(Color(0xff7BEE99)),
                         ),*/
-              onPressed: () {},
+              onPressed: () async {
+                // save();
+                update();
+                Navigator.push(context, MaterialPageRoute(builder: (context) => tripstart(
+                  data: widget.data,
+                  alltime: widget.alltime,
+                  title: widget.title,
+                  dataquerymap: widget.dataquerymap,
+                  weather : widget.weather,
+                  adventure :  widget.adventure,
+                  sea : widget.sea,
+                  confidence: widget.confidence,
+                  bagpack: widget.bagpack,
+                  budget: widget.budget,
+                  social : widget.social,
+                ),));
+              },
               style: ElevatedButton.styleFrom(
                 onPrimary: const Color(0xff7BEE99),
                 primary: const Color(0xff7BEE99),
