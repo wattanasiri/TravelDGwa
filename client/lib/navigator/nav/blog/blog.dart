@@ -811,8 +811,8 @@ class _BlogState extends State<Blog> {
                                                   topLeft: Radius.circular(20),
                                                   topRight: Radius.circular(20)),
                                               child: Image.network(
-                                                  //"${widget.result2[index]['image'][0]}",
-                                                "https://i.ytimg.com/vi/Eanaq7dw9Hk/maxresdefault.jpg",
+                                                  //"${recentBlog[index]['image'][0]}",
+                                                  "https://i.ytimg.com/vi/Eanaq7dw9Hk/maxresdefault.jpg",
                                                   height: 150,
                                                   width: MediaQuery.of(context).size.width,
                                                   fit: BoxFit.cover),
