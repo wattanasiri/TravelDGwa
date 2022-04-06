@@ -1,23 +1,59 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:getwidget/components/card/gf_card.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:se_app2/Home/Attraction/tourism_detail.dart';
-import 'package:http/http.dart' as http;
-import 'package:flutter_boxicons/flutter_boxicons.dart';
+import 'dart:async';
 import 'dart:convert';
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_boxicons/flutter_boxicons.dart';
+import 'package:ionicons/ionicons.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:http/http.dart' as http;
 
-import 'package:se_app2/Home/Attraction/tourism_result.dart';
-
-import '../blog/blogpost/add_post_detail.dart';
+import '../../../Data/data_currentuser.dart';
+import 'mapmain.dart';
 
 class lifestyle extends StatefulWidget {
+  Map dataquerymap;
+  lifestyle({this.dataquerymap});
+
   @override
   State<lifestyle> createState() => _lifestyleState();
 }
 
 class _lifestyleState extends State<lifestyle> {
+  String weather, adventure, sea, confidence, bagpack, budget, social = '0';
+  Map dataafterquery;
+  Datauser datauser = Datauser();
+
+  // Future readdata() async{
+  //   http.Response res2 =
+  //       await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/infolifestyleuser'));
+  //   dataafterquery = json.decode(res2.body);
+  //   print('dataafterquery');
+  //   print(dataafterquery);
+  //
+  // }
+  Future savedata() async {
+    print('save data');
+    print('id');
+    print(datauser.id);
+    var res = await http.post(
+        Uri.parse('http://10.0.2.2:8080/map/register_mapinfo'),
+        headers: <String, String>{
+          'Context-Type': 'application/json;charSet=UTF-8'
+        },
+        body: <String, String>{
+          "usernameID": datauser.id,
+          "weather": weather,
+          "adventure": adventure,
+          "sea": sea,
+          "confidence": confidence,
+          "bagpack": bagpack,
+          "budget": budget,
+          "social": social,
+        });
+    print(res.body);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,11 +94,21 @@ class _lifestyleState extends State<lifestyle> {
             //weather
             Column(
               children: [
+                Text(
+                  'เก็บข้อมูล lifestyle ของคุณเพื่อทำการคำนวนว่าคุณชอบสถานที่แบบใดในการท่องเที่ยว Ex คุณชอบอากาศที่อบอุ่นไม่ร้อนหนาวเกินไปคุณสามารถเลือกสภาพอากาศเป็นระดับ 3 ได้',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      fontSize: 13,
+                      color: Colors.black38),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Weather',
+                      'สภาพอากาศ',
                       style:
                           TextStyle(fontWeight: FontWeight.w900, fontSize: 20),
                     ),
@@ -195,6 +241,7 @@ class _lifestyleState extends State<lifestyle> {
                       },
                       //function
                       onRatingUpdate: (rating) {
+                        weather = rating.toInt().toString();
                         print(rating);
                       },
                     ),
@@ -213,7 +260,7 @@ class _lifestyleState extends State<lifestyle> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Adventure',
+                      'กิจกรรม',
                       style:
                           TextStyle(fontWeight: FontWeight.w900, fontSize: 20),
                     ),
@@ -307,7 +354,7 @@ class _lifestyleState extends State<lifestyle> {
                       },
                       //function
                       onRatingUpdate: (rating) {
-                        print(rating);
+                        adventure = rating.toInt().toString();
                       },
                     ),
                   ],
@@ -325,7 +372,7 @@ class _lifestyleState extends State<lifestyle> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Environmet',
+                      'ธรรมชาติ',
                       style:
                           TextStyle(fontWeight: FontWeight.w900, fontSize: 20),
                     ),
@@ -417,7 +464,7 @@ class _lifestyleState extends State<lifestyle> {
                       },
                       //function
                       onRatingUpdate: (rating) {
-                        print(rating);
+                        sea = rating.toInt().toString();
                       },
                     ),
                   ],
@@ -435,7 +482,7 @@ class _lifestyleState extends State<lifestyle> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Confidence',
+                      'ความสะดวกสบาย',
                       style:
                           TextStyle(fontWeight: FontWeight.w900, fontSize: 20),
                     ),
@@ -527,7 +574,7 @@ class _lifestyleState extends State<lifestyle> {
                       },
                       //function
                       onRatingUpdate: (rating) {
-                        print(rating);
+                        confidence = rating.toInt().toString();
                       },
                     ),
                   ],
@@ -545,7 +592,7 @@ class _lifestyleState extends State<lifestyle> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Backpack',
+                      'เที่ยวคนเดียว',
                       style:
                           TextStyle(fontWeight: FontWeight.w900, fontSize: 20),
                     ),
@@ -571,7 +618,7 @@ class _lifestyleState extends State<lifestyle> {
                           width: 5,
                         ),
                         Text(
-                          'สายวันเดียว',
+                          'เที่ยวเป็นกลุ่ม',
                           style: TextStyle(
                               fontWeight: FontWeight.w400, fontSize: 20),
                         ),
@@ -581,7 +628,7 @@ class _lifestyleState extends State<lifestyle> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'สายหลายวัน',
+                            'เที่ยวคนเดียว',
                             style: TextStyle(
                                 fontWeight: FontWeight.w100, fontSize: 20),
                           ),
@@ -637,7 +684,7 @@ class _lifestyleState extends State<lifestyle> {
                       },
                       //function
                       onRatingUpdate: (rating) {
-                        print(rating);
+                        bagpack = rating.toInt().toString();
                       },
                     ),
                   ],
@@ -655,7 +702,7 @@ class _lifestyleState extends State<lifestyle> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Budget',
+                      'งบประมาณ',
                       style:
                           TextStyle(fontWeight: FontWeight.w900, fontSize: 20),
                     ),
@@ -747,7 +794,7 @@ class _lifestyleState extends State<lifestyle> {
                       },
                       //function
                       onRatingUpdate: (rating) {
-                        print(rating);
+                        budget = rating.toInt().toString();
                       },
                     ),
                   ],
@@ -765,7 +812,7 @@ class _lifestyleState extends State<lifestyle> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Confidence',
+                      'โซเชียล ',
                       style:
                           TextStyle(fontWeight: FontWeight.w900, fontSize: 20),
                     ),
@@ -857,10 +904,64 @@ class _lifestyleState extends State<lifestyle> {
                       },
                       //function
                       onRatingUpdate: (rating) {
-                        print(rating);
+                        social = rating.toInt().toString();
                       },
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                const Divider(
+                  height: 10,
+                  thickness: 1,
+                  indent: 25,
+                  endIndent: 25,
+                  color: Color(0xFF757575),
+                ),
+                Container(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: RaisedButton(
+                          onPressed: () {
+                            savedata();
+                            // readdata();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Mapmain(
+                                          dataquerymap: widget.dataquerymap,
+                                          weather: weather.toString(),
+                                          adventure: adventure.toString(),
+                                          sea: sea.toString(),
+                                          confidence: confidence.toString(),
+                                          bagpack: bagpack.toString(),
+                                          budget: budget.toString(),
+                                          social: social.toString(),
+                                        )));
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              'บันทึก',
+                              style: TextStyle(
+                                  fontSize: 21.0,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xffFFF4DC)),
+                            ),
+                          ),
+                          color: Color(0xff1D3557),
+                          shape: RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.circular(12), // <-- Radius
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

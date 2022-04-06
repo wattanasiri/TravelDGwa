@@ -10,6 +10,7 @@ import 'package:se_app2/constants.dart';
 import 'package:se_app2/navigator/nav/blog/blog_detail.dart';
 import '../../../../Home/Attraction/tourism_detail.dart';
 import '../../../../Home/Attraction/tourist_attraction.dart';
+import '../../tripwithAI/mapmain.dart';
 import '../../../../Home/Restaurant/restau_detail.dart';
 import '../../../../Home/Restaurant/restaurant.dart';
 import '../../blog/blogpost/add_post_detail.dart';
@@ -106,7 +107,7 @@ class Home extends StatelessWidget {
                 HomeButton(
                     icon: 'assets/icons/05.png',
                     text: 'แผนที่',
-                    route: lifestyle()),
+                    route: Mapmain()),
               ],
             ),
             SizedBox(height: size.height * 0.016),

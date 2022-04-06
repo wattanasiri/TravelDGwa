@@ -1,10 +1,11 @@
+import 'dart:convert';
+
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:se_app2/navigator/nav/home/components/body.dart';
-
 import '/navigator/nav/blog/blog.dart';
 import '/navigator/nav/booking/booking.dart';
 import '/navigator/nav/mainhome/mainhome.dart';
@@ -32,7 +33,7 @@ class _NavState extends State<Nav> {
   ];
 
   void _onItemTap(int index) {
-    setState(()  {
+    setState((){
       if (_selectedIndex >= index){
         isLeft = true;
       } else {

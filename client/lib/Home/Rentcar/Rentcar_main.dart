@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:google_place/google_place.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:se_app2/Data/data_currentuser.dart';
@@ -199,6 +200,11 @@ class _rentcarState extends State<rentcar> {
     http.Response res =
     await http.get(Uri.parse("http://10.0.2.2:8080/rentcar/" + id + '/queryrentcar'));
     dataafterquery = json.decode(res.body);
+    print('dataafterquery');
+    print(dataafterquery);
+    print(dataafterquery.runtimeType);
+    print(dataafterquery['foundCar']);
+    print(dataafterquery['foundCar'].runtimeType);
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Rentcar_info(
       dategetcar: _dategetcarcontroller.text,
       timegetcar: _timegetcarcontroller.text,
@@ -224,8 +230,19 @@ class _rentcarState extends State<rentcar> {
   FocusNode myFocusNode4 = FocusNode();
   final GlobalKey<FormState> _formKey = GlobalKey();
 
+  void test() async{
+    // AIzaSyC4gc3Gu8CQIetCYBatxK4sF7xv653fEJM
+    var googlePlace = GooglePlace("AIzaSyC4gc3Gu8CQIetCYBatxK4sF7xv653fEJM");
+    var result = await googlePlace.search.getNearBySearch(
+        Location(lat: -33.8670522, lng: 151.1957362), 1500,
+        type: "restaurant", keyword: "cruise");
+    print(result);
+    print(result.status);
+
+  }
   @override
   void initState() {
+    test();
     // save();
     super.initState();
 
