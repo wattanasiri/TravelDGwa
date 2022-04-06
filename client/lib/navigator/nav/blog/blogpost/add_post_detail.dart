@@ -29,7 +29,7 @@ class _AddpostdetailState extends State<Addpostdetail> {
   FocusNode topicFocusNode = FocusNode();
   FocusNode locationFocusNode = FocusNode();
   FocusNode descFocusNode = FocusNode();
-  
+
 
   Future addBlog() async {
     // allRooms = room_detail;
@@ -264,16 +264,16 @@ class _AddpostdetailState extends State<Addpostdetail> {
                                             borderRadius: BorderRadius.circular(15),
                                             border: Border.all(color: const Color(0xffECFAFF), width: 2)
                                         ),
-                                        child: Flexible(child:
-                                        TextFormField(
+                                        child: TextFormField(
+                                          maxLines: null,
                                           decoration: const InputDecoration(
                                             hintText: 'เนื้อหา ',
+
                                             enabledBorder: UnderlineInputBorder(
                                                 borderSide: BorderSide(color: Color(0xffECFAFF))),
                                           ),
                                           controller: desc,
                                           focusNode: descFocusNode,
-                                        ),
                                         )
                                     ),
                                   ]
