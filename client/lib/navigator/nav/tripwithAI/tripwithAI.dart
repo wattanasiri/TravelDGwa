@@ -341,10 +341,8 @@ class _TripWithAIState extends State<TripWithAI> {
                             backgroundColor: MaterialStateProperty.all<Color>(Color(0xff7BEE99)),
                             shadowColor: MaterialStateProperty.all<Color>(Color(0xff7BEE99)),
                         ),*/
-                        onPressed: (){
-                          Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => tripdetail())
-                          );
+                        onPressed: () {
+                          openEditNameDialog(context);
                         },
                         style: ElevatedButton.styleFrom(
                           onPrimary: const Color(0xff7BEE99),
@@ -355,7 +353,7 @@ class _TripWithAIState extends State<TripWithAI> {
                           ),
                         ),
                         child: const Text(
-                          'ค้นหาสถานที่ท่องเที่ยว',
+                          'สร้างทริป',
                           style: TextStyle(color: Color(0xff1D3557), fontSize: 20),
                         ),
                       ),
@@ -369,6 +367,13 @@ class _TripWithAIState extends State<TripWithAI> {
             borderRadius: BorderRadius.vertical(
               bottom: Radius.circular(12),
             ),
+          ),
+          leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_rounded,
+                  color: Color(0xffECFAFF)),
+              onPressed: () {
+                Navigator.of(context).pop();
+              }
           ),
           title: const Text(
             'การจัดทริป',
@@ -411,7 +416,7 @@ class _TripWithAIState extends State<TripWithAI> {
                 GestureDetector(
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => triplog())
+                        builder: (context) => tripdetail())
                     );
                   },
                   child: Row(
@@ -612,7 +617,7 @@ class _TripWithAIState extends State<TripWithAI> {
                 GestureDetector(
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => triplog())
+                        builder: (context) => tripdetail())
                     );
                   },
                   child: Row(
@@ -985,4 +990,29 @@ class _TripWithAIState extends State<TripWithAI> {
       ),
     );
   }
+  Future openEditNameDialog(BuildContext context) => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text(
+          'ชื่อทริป',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        content: TextFormField(
+          autofocus: true,
+        ),
+        actions: [
+          TextButton(
+              onPressed: () async {
+                setState(() {
+                  //word = nameEdit.text;
+                });
+                //ดึงข้อมูล
+                //get....();
+                  Navigator.push(context, MaterialPageRoute(
+                      builder: (context) => tripdetail())
+                  );
+              },
+              child: const Text('ตกลง'))
+        ],
+      ));
 }

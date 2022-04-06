@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:se_app2/navigator/nav/blog/blogpost/add_post_detail.dart';
 
 import '../profile/profile_edit.dart';
 import 'blog_detail.dart';
@@ -932,7 +933,7 @@ class _BlogState extends State<Blog> {
       floatingActionButton: FloatingActionButton(
         onPressed: (){
           Navigator.push(context, MaterialPageRoute(
-              builder: (context) => Addpostgallery()
+              builder: (context) => Addpostdetail()
           ));
         },
         backgroundColor: Color(0xffFF831F),

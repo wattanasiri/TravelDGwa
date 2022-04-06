@@ -1,7 +1,9 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:se_app2/navigator/nav/blog/blogpost/util.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Addpostdetail extends StatefulWidget {
   bool check;
@@ -43,6 +45,9 @@ class _AddpostdetailState extends State<Addpostdetail> {
   }
 
   final _controller = ScrollController();
+  /// Variables
+  File imageFile;
+
 
   @override
   Widget build(BuildContext context) {
@@ -105,10 +110,41 @@ class _AddpostdetailState extends State<Addpostdetail> {
                     Container(
                       width: double.infinity,
                       height: double.infinity,
-                      child: Image(
-                        image: NetworkImage(Utils.listOfImageUrl.elementAt(0)),
-                        fit: BoxFit.cover,
-                      ),
+                        /*child: Image(
+                          image: NetworkImage(Utils.listOfImageUrl.elementAt(0)),
+                          fit: BoxFit.cover,
+                        ),*/
+                        child: imageFile == null
+                            ? Container(
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              RaisedButton(
+                                color: Color(0xff7BEE99),
+                                onPressed: () {
+                                  _getFromGallery();
+                                },
+                                child: Text("Add Image from gallery"),
+                              ),
+                              Container(
+                                height: 40.0,
+                              ),
+                              RaisedButton(
+                                color: Color(0xffFF9A62),
+                                onPressed: () {
+                                  _getFromCamera();
+                                },
+                                child: Text("         Take a picture         "),
+                              )
+                            ],
+                          ),
+                        ): Container(
+                          child: Image.file(
+                            imageFile,
+                            fit: BoxFit.cover,
+                          ),
+                        )
                     ),
                   ],
                 ),
@@ -239,5 +275,32 @@ class _AddpostdetailState extends State<Addpostdetail> {
         ),
       ),
     );
+  }
+  /// Get from gallery
+  _getFromGallery() async {
+    PickedFile pickedFile = await ImagePicker().getImage(
+      source: ImageSource.gallery,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+    }
+  }
+
+  /// Get from Camera
+  _getFromCamera() async {
+    PickedFile pickedFile = await ImagePicker().getImage(
+      source: ImageSource.camera,
+      maxWidth: 1800,
+      maxHeight: 1800,
+    );
+    if (pickedFile != null) {
+      setState(() {
+        imageFile = File(pickedFile.path);
+      });
+    }
   }
 }

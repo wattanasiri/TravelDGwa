@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:ionicons/ionicons.dart';
 
 import 'package:se_app2/Home/Attraction/tourism_result.dart';
-import 'package:se_app2/navigator/nav/tripwithAI/test%20to%20do%20box/todomain.dart';
+import 'package:se_app2/navigator/nav/tripwithAI/trip_edit.dart';
 
 class tripdetail extends StatefulWidget {
 
@@ -17,12 +17,15 @@ class tripdetail extends StatefulWidget {
 }
 
 class _tripdetailState extends State<tripdetail> {
+  bool begincheck = false;
+  bool sdiecheck = false;
+  bool endcheck = false;
   // Generating a long list to fill the ListView
   final List<Map> checkbox = List.generate(100,
           (index) => {'id': index, 'name': 'Item $index', 'isSelected': false});
 
   //เอาไว้สร้างตัวระหว่างทางเพิ่ม
-  int btw = 0;
+  int btw = 2;
   //เอาไว้สร้างตัวระหว่างทางเพิ่ม
 
   @override
@@ -58,7 +61,7 @@ class _tripdetailState extends State<tripdetail> {
             TextButton(
               onPressed: (){
                 Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => todolist())
+                    builder: (context) => tripedit())
                 );
               },
               child: Text(
@@ -108,13 +111,13 @@ class _tripdetailState extends State<tripdetail> {
                             ),
                           ),
                           ),
-                          IconButton(
+                          /*IconButton(
                             icon: const Icon(
                               Boxicons.bxs_edit_alt,
                               color: Color(0xff1D3557),
                             ),
                             onPressed: () {},
-                          ),
+                          ),*/
                         ],
                       ),
                       ),
@@ -136,68 +139,82 @@ class _tripdetailState extends State<tripdetail> {
                             fontSize: 17,color: Color(0xff1D3557) ),
                       ),
                       Container(
-
                         width: 170,
                         height: 60,
-                        decoration: BoxDecoration(
-                          color: const Color(0xffECFAFF),
-                          borderRadius: BorderRadius.circular(17),
-                          border: Border.all(color: const Color(0xff1D3557), width: 4),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
-                              spreadRadius: 1,
-                              blurRadius: 4,
-                              offset: const Offset(2, 4),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(Icons.access_time_outlined,color: Colors.black,),
+                            SizedBox(width: 10,),
+                            Text(
+                              '12:00 น.',
+                              style: TextStyle(fontWeight: FontWeight.w900,
+                                  fontSize: 17,color: Color(0xff1D3557) ),
                             ),
                           ],
-                        ),
-                        child: TextFormField(
-                          readOnly: true,
-                          decoration: const InputDecoration(
-                            contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
-                            hintText: 'ชั่วโมง/นาที',
-                            prefixIcon: Icon(Icons.access_time_outlined,color: Colors.black,),
-                            errorStyle: TextStyle(
-                              color: Colors.red,
-                              fontSize: 12,
-                            ),
-                            enabledBorder: UnderlineInputBorder(
-                                borderSide: BorderSide(color: Colors.white)),
                           ),
-                          validator: (value) {
-                            if (value.isEmpty || value == null) {
-                              return 'กรุณาระบุเวลา';
-                            }
-                            return null;
-                          },
-                          //controller: _timegetcarcontroller,
-                          //focusNode: myFocusNode2,
-                          onTap: () async {
-                            TimeOfDay pickedTime =  await showTimePicker(
-                              initialTime: TimeOfDay.now(),
-                              context: context,
-                            );
-                            FocusScope.of(context)
-                                .requestFocus(FocusNode());
-
-                            if(pickedTime != null ){
-                              //DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
-                              //String formattedTime = DateFormat('HH:mm').format(parsedTime);
-                              //_timegetcarcontroller.text = formattedTime.toString();
-
-                            }else{
-                              print("Time is not selected");
-                            }
-                          },
                         ),
-                      ),
                     ],
                   ),
                 ),
               ],
             ),
             //จบเวลารวม
+            SizedBox(height: 10,),
+            //แผนที่
+            Container(
+              margin: const EdgeInsets.symmetric(
+                  horizontal: 10, vertical: 2),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    'เส้นทางและแผนที่',
+                    style: TextStyle(fontWeight: FontWeight.w900,
+                        fontSize: 17,color: Color(0xff1D3557) ),
+                  ),
+                  //ปุ่มเปิดแผนที่
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      InkWell(
+                        onTap: () => {},
+                        child: Container(
+                          margin:
+                          const EdgeInsets.symmetric(vertical: 10),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15),
+                          width: 168,
+                          height: 40,
+                          decoration: const BoxDecoration(
+                            color: Color(0xff1D3557),
+                            borderRadius:
+                            BorderRadius.all(Radius.circular(15)),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const <Widget>[
+                              Icon(Icons.map_rounded,
+                                  color: Color(0xffFF9A62)),
+                              SizedBox(width: 10),
+                              Text(
+                                'เปิดแผนที่',
+                                style: TextStyle(
+                                    color: Color(0xffECFAFF),
+                                    fontSize: 16),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  //จบปุ่มเปิดแผนที่
+                ],
+              ),
+            ),
+            //จบแผนที่
             SizedBox(height: 10,),
             //ต้นทาง
             Column(
@@ -206,72 +223,60 @@ class _tripdetailState extends State<tripdetail> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Flexible(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(Boxicons.bxs_circle,
-                                  color: const Color(0xff1BC3FF),
-                                  size: 30),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'ต้นทาง',
-                                    style: TextStyle(fontWeight: FontWeight.w900,
-                                        fontSize: 15,color: Color(0xff1D3557) ),
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 16, vertical: 2),
-                                    width: 320,
-                                    height: 60,
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xffECFAFF),
-                                      border: Border.all(color: const Color(0xff1D3557), width: 4),
-                                      borderRadius: BorderRadius.circular(25),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withOpacity(0.3),
-                                          spreadRadius: 1,
-                                          blurRadius: 4,
-                                          offset: const Offset(2, 4),
-                                        ),
-                                      ],
-                                      /*border: Border.all(
-                                        color: const Color(0xff1D3557), width: 2)*/),
-                                    child: TextFormField(
-                                      //controller: name,
-                                      decoration: const InputDecoration(
-                                        hintText: 'สถานที่ต้นทาง',
-                                        enabledBorder: UnderlineInputBorder(
-                                            borderSide:
-                                            BorderSide(color: Color(0xffECFAFF))),
-                                        /*suffixIcon:
-                                          Icon(Icons.search, color: Color(0xff1D3557))*/
-                                      ),
-                                      validator: (value) {
-                                        if (value == null || value.isEmpty) {
-                                          return 'กรุณาระบุสถานที่ต้นทาง';
-                                        }
-                                        return null;
-                                      },
-                                      onChanged: (value) {
-                                        //word = value;
-                                      },
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ],
+                    Container(
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 35, vertical: 2),
+                      child: Flexible(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'ต้นทาง',
+                                  style: TextStyle(fontWeight: FontWeight.w900,
+                                      fontSize: 15,color: Color(0xff1D3557) ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(Boxicons.bxs_circle,
+                        color: const Color(0xff1BC3FF),
+                        size: 30),
+                    SizedBox(width: 2,),
+                    Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 2),
+                        width: 320,
+                        height: 60,
+                        decoration: BoxDecoration(
+                          color: const Color(0xffFCD88D),
+                          borderRadius: BorderRadius.circular(25),
+
+                          /*border: Border.all(
+                                        color: const Color(0xff1D3557), width: 2)*/),
+                        child:Row(
+                          children : [
+                            Text(
+                              'สถานที่ต้นทาง',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(fontWeight: FontWeight.w900,
+                                  fontSize: 17,color: Color(0xff1D3557) ),
+                            ),
+                          ],
+                        ),
                     ),
                   ],
                 ),
@@ -296,134 +301,58 @@ class _tripdetailState extends State<tripdetail> {
                         Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 0, vertical: 2),
-                          width: 140,
+                          width: 135,
                           height: 60,
-                          decoration: BoxDecoration(
-                            color: const Color(0xffECFAFF),
-                            border: Border.all(color: const Color(0xff1D3557), width: 4),
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.3),
-                                spreadRadius: 1,
-                                blurRadius: 4,
-                                offset: const Offset(2, 4),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(width: 10,),
+                              Icon(Icons.access_time_outlined,color: Colors.black,),
+                              SizedBox(width: 10,),
+                              Text(
+                                '12:00 น.',
+                                style: TextStyle(fontWeight: FontWeight.w900,
+                                    fontSize: 17,color: Color(0xff1D3557) ),
                               ),
                             ],
-                          ),
-                          child: TextFormField(
-                            readOnly: true,
-                            decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
-                              hintText: 'ชั่วโมง/นาที',
-                              prefixIcon: Icon(Icons.access_time_outlined,color: Colors.black,),
-                              errorStyle: TextStyle(
-                                color: Colors.red,
-                                fontSize: 12,
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.transparent)),
-                            ),
-                            validator: (value) {
-                              if (value.isEmpty || value == null) {
-                                return 'กรุณาระบุเวลา';
-                              }
-                              return null;
-                            },
-                            //controller: _timegetcarcontroller,
-                            //focusNode: myFocusNode2,
-                            onTap: () async {
-                              TimeOfDay pickedTime =  await showTimePicker(
-                                initialTime: TimeOfDay.now(),
-                                context: context,
-                              );
-                              FocusScope.of(context)
-                                  .requestFocus(FocusNode());
-
-                              if(pickedTime != null ){
-                                //DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
-                                //String formattedTime = DateFormat('HH:mm').format(parsedTime);
-                                //_timegetcarcontroller.text = formattedTime.toString();
-
-                              }else{
-                                print("Time is not selected");
-                              }
-                            },
                           ),
                         ),
                       ],
                     ),
+
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'เวลารวมของทริป',
+                          'เวลาจบของทริป',
                           style: TextStyle(fontWeight: FontWeight.w900,
                               fontSize: 15,color: Color(0xff1D3557) ),
                         ),
                         Container(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 0, vertical: 2),
-                          width: 140,
+                          width: 135,
                           height: 60,
-                          decoration: BoxDecoration(
-                            color: const Color(0xffECFAFF),
-                            border: Border.all(color: const Color(0xff1D3557), width: 4),
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.3),
-                                spreadRadius: 1,
-                                blurRadius: 4,
-                                offset: const Offset(2, 4),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(width: 10,),
+                              Icon(Icons.access_time_outlined,color: Colors.black,),
+                              SizedBox(width: 10,),
+                              Text(
+                                '12:00 น.',
+                                style: TextStyle(fontWeight: FontWeight.w900,
+                                    fontSize: 17,color: Color(0xff1D3557) ),
                               ),
                             ],
-                          ),
-                          child: TextFormField(
-                            readOnly: true,
-                            decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
-                              hintText: 'ชั่วโมง/นาที',
-                              prefixIcon: Icon(Icons.access_time_outlined,color: Colors.black,),
-                              errorStyle: TextStyle(
-                                color: Colors.red,
-                                fontSize: 12,
-                              ),
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide: BorderSide(color: Colors.transparent)),
-                            ),
-                            validator: (value) {
-                              if (value.isEmpty || value == null) {
-                                return 'กรุณาระบุเวลา';
-                              }
-                              return null;
-                            },
-                            //controller: _timegetcarcontroller,
-                            //focusNode: myFocusNode2,
-                            onTap: () async {
-                              TimeOfDay pickedTime =  await showTimePicker(
-                                initialTime: TimeOfDay.now(),
-                                context: context,
-                              );
-                              FocusScope.of(context)
-                                  .requestFocus(FocusNode());
-
-                              if(pickedTime != null ){
-                                //DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
-                                //String formattedTime = DateFormat('HH:mm').format(parsedTime);
-                                //_timegetcarcontroller.text = formattedTime.toString();
-
-                              }else{
-                                print("Time is not selected");
-                              }
-                            },
                           ),
                         ),
                       ],
                     ),
-                    Icon(Boxicons.bx_check_square,
-                        color: const Color(0xff1D3557),
-                        size: 30),
+                    Checkbox(
+                        value: begincheck,
+                        onChanged: (begincheck) => setState(() => this.begincheck = begincheck),
+                    )
                   ],
                 ),
               ],
@@ -443,76 +372,64 @@ class _tripdetailState extends State<tripdetail> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Flexible(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Icon(Boxicons.bxs_circle,
-                                        color: const Color(0xffFF9A62),
-                                        size: 30),
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          'ระหว่างทาง',
-                                          style: TextStyle(fontWeight: FontWeight.w900,
-                                              fontSize: 15,color: Color(0xff1D3557) ),
-                                        ),
-                                        Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 16, vertical: 2),
-                                          width: 320,
-                                          height: 60,
-                                          decoration: BoxDecoration(
-                                            color: const Color(0xffECFAFF),
-                                            border: Border.all(color: const Color(0xff1D3557), width: 4),
-                                            borderRadius: BorderRadius.circular(25),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black.withOpacity(0.3),
-                                                spreadRadius: 1,
-                                                blurRadius: 4,
-                                                offset: const Offset(2, 4),
-                                              ),
-                                            ],
-                                            /*border: Border.all(
+                          Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 35, vertical: 2),
+                            child: Flexible(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'ระหว่างทาง',
+                                        style: TextStyle(fontWeight: FontWeight.w900,
+                                            fontSize: 15,color: Color(0xff1D3557) ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Boxicons.bxs_circle,
+                              color: const Color(0xffFF9A62),
+                              size: 30),
+                          SizedBox(width: 2,),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 2),
+                            width: 320,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: const Color(0xffFCD88D),
+                              borderRadius: BorderRadius.circular(25),
+
+                              /*border: Border.all(
                                         color: const Color(0xff1D3557), width: 2)*/),
-                                          child: TextFormField(
-                                            //controller: name,
-                                            decoration: const InputDecoration(
-                                              hintText: 'สถานที่ระหว่างทาง',
-                                              enabledBorder: UnderlineInputBorder(
-                                                  borderSide:
-                                                  BorderSide(color: Color(0xffECFAFF))),
-                                              /*suffixIcon:
-                                          Icon(Icons.search, color: Color(0xff1D3557))*/
-                                            ),
-                                            validator: (value) {
-                                              if (value == null || value.isEmpty) {
-                                                return 'กรุณาระบุสถานที่ระหว่างทาง';
-                                              }
-                                              return null;
-                                            },
-                                            onChanged: (value) {
-                                              //word = value;
-                                            },
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                            child:Row(
+                              children : [
+                                Text(
+                                  'สถานที่ระหว่างทาง',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(fontWeight: FontWeight.w900,
+                                      fontSize: 17,color: Color(0xff1D3557) ),
                                 ),
                               ],
                             ),
                           ),
                         ],
                       ),
-                      //จบระหว่างทาง
+                      //จบต้นทาง
                       SizedBox(height: 10,),
                       //เวลา
                       Row(
@@ -533,137 +450,58 @@ class _tripdetailState extends State<tripdetail> {
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 0, vertical: 2),
-                                width: 140,
+                                width: 135,
                                 height: 60,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xffECFAFF),
-                                  border: Border.all(color: const Color(0xff1D3557), width: 4),
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.3),
-                                      spreadRadius: 1,
-                                      blurRadius: 4,
-                                      offset: const Offset(2, 4),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    SizedBox(width: 10,),
+                                    Icon(Icons.access_time_outlined,color: Colors.black,),
+                                    SizedBox(width: 10,),
+                                    Text(
+                                      '12:00 น.',
+                                      style: TextStyle(fontWeight: FontWeight.w900,
+                                          fontSize: 17,color: Color(0xff1D3557) ),
                                     ),
                                   ],
-                                ),
-                                child: TextFormField(
-                                  readOnly: true,
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
-                                    hintText: 'ชั่วโมง/นาที',
-                                    prefixIcon: Icon(Icons.access_time_outlined,color: Colors.black,),
-                                    errorStyle: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 12,
-                                    ),
-                                    enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.transparent)),
-                                  ),
-                                  validator: (value) {
-                                    if (value.isEmpty || value == null) {
-                                      return 'กรุณาระบุเวลา';
-                                    }
-                                    return null;
-                                  },
-                                  //controller: _timegetcarcontroller,
-                                  //focusNode: myFocusNode2,
-                                  onTap: () async {
-                                    TimeOfDay pickedTime =  await showTimePicker(
-                                      initialTime: TimeOfDay.now(),
-                                      context: context,
-                                    );
-                                    FocusScope.of(context)
-                                        .requestFocus(FocusNode());
-
-                                    if(pickedTime != null ){
-                                      //DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
-                                      //String formattedTime = DateFormat('HH:mm').format(parsedTime);
-                                      //_timegetcarcontroller.text = formattedTime.toString();
-
-                                    }else{
-                                      print("Time is not selected");
-                                    }
-                                  },
                                 ),
                               ),
                             ],
                           ),
+
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'เวลารวมของทริป',
+                                'เวลาจบของทริป',
                                 style: TextStyle(fontWeight: FontWeight.w900,
                                     fontSize: 15,color: Color(0xff1D3557) ),
                               ),
                               Container(
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 0, vertical: 2),
-                                width: 140,
+                                width: 135,
                                 height: 60,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xffECFAFF),
-                                  border: Border.all(color: const Color(0xff1D3557), width: 4),
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.3),
-                                      spreadRadius: 1,
-                                      blurRadius: 4,
-                                      offset: const Offset(2, 4),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    SizedBox(width: 10,),
+                                    Icon(Icons.access_time_outlined,color: Colors.black,),
+                                    SizedBox(width: 10,),
+                                    Text(
+                                      '12:00 น.',
+                                      style: TextStyle(fontWeight: FontWeight.w900,
+                                          fontSize: 17,color: Color(0xff1D3557) ),
                                     ),
                                   ],
-                                ),
-                                child: TextFormField(
-                                  readOnly: true,
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.fromLTRB(0, 12, 0, 0),
-                                    hintText: 'ชั่วโมง/นาที',
-                                    prefixIcon: Icon(Icons.access_time_outlined,color: Colors.black,),
-                                    errorStyle: TextStyle(
-                                      color: Colors.red,
-                                      fontSize: 12,
-                                    ),
-                                    enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.transparent)),
-                                  ),
-                                  validator: (value) {
-                                    if (value.isEmpty || value == null) {
-                                      return 'กรุณาระบุเวลา';
-                                    }
-                                    return null;
-                                  },
-                                  //controller: _timegetcarcontroller,
-                                  //focusNode: myFocusNode2,
-                                  onTap: () async {
-                                    TimeOfDay pickedTime =  await showTimePicker(
-                                      initialTime: TimeOfDay.now(),
-                                      context: context,
-                                    );
-                                    FocusScope.of(context)
-                                        .requestFocus(FocusNode());
-
-                                    if(pickedTime != null ){
-                                      //DateTime parsedTime = DateFormat.jm().parse(pickedTime.format(context).toString());
-                                      //String formattedTime = DateFormat('HH:mm').format(parsedTime);
-                                      //_timegetcarcontroller.text = formattedTime.toString();
-
-                                    }else{
-                                      print("Time is not selected");
-                                    }
-                                  },
                                 ),
                               ),
                             ],
                           ),
-                          Icon(Boxicons.bx_check_square,
-                              color: const Color(0xff1D3557),
-                              size: 30),
-                          /*Icon(Boxicons.bxs_trash,
-                        color: const Color(0xffF24E1E),
-                        size: 30),*/
+                          Checkbox(
+                            value: sdiecheck,
+                            onChanged: (sdiecheck) => setState(() => this.sdiecheck = sdiecheck),
+                          )
                         ],
                       ),
                       SizedBox(height: 10,),
@@ -671,32 +509,6 @@ class _tripdetailState extends State<tripdetail> {
                   );
                 }
             ), //จบเวลา
-            SizedBox(height: 20,),
-            //ปุ่มสร้างที่แวะเพิ่ม
-            ElevatedButton(
-              /*onPressed: () {},
-                        style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all<Color>(Color(0xff7BEE99)),
-                            shadowColor: MaterialStateProperty.all<Color>(Color(0xff7BEE99)),
-                        ),*/
-              onPressed: () {
-                setState(() {
-                  btw++;
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                onPrimary: const Color(0xff1D3557),
-                primary: const Color(0xff1D3557),
-                minimumSize: const Size(100, 40),
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(16)),
-                ),
-              ),
-              child: const Text(
-                'เพิ่มที่แวะระหว่างทาง',
-                style: TextStyle(color: Color(0xffECFAFF), fontSize: 20),
-              ),
-            ),
             SizedBox(height: 10,),
             //ปลายทาง
             Row(
@@ -709,62 +521,139 @@ class _tripdetailState extends State<tripdetail> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.symmetric(
+                                horizontal: 35, vertical: 2),
+                            child: Flexible(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'ปลายทาง',
+                                        style: TextStyle(fontWeight: FontWeight.w900,
+                                            fontSize: 15,color: Color(0xff1D3557) ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Icon(Boxicons.bxs_been_here,
                               color: const Color(0xffFF0000),
                               size: 30),
+                          SizedBox(width: 2,),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 16, vertical: 2),
+                            width: 320,
+                            height: 60,
+                            decoration: BoxDecoration(
+                              color: const Color(0xffFCD88D),
+                              borderRadius: BorderRadius.circular(25),
+
+                              /*border: Border.all(
+                                        color: const Color(0xff1D3557), width: 2)*/),
+                            child:Row(
+                              children : [
+                                Text(
+                                  'สถานที่ปลายทาง',
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(fontWeight: FontWeight.w900,
+                                      fontSize: 17,color: Color(0xff1D3557) ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      //จบต้นทาง
+                      SizedBox(height: 10,),
+                      //เวลา
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Icon(Boxicons.bx_dots_vertical_rounded,
+                              color: const Color(0xff1D3557),
+                              size: 30),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                'ปลายทาง',
+                                'เวลาเริ่มต้น',
                                 style: TextStyle(fontWeight: FontWeight.w900,
                                     fontSize: 15,color: Color(0xff1D3557) ),
                               ),
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 2),
-                                width: 320,
+                                    horizontal: 0, vertical: 2),
+                                width: 135,
                                 height: 60,
-                                decoration: BoxDecoration(
-                                  color: const Color(0xffECFAFF),
-                                  border: Border.all(color: const Color(0xff1D3557), width: 4),
-                                  borderRadius: BorderRadius.circular(25),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black.withOpacity(0.3),
-                                      spreadRadius: 1,
-                                      blurRadius: 4,
-                                      offset: const Offset(2, 4),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    SizedBox(width: 10,),
+                                    Icon(Icons.access_time_outlined,color: Colors.black,),
+                                    SizedBox(width: 10,),
+                                    Text(
+                                      '12:00 น.',
+                                      style: TextStyle(fontWeight: FontWeight.w900,
+                                          fontSize: 17,color: Color(0xff1D3557) ),
                                     ),
                                   ],
-                                  /*border: Border.all(
-                                    color: const Color(0xff1D3557), width: 2)*/),
-                                child: TextFormField(
-                                  //controller: name,
-                                  decoration: const InputDecoration(
-                                    hintText: 'สถานที่ปลายทาง',
-                                    enabledBorder: UnderlineInputBorder(
-                                        borderSide:
-                                        BorderSide(color: Color(0xffECFAFF))),
-                                    /*suffixIcon:
-                                      Icon(Icons.search, color: Color(0xff1D3557))*/
-                                  ),
-                                  validator: (value) {
-                                    if (value == null || value.isEmpty) {
-                                      return 'กรุณาระบุสถานที่ต้นทาง';
-                                    }
-                                    return null;
-                                  },
-                                  onChanged: (value) {
-                                    //word = value;
-                                  },
                                 ),
                               ),
                             ],
                           ),
+
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'เวลาจบของทริป',
+                                style: TextStyle(fontWeight: FontWeight.w900,
+                                    fontSize: 15,color: Color(0xff1D3557) ),
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 0, vertical: 2),
+                                width: 135,
+                                height: 60,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    SizedBox(width: 10,),
+                                    Icon(Icons.access_time_outlined,color: Colors.black,),
+                                    SizedBox(width: 10,),
+                                    Text(
+                                      '12:00 น.',
+                                      style: TextStyle(fontWeight: FontWeight.w900,
+                                          fontSize: 17,color: Color(0xff1D3557) ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          Checkbox(
+                            value: endcheck,
+                            onChanged: (endcheck) => setState(() => this.endcheck = endcheck),
+                          )
                         ],
                       ),
                     ],
