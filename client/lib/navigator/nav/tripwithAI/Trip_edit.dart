@@ -9,7 +9,7 @@ import 'package:ionicons/ionicons.dart';
 
 import 'package:se_app2/Home/Attraction/tourism_result.dart';
 
-import '../../Data/data_locations.dart';
+import '../../../Data/data_locations.dart';
 import 'Trip_detail.dart';
 
 

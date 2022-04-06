@@ -10,7 +10,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 
-import '../../Data/data_currentuser.dart';
+import '../../../Data/data_currentuser.dart';
 import 'mapmain.dart';
 
 class lifestyle extends StatefulWidget {
