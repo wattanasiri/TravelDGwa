@@ -8,7 +8,7 @@ import 'package:ionicons/ionicons.dart';
 
 import 'package:se_app2/Home/Attraction/tourism_result.dart';
 import 'package:http/http.dart' as http;
-import '../../Data/data_currentuser.dart';
+import '../../../Data/data_currentuser.dart';
 import 'Trip_edit.dart';
 import 'Trip_start.dart';
 import 'map.dart';

@@ -9,8 +9,8 @@ import 'package:se_app2/navigator/nav/home/components/body.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../Data/data_currentuser.dart';
-import '../Home/Map/lifestyle.dart';
-import '../Home/Map/mapmain.dart';
+import 'nav/tripwithAI/lifestyle.dart';
+import 'nav/tripwithAI/mapmain.dart';
 import '/navigator/nav/blog/blog.dart';
 import '/navigator/nav/booking/booking.dart';
 import '/navigator/nav/mainhome/mainhome.dart';
@@ -134,19 +134,17 @@ class _NavState extends State<Nav> {
 
   void _onItemTap(int index) {
     print('ll');
+    print('index');
+    print(index);
+    // check(index);
     setState((){
       if (_selectedIndex >= index){
         isLeft = true;
       } else {
         isLeft = false;
       }
-      print('index');
-      print(index);
       check(index);
-
       _selectedIndex = index;
-
-
     });
   }
 

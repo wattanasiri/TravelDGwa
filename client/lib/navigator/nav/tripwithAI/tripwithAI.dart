@@ -15,7 +15,7 @@ class _TripWithAIState extends State<TripWithAI> {
       backgroundColor: Color(0xff1D3557),
       body: Center(
         child: Text(
-          'หน้าจัดทริป',
+          'Loading ...',
           style: TextStyle(
               color: Color(0xffECFAFF),
               fontSize: 24,
