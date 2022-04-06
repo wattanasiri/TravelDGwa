@@ -185,7 +185,7 @@ class _MapmainState extends State<Mapmain> {
     double storelng,storeendlng = 0.0;
     String picklocation;
     String endlocation;
-    // String picklocation = 'เดอะเซียนวิวคาเฟ่';
+    // String picklocation = 'เดอะเซียนวิวคาเฟ่'
     // String endlocation = 'Aran Cafe จอมเทียน';
     int target = 0;
     picklocation = startlocationcontroller.text;
