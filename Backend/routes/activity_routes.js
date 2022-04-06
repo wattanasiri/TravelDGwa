@@ -1,6 +1,8 @@
 const express  = require('express')
 const activity = require('../models/activity_model')
 const activityreceipt = require('../models/activity_receipt_model')
+const jwt = require('jwt-simple')
+const secret = require('..').SecretText
 
 var mongoose = require('mongoose');
 
@@ -10,8 +12,7 @@ const router = express.Router()
 router.get('/', (req,res) => {
     console.log('Hello')
     
-    // recommended activity must have high rating but I'm omitting this for testing
-    activity.find({},(err , foundactivity) => {
+    activity.find({star : "5"},(err , foundactivity) => {
         if(err){
             console.log(err)
         } else {
@@ -28,7 +29,7 @@ router.post('/activity_partner',async (req,res) => {
     // const infouser = await User.findById(req.body.username)
     
     const activitypartner = await new activity({
-        usernameID: mongoose.Types.ObjectId(),
+        usernameID: mongoose.Types.ObjectId(decodedtoken._id),
         // price_extrapay: ,
         // document_require: ,
         // comment: ,
@@ -39,6 +40,7 @@ router.post('/activity_partner',async (req,res) => {
         detail: req.body.detail,
         open_day: req.body.opening_day,
         open_time: req.body.opening_time,
+        image: req.body.image,
     })
     activitypartner.save()
     idactivitypartner = activitypartner._id.toString()
@@ -56,9 +58,9 @@ router.post('/update_activity',async (req,res) => {
     for(i = 1;i<6;i++){
         updatepartner.service.push(req.body.service[i])
     }
-    for(i = 1;i<4;i++){
-        updatepartner.image.push(req.body.image[i])
-    }
+    // for(i = 1;i<4;i++){
+    //     updatepartner.image.push(req.body.image[i])
+    // }
     updatepartner.save()
 })
 
@@ -78,11 +80,14 @@ router.get('/:names' + '/queryactivity' , (req,res) => {
 })
 
 router.post('/save_invoice',(req,res) => { 
-    
+    var token = req.headers.authorization.split(' ')[1]
+    // we need to convert the string to JSON object first.
+    var stringToken = JSON.parse(token)['token']
+    var decodedtoken = jwt.decode(stringToken, secret)
     console.log('save invoice')
     console.log(req.body.username)
     const infoinvoice = new activityreceipt({
-        usernameID: new mongoose.Types.ObjectId(req.body.username),
+        usernameID: new mongoose.Types.ObjectId(decodedtoken._id),
         name: req.body.name,
         day : req.body.day,
         time : req.body.time,

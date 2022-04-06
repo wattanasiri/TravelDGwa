@@ -5,8 +5,9 @@ const rentcarcarinfoSchema = new Schema({
     
     PartnerID: {
         type :mongoose.Schema.Types.ObjectId,
-        ref : 'airporttransferpartner'
+        ref : 'rentcarpartner'
     },
+    nameOfUser: String,
     car_name: String,
     car_brand: String,
     car_registration_year: String,

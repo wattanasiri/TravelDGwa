@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:se_app2/navigator/nav/booking/booking.dart';
+import 'package:se_app2/navigator/nav/profile/partnership/partner/acommodation/accommodation_partner.dart';
+import 'package:se_app2/navigator/nav/profile/partnership/partner/activity/activity_partner.dart';
+import 'package:se_app2/navigator/nav/profile/partnership/partner/airport_tranfer/airport_tranfer_partner.dart';
+import 'package:se_app2/navigator/nav/profile/partnership/partner/rentcar/rentcar.dart';
 
 import '../profile.dart';
 
@@ -25,325 +29,33 @@ class partnership extends StatefulWidget {
 class _partnershipState extends State<partnership> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor : Color(0xFFFFF4DC),
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(60.0),
-        child: AppBar(
-          centerTitle: true,
-          backgroundColor: const Color(0xff1D3557),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_rounded,
-                color: Color(0xffECFAFF)),
-            onPressed: () => Navigator.of(context).pop(),
+    return
+      DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color(0xFF1d3557),
+          bottom: TabBar(
+            // labelPadding: EdgeInsets.fromLTRB(0, 5, 0, 5),
+            tabs: [
+              Tab(text: 'ที่พัก'),
+              Tab(text: 'เช่ารถ'),
+              Tab(text: 'รถรับส่ง'),
+              Tab(text: 'กิจกรรม'),
+            ],
           ),
-          title: const Text(
-            'สมัครพาร์ทเนอร์',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          flexibleSpace: const SizedBox(
-            height: 20,
-          ),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(12),
-            ),
-          ),
+          title: Text('สมัครพาร์ทเนอร์'),
         ),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(20),
-        child: Column(
+        body: TabBarView(
           children: [
-            Row(
-              crossAxisAlignment:  CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: InkWell(
-                    onTap: () {},
-                    child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 1),
-                      padding: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
-                      decoration: BoxDecoration(
-                        color: Color(0xff1D3557),
-                        borderRadius: BorderRadius.only(topLeft: Radius.circular(15), bottomLeft: Radius.circular(15))
-                      ),
-                      child: Center(
-                        child: Text(
-                          'ที่พัก',
-                          style: TextStyle(
-                            color: Color(0xffECFAFF),
-                            fontSize: 16
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                ),
-                Expanded(
-                    child: InkWell(
-                      onTap: () {},
-                      child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 1),
-                        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
-                        decoration: BoxDecoration(
-                            color: Color(0xff1D3557),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'เช่ารถ',
-                            style: TextStyle(
-                                color: Color(0xffECFAFF),
-                                fontSize: 16
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                ),
-                Expanded(
-                    child: InkWell(
-                      onTap: () {},
-                      child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 1),
-                        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
-                        decoration: BoxDecoration(
-                            color: Color(0xff1D3557),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'รถรับส่ง',
-                            style: TextStyle(
-                                color: Color(0xffECFAFF),
-                                fontSize: 16
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                ),
-                Expanded(
-                    child: InkWell(
-                      onTap: () {},
-                      child: Container(
-                        margin: EdgeInsets.symmetric(horizontal: 1),
-                        padding: EdgeInsets.symmetric(horizontal: 5, vertical: 20),
-                        decoration: BoxDecoration(
-                            color: Color(0xff1D3557),
-                          borderRadius: BorderRadius.only(topRight: Radius.circular(15), bottomRight: Radius.circular(15))
-                        ),
-                        child: Center(
-                          child: Text(
-                            'กิจกรรม',
-                            style: TextStyle(
-                                color: Color(0xffECFAFF),
-                                fontSize: 16
-                            ),
-                          ),
-                        ),
-                      ),
-                    )
-                )
-              ],
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 20),
-              child: Column(
-                children: [
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 10),
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Color(0xffECFAFF),
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            spreadRadius: 1,
-                            blurRadius: 6,
-                            offset: const Offset(1, 6),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.home_rounded, size: 50, color: Color(0xff1D3557)),
-                          SizedBox(width: 10),
-                          Flexible(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'อพาร์ทเม้น',
-                                  style: TextStyle(
-                                    color: Color(0xff1D3557),
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Text(
-                                  'ที่อยู่อาศัยตกแต่งในอาคารอพาร์ตเมนต์ที่มีห้องพักส่วนตัวพร้อม บริการเหมือนโรงแรม',
-                                  style: TextStyle(
-                                    color: Color(0xff1D3557),
-                                    fontSize: 14,
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 15),
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Color(0xffECFAFF),
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            spreadRadius: 1,
-                            blurRadius: 6,
-                            offset: const Offset(1, 6),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.home_rounded, size: 50, color: Color(0xff1D3557)),
-                          SizedBox(width: 10),
-                          Flexible(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'วิลลา',
-                                  style: TextStyle(
-                                    color: Color(0xff1D3557),
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Text(
-                                  'ที่พักที่เป็นพื้นที่ขนาดใหญ่ บรรจุกลุ่มคนได้เป็นจำนวนมาก เป็นพื้นที่โล่งและใกล้เคียงกับธรรมชาติ',
-                                  style: TextStyle(
-                                    color: Color(0xff1D3557),
-                                    fontSize: 14,
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 15),
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Color(0xffECFAFF),
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            spreadRadius: 1,
-                            blurRadius: 6,
-                            offset: const Offset(1, 6),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.home_rounded, size: 50, color: Color(0xff1D3557)),
-                          SizedBox(width: 10),
-                          Flexible(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'บ้านเดี่ยว',
-                                  style: TextStyle(
-                                    color: Color(0xff1D3557),
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Text(
-                                  'ที่พักเชิงพาณิชย์ที่ให้บริการห้องพักส่วนตัวพร้อมอาหารและบริการแขก',
-                                  style: TextStyle(
-                                    color: Color(0xff1D3557),
-                                    fontSize: 14,
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {},
-                    child: Container(
-                      margin: EdgeInsets.symmetric(vertical: 15),
-                      padding: EdgeInsets.all(20),
-                      decoration: BoxDecoration(
-                        color: Color(0xffECFAFF),
-                        borderRadius: BorderRadius.all(Radius.circular(15)),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            spreadRadius: 1,
-                            blurRadius: 6,
-                            offset: const Offset(1, 6),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          Icon(Icons.home_rounded, size: 50, color: Color(0xff1D3557)),
-                          SizedBox(width: 10),
-                          Flexible(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'บังกะโล',
-                                  style: TextStyle(
-                                    color: Color(0xff1D3557),
-                                    fontSize: 16,
-                                  ),
-                                ),
-                                Text(
-                                  'บ้านพักตากอากาศตามชายทะเล ',
-                                  style: TextStyle(
-                                    color: Color(0xff1D3557),
-                                    fontSize: 14,
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                  )
-                ],
-              ),
-            )
+            accom_partner(),
+            rentcar_partner(),
+            airport_tranfer_partner(),
+            activity_partner(),
           ],
         ),
       ),
     );
+
   }
 }

@@ -6,6 +6,8 @@ const rentcarreceipt = require('../models/rentcar_transaction_model')
 var mongoose = require('mongoose');
 const { db } = require('../models/rentcar_transaction_model')
 const ObjectId = require('mongodb').ObjectId; 
+const jwt = require('jwt-simple')
+const secret = require('..').SecretText
 
 
 const router = express.Router()
@@ -13,64 +15,99 @@ var idinfopartner;
 var idinfocar;
 var updatepartner2;
 var idreceipt;
-
+var carinfopartner;
 router.get('/', (req,res) => {
     console.log('Hello')
 })
 
 router.post('/register_rentcarpartner',async (req,res) => { 
+    var token = req.headers.authorization.split(' ')[1]
+    // we need to convert the string to JSON object first.
+    var stringToken = JSON.parse(token)['token']
+    var decodedtoken = jwt.decode(stringToken, secret)
     console.log('register_rentcarpartner')
     console.log(req.body.usernameID)
     // const infouser = await User.findById(req.body.username)
     
     const infopartner = await new rentcarpartner({
-        usernameID: mongoose.Types.ObjectId(),
+        usernameID: mongoose.Types.ObjectId(decodedtoken._id),
         // price_extrapay: ,
         // document_require: ,
         // comment: ,
-        namepartner: req.body.partnername,
+        namepartner: req.body.companyName,
         phone: req.body.phone,
         email: req.body.email,
-        opening_day: req.body.opening_day,
-        opening_time: req.body.opening_time,
+        opening_day: req.body.dayopen + "-" + req.body.dayopen2,
+        opening_time: req.body.timeopen + "-" + req.body.timeopen2,
+        image: req.body.image,
     })
-    infopartner.save()
+    await infopartner.save()
+    console.log(infopartner._id)
     idinfopartner = infopartner._id.toString()
 })
 router.post('/update_register_rentcarpartner',async (req,res) => { 
+    var token = req.headers.authorization.split(' ')[1]
+    // we need to convert the string to JSON object first.
+    var stringToken = JSON.parse(token)['token']
+    var decodedtoken = jwt.decode(stringToken, secret)
     console.log('update_register_rentcarpartner')  
+    console.log(req.body.name)
+    const infopartner = await new rentcarpartner({
+        usernameID: mongoose.Types.ObjectId(decodedtoken._id),
+        // price_extrapay: ,
+        // document_require: ,
+        // comment: ,
+        namepartner: req.body.name[1],
+        phone: req.body.name[2],
+        email: req.body.name[3],
+        opening_day: req.body.name[4] + "-" + req.body.name[5],
+        opening_time: req.body.name[6] + "-" + req.body.name[7],
+        image: req.body.name[8],
+    })
     // const infouser = await User.findById(req.body.username)
-    const updatepartner = await rentcarpartner.findById(idinfopartner)
-    for(i = 1;i<3;i++){
-        updatepartner.document_require.push(req.body.document[i])
+    for(i = 1;i<req.body.document.length;i++){
+        console.log(req.body.document[i])
+    }
+
+    for(i = 1;i<req.body.document.length;i++){
+        infopartner.document_require.push(req.body.document[i])
     }
     for(i = 1;i<4;i++){
-        updatepartner.price_extrapay.push(req.body.price_extrapay[i])
+        infopartner.price_extrapay.push(req.body.price_extrapay[i])
     }
     for(i = 1;i<4;i++){
-        updatepartner.time_extrapay.push(req.body.name_extrapay[i])
+        infopartner.time_extrapay.push(req.body.name_extrapay[i])
     }
-    updatepartner.save()
+
+    infopartner.save()
+    idinfopartner = infopartner._id.toString()
 })
 
 router.post('/register_carinfo_rentcarpartner',async (req,res) => { 
+    var token = req.headers.authorization.split(' ')[1]
+    // we need to convert the string to JSON object first.
+    var stringToken = JSON.parse(token)['token']
+    var decodedtoken = jwt.decode(stringToken, secret)
+    console.log(idinfopartner)  
     console.log('register_carinfo_rentcarpartner')  
     // const infouser = await User.findById(req.body.username)
-    const carinfopartner = await new rentcarinfo({
+    carinfopartner = await new rentcarinfo({
         PartnerID: mongoose.Types.ObjectId(idinfopartner),
-        car_name: req.body.carname,
-        car_brand: req.body.carbrand,
+        nameOfUser: req.body.PartnerName,
+        car_name: req.body.car_name,
+        car_brand: req.body.car_brand,
         car_registration_year: req.body.year,
-        car_nunber_sit: req.body.numsit,
+        car_nunber_sit: req.body.num_seat,
         car_nunber_bigbag: req.body.bigbag,
         car_nunber_smallbag: req.body.smallbag,
-        car_location: req.body.location,
-        car_country: req.body.country,
+        car_location: req.body.address,
+        car_country: req.body.province,
         car_price_minute: req.body.price_minute,
         car_price: req.body.price,
         car_partnername: req.body.partnername,
         car_license: req.body.license,
-        car_rating: req.body.rating,
+        car_rating: req.body.car_rating,
+        image: req.body.imagecar,
     })
    
     carinfopartner.save()
@@ -87,22 +124,54 @@ router.post('/register_carinfo_rentcarpartner',async (req,res) => {
 router.post('/update_register_rentcarinfo',async (req,res) => { 
     console.log('update_register_rentcarinfo')  
     console.log(idinfocar)  
+    // console.log(req.body.image)  
+    console.log("1234566666666")
+    console.log(carinfopartner)
+    carinfopartner = await new rentcarinfo({
+        PartnerID: mongoose.Types.ObjectId(idinfopartner),
+        nameOfUser: req.body.name[15],
+        car_name: req.body.name[5],
+        car_brand: req.body.name[4],
+        car_registration_year: req.body.name[8],
+        car_nunber_sit: req.body.name[6],
+        car_nunber_bigbag: req.body.name[11],
+        car_nunber_smallbag: req.body.name[12],
+        car_location: req.body.name[2],
+        car_country: req.body.name[3],
+        car_price_minute: req.body.name[10],
+        car_price: req.body.name[7],
+        car_partnername: req.body.name[1],
+        car_license: req.body.name[9],
+        car_rating: req.body.name[14],
+        image: req.body.name[13],
+    })
     // const infouser = await User.findById(req.body.username)
-    const updatecarinfopartner = await rentcarinfo.findById(idinfocar)
-    for(i = 1;i<3;i++){
-        updatecarinfopartner.car_image.push(req.body.image[i])
-    }
-    for(i = 1;i<5;i++){
-        updatecarinfopartner.car_service.push(req.body.name_service[i])
+    // const updatecarinfopartner = await rentcarinfo.findById(carinfopartner._id)
+    // console.log(updatecarinfopartner)
+    // for(i = 1;i<=req.body.name_service.length;i++){
+    //     console.log(req.body.name_service[i])
+    // }
+
+    // for(i = 1;i<2;i++){
+        // updatecarinfopartner.car_image.push(req.body.image)
+    // }
+    for(i = 1;i<req.body.name_service.length;i++){
+        carinfopartner.car_service.push(req.body.name_service[i])
     }
     for(i = 1;i<4;i++){
-        updatecarinfopartner.car_locationpickup.push(req.body.locationpickup[i])
+        carinfopartner.car_locationpickup.push(req.body.locationpickup[i])
     }
     for(i = 1;i<4;i++){
-        updatecarinfopartner.car_pricelocationpickup.push(req.body.pricelocationpickup[i])
+        carinfopartner.car_pricelocationpickup.push(req.body.pricelocationpickup[i])
     }
-    
-    updatecarinfopartner.save()
+
+    carinfopartner.save()
+    idinfocar = carinfopartner._id.toString()
+    console.log(idinfopartner)
+    updatepartner2 = await rentcarpartner.findById(idinfopartner)
+    updatepartner2.carinfoID.push(carinfopartner._id)
+    updatepartner2.save()
+    console.log(updatepartner2)
    
 
 })
@@ -215,10 +284,14 @@ router.get('/:id' + '/queryrentcar' , (req,res) => {
 })
 
 router.post('/save_transaction',async (req,res) =>  { 
+    var token = req.headers.authorization.split(' ')[1]
+    // we need to convert the string to JSON object first.
+    var stringToken = JSON.parse(token)['token']
+    var decodedtoken = jwt.decode(stringToken, secret)
     console.log('save_transaction')
     console.log(req.body.usernameid)
     const receipt = await new rentcarreceipt({
-        usernameID: mongoose.Types.ObjectId(req.body.usernameid),
+        usernameID: mongoose.Types.ObjectId(decodedtoken._id),
         partnername: req.body.partnername,
         car_name: req.body.car_name,
         car_license : req.body.car_license,
