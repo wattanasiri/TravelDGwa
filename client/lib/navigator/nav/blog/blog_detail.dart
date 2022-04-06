@@ -14,6 +14,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import 'blogpost/add_post_detail.dart';
 class Blogdetail extends StatefulWidget {
+  final detail;
+  const Blogdetail({Key key,this.detail}) : super(key:key);
 
   @override
   State<Blogdetail> createState() => _BlogdetailState();
@@ -29,9 +31,27 @@ Text _buildRatingStars(int rating) {
 
 
 class _BlogdetailState extends State<Blogdetail> {
-  @override
   bool viewVisible = false;
   int activeIndex = 0;
+  var detail;
+  Map author;
+
+  Future getAuthor() async {
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/blog/author/" + detail['authorId']));
+    author = json.decode(res.body);
+    setState(() {
+      author = author;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    detail = widget.detail;
+    getAuthor();
+  }
+
   final urlImages = [
     'https://static.wikia.nocookie.net/narnia/images/9/91/Narniadawntreader.png/revision/latest?cb=20101128130243',
     'https://data.whicdn.com/images/177376242/original.gif',
@@ -50,6 +70,7 @@ class _BlogdetailState extends State<Blogdetail> {
     });
   }
   final _controller = ScrollController();
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFFFFF4DC),
@@ -128,7 +149,7 @@ class _BlogdetailState extends State<Blogdetail> {
                                       children: [
                                       Text(
                                         //"${widget.data['name']}",
-                                        "Lonely island",
+                                        detail['topic'],
                                         style: GoogleFonts.poppins(
                                             color: const Color(0xff1D3557),
                                             fontSize: 20,
@@ -136,7 +157,7 @@ class _BlogdetailState extends State<Blogdetail> {
                                       ),
                                       Text(
                                         //"${widget.data['name']}",
-                                        "อ.ตะกั่วทุ่ง,จ.พังงา",
+                                        detail['location'],
                                         style: GoogleFonts.poppins(
                                             color: const Color(0xff1D3557),
                                             fontSize: 14,
@@ -343,7 +364,7 @@ class _BlogdetailState extends State<Blogdetail> {
                                         padding: EdgeInsets.symmetric(horizontal: 10),
                                         child: Text(
                                           //'${widget.data['desc']}',
-                                          "descัะพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพพ",
+                                          detail['desc'],
                                           style: TextStyle(
                                               color: Color(0xff1D3557), fontSize: 14),
                                         ),
@@ -371,11 +392,11 @@ class _BlogdetailState extends State<Blogdetail> {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const CircleAvatar(
+                                     CircleAvatar(
                                       backgroundColor: Color(0xFFECFAFF),
                                       radius: 40,
                                       child: Text(
-                                        "SC",
+                                        '${author['realname'][0]}${author['surname'][0]}',
                                         style: TextStyle(
                                             fontSize: 35,
                                             color: Color(0xFF1d3557)
@@ -396,10 +417,10 @@ class _BlogdetailState extends State<Blogdetail> {
                                             ),
                                           ),
                                           Text(
-                                            'Sedtawut Chalothronnarumit',
+                                            '${author['realname']} ${author['surname']}',
                                             style: TextStyle(
                                               color: Color(0xff1D3557),
-                                              fontSize: 16,
+                                              fontSize: 14,
                                               fontWeight: FontWeight.w900,
                                             ),
                                           ),

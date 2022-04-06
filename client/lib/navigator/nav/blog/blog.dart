@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:se_app2/navigator/nav/blog/blogpost/add_post_detail.dart';
@@ -5,6 +7,8 @@ import 'package:se_app2/navigator/nav/blog/blogpost/add_post_detail.dart';
 import '../profile/profile_edit.dart';
 import 'blog_detail.dart';
 import 'blogpost/add_post_gall.dart';
+import 'package:http/http.dart' as http;
+
 
 class Blog extends StatefulWidget {
 
@@ -15,6 +19,25 @@ class Blog extends StatefulWidget {
 }
 
 class _BlogState extends State<Blog> {
+  Map data;
+  List recentBlog;
+
+  Future getRecentBlog() async {
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/blog/recent"));
+    data = json.decode(res.body);
+    recentBlog = data['recentBlog'];
+    setState(() {
+      recentBlog = recentBlog;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getRecentBlog();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -759,7 +782,7 @@ class _BlogState extends State<Blog> {
                               parent: AlwaysScrollableScrollPhysics()),
                           padding: const EdgeInsets.only( right: 20),
                           scrollDirection: Axis.horizontal,
-                          //itemCount: widget.result2 == null ? 0 : widget.result2.length,
+                          itemCount: recentBlog == null ? 0 : recentBlog.length,
                           itemBuilder: (BuildContext context, int index) {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
@@ -767,6 +790,8 @@ class _BlogState extends State<Blog> {
                                 onTap: () {
                                   //selectid = widget.result2[index]["_id"];
                                   //getdatafromid();
+                                  Navigator.push(context, MaterialPageRoute(
+                                      builder: (context) => Blogdetail(detail:recentBlog[index])));
                                 },
                                 child: Column(
                                   children: [
@@ -804,13 +829,13 @@ class _BlogState extends State<Blog> {
                                                     children: [
                                                       SizedBox( height: 10,),
                                                       Row(
-                                                        children:  const <Widget>[
+                                                        children:  <Widget>[
                                                           SizedBox(width: 15,),
                                                           Flexible(
                                                               child : Padding(
                                                                 padding: EdgeInsets.only(top: 4),
                                                                 child: Text(
-                                                                  "สะพานลิงไม้ ข้ามแม่น้ำน่าน เขาตะปู",
+                                                                  recentBlog[index]['topic'],
                                                                   maxLines: 2,
                                                                   overflow: TextOverflow.ellipsis,
                                                                   style: TextStyle(
@@ -839,7 +864,7 @@ class _BlogState extends State<Blog> {
                                                                 padding: EdgeInsets.only(top: 4),
                                                                 child: Text(
                                                                   // "${widget.result[index]['price']} บาท",
-                                                                  "อำเภอตะกั่วทุ่ง,จังหวัดพังงา" ,
+                                                                  recentBlog[index]['topic'] ,
                                                                   maxLines: 1,
                                                                   overflow: TextOverflow.ellipsis,
                                                                   style: TextStyle(
@@ -934,7 +959,11 @@ class _BlogState extends State<Blog> {
         onPressed: (){
           Navigator.push(context, MaterialPageRoute(
               builder: (context) => Addpostdetail()
-          ));
+          )).then((value) {
+              setState(() {
+                getRecentBlog();
+              });
+          });
         },
         backgroundColor: Color(0xffFF831F),
         child: Icon(Icons.add,size: 40,),

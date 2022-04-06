@@ -76,6 +76,7 @@ app.use('/activity',require('./routes/activity_routes'))
 app.use('/restaurant',require('./routes/restau_routes'))
 app.use('/attraction',require('./routes/attraction_routes'))
 app.use('/admin',require('./routes/admin_routes'))
+app.use('/blog',require('./routes/blog_routes'))
 
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());

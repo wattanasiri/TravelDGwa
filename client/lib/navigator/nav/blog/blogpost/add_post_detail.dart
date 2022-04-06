@@ -4,6 +4,8 @@ import 'package:se_app2/navigator/nav/blog/blogpost/util.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Addpostdetail extends StatefulWidget {
   bool check;
@@ -22,8 +24,36 @@ Text _buildRatingStars(int rating) {
 class _AddpostdetailState extends State<Addpostdetail> {
   bool viewVisible = false;
 
+  final topic = TextEditingController();
+  final location = TextEditingController();
+  final desc = TextEditingController();
+  FocusNode topicFocusNode = FocusNode();
+  FocusNode locationFocusNode = FocusNode();
+  FocusNode descFocusNode = FocusNode();
+
   final ScrollController _gridScrollController = ScrollController();
   final ScrollController _singleChildController = ScrollController();
+
+  Future addBlog() async {
+    // allRooms = room_detail;
+    // data = json.encode(allRooms);
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
+    var res = await http.post(Uri.parse("http://10.0.2.2:8080/blog"),
+        headers: <String, String>{
+          'Context-Type': 'application/json;charSet=UTF-8',
+          'Accept': 'application/json;charSet=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: <String, String>{
+          'image' : imageFile.toString(),
+          'topic' : topic.text,
+          'location' : location.text,
+          'desc' : desc.text,
+          'date' : DateTime.now().toString()
+        });
+    print(res.body);
+  }
 
   void _gridListener() {
     if (_gridScrollController.offset <
@@ -81,6 +111,7 @@ class _AddpostdetailState extends State<Addpostdetail> {
           actions: [
             TextButton(
                 onPressed: (){
+                  addBlog();
                   Navigator.of(context).pop();
                 },
                 child: Text(
@@ -182,6 +213,8 @@ class _AddpostdetailState extends State<Addpostdetail> {
                                           enabledBorder: UnderlineInputBorder(
                                               borderSide: BorderSide(color: Color(0xffECFAFF))),
                                         ),
+                                        controller: topic,
+                                        focusNode: topicFocusNode,
                                       ),
                                     )
                                   ]
@@ -219,6 +252,8 @@ class _AddpostdetailState extends State<Addpostdetail> {
                                           enabledBorder: UnderlineInputBorder(
                                               borderSide: BorderSide(color: Color(0xffECFAFF))),
                                         ),
+                                        controller: location,
+                                        focusNode: locationFocusNode,
                                       ),
                                     )
                                   ]
@@ -259,6 +294,8 @@ class _AddpostdetailState extends State<Addpostdetail> {
                                             enabledBorder: UnderlineInputBorder(
                                                 borderSide: BorderSide(color: Color(0xffECFAFF))),
                                           ),
+                                          controller: desc,
+                                          focusNode: descFocusNode,
                                         ),
                                         )
                                     ),

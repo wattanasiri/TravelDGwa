@@ -86,7 +86,7 @@ class _NavState extends State<Nav> {
           TabItem(
             title: 'บล็อค',
             icon: Icon(Ionicons.newspaper, color: Color(0xffFFF4DC)),
-            activeIcon: Icon(Ionicons.newspaper, color: Color(0xffFF9A62)),
+            activeIcon: Icon(Ionicons.newspaper, color: Color(0xffFF9A62))
           ),
           TabItem(
             title: 'โปรไฟล์',
