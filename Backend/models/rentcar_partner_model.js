@@ -8,8 +8,9 @@ const rentcarpartnerSchema = new Schema({
         ref : 'User'
     },
     namepartner: String,
-    date_open: String,
-    time_open: String,
+    opening_day: String,
+    opening_time: String,
+    star : Number,
     time_extrapay: [
         {
             type: String
@@ -25,16 +26,16 @@ const rentcarpartnerSchema = new Schema({
             type: String
         }
     ],
-    comment:[
+    comments:[
         {
             type : mongoose.Schema.Types.ObjectId,
-            ref : 'comment'   
+            ref : 'Comment'   
         }
     ],
     carinfoID:[
         {
             type : mongoose.Schema.Types.ObjectId,
-            ref : 'comment'   
+            ref : 'CarInfo'   
         }
     ],
     image: [

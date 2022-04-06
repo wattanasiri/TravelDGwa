@@ -29,14 +29,7 @@ class hotelBilling extends StatefulWidget {
 
 class _hotelBillingState extends State<hotelBilling> {
   var detail;
-
-  List sample = [
-    {
-      "time": 1,
-      "info": "(1x) One grass suite : 3 คืน",
-      "price": 3300.00,
-    },
-  ];
+  List pricelist;
 
   String formatCheckIn(String date) {
     var inputFormat = DateFormat('dd-MM-yyyy');
@@ -51,8 +44,16 @@ class _hotelBillingState extends State<hotelBilling> {
     return text;
   }
 
-  String formatPricing(double price) {
+  String formatPricing(var price) {
     var text = formatPrice(price) + ' THB';
+    return text;
+  }
+
+  String getNightCount(String checkIn, String checkOut) {
+    var inputFormat = DateFormat('dd-MM-yyyy');
+    DateTime checkInDate = inputFormat.parse(checkIn);
+    DateTime checkOutDate = inputFormat.parse(checkOut);
+    var text = daysBetween(checkInDate, checkOutDate).toString();
     return text;
   }
 
@@ -60,7 +61,15 @@ class _hotelBillingState extends State<hotelBilling> {
   void initState() {
     super.initState();
     detail = widget.detail;
+
+    pricelist = [
+      {
+        "info": "(1x) ${detail['room']} : ${getNightCount(detail['checkIn'], detail['checkOut'])} คืน",
+        "price": detail['totalPrice'],
+      },
+    ];
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -167,7 +176,7 @@ class _hotelBillingState extends State<hotelBilling> {
                                 fontSize: 12,),
                             ),
                             Text(
-                              'ROOM NAME HERE',
+                              detail['room'],
                               style: GoogleFonts.poppins(
                                 color: const Color(0xff827E7E),
                                 fontSize: 12,),
@@ -290,7 +299,7 @@ class _hotelBillingState extends State<hotelBilling> {
                       shrinkWrap: true,
                       physics: const BouncingScrollPhysics(
                       parent: NeverScrollableScrollPhysics()),
-                      itemCount: sample == null ? 0 : sample.length,
+                      itemCount: pricelist == null ? 0 : pricelist.length,
                       itemBuilder: (BuildContext context, int index) {
                         return Container(
                           child: Row(
@@ -304,7 +313,7 @@ class _hotelBillingState extends State<hotelBilling> {
                                     Container(
                                       width: width * 0.08,
                                       child: Text(
-                                        sample[index]['time'].toString(),
+                                        (index + 1).toString(),
                                         style: GoogleFonts.poppins(
                                           color: const Color(0xff1D3557),
                                           fontSize: 12,),
@@ -314,7 +323,7 @@ class _hotelBillingState extends State<hotelBilling> {
                                     Container(
                                       width: width * 0.45,
                                       child: Text(
-                                        sample[index]['info'],
+                                        pricelist[index]['info'],
                                         style: GoogleFonts.poppins(
                                           color: const Color(0xff1D3557),
                                           fontSize: 12,),
@@ -324,7 +333,7 @@ class _hotelBillingState extends State<hotelBilling> {
                                     Container(
                                       width: width * 0.19,
                                       child: Text(
-                                        formatPricing(sample[index]['price']),
+                                        formatPricing(pricelist[index]['price']),
                                         style: GoogleFonts.poppins(
                                           color: const Color(0xff1D3557),
                                           fontSize: 12,),
@@ -363,7 +372,7 @@ class _hotelBillingState extends State<hotelBilling> {
                                 Container(
                                   width: width * 0.19,
                                   child: Text(
-                                    formatPricing(3300.00),
+                                    formatPricing(detail['totalPrice']),
                                     style: GoogleFonts.poppins(
                                       color: const Color(0xff1D3557),
                                       fontWeight: FontWeight.bold,

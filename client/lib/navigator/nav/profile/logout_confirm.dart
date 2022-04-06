@@ -7,107 +7,37 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:se_app2/constants.dart';
 import 'package:se_app2/functions.dart';
-import 'package:se_app2/navigator/nav.dart';
-import 'package:se_app2/navigator/nav/booking/components/cancel_notif.dart';
+import 'package:se_app2/screen/login_register/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
-
-import 'booking.dart';
 
 
-class confirmCancelBox extends StatefulWidget {
+class confirmLogoutBox extends StatefulWidget {
 
   final detail;
   final type;
   final width;
   final height;
-  const confirmCancelBox(
+  const confirmLogoutBox(
       {Key key,
         @required this.detail,
-        @required this.type,
+        this.type,
         this.width,
         this.height
       })
       : super(key: key);
 
   @override
-  _confirmBoxState createState() => _confirmBoxState();
+  _myState createState() => _myState();
 }
 
-class _confirmBoxState extends State<confirmCancelBox> {
+class _myState extends State<confirmLogoutBox> {
   var detail;
 
-  Future cancel() async {
-    // ---------------
+  Future clearToken() async {
     var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
-    final body = {
-      'type' : widget.type,
-    };
-    http.Response res = await http.post(
-      Uri.parse("http://10.0.2.2:8080/booking/cancel/${detail['_id']}"),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-      body: jsonEncode(body),
-    ).timeout(const Duration(seconds: timeoutDuration),
-      onTimeout: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return notifBox(
-              title: 'Error',
-              text: 'Request timeout.',
-              fontSize: 14.0,
-            );
-          },
-        );
-        return http.Response('Error', 408);
-      },)
-    ;
 
-    if (res.statusCode == 200) {
-      print('success');
-      Navigator.popUntil(context, ModalRoute.withName('/Navi'));
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return notifBox(
-            title: 'ยกเลิกการจอง',
-            text: 'การยกเลิกการจองเสร็จสมบูรณ์',
-            fontSize: 14.0,
-          );
-        },
-      );
-    }
-    else if (res.statusCode == 401) {
-      Navigator.pushReplacementNamed(context, '/login',);
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return notifBox(
-            title: 'Error',
-            text: 'Invalid token.',
-            fontSize: 14.0,
-          );
-        },
-      );
-    }
-    else {
-      print('failure');
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return notifBox(
-            title: 'Error',
-            text: 'Cannot cancel booking.',
-            fontSize: 14.0,
-          );
-        },
-      );
-    }
+    final success = await _prefs.remove('token');
+    print(success);
   }
 
   @override
@@ -155,7 +85,7 @@ class _confirmBoxState extends State<confirmCancelBox> {
                       Align(
                         alignment: Alignment.center,
                         child: Text(
-                          'ยกเลิกการจอง',
+                          'ออกจากระบบ',
                           style: GoogleFonts.poppins(
                               color: primaryColor,
                               fontSize: 20,
@@ -174,23 +104,14 @@ class _confirmBoxState extends State<confirmCancelBox> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             RichText(
+                              textAlign: TextAlign.center,
                               text: TextSpan(
                                 style: GoogleFonts.poppins(
                                   color: primaryColor,
-                                  fontSize: 12,),
+                                  fontSize: 14,),
                                 children: <TextSpan>[
                                   TextSpan(text:
-                                  'ในการยกเลิกการจองต้องใช้เวลาดำเนินการคืนเงิน ประมาณ 1-2 สัปดาห์ และอาจมีค่าธรรมเนียมในการยกเลิกตาม ',),
-                                  TextSpan(
-                                      text: 'ข้อกำหนดของ TravelDGwa',
-                                      style:  TextStyle(
-                                          color: orangeColor,
-                                          decoration: TextDecoration.underline,
-                                      ),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          print('move user to ToS');
-                                        }),
+                                  'คุณต้องการที่จะออกจากระบบหรือไม่?',),
                                 ],
                               ),
                             ),
@@ -235,7 +156,12 @@ class _confirmBoxState extends State<confirmCancelBox> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    cancel();
+                                    clearToken();
+                                    Navigator.pushReplacement(
+                                        context, MaterialPageRoute(
+                                        builder: (context) => LoginScreen()
+                                    )
+                                    );
                                   },
                                   child: Container(
                                     alignment: Alignment.center,

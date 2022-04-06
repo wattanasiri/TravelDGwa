@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:getwidget/getwidget.dart';
 import 'accommodation_detail.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:se_app2/constants.dart';
+import 'package:se_app2/functions.dart';
 
 class ResultItem extends StatefulWidget {
   final checkInHolder;
@@ -11,14 +14,14 @@ class ResultItem extends StatefulWidget {
   final numberOfPeopleHolder;
   final numberOfRoomsHolder;
   final accommodationData;
-  const ResultItem(
-      {Key key,
-      @required this.accommodationData,
-      this.checkInHolder,
-      this.checkOutHolder,
-      this.numberOfPeopleHolder,
-      this.numberOfRoomsHolder})
-      : super(key: key);
+  const ResultItem({
+    Key key,
+    @required this.accommodationData,
+    this.checkInHolder,
+    this.checkOutHolder,
+    this.numberOfPeopleHolder,
+    this.numberOfRoomsHolder,
+  }) : super(key: key);
   @override
   State<ResultItem> createState() => _ResultItemState();
 }
@@ -30,13 +33,18 @@ class _ResultItemState extends State<ResultItem> {
   var numberOfRoomsEdit = TextEditingController();
   var data;
 
-  Text _buildRatingStars(int rating) {
-    String stars = '';
-    for (int i = 0; i < rating; i++) {
-      stars += '⭐ ';
-    }
-    stars.trim();
-    return Text(stars);
+  RatingBarIndicator _buildRatingBar(double rating){
+    return RatingBarIndicator(
+      rating: rating,
+      direction: Axis.horizontal,
+      itemCount: 5,
+      itemPadding: EdgeInsets.only(right: 0.7),
+      itemBuilder: (context, _) => Icon(
+        Icons.star,
+        color: Colors.amber,
+      ),
+      itemSize: 20.0,
+    );
   }
 
   @override
@@ -48,6 +56,7 @@ class _ResultItemState extends State<ResultItem> {
         TextEditingController(text: widget.numberOfPeopleHolder);
     numberOfRoomsEdit = TextEditingController(text: widget.numberOfRoomsHolder);
     data = widget.accommodationData;
+    print(numberOfRoomsEdit.text);
   }
 
   @override
@@ -100,7 +109,19 @@ class _ResultItemState extends State<ResultItem> {
                             color: Colors.transparent,
                             padding: const EdgeInsets.symmetric(
                                 horizontal: 15, vertical: 5),
-                            child: _buildRatingStars(5),
+                            child: Row(
+                              children: [
+                                _buildRatingBar(numberToDouble(data[index]['star'])),
+                                SizedBox(width: 5,),
+                                Text(
+                                  '(${formatStar(data[index]['star'])})',
+                                  style: TextStyle(
+                                    color: const Color(0xffECFAFF),
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         ],
                       ),

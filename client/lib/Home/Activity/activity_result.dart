@@ -6,10 +6,17 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 import 'activity.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:se_app2/constants.dart';
+import 'package:se_app2/functions.dart';
+import 'package:se_app2/Widgets/notif_ok.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import '../Comment/comment_add.dart';
+import '../Comment/comment_item.dart';
 
 class activity_result extends StatefulWidget {
   // const activity_result({Key key}) : super(key: key);
@@ -27,6 +34,8 @@ class activity_result extends StatefulWidget {
 
 class _activity_resultState extends State<activity_result> {
 
+  GlobalKey<FormState> _formKey = GlobalKey();
+
   @override
   void initState() {
     super.initState();
@@ -38,6 +47,14 @@ class _activity_resultState extends State<activity_result> {
 
   String word = '';
   // var dayActivity,timeActivity;
+
+  String type = 'activity'; // IMPORTANT
+  var commentBody;
+  List commentData;
+  bool commentsLoaded = false;
+  double currentRating = 3;
+
+  final _controller = ScrollController();
 
   Map data;
   List recdata;
@@ -51,15 +68,27 @@ class _activity_resultState extends State<activity_result> {
   FocusNode acFocusNode2 = FocusNode();
 
   int activeIndex = 0;
-  final GlobalKey<FormState> _formKey = GlobalKey();
 
-  Text _buildRatingStars(int rating) {
-    String stars = '';
-    for (int i = 0; i < rating; i++) {
-      stars += '⭐ ';
-    }
-    stars.trim();
-    return Text(stars);
+  bool viewVisible = false;
+
+  void showWidget() {
+    setState(() {
+      viewVisible = true;
+    });
+  }
+
+  void hideWidget() {
+    setState(() {
+      viewVisible = false;
+    });
+  }
+
+  void removeDataInList(String id) {
+    print(commentData);
+    print(id);
+    setState(() {
+      commentData.removeWhere((value) => value["id"] == id);
+    });
   }
 
   Future getrec() async {
@@ -95,6 +124,45 @@ class _activity_resultState extends State<activity_result> {
           // checkpriceextra: checkpriceextra,
 
         ),));
+  }
+
+  RatingBarIndicator _buildRatingBar(double rating){
+    return RatingBarIndicator(
+      rating: rating,
+      direction: Axis.horizontal,
+      itemCount: 5,
+      itemPadding: EdgeInsets.only(right: 0.7),
+      itemBuilder: (context, _) => Icon(
+        Icons.star,
+        color: Colors.amber,
+      ),
+      itemSize: 20.0,
+    );
+  }
+
+  Future loadComment() async {
+    // ---------------
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
+
+
+    http.Response res = await http.get(Uri.parse
+      ("http://10.0.2.2:8080/comment/${widget.data['foundAcc']['_id']}/model/$type"),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+
+    if (res.statusCode == 200) {
+      commentBody = json.decode(res.body);
+      setState(() {
+        commentData = commentBody['comment'];
+        commentsLoaded = true;
+      });
+      print(commentData);
+    }
 
   }
 
@@ -102,6 +170,7 @@ class _activity_resultState extends State<activity_result> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: SingleChildScrollView(
+          controller: _controller,
           child: Form(
             key: _formKey,
             child: Column(
@@ -178,14 +247,15 @@ class _activity_resultState extends State<activity_result> {
                                   ),
                                   Row(
                                     children: [
-                                      _buildRatingStars(widget.data['foundAcc']['star']),
+                                      _buildRatingBar(numberToDouble(widget.data['foundAcc']['star'])),
                                       SizedBox(width: 5,),
                                       Text(
-                                          "(${widget.data['foundAcc']['star'].toString()})",
-                                          style: GoogleFonts.poppins(
-                                              color: const Color(0xff827E7E),
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.bold))
+                                        '(${formatStar(widget.data['foundAcc']['star'])})',
+                                        style: TextStyle(
+                                          color: grayColor,
+                                          fontSize: 14,
+                                        ),
+                                      ),
                                     ],
                                   ),
                                   // Container(
@@ -390,6 +460,108 @@ class _activity_resultState extends State<activity_result> {
                                       ],
                                     ),
                                   ),
+
+                                  SizedBox(height: 10,),
+                                  const Divider(color: Color(0xff827E7E), thickness: 1.5),
+                                  SizedBox(height: 10,),
+                                  commentAdd(detail: widget.data['foundAcc'], type: type),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: <Widget>[
+                                      const Divider(color: Color(0xff827E7E), thickness: 1.5),
+                                      InkWell(
+                                        onTap: () {
+                                          viewVisible ? hideWidget() : showWidget();
+                                          if (!commentsLoaded) loadComment();
+                                          if(viewVisible){
+                                            _controller.animateTo(
+                                                MediaQuery.of(context).size.height,
+                                                curve: Curves.easeInOut,
+                                                duration: const Duration(milliseconds: 500));
+                                          }
+                                        },
+                                        child: Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Flexible(
+                                                  child: Text(
+                                                    'ดูรีวิว',
+                                                    style: GoogleFonts.poppins(
+                                                        color: const Color(0xff1D3557),
+                                                        fontSize: 18,
+                                                        fontWeight: FontWeight.bold),
+                                                  )),
+                                              IconButton(
+                                                onPressed: () {
+                                                  viewVisible ? hideWidget() : showWidget();
+                                                  if (!commentsLoaded) loadComment();
+                                                  if(viewVisible){
+                                                    _controller.animateTo(
+                                                        MediaQuery.of(context).size.height,
+                                                        curve: Curves.easeInOut,
+                                                        duration: const Duration(milliseconds: 500));
+                                                  }
+                                                },
+                                                iconSize: 35,
+                                                padding: EdgeInsets.zero,
+                                                splashRadius: 20,
+                                                constraints: const BoxConstraints(),
+                                                icon: viewVisible
+                                                    ? const Icon(Icons.keyboard_arrow_up_rounded)
+                                                    : const Icon(
+                                                    Icons.keyboard_arrow_down_rounded),
+                                              ),
+
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      const Divider(color: Color(0xff827E7E), thickness: 1.5),
+
+                                      // กล่องคอมเมนต์
+                                      if (commentsLoaded)
+                                        SingleChildScrollView(
+                                            child: Container(
+                                              height: viewVisible ? 600 : 0,
+                                              margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+                                              padding: const EdgeInsets.all(10),
+                                              decoration: const BoxDecoration(
+                                                  color: Color(0xffFFEEC9),
+                                                  borderRadius: BorderRadius.all(Radius.circular(10))),
+                                              child : MediaQuery.removePadding(
+                                                removeTop: true,
+                                                context: context,
+                                                child: ListView.builder(
+                                                    shrinkWrap: true,
+                                                    physics: const BouncingScrollPhysics(),
+                                                    itemCount: commentData == null ? 0 : commentData.length,
+                                                    itemBuilder: (BuildContext context, int index) {
+                                                      return commentItem(
+                                                        modelid: widget.data['foundAcc']['_id'],
+                                                        detail: commentData[index],
+                                                        id: commentData[index]['id'],
+                                                        like: commentData[index]['like'],
+                                                        dislike: commentData[index]['dislike'],
+                                                        userLiked: commentData[index]['userLiked'],
+                                                        userDisliked: commentData[index]['userDisliked'],
+                                                        belongToUser: commentData[index]['belongToUser'],
+                                                        removeItemFunction: removeDataInList,
+                                                      );
+                                                    }),
+                                              ),
+                                            )
+                                        )
+                                      else
+                                        Container(
+                                          height: viewVisible ? 100 : 0,
+                                          child: Center(child: CircularProgressIndicator()),
+                                        )
+                                      ,
+                                    ],
+                                  ),
+
                                   const Padding(
                                     padding: EdgeInsets.only(top: 5),
                                     child: Text(

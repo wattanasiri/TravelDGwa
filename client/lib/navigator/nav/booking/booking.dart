@@ -1,12 +1,21 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:se_app2/constants.dart';
+import 'package:getwidget/getwidget.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
+import 'package:se_app2/functions.dart';
 
-import 'booking_item.dart';
 import 'package:se_app2/Widgets/notif_ok.dart';
+import 'booking_detail_hotel.dart';
+import 'booking_detail_ticket.dart';
+import 'booking_detail_transfer.dart';
+import 'booking_detail_rentcar.dart';
+import 'booking_detail_activity.dart';
+import 'components/booking_type_icon.dart';
 
 class Booking extends StatefulWidget {
 
@@ -25,11 +34,114 @@ class _BookingState extends State<Booking> {
   var done = false;
 
   var bookingData;
+  var currentData;
   var filteredData;
-  Map data;
+
+  String filteringStatus = 'soon'; // soon, completed, canceled
+  String filteringType = 'any';
+
+  Map data; // changes based on filter
+
+  String formatCheckIn(String date) {
+    var inputFormat = DateFormat('dd-MM-yyyy');
+    DateTime parsedDate = inputFormat.parse(date);
+    var text = 'วันที่ ' + parsedDate.day.toString() + ' ' +
+        getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
+        convertYearToBE(parsedDate.year).toString();
+    return text;
+  }
+  String formatCheckOut(String date) {
+    var inputFormat = DateFormat('dd-MM-yyyy');
+    DateTime parsedDate = inputFormat.parse(date);
+    var text = 'วันที่ ' + parsedDate.day.toString() + ' ' +
+        getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
+        convertYearToBE(parsedDate.year).toString();
+    return text;
+  }
+
+  String getBookingTitle(Map dataIndex) {
+    if (dataIndex['bookingType'] == 'accommodation') {
+      return dataIndex['acc_name'];
+    } else if (dataIndex['bookingType'] == 'transfer') {
+      return 'นายสมปอง ดองงาน';
+    } else if (dataIndex['bookingType'] == 'rentcar') {
+      return dataIndex['car_name'];
+    } else if (dataIndex['bookingType'] == 'activity') {
+      return dataIndex['name'];
+    }
+    else {
+      return 'text error';
+    }
+  }
+
+  String getBookingSubtitle(Map dataIndex) {
+    if (dataIndex['bookingType'] == 'accommodation') {
+      return 'ห้อง ' + dataIndex['room'];
+    } else if (dataIndex['bookingType'] == 'transfer') {
+      return 'Honda City : ฟฟ 6207';
+    } else if (dataIndex['bookingType'] == 'rentcar') {
+      return dataIndex['partnername'];
+    } else if (dataIndex['bookingType'] == 'activity') {
+      return '';
+    }
+    else {
+      return 'text error';
+    }
+  }
+
+  String getDateText1(Map dataIndex) {
+    if (dataIndex['bookingType'] == 'accommodation') {
+      return formatCheckIn(dataIndex['checkIn']);
+    } else if (dataIndex['bookingType'] == 'transfer') {
+      var inputFormat = DateFormat('dd-MM-yyyy');
+      DateTime parsedDate = inputFormat.parse(dataIndex['startdate']);
+      var text = 'วันที่ ' + parsedDate.day.toString() + ' ' +
+          getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
+          convertYearToBE(parsedDate.year).toString() + ' เวลา ' +
+          dataIndex['starttime'] + ' น.';
+      return text;
+    } else if (dataIndex['bookingType'] == 'rentcar') {
+      var inputFormat = DateFormat('yyyy-MM-dd');
+      DateTime parsedDate = inputFormat.parse(dataIndex['date_getcar']);
+      var text = 'วันที่ ' + parsedDate.day.toString() + ' ' +
+          getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
+          convertYearToBE(parsedDate.year).toString() + ' เวลา ' +
+          dataIndex['time_getcar'] + ' น.';
+      return text;
+    } else if (dataIndex['bookingType'] == 'activity') {
+      var inputFormat = DateFormat('dd-MM-yyyy');
+      DateTime parsedDate = inputFormat.parse(dataIndex['day']);
+      var text = 'วันที่ ' + parsedDate.day.toString() + ' ' +
+          getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
+          convertYearToBE(parsedDate.year).toString() + ' เวลา ' +
+          dataIndex['time'] + ' น.';
+      return text;
+    }
+    else {
+      return '';
+    }
+  }
+
+  String getDateText2(Map dataIndex) {
+    if (dataIndex['bookingType'] == 'accommodation') {
+      return formatCheckOut(dataIndex['checkOut']);
+    } else if (dataIndex['bookingType'] == 'rentcar') {
+      var inputFormat = DateFormat('yyyy-MM-dd');
+      DateTime parsedDate = inputFormat.parse(dataIndex['date_sentcar']);
+      var text = 'วันที่ ' + parsedDate.day.toString() + ' ' +
+          getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
+          convertYearToBE(parsedDate.year).toString() + ' เวลา ' +
+          dataIndex['time_sentcar'] + ' น.';
+      return text;
+    }
+    else {
+      return '';
+    }
+  }
 
   Future getBookingData() async {
 
+    // ---------------
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
 
@@ -51,13 +163,19 @@ class _BookingState extends State<Booking> {
             );
           },
         );
+        connectionFailed = true;
         return http.Response('Error', 408);
       },)
     ;
     data = json.decode(res.body);
-    bookingData = data['booking'];
-    print(bookingData);
 
+    // static
+    bookingData = data['booking'];
+    // changes
+    currentData = [...bookingData].where(
+            (row) => (row['status'] == 'soon')
+    ).toList();
+    print(currentData);
 
     if (res.statusCode == 200) {
       var itemCount = data.length;
@@ -96,22 +214,56 @@ class _BookingState extends State<Booking> {
       });
     }
   }
+  // ---------------
 
   void filterStatusData(statusIndex) {
-    // TODO
+    switch (statusIndex) {
+      case 1: filteringStatus = 'completed'; break;
+      case 2: filteringStatus = 'canceled'; break;
+      default:
+        filteringStatus = 'soon';
+    }
+    if (filteringType == 'any') {
+      filteredData = [...bookingData].where(
+              (row) => (row['status'] == filteringStatus)
+      ).toList();
+    } else {
+      filteredData = [...bookingData].where(
+              (row) => (row['bookingType'] == filteringType && row['status'] == filteringStatus)
+      ).toList();
+    }
+    print(filteredData);
     setState(() => {
       bookingStatus = statusIndex,
-      ResultItem(bookingData: bookingData),
+      currentData = filteredData,
     });
   }
 
   void filterTypeData(typeIndex) {
-    filteredData = [...bookingData].where((row) => (row['bookingType'] == 'transferrecipt'));
+    switch (typeIndex) {
+      case 1: filteringType = 'accommodation'; break;
+      case 2: filteringType = 'flight'; break;
+      case 3: filteringType = 'transfer'; break;
+      case 4: filteringType = 'rentcar'; break;
+      case 5: filteringType = 'activity'; break;
+      default:
+        filteringType = 'any';
+    }
+    if (filteringType == 'any') {
+      filteredData = [...bookingData].where(
+              (row) => (row['status'] == filteringStatus)
+      ).toList();
+    } else {
+      filteredData = [...bookingData].where(
+              (row) => (row['bookingType'] == filteringType && row['status'] == filteringStatus)
+      ).toList();
+    }
+    print(filteredData);
     setState(() => {
-      ResultItem(bookingData: filteredData),
       bookingType = typeIndex,
+      currentData = filteredData,
     });
-    // print(filteredData);
+
   }
 
   @override
@@ -152,9 +304,7 @@ class _BookingState extends State<Booking> {
                     splashFactory: NoSplash.splashFactory,
                   ),
                   onPressed: () {
-                    setState(() => {
-                      bookingStatus = 0,
-                    });
+                    filterStatusData(0);
                   },
                   child: Text('เร็วๆ นี้',
                     style: TextStyle(
@@ -174,9 +324,7 @@ class _BookingState extends State<Booking> {
                     splashFactory: NoSplash.splashFactory,
                   ),
                   onPressed: () {
-                    setState(() => {
-                      bookingStatus = 1,
-                    });
+                    filterStatusData(1);
                   },
                   child: Text('เรียบร้อยแล้ว',
                     style: TextStyle(
@@ -197,9 +345,7 @@ class _BookingState extends State<Booking> {
                     splashFactory: NoSplash.splashFactory,
                   ),
                   onPressed: () {
-                    setState(() => {
-                      bookingStatus = 2,
-                    });
+                    filterStatusData(2);
                   },
                   child: Text('ที่ยกเลิก',
                     style: TextStyle(
@@ -388,10 +534,187 @@ class _BookingState extends State<Booking> {
             const SizedBox(height: 5,),
 
             if (done)
-                Container(
-                alignment: Alignment.center,
-                child: ResultItem(bookingData: bookingData),
-              )
+              Container(
+                  padding: const EdgeInsets.only(bottom: 80),
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(
+                        parent: NeverScrollableScrollPhysics()),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    itemCount: currentData == null ? 0 : currentData.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      return GestureDetector(
+                        onTap: () => {
+                          if (currentData[index]['bookingType'] == 'accommodation') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => hotelDetail(
+                                        detail: currentData[index])))
+                          } else if (currentData[index]['bookingType'] == 'transfer') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => transferDetail(
+                                  detail: currentData[index])))
+                          } else if (currentData[index]['bookingType'] == 'rentcar') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => rentCarDetail(
+                                        detail: currentData[index])))
+                          } else if (currentData[index]['bookingType'] == 'activity') {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => activityDetail(
+                                        detail: currentData[index])))
+                          }
+                          else {
+                            print('INVALID TYPE'),
+                          },
+
+                        },
+                        child: GFCard(
+                          elevation: 8,
+                          color: primaryColor,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20)),
+                          padding: EdgeInsets.zero,
+                          content: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Stack(alignment: Alignment.bottomRight, children: <Widget>[
+                                Row(
+                                  crossAxisAlignment : CrossAxisAlignment.start,
+                                  children: [
+                                    ShaderMask(shaderCallback: (rect) {
+                                      return LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        colors: [Colors.transparent, primaryColor],
+                                      ).createShader(Rect.fromLTRB(80, 0, rect.width*1, rect.height));
+                                    },
+                                      blendMode: BlendMode.srcATop,
+                                      child: ClipRRect(
+                                        borderRadius: const BorderRadius.only(
+                                            topLeft: Radius.circular(20),
+                                            topRight: Radius.circular(20)),
+                                        child: Image.network(getImageUrl(currentData[index]['bookingType']),
+                                            height: 110,
+                                            width: 160,
+                                            fit: BoxFit.cover),
+                                      ),
+                                    ),
+                                    Flexible(child: Container(
+                                      padding: EdgeInsets.only(
+                                        top: 5,
+                                        bottom: 5,
+                                        left: 5,
+                                        right: 20,
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment : CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            getBookingTitle(currentData[index]),
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                                color: secondaryColor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 14),
+                                          ),
+                                          Text(
+                                            getBookingSubtitle(currentData[index]),
+                                            overflow: TextOverflow.ellipsis,
+                                            style: const TextStyle(
+                                                color: secondaryColor,
+                                                fontSize: 12),
+                                          ),
+                                          SizedBox(height: 3,),
+                                          Row(
+                                            children: [
+                                              if (currentData[index]['bookingType'] == 'accommodation')
+                                                Icon(Icons.calendar_today_outlined,
+                                                    color: boxColor,
+                                                    size: 14),
+                                              if (currentData[index]['bookingType'] == 'rentcar')
+                                                Icon(Icons.directions_car,
+                                                    color: boxColor,
+                                                    size: 14),
+                                              SizedBox(width: 3,),
+                                              Text(
+                                                getDateText1(currentData[index]),
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                    color: boxColor,
+                                                    fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+
+                                            children: [
+                                              if (currentData[index]['bookingType'] == 'accommodation')
+                                                Icon(Icons.alarm_off,
+                                                    color: boxColor,
+                                                    size: 14),
+                                              if (currentData[index]['bookingType'] == 'rentcar')
+                                                Icon(Icons.cancel_rounded,
+                                                    color: boxColor,
+                                                    size: 14),
+                                              SizedBox(width: 3,),
+                                              Text(
+                                                getDateText2(currentData[index]),
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                    color: boxColor,
+                                                    fontSize: 10),
+                                              ),
+                                            ],
+                                          ),
+
+                                        ],
+                                      ),
+                                    ),
+                                    ),
+                                  ],
+                                ),
+                                Container(
+                                  margin: const EdgeInsets.only(
+                                    bottom: 78,
+                                    right: 7,
+                                  ),
+                                  width: 25,
+                                  height: 25,
+                                  decoration: const BoxDecoration(
+                                    color: boxColor,
+                                    borderRadius: BorderRadius.all(Radius.circular(25),),
+                                  ),
+                                  child: BookingTypeIcon(type: currentData[index]['bookingType']),
+                                ),
+                                Container(
+                                  alignment: Alignment.centerRight,
+                                  margin: const EdgeInsets.only(
+                                    bottom: 5,
+                                    right: 5,
+                                  ),
+                                  child: Text(
+                                    'กดเพื่อดูรายละเอียดเพิ่มเติม >>',
+                                    textAlign: TextAlign.end,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        color: boxColor,
+                                        fontSize: 9),
+                                  ),
+                                ),
+                              ]),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                  ))
             else
               Center(child: CircularProgressIndicator())
             ,
@@ -401,4 +724,18 @@ class _BookingState extends State<Booking> {
       ),
     );
   }
+
+  String getImageUrl(type) {
+    if (type == 'accommodation')
+      return 'https://placeimg.com/640/480/any';
+    else if (type == 'transfer')
+      return 'https://t1.blockdit.com/photos/2020/11/5fb952383d4b9b0cc0fd7d2e_800x0xcover_3aaaqsST.jpg';
+    else if (type == 'rentcar')
+      return 'https://www.toyota.co.th/media/product/feature/large/e8d2cc60fa1d5467bc3a8b2b944677faa9c42502.jpg';
+    else if (type == 'activity')
+      return 'https://ik.imagekit.io/tvlk/xpe-asset/AyJ40ZAo1DOyPyKLZ9c3RGQHTP2oT4ZXW+QmPVVkFQiXFSv42UaHGzSmaSzQ8DO5QIbWPZuF+VkYVRk6gh-Vg4ECbfuQRQ4pHjWJ5Rmbtkk=/2000785513283/Health%2520Land%2520Pradit%2520Manutham%2520Spa%2520Treatments-f3388649-4fee-4630-8c1c-cec1fd1f36f7.jpeg?_src=imagekit&tr=c-at_max';
+    else
+      return 'https://placeimg.com/640/480/any';
+  }
+
 }

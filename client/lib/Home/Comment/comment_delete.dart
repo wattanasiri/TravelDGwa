@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -9,24 +10,25 @@ import 'package:se_app2/constants.dart';
 import 'package:se_app2/functions.dart';
 import 'package:se_app2/navigator/nav.dart';
 import 'package:se_app2/navigator/nav/booking/components/cancel_notif.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
-import 'booking.dart';
+import '../Attraction/tourism_detail.dart';
 
 
-class confirmCancelBox extends StatefulWidget {
+class confirmDeleteBox extends StatefulWidget {
 
   final detail;
   final type;
   final width;
   final height;
-  const confirmCancelBox(
+  final Function deleteFunction;
+
+  const confirmDeleteBox(
       {Key key,
         @required this.detail,
-        @required this.type,
+        this.type,
         this.width,
-        this.height
+        this.height,
+        @required this.deleteFunction,
       })
       : super(key: key);
 
@@ -34,81 +36,8 @@ class confirmCancelBox extends StatefulWidget {
   _confirmBoxState createState() => _confirmBoxState();
 }
 
-class _confirmBoxState extends State<confirmCancelBox> {
+class _confirmBoxState extends State<confirmDeleteBox> {
   var detail;
-
-  Future cancel() async {
-    // ---------------
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
-    final body = {
-      'type' : widget.type,
-    };
-    http.Response res = await http.post(
-      Uri.parse("http://10.0.2.2:8080/booking/cancel/${detail['_id']}"),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-      body: jsonEncode(body),
-    ).timeout(const Duration(seconds: timeoutDuration),
-      onTimeout: () {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return notifBox(
-              title: 'Error',
-              text: 'Request timeout.',
-              fontSize: 14.0,
-            );
-          },
-        );
-        return http.Response('Error', 408);
-      },)
-    ;
-
-    if (res.statusCode == 200) {
-      print('success');
-      Navigator.popUntil(context, ModalRoute.withName('/Navi'));
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return notifBox(
-            title: 'ยกเลิกการจอง',
-            text: 'การยกเลิกการจองเสร็จสมบูรณ์',
-            fontSize: 14.0,
-          );
-        },
-      );
-    }
-    else if (res.statusCode == 401) {
-      Navigator.pushReplacementNamed(context, '/login',);
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return notifBox(
-            title: 'Error',
-            text: 'Invalid token.',
-            fontSize: 14.0,
-          );
-        },
-      );
-    }
-    else {
-      print('failure');
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return notifBox(
-            title: 'Error',
-            text: 'Cannot cancel booking.',
-            fontSize: 14.0,
-          );
-        },
-      );
-    }
-  }
 
   @override
   void initState() {
@@ -139,7 +68,7 @@ class _confirmBoxState extends State<confirmCancelBox> {
                 borderRadius: BorderRadius.all(Radius.circular(15))
             ),
             child: Stack(
-              overflow: Overflow.visible,
+              clipBehavior: Clip.none,
               children: <Widget>[
                 Container(
                   padding: const EdgeInsets.only(
@@ -148,14 +77,14 @@ class _confirmBoxState extends State<confirmCancelBox> {
                       right: 0,
                   ),
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Align(
                         alignment: Alignment.center,
                         child: Text(
-                          'ยกเลิกการจอง',
+                          'ยืนยัน',
                           style: GoogleFonts.poppins(
                               color: primaryColor,
                               fontSize: 20,
@@ -169,30 +98,16 @@ class _confirmBoxState extends State<confirmCancelBox> {
                           right: 40,
                         ),
                         child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            RichText(
-                              text: TextSpan(
-                                style: GoogleFonts.poppins(
-                                  color: primaryColor,
-                                  fontSize: 12,),
-                                children: <TextSpan>[
-                                  TextSpan(text:
-                                  'ในการยกเลิกการจองต้องใช้เวลาดำเนินการคืนเงิน ประมาณ 1-2 สัปดาห์ และอาจมีค่าธรรมเนียมในการยกเลิกตาม ',),
-                                  TextSpan(
-                                      text: 'ข้อกำหนดของ TravelDGwa',
-                                      style:  TextStyle(
-                                          color: orangeColor,
-                                          decoration: TextDecoration.underline,
-                                      ),
-                                      recognizer: TapGestureRecognizer()
-                                        ..onTap = () {
-                                          print('move user to ToS');
-                                        }),
-                                ],
-                              ),
+                            Text(
+                            'คุณต้องการจะลบความคิดเห็นนี้หรือไม่?',
+                              style: GoogleFonts.poppins(
+                                color: primaryColor,
+                                fontSize: 14,),
+                              textAlign: TextAlign.center,
                             ),
                           ],
                         ),
@@ -235,7 +150,8 @@ class _confirmBoxState extends State<confirmCancelBox> {
                                 ),
                                 GestureDetector(
                                   onTap: () {
-                                    cancel();
+                                    widget.deleteFunction();
+                                    Navigator.of(context).pop();
                                   },
                                   child: Container(
                                     alignment: Alignment.center,

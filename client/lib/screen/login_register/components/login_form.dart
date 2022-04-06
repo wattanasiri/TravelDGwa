@@ -65,17 +65,9 @@ class _LoginFormState extends State<LoginForm>  {
       ;
 
       await sharedPref.setString('token', res.body);
-      print(sharedPref.getString('token'));
-      print(res.body);
-      String currentid = res.body;
-      Datauser datauser = Datauser();
-      datauser.id = currentid;
-      print('id');
-      print(datauser.id);
-      print(res.statusCode);
       if (res.statusCode == 200) {
         print('success');
-        // _getProfile(body);
+        await sharedPref.setString('token', res.body);
         Navigator.pushReplacementNamed(
           context, '/Navi',
         );
