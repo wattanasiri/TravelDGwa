@@ -6,11 +6,11 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:se_app2/navigator/nav/home/components/body.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import '../Data/data_currentuser.dart';
-import 'nav/tripwithAI/lifestyle.dart';
-import 'nav/tripwithAI/mapmain.dart';
+import '../Home/Map/lifestyle.dart';
+import '../Home/Map/mapmain.dart';
 import '/navigator/nav/blog/blog.dart';
 import '/navigator/nav/booking/booking.dart';
 import '/navigator/nav/mainhome/mainhome.dart';
@@ -24,12 +24,20 @@ class Nav extends StatefulWidget {
 }
 
 class _NavState extends State<Nav> {
+
+  int _selectedIndex = 0;
+  bool isLeft = true;
   bool checklifestyleis;
   Map dataafterquery,dataquerymap;
   String weather,adventure,sea,confidence,bagpack,budget,social = '0';
-  int _selectedIndex = 0;
-  bool isLeft = true;
   Datauser datauser = Datauser();
+  Future querydata() async{
+    print('querydata');
+    http.Response res =
+    await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/querydatamap'));
+    dataquerymap = json.decode(res.body);
+    print(dataquerymap);
+  }
 
   Future getdataid() async{
     var _prefs = await SharedPreferences.getInstance();
@@ -78,13 +86,44 @@ class _NavState extends State<Nav> {
       checklifestyleis = false;
     }
   }
-  Future querydata() async{
-    print('querydata');
-    http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/querydatamap'));
-    dataquerymap = json.decode(res.body);
-    print(dataquerymap);
+  Future check(int index) async {
+    bool echeck = false;
+    if(index == 2){
+      echeck = true;
+      await getdataid();
+      await checklifestyle();
+      print(checklifestyleis);
+      await querydata();
+      if(checklifestyleis){
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => Mapmain(
+                  dataquerymap: dataquerymap,
+                  weather : weather,
+                  adventure :  adventure,
+                  sea : sea,
+                  confidence: confidence,
+                  bagpack: bagpack,
+                  budget: budget,
+                  social : social,
+                )
+            )
+        );
+      }else{
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => lifestyle(
+                  dataquerymap: dataquerymap,
+                )
+            )
+        );
+      }
+    }
+    return echeck;
   }
+
   final List<Widget> _pageList = <Widget>[
     const HomeBody(),
     const Booking(),
@@ -94,46 +133,20 @@ class _NavState extends State<Nav> {
   ];
 
   void _onItemTap(int index) {
-    setState(()  async {
+    print('ll');
+    setState((){
       if (_selectedIndex >= index){
         isLeft = true;
       } else {
         isLeft = false;
       }
+      print('index');
       print(index);
-      if(index == 2){
-        await getdataid();
-        await checklifestyle();
-        print(checklifestyleis);
-        await querydata();
-        if(checklifestyleis){
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => Mapmain(
-                    dataquerymap: dataquerymap,
-                    weather : weather,
-                    adventure :  adventure,
-                    sea : sea,
-                    confidence: confidence,
-                    bagpack: bagpack,
-                    budget: budget,
-                    social : social,
-                  )
-              )
-          );
-        }else{
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => lifestyle(
-                    dataquerymap: dataquerymap,
-                  )
-              )
-          );
-        }
-      }
+      check(index);
+
       _selectedIndex = index;
+
+
     });
   }
 

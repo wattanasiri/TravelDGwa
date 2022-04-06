@@ -10,7 +10,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:http/http.dart' as http;
 import 'package:se_app2/Home/Attraction/tourism_result.dart';
 
-import '../../../Data/data_currentuser.dart';
+import '../../Data/data_currentuser.dart';
 import 'Trip_detail.dart';
 import 'Trip_edit.dart';
 import 'Trip_log.dart';

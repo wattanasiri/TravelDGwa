@@ -9,7 +9,7 @@ import 'package:se_app2/Home/Rentcar/Rentcar_main.dart';
 import 'package:se_app2/constants.dart';
 import '../../../../Home/Attraction/tourism_detail.dart';
 import '../../../../Home/Attraction/tourist_attraction.dart';
-import '../../tripwithAI/mapmain.dart';
+import '../../../../Home/Map/mapmain.dart';
 import '../../../../Home/Restaurant/restau_detail.dart';
 import '../../../../Home/Restaurant/restaurant.dart';
 import 'home_button.dart';

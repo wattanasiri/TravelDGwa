@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:se_app2/Home/Activity/activity.dart';
 import 'package:se_app2/Home/Attraction/tourist_attraction.dart';
-import 'package:se_app2/navigator/nav/tripwithAI/lifestyle.dart';
-import 'package:se_app2/navigator/nav/tripwithAI/mapmain.dart';
+import 'package:se_app2/Home/Map/lifestyle.dart';
+import 'package:se_app2/Home/Map/mapmain.dart';
 import 'package:se_app2/constants.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
