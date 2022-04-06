@@ -64,7 +64,6 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
     data = json.decode(res.body);
     accommodationRoomData = data['rooms']['room'];
     hotelName = data['rooms']['name'];
-    print(accommodationRoomData);
   }
 
   int activeIndex = 0;
@@ -132,9 +131,7 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
         commentData = commentBody['comment'];
         commentsLoaded = true;
       });
-      print(commentData);
     }
-
   }
 
   @override
