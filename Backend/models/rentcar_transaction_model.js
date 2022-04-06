@@ -21,7 +21,7 @@ const rentcarreceiptSchema = new Schema({
     sum_detail_pricetime: Number,
     sum_detail_pricelocation: Number,
     total_price: String,
-    
+    canceled : { type: Boolean, default: false },
 })
 
 module.exports = mongoose.model('rentcarreceipt',rentcarreceiptSchema)

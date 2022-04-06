@@ -3,10 +3,30 @@ const lifestye = require('../models/map_model.js')
 const trip = require('../models/trip_model.js')
 var mongoose = require('mongoose');
 const ObjectId = require('mongodb').ObjectId; 
-
+const secret = require('..').SecretText
+const jwt = require('jwt-simple')
 const router = express.Router()
 var infotrip;
 var updatecarinfotrip;
+
+router.get('/getuserid', (req,res) => {
+    console.log('getuserid')
+    var token = req.headers.authorization.split(' ')[1]
+    // we need to convert the string to JSON object first.
+    var stringToken = JSON.parse(token)['token']
+    var user = jwt.decode(stringToken, secret)
+    console.log(user._id)
+    res.json(user._id)
+    // lifestye.find({ "usernameID": id }).exec((err,foundinfo) => {
+    //     if(err){
+    //         console.log(err)
+    //     } else {
+    //         res.json({foundinfo})
+    //         console.log(foundinfo)
+    //     }
+    // })
+   
+})
 
 router.post('/register_mapinfo',async (req,res) => { 
     console.log('register_mapinfo')

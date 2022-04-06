@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const timeoutDuration = 10;
+
 final kHintTextStyle = TextStyle(
   color: Colors.white54,
   fontFamily: 'OpenSans',

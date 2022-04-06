@@ -8,8 +8,7 @@ const airporttransferpartnerSchema = new Schema({
     car_registration: String,
     phone: String,
     email: String,
-    
-    
+
 })
 
 module.exports = mongoose.model('airporttransferpartner',airporttransferpartnerSchema )

@@ -6,6 +6,7 @@ import 'package:se_app2/Home/Map/mapmain.dart';
 import 'package:se_app2/constants.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../Data/data_currentuser.dart';
 import '../../../../Home/Restaurant/restaurant.dart';
@@ -30,6 +31,7 @@ class HomeButton extends StatelessWidget {
   bool checklifestyleis;
   Map dataafterquery,dataquerymap;
   String weather,adventure,sea,confidence,bagpack,budget,social = '0';
+  Datauser datauser = Datauser();
 
   Future getrec() async {
     print("1");
@@ -87,7 +89,6 @@ class HomeButton extends StatelessWidget {
   }
 
   Future querydata() async{
-    Datauser datauser = Datauser();
     print('querydata');
     http.Response res =
     await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/querydatamap'));
@@ -95,11 +96,26 @@ class HomeButton extends StatelessWidget {
     print(dataquerymap);
   }
 
-
+  Future getdataid() async{
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
+    print('getuserid');
+    http.Response res =
+    await http.get(Uri.parse('http://10.0.2.2:8080/map/getuserid'), headers: {
+      'Content-Type': 'application/json;charSet=UTF-8',
+      'Accept': 'application/json;charSet=UTF-8',
+      'Authorization': 'Bearer $token',
+    },);
+    print(json.decode(res.body));
+    datauser.id = json.decode(res.body);
+  }
   Future checklifestyle() async {
+
+
     try{
       print('check');
       Datauser datauser = Datauser();
+      print(datauser.id);
       http.Response res =
       await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/infolifestyleuser'));
       dataafterquery = json.decode(res.body);
@@ -150,6 +166,7 @@ class HomeButton extends StatelessWidget {
        else if(route.toString() == "activity"){
          await getrec();
          print("0");
+         print(recdata);
          Navigator.push(
              context,
              MaterialPageRoute(
@@ -173,6 +190,7 @@ class HomeButton extends StatelessWidget {
              )
          );
        } else if(route.toString() == "Mapmain"){
+         await getdataid();
          await checklifestyle();
          print(checklifestyleis);
          await querydata();

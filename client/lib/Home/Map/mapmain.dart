@@ -19,6 +19,7 @@ import '../../Data/data_locations.dart';
 import '../../Data/data_selectlocation2.dart';
 import 'Trip_detail.dart';
 import 'Trip_log.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Mapmain extends StatefulWidget {
   Map dataquerymap;
@@ -41,6 +42,7 @@ class _MapmainState extends State<Mapmain> {
   TextEditingController
   startlocationcontroller,endlocationcontroller,stattimecontroller,endtimecontroller,title;
 
+
   String durationToString(int minutes) {
     var d = Duration(minutes:minutes);
     List<String> parts = d.toString().split(':');
@@ -48,8 +50,11 @@ class _MapmainState extends State<Mapmain> {
   }
 
   Future querydata() async{
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
     Datauser datauser = Datauser();
     print('querydata');
+    print(datauser.id);
     http.Response res =
     await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/querydatamap'));
     querydata2 = json.decode(res.body);
@@ -110,12 +115,20 @@ class _MapmainState extends State<Mapmain> {
       typelocation.add("Museum of zoology");
       typelocation.add("shooting range");
       typelocation.add("Tourist attraction");
+      typelocation.add("park");
+      typelocation.add("golf course");
+      typelocation.add("Museum of zoology");
+      typelocation.add("shooting range");
+      typelocation.add("Tourist attraction");
     }else{
       typelocation.add('cafe');
       typelocation.add('museum');
       typelocation.add('village');
       typelocation.add('temple');
       typelocation.add('cafe');
+      typelocation.add('museum');
+      typelocation.add('village');
+      typelocation.add('temple');
       typelocation.add('cafe');
     }
     print(typelocation);
@@ -173,7 +186,7 @@ class _MapmainState extends State<Mapmain> {
     String picklocation;
     String endlocation;
     // String picklocation = 'เดอะเซียนวิวคาเฟ่';
-    // String endlocation = 'Aran Café จอมเทียน';
+    // String endlocation = 'Aran Cafe จอมเทียน';
     int target = 0;
     picklocation = startlocationcontroller.text;
     endlocation = endlocationcontroller.text;
@@ -199,7 +212,7 @@ class _MapmainState extends State<Mapmain> {
       }
     }
     listtarget.clear();
-    for(int j = 0 ; j < numlocation ; j++){
+    for(int j = 0 ; j < typelocation.length; j++){
       double currentdistance = 100.0;
       print('for loop first');
       print(typelocation[j]);
@@ -222,7 +235,12 @@ class _MapmainState extends State<Mapmain> {
           }
         }
       }
-      listtarget.add(target);
+      if((!listtarget.contains(target))){
+        listtarget.add(target);
+      }
+      if(numlocation == listtarget.length){
+        break;
+      }
       currentdistance = 100.0;
     }
     print('listtarget');

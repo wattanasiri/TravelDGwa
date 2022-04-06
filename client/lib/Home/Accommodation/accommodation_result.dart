@@ -10,7 +10,6 @@ import 'dart:convert';
 import '/Home/Accommodation/accommodation_result_item.dart';
 
 class AccommodationResult extends StatefulWidget {
-
   final nameHolder;
   final checkInHolder;
   final checkOutHolder;
@@ -45,7 +44,7 @@ class _AccommodationResultState extends State<AccommodationResult> {
 
   Future getAccommodation() async {
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/hotel/search/" + word));
+        await http.get(Uri.parse("http://10.0.2.2:8080/hotel/search/" + word));
     data = json.decode(res.body);
     accommodationData = data['hotels'];
   }
@@ -56,7 +55,8 @@ class _AccommodationResultState extends State<AccommodationResult> {
     nameEdit = TextEditingController(text: widget.nameHolder);
     checkInEdit = TextEditingController(text: widget.checkInHolder);
     checkOutEdit = TextEditingController(text: widget.checkOutHolder);
-    numberOfPeopleEdit = TextEditingController(text: widget.numberOfPeopleHolder);
+    numberOfPeopleEdit =
+        TextEditingController(text: widget.numberOfPeopleHolder);
     numberOfRoomsEdit = TextEditingController(text: widget.numberOfRoomsHolder);
     word = nameEdit.text;
     accommodationData = widget.result;
@@ -210,14 +210,19 @@ class _AccommodationResultState extends State<AccommodationResult> {
                       GestureDetector(
                         onTap: () => {
                           showMaterialNumberPicker(
-                            context: context,
-                            title: "จำนวนห้อง",
-                            maxNumber: 30,
-                            minNumber: 1,
-                            selectedNumber: int.parse(numberOfRoomsEdit.text),
-                            onChanged: (value) => setState(() =>
-                                numberOfRoomsEdit.text = value.toString()),
-                          )
+                              context: context,
+                              title: "จำนวนห้อง",
+                              maxNumber: 30,
+                              minNumber: 1,
+                              selectedNumber: int.parse(numberOfRoomsEdit.text),
+                              // onChanged: (value) => setState(() =>
+                              //     numberOfRoomsEdit.text = value.toString()),
+                              onChanged: (value) {
+                                setState(() {
+                                  numberOfRoomsEdit.text = value.toString();
+                                  print(numberOfRoomsEdit.text);
+                                });
+                              })
                         },
                         child: Card(
                           shape: RoundedRectangleBorder(
@@ -254,11 +259,11 @@ class _AccommodationResultState extends State<AccommodationResult> {
               children: <Widget>[
                 const SizedBox(height: 15),
                 ResultItem(
-                  checkInHolder : checkInEdit.text,
-                  checkOutHolder : checkOutEdit.text,
-                  numberOfPeopleHolder : numberOfPeopleEdit.text,
-                  numberOfRoomsHolder : numberOfRoomsEdit.text,
-                  accommodationData: accommodationData
+                  checkInHolder: checkInEdit.text,
+                  checkOutHolder: checkOutEdit.text,
+                  numberOfPeopleHolder: numberOfPeopleEdit.text,
+                  numberOfRoomsHolder: numberOfRoomsEdit.text,
+                  accommodationData: accommodationData,
                 ),
               ],
             ),
@@ -293,7 +298,8 @@ class _AccommodationResultState extends State<AccommodationResult> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: const <Widget>[
-                        Icon(Icons.filter_alt_rounded, color: Color(0xff1D3557)),
+                        Icon(Icons.filter_alt_rounded,
+                            color: Color(0xff1D3557)),
                         SizedBox(width: 5),
                         Flexible(
                           child: Text(
@@ -336,7 +342,8 @@ class _AccommodationResultState extends State<AccommodationResult> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        const Icon(Icons.sort_rounded, color: Color(0xff1D3557)),
+                        const Icon(Icons.sort_rounded,
+                            color: Color(0xff1D3557)),
                         const SizedBox(width: 5),
                         Flexible(
                           child: Text(

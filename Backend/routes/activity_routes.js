@@ -10,7 +10,8 @@ const router = express.Router()
 router.get('/', (req,res) => {
     console.log('Hello')
     
-    activity.find({star : "5"},(err , foundactivity) => {
+    // recommended activity must have high rating but I'm omitting this for testing
+    activity.find({},(err , foundactivity) => {
         if(err){
             console.log(err)
         } else {

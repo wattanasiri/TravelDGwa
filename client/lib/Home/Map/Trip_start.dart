@@ -65,9 +65,8 @@ class _tripstartState extends State<tripstart> {
     print('check');
     for(int i=1 ; i<widget.data.length-1;i++){
       print(checkboxs[i]);
-      if(checkboxs[i]){
-        sdiecheck = true;
-      }else{
+      sdiecheck = true;
+      if(checkboxs[i] == false){
         sdiecheck = false;
       }
     }
@@ -158,13 +157,13 @@ class _tripstartState extends State<tripstart> {
                             ),
                           ),
                           ),
-                          IconButton(
-                            icon: const Icon(
-                              Boxicons.bxs_edit_alt,
-                              color: Color(0xff1D3557),
-                            ),
-                            onPressed: () {},
-                          ),
+                          // IconButton(
+                          //   icon: const Icon(
+                          //     Boxicons.bxs_edit_alt,
+                          //     color: Color(0xff1D3557),
+                          //   ),
+                          //   onPressed: () {},
+                          // ),
                         ],
                       ),
                     ),
@@ -321,7 +320,7 @@ class _tripstartState extends State<tripstart> {
                       child:Row(
                         children : [
                           Text(
-                            widget.data[0]['name'],
+                      widget.data[0]['name'].length > 35 ? widget.data[0]['name'].substring(0,35)+'...' : widget.data[0]['name'],
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontWeight: FontWeight.w900,
@@ -408,6 +407,7 @@ class _tripstartState extends State<tripstart> {
                           this.begincheck = begincheck;
                         });
                         begincheck = true;
+                        check();
                       },
                     )
                   ],
@@ -475,7 +475,7 @@ class _tripstartState extends State<tripstart> {
                             child:Row(
                               children : [
                                 Text(
-                                  widget.data[index+1]['name'],
+                                widget.data[index+1]['name'].length > 35 ? widget.data[index+1]['name'].substring(0,35)+'...' : widget.data[index+1]['name'],
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(fontWeight: FontWeight.w900,
@@ -562,6 +562,7 @@ class _tripstartState extends State<tripstart> {
                               setState(() {
                                 this.checkboxs[index+1] = sdiecheck;
                               });
+                              check();
 
                             },
                           )
@@ -633,7 +634,7 @@ class _tripstartState extends State<tripstart> {
                             child:Row(
                               children : [
                                 Text(
-                                  '${widget.data[widget.data.length - 1]['name']}',
+                            widget.data[widget.data.length - 1]['name'].length > 35 ? widget.data[widget.data.length - 1]['name'].substring(0,35)+'...' : widget.data[widget.data.length - 1]['name'],
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(fontWeight: FontWeight.w900,

@@ -13,7 +13,7 @@ const activityreceiptSchema = new Schema({
     price: Number,
     sum_price: Number,
     detail :String,
-    
+    canceled : { type: Boolean, default: false },
 })
 
 module.exports = mongoose.model('activityreceip',activityreceiptSchema)

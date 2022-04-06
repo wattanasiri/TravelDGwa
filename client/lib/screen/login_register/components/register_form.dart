@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:se_app2/Data/data_currentuser.dart';
 import 'package:se_app2/constants.dart';
 import 'package:flutter/gestures.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:se_app2/Widgets/notif_ok.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({Key key}) : super(key: key);
@@ -21,6 +25,18 @@ class _RegisterFormState extends State<RegisterForm> {
   TextEditingController realnameController = TextEditingController();
   TextEditingController surnameController = TextEditingController();
 
+  SharedPreferences sharedPref;
+
+  _initSharedPreferences() async {
+    sharedPref = await SharedPreferences.getInstance();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initSharedPreferences();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -36,15 +52,30 @@ class _RegisterFormState extends State<RegisterForm> {
             "realname": realnameController.text,
             "surname": surnameController.text,
             "password": passwordController.text,
-          });
-      print(res.statusCode);
+          }).timeout(const Duration(seconds: timeoutDuration),
+        onTimeout: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return notifBox(
+                title: 'Error',
+                text: 'Request timeout.',
+                fontSize: 14.0,
+              );
+            },
+          );
+          return http.Response('Error', 408);
+        },)
+      ;
+
       if (res.statusCode == 200) {
         print('success');
-        Navigator.pushNamed(
+        await sharedPref.setString('token', res.body);
+        Navigator.pushReplacementNamed(
             context, '/Navi',
         );
       }
-      else {
+      else if (res.statusCode != 408) {
         setState((){
           _registerFailed = true;
         });
@@ -89,6 +120,11 @@ class _RegisterFormState extends State<RegisterForm> {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'กรุณาใส่อีเมลของคุณ';
+                  } else {
+                    bool emailValidation = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value);
+                    if (!emailValidation) {
+                      return 'อีเมลต้องเป็นอีเมลจริง';
+                    }
                   }
                   return null;
                 },

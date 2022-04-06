@@ -1,5 +1,10 @@
 const express  = require('express');
+const middleware = require('../middleware')
 const Attraction = require('../models/attraction_model')
+const Comment = require('../models/comment_model')
+const User = require('../models/user_model')
+const jwt = require('jwt-simple');
+const secret = require('..').SecretText
 
 const router = express.Router()
 
