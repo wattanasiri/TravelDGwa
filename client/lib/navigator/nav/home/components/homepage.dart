@@ -7,10 +7,14 @@ import 'package:se_app2/Home/Airport_Transfer/Airport_Transfer_driver_input.dart
 import 'package:se_app2/Home/Rentcar/Rentcar_detail_car.dart';
 import 'package:se_app2/Home/Rentcar/Rentcar_main.dart';
 import 'package:se_app2/constants.dart';
+import 'package:se_app2/navigator/nav/blog/blog_detail.dart';
 import '../../../../Home/Attraction/tourism_detail.dart';
 import '../../../../Home/Attraction/tourist_attraction.dart';
 import '../../../../Home/Restaurant/restau_detail.dart';
 import '../../../../Home/Restaurant/restaurant.dart';
+import '../../blog/blogpost/add_post_detail.dart';
+import '../../blog/blogpost/add_post_gall.dart';
+import '../../tripwithAI/lifestyle.dart';
 import 'home_button.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
@@ -82,7 +86,7 @@ class Home extends StatelessWidget {
                 HomeButton(
                     icon: 'assets/icons/02.png',
                     text: 'เที่ยวบิน',
-                    route: '/findhotel'),
+                    route: Addpostdetail()),
               ],
             ),
             SizedBox(height: size.height * 0.016),
@@ -102,7 +106,7 @@ class Home extends StatelessWidget {
                 HomeButton(
                     icon: 'assets/icons/05.png',
                     text: 'แผนที่',
-                    route: '/findhotel'),
+                    route: lifestyle()),
               ],
             ),
             SizedBox(height: size.height * 0.016),
