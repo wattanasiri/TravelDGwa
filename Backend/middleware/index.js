@@ -33,4 +33,12 @@ midwareFunctions.isLoggedIn = function(req, res, next){
     }
 };
 
+// not a middleware function but well
+midwareFunctions.getUser = function(req) {
+  var token = req.headers.authorization.split(' ')[1]
+  var stringToken = JSON.parse(token)['token']
+  var user = jwt.decode(stringToken, secret)
+  return user
+}
+
 module.exports = midwareFunctions;  

@@ -106,8 +106,16 @@ class _AttractiondetailState extends State<Attractiondetail> {
 
   Future getseaattraction() async {
     print("1");
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/"));
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/"),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
     data = json.decode(res.body);
     print("this");
     print(data);
@@ -116,8 +124,16 @@ class _AttractiondetailState extends State<Attractiondetail> {
     print(seaattractiondata);
   }
   Future getmuseum() async {
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getmuseum" ));
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getmuseum" ),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
     data = json.decode(res.body);
     print("this");
     print(data);
@@ -130,8 +146,16 @@ class _AttractiondetailState extends State<Attractiondetail> {
     if(widget.check == true){
       print("test");
       print(widget.word);
+      var _prefs = await SharedPreferences.getInstance();
+      var token = _prefs.get('token');
       http.Response res =
-      await http.get(Uri.parse("http://10.0.2.2:8080/attraction/search/" + widget.word));
+      await http.get(Uri.parse("http://10.0.2.2:8080/attraction/search/" + widget.word),
+        headers: {
+          'Content-Type': 'application/json;charSet=UTF-8',
+          'Accept': 'application/json;charSet=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+      );
       data = json.decode(res.body);
       print ("this");
       print (data);
@@ -166,8 +190,6 @@ class _AttractiondetailState extends State<Attractiondetail> {
     // ---------------
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
-
-
     http.Response res = await http.get(Uri.parse
       ("http://10.0.2.2:8080/comment/${widget.data['_id']}/model/$type"),
       headers: {

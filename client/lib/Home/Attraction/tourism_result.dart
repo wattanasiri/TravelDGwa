@@ -10,6 +10,9 @@ import 'package:http/http.dart' as http;
 import 'package:se_app2/functions.dart';
 import 'package:se_app2/Home/Attraction/tourism_detail.dart';
 import 'package:se_app2/Home/Attraction/tourist_attraction.dart';
+import 'package:se_app2/constants.dart';
+import 'package:se_app2/functions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import '/Home/Accommodation/accommodation_result_item.dart';
@@ -54,16 +57,32 @@ class _AttractionResultState extends State<AttractionResult> {
   }
 
   Future getRestaurant() async {
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/search/" + word));
+    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/search/" + word),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
     data = json.decode(res.body);
     restaurantData = data['restaurants'];
   }
 
   Future getData() async {
     bool check = true ;
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getData/" + ID));
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getData/" + ID),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
     data = json.decode(res.body);
     data = data["foundAttraction"];
     print ("this");
@@ -80,8 +99,16 @@ class _AttractionResultState extends State<AttractionResult> {
   }
   Future getseaattraction() async {
     print("1");
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/" ));
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/" ),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
     data = json.decode(res.body);
     print("this");
     print(data);
@@ -90,8 +117,16 @@ class _AttractionResultState extends State<AttractionResult> {
     print(seaattractiondata);
   }
   Future getmuseum() async {
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getmuseum" ));
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getmuseum" ),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
     data = json.decode(res.body);
     print("this");
     print(data);

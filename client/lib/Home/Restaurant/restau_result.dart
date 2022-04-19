@@ -7,6 +7,9 @@ import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:http/http.dart' as http;
 import 'package:se_app2/Home/Restaurant/restau_detail.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:se_app2/constants.dart';
+import 'package:se_app2/functions.dart';
 import 'dart:convert';
 
 import '/Home/Accommodation/accommodation_result_item.dart';
@@ -44,15 +47,31 @@ class _RestaurantResultState extends State<RestaurantResult> {
   Map data;
 
   Future getRestaurant() async {
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/search/" + word));
+    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/search/" + word),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
     data = json.decode(res.body);
     restaurantData = data['restaurants'];
   }
 
   Future getData() async {
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/getData/" + ID));
+    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/getData/" + ID),
+      headers: {
+      'Content-Type': 'application/json;charSet=UTF-8',
+      'Accept': 'application/json;charSet=UTF-8',
+      'Authorization': 'Bearer $token',
+      },
+    );
     data = json.decode(res.body);
     data = data["foundRes"];
     Navigator.pushReplacement(context, MaterialPageRoute(
