@@ -61,7 +61,7 @@ class _RestaurantResultState extends State<RestaurantResult> {
     restaurantData = data['restaurants'];
   }
 
-  Future getData() async {
+  Future getData(index) async {
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
     http.Response res =
@@ -73,12 +73,45 @@ class _RestaurantResultState extends State<RestaurantResult> {
       },
     );
     data = json.decode(res.body);
+    bool userFavourited = data["userFavourited"];
     data = data["foundRes"];
-    Navigator.pushReplacement(context, MaterialPageRoute(
+    print('EEEEEEEEEEEEEEEEEEEEEEEEE');
+    Navigator.push(context, MaterialPageRoute(
         builder: (context) => Restaudetail(
           data : data,
+          userFavourited : userFavourited,
+          favFunction: actionFavouriteChild,
+          resultIndex: index,
         ))
     );
+  }
+
+  void actionFavouriteChild(index) {
+    setState(() {
+      resData[index]['userFavourited'] = !resData[index]['userFavourited'];
+    });
+  }
+  Future actionFavourite(id, index) async {
+
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
+    final body = {
+    };
+
+    http.Response res = await http.post(
+      Uri.parse("http://10.0.2.2:8080/attraction/$id/favourite"),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(body),
+    );
+    if (res.statusCode == 200) {
+      setState(() {
+        resData[index]['userFavourited'] = !resData[index]['userFavourited'];
+      });
+    }
   }
 
   var resData;
@@ -163,7 +196,7 @@ class _RestaurantResultState extends State<RestaurantResult> {
 
                     onTap: () => {
                       ID = resData[index]["_id"],
-                      getData(),
+                      getData(index),
 
                     },
                     child: GFCard(
@@ -207,19 +240,16 @@ class _RestaurantResultState extends State<RestaurantResult> {
                                     const BorderRadius.all(Radius.circular(30)),
                                     border: Border.all(
                                         color: const Color(0xff1D3557), width: 3)),
-                                child: IconButton(
-                                  icon: const Icon(
-                                    Icons.favorite_rounded,
-                                    color:
-                                    // data.isFavorite
-                                    // ? Color(0xffE80138)
-                                    Color(0xffC4C4C4),
-                                  ),
-                                  iconSize: 30,
-                                  onPressed: () => {
-                                    // setState(() => data.isFavorite = !data.isFavorite)
-                                  },
-                                )),
+                               child: GestureDetector(
+                                onTap: () => {
+                                  actionFavourite(resData[index]['_id'], index),
+                                },
+                                child: Container(
+                                    child: resData[index]['userFavourited'] ?
+                                    Icon(Icons.favorite_outlined, color: pinkColor, size: 30,) :
+                                    Icon(Icons.favorite_border_rounded, color: pinkColor, size: 30,)
+                                ),
+                              ),),
                           ]),
                           Padding(
                             padding: const EdgeInsets.only(

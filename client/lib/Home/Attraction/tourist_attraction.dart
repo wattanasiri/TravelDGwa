@@ -79,6 +79,8 @@ class _AttractionpageState extends State<Attractionpage> {
       },
     );
     data = json.decode(res.body);
+    bool userFavourited = data["userFavourited"];
+    print(userFavourited);
     data = data["foundAttraction"];
     //restaurantData = data['restaurants'];
     print(data);
@@ -86,6 +88,8 @@ class _AttractionpageState extends State<Attractionpage> {
         builder: (context) => Attractiondetail(
           data : data,
           check : Check,
+          userFavourited : userFavourited,
+          resultIndex: -1,
         ))
     );
 

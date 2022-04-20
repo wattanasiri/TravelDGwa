@@ -80,7 +80,19 @@ router.get('/getData/:word', middleware.isLoggedIn , (req,res) => {
         if(err){
         console.log(err)
     } else {
-        res.json({foundRes});
+        var user = middleware.getUser(req)
+        User.findById(user._id).exec((err,foundUser) => {
+            if (err) return console.log(err);
+                // get favorite
+                var foundFav = false
+                foundUser.favorite.some(favelem => {
+                    if ( favelem.id.equals(foundRes._id) ) {
+                        foundFav = true
+                    }
+                })
+            console.log(foundFav)
+            res.status(200).json({foundRes: foundRes, userFavourited: foundFav})
+        })
     }}
     )
 }
@@ -150,7 +162,19 @@ router.get('/querydata/:word', middleware.isLoggedIn , (req,res) => {
         if(err){
         console.log(err)
     } else {
-        res.json({foundRestaurant});
+        var user = middleware.getUser(req)
+        User.findById(user._id).exec((err,foundUser) => {
+            if (err) return console.log(err);
+                // get favorite
+                var foundFav = false
+                foundUser.favorite.some(favelem => {
+                    if ( favelem.id.equals(foundRestaurant._id) ) {
+                        foundFav = true
+                    }
+                })
+            console.log(foundFav)
+            res.status(200).json({foundRestaurant: foundRestaurant, userFavourited: foundFav})
+        })
     }}
     )}
     

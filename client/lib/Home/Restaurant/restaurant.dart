@@ -63,6 +63,7 @@ class _RestaurantpageState extends State<Restaurantpage> {
       },
     );
     data = json.decode(res.body);
+    bool userFavourited = data["userFavourited"];
     data = data["foundRestaurant"];
     //restaurantData = data['restaurants'];
     print(word);
@@ -72,6 +73,8 @@ class _RestaurantpageState extends State<Restaurantpage> {
         builder: (context) =>
             Restaudetail(
               data: data,
+              userFavourited : userFavourited,
+              resultIndex: -1,
             ))
     );
   }

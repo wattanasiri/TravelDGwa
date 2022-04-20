@@ -97,7 +97,9 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
       body: jsonEncode(body),
     );
     if (res.statusCode == 200) {
-      widget.favFunction(widget.resultIndex);
+      if (widget.resultIndex != -1) {
+        widget.favFunction(widget.resultIndex);
+      }
         setState(() {
           userFavourited = !userFavourited;
         });

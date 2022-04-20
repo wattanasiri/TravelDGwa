@@ -71,7 +71,7 @@ class _AttractionResultState extends State<AttractionResult> {
     restaurantData = data['restaurants'];
   }
 
-  Future getData() async {
+  Future getData(index) async {
     bool check = true ;
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
@@ -84,16 +84,20 @@ class _AttractionResultState extends State<AttractionResult> {
       },
     );
     data = json.decode(res.body);
-    data = data["foundAttraction"];
     print ("this");
     print (data);
+    bool userFavourited = data["userFavourited"];
+    print (userFavourited);
+    data = data["foundAttraction"];
     Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) => Attractiondetail(
           word : widget.nameHolder,
           data : data,
           check : check,
-
-
+          userFavourited : userFavourited,
+          // favFunction: actionFavouriteChild,
+          // resultIndex: index,
+          resultIndex: -1,
         ))
     );
   }
@@ -133,6 +137,34 @@ class _AttractionResultState extends State<AttractionResult> {
     museumattractiondata = data['museumattraction'];
     print("this");
     print(museumattractiondata);
+  }
+
+  void actionFavouriteChild(index) {
+    setState(() {
+      resData[index]['userFavourited'] = !resData[index]['userFavourited'];
+    });
+  }
+  Future actionFavourite(id, index) async {
+
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
+    final body = {
+    };
+
+    http.Response res = await http.post(
+      Uri.parse("http://10.0.2.2:8080/attraction/$id/favourite"),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(body),
+    );
+    if (res.statusCode == 200) {
+      setState(() {
+        resData[index]['userFavourited'] = !resData[index]['userFavourited'];
+      });
+    }
   }
 
   var resData;
@@ -229,7 +261,7 @@ class _AttractionResultState extends State<AttractionResult> {
 
                       onTap: () => {
                         ID = resData[index]["_id"],
-                        getData(),
+                        getData(index),
 
                       },
                       child: GFCard(
@@ -273,19 +305,17 @@ class _AttractionResultState extends State<AttractionResult> {
                                       const BorderRadius.all(Radius.circular(30)),
                                       border: Border.all(
                                           color: const Color(0xff1D3557), width: 3)),
-                                  child: IconButton(
-                                    icon: const Icon(
-                                      Icons.favorite_rounded,
-                                      color:
-                                      // data.isFavorite
-                                      // ? Color(0xffE80138)
-                                      Color(0xffC4C4C4),
-                                    ),
-                                    iconSize: 30,
-                                    onPressed: () => {
-                                      // setState(() => data.isFavorite = !data.isFavorite)
-                                    },
-                                  )),
+                                child: GestureDetector(
+                                  onTap: () => {
+                                    actionFavourite(resData[index]['_id'], index),
+                                  },
+                                  child: Container(
+                                      child: resData[index]['userFavourited'] ?
+                                      Icon(Icons.favorite_outlined, color: pinkColor, size: 30,) :
+                                      Icon(Icons.favorite_border_rounded, color: pinkColor, size: 30,)
+                                  ),
+                                ),
+                              ),
                             ]),
                             Padding(
                               padding: const EdgeInsets.only(

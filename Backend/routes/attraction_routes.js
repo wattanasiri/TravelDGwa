@@ -111,7 +111,19 @@ router.get('/getData/:word', middleware.isLoggedIn, (req,res) => {
         if(err){
         console.log(err)
     } else {
-        res.status(200).json({foundAttraction})
+        var user = middleware.getUser(req)
+        User.findById(user._id).exec((err,foundUser) => {
+            if (err) return console.log(err);
+                // get favorite
+                var foundFav = false
+                foundUser.favorite.some(favelem => {
+                    if ( favelem.id.equals(foundAttraction._id) ) {
+                        foundFav = true
+                    }
+                })
+                console.log(foundFav)
+                res.status(200).json({foundAttraction: foundAttraction, userFavourited: foundFav})
+        })
     }}
     )
 }
@@ -123,8 +135,21 @@ router.get('/query/:word', middleware.isLoggedIn, (req,res) => {
         if(err){
         console.log(err)
     } else {
-        res.status(200).json({foundAttraction})
-    }}
+        var user = middleware.getUser(req)
+        User.findById(user._id).exec((err,foundUser) => {
+            if (err) return console.log(err);
+                // get favorite
+                var foundFav = false
+                foundUser.favorite.some(favelem => {
+                    if ( favelem.id.equals(foundAttraction._id) ) {
+                        foundFav = true
+                    }
+                })
+                console.log(foundFav)
+                res.status(200).json({foundAttraction: foundAttraction, userFavourited: foundFav})
+            })
+        }
+    }
     )}
     
 )
@@ -148,8 +173,6 @@ router.get('/getseaattraction/:word', middleware.isLoggedIn, (req,res) => {
                             foundFav = true
                         }
                     })
-                    let newData = Object.assign(elem.toObject(), {userFavourited: foundFav})
-                    ElemList.push(newData)
                 });
                 res.status(200).json({seaattraction:foundAttraction})
             })
