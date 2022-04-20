@@ -20,13 +20,13 @@ const newSchema = new Schema({
         {
             id : {
                 type: mongoose.Schema.Types.ObjectId,
-                refPath: 'favModel',
+                refPath: 'favorite.favModel',
                 
             },
             favModel : {
                 type: String,
                 required: true,
-                enum: ['Hotel', 'Attraction', 'Restaurant']
+                enum: ['Hotel', 'Attraction', 'Restaurant', 'Blog']
             },
             _id: false,
     }
