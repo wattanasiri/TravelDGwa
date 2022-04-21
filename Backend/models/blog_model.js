@@ -9,10 +9,12 @@ var blogSchema = mongoose.Schema({
     topic : String,
     location : String,
     desc: String,
-    comment : {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : 'Comment'
-    },
+    comments : [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Comment'
+        }
+    ],
     date:String
 })
 

@@ -599,7 +599,7 @@ class _BookingState extends State<Booking> {
                                       child: ClipRRect(
                                         borderRadius: const BorderRadius.only(
                                             topLeft: Radius.circular(20),
-                                            topRight: Radius.circular(20)),
+                                            bottomLeft: Radius.circular(20)),
                                         child: Image.network(getImageUrl(currentData[index]['bookingType']),
                                             height: 110,
                                             width: 160,
@@ -716,8 +716,10 @@ class _BookingState extends State<Booking> {
                     },
                   ))
             else
-              Center(child: CircularProgressIndicator())
-            ,
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 30),
+              child: Center(child: CircularProgressIndicator()),
+            ),
 
           ],
         ),

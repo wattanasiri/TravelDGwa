@@ -87,7 +87,6 @@ class _AttractionResultState extends State<AttractionResult> {
     print ("this");
     print (data);
     bool userFavourited = data["userFavourited"];
-    print (userFavourited);
     data = data["foundAttraction"];
     Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) => Attractiondetail(

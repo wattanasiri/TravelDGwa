@@ -85,6 +85,30 @@ router.get('/search/:word', middleware.isLoggedIn, (req,res) => {
     })
 })
 
+// only used in favorite page so far
+router.get('/getData/:id', middleware.isLoggedIn, (req,res) => {
+    Hotel.findById(req.params.id).exec((err,foundHotel) => {
+        if(err){
+        console.log(err)
+    } else {
+        var user = middleware.getUser(req)
+        User.findById(user._id).exec((err,foundUser) => {
+            if (err) return console.log(err);
+                // get favorite
+                var foundFav = false
+                foundUser.favorite.some(favelem => {
+                    if ( favelem.id.equals(foundHotel._id) ) {
+                        foundFav = true
+                    }
+                })
+                let newData = Object.assign(foundHotel.toObject(), {userFavourited: foundFav})
+
+                res.status(200).json({foundObject: newData, userFavourited: foundFav})
+        })
+    }}
+    )
+})
+
 router.post('/:id/favourite' , middleware.isLoggedIn , (req,res) => {
 
     var user = middleware.getUser(req)

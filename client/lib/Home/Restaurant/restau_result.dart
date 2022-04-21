@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 import 'package:getwidget/components/card/gf_card.dart';
 import 'package:intl/intl.dart';
@@ -45,6 +46,20 @@ class _RestaurantResultState extends State<RestaurantResult> {
   var restaurantData;
   String word = '';
   Map data;
+
+  RatingBarIndicator _buildRatingBar(double rating){
+    return RatingBarIndicator(
+      rating: rating,
+      direction: Axis.horizontal,
+      itemCount: 5,
+      itemPadding: EdgeInsets.only(right: 0.7),
+      itemBuilder: (context, _) => Icon(
+        Icons.star,
+        color: Colors.amber,
+      ),
+      itemSize: 20.0,
+    );
+  }
 
   Future getRestaurant() async {
     var _prefs = await SharedPreferences.getInstance();
@@ -226,7 +241,7 @@ class _RestaurantResultState extends State<RestaurantResult> {
                                   color: Colors.transparent,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 15, vertical: 5),
-                                  child: _buildRatingStars(5),
+                                  child: _buildRatingBar(numberToDouble(resData[index]["star"])),
                                 ),
                               ],
                             ),

@@ -498,6 +498,9 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                             ],
                           ),
 
+                          // This will be invisible if accessed through favourite page
+                          if (checkInEdit.text != '' || checkOutEdit.text != '' ||
+                              numberOfPeopleEdit.text != '' || numberOfPeopleEdit.text != '')
                           Container(
                             alignment: Alignment.bottomCenter,
                             margin: const EdgeInsets.symmetric(vertical: 10),
@@ -514,7 +517,7 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                                             numberOfPeopleHolder:
                                                 numberOfPeopleEdit.text,
                                             numberOfRoomsHolder:
-                                                numberOfRoomsEdit.text,
+                                            numberOfPeopleEdit.text,
                                             rooms: accommodationRoomData,
                                             hotel_name: hotelName)))
                               },
