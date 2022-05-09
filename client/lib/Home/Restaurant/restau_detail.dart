@@ -21,7 +21,13 @@ import '../Comment/comment_item.dart';
 class Restaudetail extends StatefulWidget {
   final detail;
   Map data;
-  Restaudetail({Key key,@required this.detail,this.data}) : super(key : key);
+  bool userFavourited;
+  final Function favFunction;
+  var resultIndex;
+  Restaudetail({Key key,@required this.detail,this.data,this.userFavourited,this.favFunction,
+    @required this.resultIndex,
+
+  }) : super(key : key);
 
   @override
   _RestaudetailState createState() => _RestaudetailState();
@@ -32,6 +38,7 @@ int activeIndex = 0;
 class _RestaudetailState extends State<Restaudetail> {
   GlobalKey<FormState> _formKey = GlobalKey();
   bool viewVisible = false;
+  bool userFavourited = false;
   var data;
 
   String type = 'restaurant'; // IMPORTANT
@@ -104,12 +111,39 @@ class _RestaudetailState extends State<Restaudetail> {
 
   }
 
+  Future actionFavourite() async {
+
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
+    final body = {
+    };
+
+    http.Response res = await http.post(
+      Uri.parse("http://10.0.2.2:8080/restaurant/${widget.data['_id']}/favourite"),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(body),
+    );
+    if (res.statusCode == 200) {
+      if (widget.resultIndex != -1) {
+        widget.favFunction(widget.resultIndex);
+      }
+      setState(() {
+        userFavourited = !userFavourited;
+      });
+    }
+  }
+
   //เลือกแต่ละอันจาก ID
   void initState(){
     data = widget.detail;
     print ("this ");
     print  (widget.data["name"]);
     print  (widget.data["star"]);
+    userFavourited = widget.userFavourited;
   }
   //จบเลือกแต่ละอันจาก ID
 
@@ -251,16 +285,17 @@ class _RestaudetailState extends State<Restaudetail> {
                                   ),
                                 ),
                               ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.favorite_border_rounded,
-                                  color: Color(0xff1D3557),
-                                ),
-                                iconSize: 30,
-                                onPressed: () => {
-                                  // setState(() => data.isFavorite = !data.isFavorite)
+                              GestureDetector(
+                                onTap: () => {
+                                  actionFavourite(),
                                 },
-                              )
+                                child: Container(
+                                    padding: EdgeInsets.only(right: 10),
+                                    child: userFavourited ?
+                                    Icon(Icons.favorite_outlined, color: pinkColor, size: 30,) :
+                                    Icon(Icons.favorite_border_rounded, color: Color(0xff1D3557), size: 30,)
+                                ),
+                              ),
                             ],
                           ),
                           Container(

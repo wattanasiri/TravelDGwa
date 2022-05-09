@@ -7,6 +7,7 @@ const Hotel = require('../models/hotel_model');
 const Restaurant = require('../models/restau_model');
 const Attraction = require('../models/attraction_model')
 const Activity = require('../models/activity_model')
+const Blog = require('../models/blog_model')
 const rentcarpartner = require('../models/rentcar_partner_model');
 const secret = require('..').SecretText
 
@@ -24,6 +25,8 @@ function getModelType(type) {
         return rentcarpartner
     } else if (type == 'activity') {
         return Activity
+    } else if (type == 'blog') {
+        return Blog
     }
     else {
         return 1;
@@ -86,7 +89,6 @@ router.get('/:id/model/:type' , middleware.isLoggedIn, (req,res) => {
                 }
                 commentList.push(newComment)
             });
-            // console.log(commentList);
             res.json({comment:commentList})
         } else {
             console.log(err)    

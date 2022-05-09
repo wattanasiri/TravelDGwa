@@ -23,13 +23,18 @@ class AccommodationDetail extends StatefulWidget {
   final numberOfPeopleHolder;
   final numberOfRoomsHolder;
   final detail;
+  final resultIndex;
+  final Function favFunction;
   const AccommodationDetail(
       {Key key,
-      @required this.checkInHolder,
-      this.checkOutHolder,
-      this.numberOfPeopleHolder,
-      this.numberOfRoomsHolder,
-      this.detail})
+        @required this.checkInHolder,
+        this.checkOutHolder,
+        this.numberOfPeopleHolder,
+        this.numberOfRoomsHolder,
+        this.detail,
+        this.favFunction,
+        this.resultIndex,
+      })
       : super(key: key);
 
   @override
@@ -73,6 +78,33 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
     'https://placeimg.com/640/480/any',
     'https://placeimg.com/640/480/any',
   ];
+
+  bool userFavourited = false;
+  Future actionFavourite() async {
+
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
+    final body = {
+    };
+
+    http.Response res = await http.post(
+      Uri.parse("http://10.0.2.2:8080/hotel/$id/favourite"),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(body),
+    );
+    if (res.statusCode == 200) {
+      if (widget.resultIndex != -1) {
+        widget.favFunction(widget.resultIndex);
+      }
+        setState(() {
+          userFavourited = !userFavourited;
+        });
+    }
+  }
 
   bool viewVisible = false;
 
@@ -144,6 +176,7 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
         TextEditingController(text: widget.numberOfPeopleHolder);
     numberOfRoomsEdit = TextEditingController(text: widget.numberOfRoomsHolder);
     detail = widget.detail;
+    userFavourited = widget.detail['userFavourited'];
   }
 
   @override
@@ -278,16 +311,17 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                                   ),
                                 ),
                               ),
-                              IconButton(
-                                icon: const Icon(
-                                  Icons.favorite_border_rounded,
-                                  color: Color(0xff1D3557),
-                                ),
-                                iconSize: 30,
-                                onPressed: () => {
-                                  // setState(() => data.isFavorite = !data.isFavorite)
+                              GestureDetector(
+                                onTap: () => {
+                                  actionFavourite(),
                                 },
-                              )
+                                child: Container(
+                                    padding: EdgeInsets.only(right: 10),
+                                    child: userFavourited ?
+                                    Icon(Icons.favorite_outlined, color: pinkColor, size: 30,) :
+                                    Icon(Icons.favorite_border_rounded, color: Color(0xff1D3557), size: 30,)
+                                ),
+                              ),
                             ],
                           ),
                           Container(
@@ -464,6 +498,9 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                             ],
                           ),
 
+                          // This will be invisible if accessed through favourite page
+                          if (checkInEdit.text != '' || checkOutEdit.text != '' ||
+                              numberOfPeopleEdit.text != '' || numberOfPeopleEdit.text != '')
                           Container(
                             alignment: Alignment.bottomCenter,
                             margin: const EdgeInsets.symmetric(vertical: 10),
@@ -480,7 +517,7 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
                                             numberOfPeopleHolder:
                                                 numberOfPeopleEdit.text,
                                             numberOfRoomsHolder:
-                                                numberOfRoomsEdit.text,
+                                            numberOfPeopleEdit.text,
                                             rooms: accommodationRoomData,
                                             hotel_name: hotelName)))
                               },

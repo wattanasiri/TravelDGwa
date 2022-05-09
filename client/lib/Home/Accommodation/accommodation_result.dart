@@ -6,6 +6,11 @@ import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:se_app2/Widgets/notif_ok.dart';
+import 'package:se_app2/constants.dart';
+import 'package:se_app2/functions.dart';
 
 import '/Home/Accommodation/accommodation_result_item.dart';
 
@@ -43,10 +48,50 @@ class _AccommodationResultState extends State<AccommodationResult> {
   Map data;
 
   Future getAccommodation() async {
-    http.Response res =
-        await http.get(Uri.parse("http://10.0.2.2:8080/hotel/search/" + word));
-    data = json.decode(res.body);
-    accommodationData = data['hotels'];
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
+
+    http.Response res = await http.get(
+          Uri.parse("http://10.0.2.2:8080/hotel/search/" + word),
+          headers: {
+            'Content-Type': 'application/json;charSet=UTF-8',
+            'Accept': 'application/json;charSet=UTF-8',
+            'Authorization': 'Bearer $token',
+          },
+        ).timeout(const Duration(seconds: timeoutDuration),
+        onTimeout: () {
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return notifBox(
+                title: 'Error',
+                text: 'Request timeout.',
+                fontSize: 14.0,
+              );
+            },
+          );
+          return http.Response('Error', 408);
+        });
+        if (res.statusCode == 200) {
+          data = json.decode(res.body);
+          accommodationData = data['hotels'];
+        }
+        else if (res.statusCode == 401) {
+          Navigator.pushReplacementNamed(context, '/login',);
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return notifBox(
+                title: 'Error',
+                text: 'Invalid token.',
+                fontSize: 14.0,
+              );
+            },
+          );
+        }
+        else {
+          print('failure');
+        }
   }
 
   @override
