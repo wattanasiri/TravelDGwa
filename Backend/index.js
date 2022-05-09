@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
-const port = 8080 || process.env.PORT;
+const port = process.env.PORT || 5000; // 5000 is used for heroku server
+const host = '0.0.0.0';
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -18,12 +19,6 @@ const SecretText = 'it\'s a secret to everyone.'
 var exportElements = {};
 exportElements.SecretText = SecretText
 module.exports = exportElements;
-
-app.use(require('express-session')({
-  secret: 'it\'s a secret to everyone.',
-  resave: false,
-  saveUninitialized: false
-}));
 
 app.use(cors())
 app.use(bodyParser.urlencoded({extended:true}))
@@ -86,6 +81,8 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req,res,next) {
   res.locals.currentUser = req.user;
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
   next();
 });
 

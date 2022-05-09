@@ -45,7 +45,7 @@ class _confirmBoxState extends State<confirmCancelBox> {
       'type' : widget.type,
     };
     http.Response res = await http.post(
-      Uri.parse("http://10.0.2.2:8080/booking/cancel/${detail['_id']}"),
+      Uri.parse("$SERVER_URL/booking/cancel/${detail['_id']}"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',

@@ -89,7 +89,7 @@ class _itemState extends State<commentAdd> {
     };
 
     http.Response res = await http.post(
-      Uri.parse("http://10.0.2.2:8080/comment/${widget.detail['_id']}/model/$type"),
+      Uri.parse("$SERVER_URL/comment/${widget.detail['_id']}/model/$type"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'dart:ffi';
 
 import 'package:flutter/cupertino.dart';
+import 'package:se_app2/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -37,7 +38,7 @@ class _Rentcar_infoState extends State<Rentcar_info> {
     print('getdetailpartnercar');
     http.Response res =
     await http.get(Uri.parse(
-        "http://10.0.2.2:8080/rentcar/" + partnerid + '/infopartner'));
+        "$SERVER_URL/rentcar/" + partnerid + '/infopartner'));
     partnerdata = json.decode(res.body);
     print(data);
     print(data['foundCar']);
@@ -72,7 +73,7 @@ class _Rentcar_infoState extends State<Rentcar_info> {
     id = select_id;
     http.Response res =
     await http.get(
-        Uri.parse("http://10.0.2.2:8080/rentcar/" + id + '/infocar'));
+        Uri.parse("$SERVER_URL/rentcar/" + id + '/infocar'));
     data = json.decode(res.body);
     partnerid = data['foundCar']['PartnerID'];
     print(partnerid);

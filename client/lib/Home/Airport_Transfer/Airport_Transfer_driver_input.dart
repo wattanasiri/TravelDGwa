@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:se_app2/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:se_app2/Data/data_currentuser.dart';
 import 'Airport_Transfer_driver_search.dart';
@@ -71,7 +72,7 @@ class _ShuttlePageState extends State<ShuttlePage> {
 
   Future save() async {
 
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/airport_transfer/register_shuttlepartner'),
+    var res = await http.post(Uri.parse('$SERVER_URL/airport_transfer/register_shuttlepartner'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
         },
