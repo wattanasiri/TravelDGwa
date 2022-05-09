@@ -69,6 +69,7 @@ router.get('/getrentcarpartner',(req,res) => {
             console.log(err)
         } else{
             console.log(foundPartner);
+            console.log('5555');
             return res.json(foundPartner);
         }
     })
