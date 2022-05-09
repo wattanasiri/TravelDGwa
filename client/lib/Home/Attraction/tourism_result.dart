@@ -10,9 +10,6 @@ import 'package:http/http.dart' as http;
 import 'package:se_app2/functions.dart';
 import 'package:se_app2/Home/Attraction/tourism_detail.dart';
 import 'package:se_app2/Home/Attraction/tourist_attraction.dart';
-import 'package:se_app2/constants.dart';
-import 'package:se_app2/functions.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 
 import '/Home/Accommodation/accommodation_result_item.dart';
@@ -57,61 +54,34 @@ class _AttractionResultState extends State<AttractionResult> {
   }
 
   Future getRestaurant() async {
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/search/" + word),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/search/" + word));
     data = json.decode(res.body);
     restaurantData = data['restaurants'];
   }
 
-  Future getData(index) async {
+  Future getData() async {
     bool check = true ;
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getData/" + ID),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getData/" + ID));
     data = json.decode(res.body);
+    data = data["foundAttraction"];
     print ("this");
     print (data);
-    bool userFavourited = data["userFavourited"];
-    data = data["foundAttraction"];
     Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) => Attractiondetail(
           word : widget.nameHolder,
           data : data,
           check : check,
-          userFavourited : userFavourited,
-          // favFunction: actionFavouriteChild,
-          // resultIndex: index,
-          resultIndex: -1,
+
+
         ))
     );
   }
   Future getseaattraction() async {
     print("1");
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/" ),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/" ));
     data = json.decode(res.body);
     print("this");
     print(data);
@@ -120,50 +90,14 @@ class _AttractionResultState extends State<AttractionResult> {
     print(seaattractiondata);
   }
   Future getmuseum() async {
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getmuseum" ),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getmuseum" ));
     data = json.decode(res.body);
     print("this");
     print(data);
     museumattractiondata = data['museumattraction'];
     print("this");
     print(museumattractiondata);
-  }
-
-  void actionFavouriteChild(index) {
-    setState(() {
-      resData[index]['userFavourited'] = !resData[index]['userFavourited'];
-    });
-  }
-  Future actionFavourite(id, index) async {
-
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
-    final body = {
-    };
-
-    http.Response res = await http.post(
-      Uri.parse("http://10.0.2.2:8080/attraction/$id/favourite"),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-      body: jsonEncode(body),
-    );
-    if (res.statusCode == 200) {
-      setState(() {
-        resData[index]['userFavourited'] = !resData[index]['userFavourited'];
-      });
-    }
   }
 
   var resData;
@@ -260,7 +194,7 @@ class _AttractionResultState extends State<AttractionResult> {
 
                       onTap: () => {
                         ID = resData[index]["_id"],
-                        getData(index),
+                        getData(),
 
                       },
                       child: GFCard(
@@ -304,17 +238,19 @@ class _AttractionResultState extends State<AttractionResult> {
                                       const BorderRadius.all(Radius.circular(30)),
                                       border: Border.all(
                                           color: const Color(0xff1D3557), width: 3)),
-                                child: GestureDetector(
-                                  onTap: () => {
-                                    actionFavourite(resData[index]['_id'], index),
-                                  },
-                                  child: Container(
-                                      child: resData[index]['userFavourited'] ?
-                                      Icon(Icons.favorite_outlined, color: pinkColor, size: 30,) :
-                                      Icon(Icons.favorite_border_rounded, color: pinkColor, size: 30,)
-                                  ),
-                                ),
-                              ),
+                                  child: IconButton(
+                                    icon: const Icon(
+                                      Icons.favorite_rounded,
+                                      color:
+                                      // data.isFavorite
+                                      // ? Color(0xffE80138)
+                                      Color(0xffC4C4C4),
+                                    ),
+                                    iconSize: 30,
+                                    onPressed: () => {
+                                      // setState(() => data.isFavorite = !data.isFavorite)
+                                    },
+                                  )),
                             ]),
                             Padding(
                               padding: const EdgeInsets.only(

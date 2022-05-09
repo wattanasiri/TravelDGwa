@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_material_pickers/flutter_material_pickers.dart';
 import 'package:getwidget/components/card/gf_card.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:http/http.dart' as http;
 import 'package:se_app2/Home/Restaurant/restau_detail.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:se_app2/constants.dart';
-import 'package:se_app2/functions.dart';
 import 'dart:convert';
 
 import '/Home/Accommodation/accommodation_result_item.dart';
@@ -47,86 +43,23 @@ class _RestaurantResultState extends State<RestaurantResult> {
   String word = '';
   Map data;
 
-  RatingBarIndicator _buildRatingBar(double rating){
-    return RatingBarIndicator(
-      rating: rating,
-      direction: Axis.horizontal,
-      itemCount: 5,
-      itemPadding: EdgeInsets.only(right: 0.7),
-      itemBuilder: (context, _) => Icon(
-        Icons.star,
-        color: Colors.amber,
-      ),
-      itemSize: 20.0,
-    );
-  }
-
   Future getRestaurant() async {
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/search/" + word),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/search/" + word));
     data = json.decode(res.body);
     restaurantData = data['restaurants'];
   }
 
-  Future getData(index) async {
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
+  Future getData() async {
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/getData/" + ID),
-      headers: {
-      'Content-Type': 'application/json;charSet=UTF-8',
-      'Accept': 'application/json;charSet=UTF-8',
-      'Authorization': 'Bearer $token',
-      },
-    );
+    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/getData/" + ID));
     data = json.decode(res.body);
-    bool userFavourited = data["userFavourited"];
     data = data["foundRes"];
-    print('EEEEEEEEEEEEEEEEEEEEEEEEE');
-    Navigator.push(context, MaterialPageRoute(
+    Navigator.pushReplacement(context, MaterialPageRoute(
         builder: (context) => Restaudetail(
           data : data,
-          userFavourited : userFavourited,
-          favFunction: actionFavouriteChild,
-          resultIndex: index,
         ))
     );
-  }
-
-  void actionFavouriteChild(index) {
-    setState(() {
-      resData[index]['userFavourited'] = !resData[index]['userFavourited'];
-    });
-  }
-  Future actionFavourite(id, index) async {
-
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
-    final body = {
-    };
-
-    http.Response res = await http.post(
-      Uri.parse("http://10.0.2.2:8080/attraction/$id/favourite"),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-      body: jsonEncode(body),
-    );
-    if (res.statusCode == 200) {
-      setState(() {
-        resData[index]['userFavourited'] = !resData[index]['userFavourited'];
-      });
-    }
   }
 
   var resData;
@@ -211,7 +144,7 @@ class _RestaurantResultState extends State<RestaurantResult> {
 
                     onTap: () => {
                       ID = resData[index]["_id"],
-                      getData(index),
+                      getData(),
 
                     },
                     child: GFCard(
@@ -241,7 +174,7 @@ class _RestaurantResultState extends State<RestaurantResult> {
                                   color: Colors.transparent,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 15, vertical: 5),
-                                  child: _buildRatingBar(numberToDouble(resData[index]["star"])),
+                                  child: _buildRatingStars(5),
                                 ),
                               ],
                             ),
@@ -255,16 +188,19 @@ class _RestaurantResultState extends State<RestaurantResult> {
                                     const BorderRadius.all(Radius.circular(30)),
                                     border: Border.all(
                                         color: const Color(0xff1D3557), width: 3)),
-                               child: GestureDetector(
-                                onTap: () => {
-                                  actionFavourite(resData[index]['_id'], index),
-                                },
-                                child: Container(
-                                    child: resData[index]['userFavourited'] ?
-                                    Icon(Icons.favorite_outlined, color: pinkColor, size: 30,) :
-                                    Icon(Icons.favorite_border_rounded, color: pinkColor, size: 30,)
-                                ),
-                              ),),
+                                child: IconButton(
+                                  icon: const Icon(
+                                    Icons.favorite_rounded,
+                                    color:
+                                    // data.isFavorite
+                                    // ? Color(0xffE80138)
+                                    Color(0xffC4C4C4),
+                                  ),
+                                  iconSize: 30,
+                                  onPressed: () => {
+                                    // setState(() => data.isFavorite = !data.isFavorite)
+                                  },
+                                )),
                           ]),
                           Padding(
                             padding: const EdgeInsets.only(

@@ -35,16 +35,8 @@ class HomeButton extends StatelessWidget {
 
   Future getrec() async {
     print("1");
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/activity/" ),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    await http.get(Uri.parse("http://10.0.2.2:8080/activity/" ));
     data = json.decode(res.body);
     print("this");
     print(data);
@@ -54,16 +46,8 @@ class HomeButton extends StatelessWidget {
   }
   Future getseaattraction() async {
     print("1");
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/" ),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/" ));
     data = json.decode(res.body);
     print("this");
     print(data);
@@ -72,16 +56,8 @@ class HomeButton extends StatelessWidget {
     print(seaattractiondata);
   }
   Future getmuseum() async {
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getmuseum" ),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getmuseum" ));
     data = json.decode(res.body);
     print("this");
     print(data);
@@ -91,16 +67,8 @@ class HomeButton extends StatelessWidget {
   }
 
   Future getseafood() async {
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant" ),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant" ));
     data = json.decode(res.body);
     print("this");
     print(data);
@@ -110,16 +78,8 @@ class HomeButton extends StatelessWidget {
   }
 
   Future getcruise() async {
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/getcruise" ),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/getcruise" ));
     data = json.decode(res.body);
     print("this");
     print(data);
@@ -130,16 +90,8 @@ class HomeButton extends StatelessWidget {
 
   Future querydata() async{
     print('querydata');
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/querydatamap'),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/querydatamap'));
     dataquerymap = json.decode(res.body);
     print(dataquerymap);
   }

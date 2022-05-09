@@ -5,9 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:se_app2/Home/Restaurant/restau_result.dart';
 import '../../navigator/nav/profile/creditcard/maincreditcard.dart';
 import '../Attraction/tourism_detail.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:se_app2/constants.dart';
-import 'package:se_app2/functions.dart';
 import 'dart:convert';
 
 class Restaurantpage extends StatefulWidget {
@@ -32,16 +29,8 @@ class _RestaurantpageState extends State<Restaurantpage> {
   List restaurantData;
 
   Future getRestaurant() async {
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/search/" + word),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/search/" + word));
     data = json.decode(res.body);
     restaurantData = data['restaurants'];
   }
@@ -52,18 +41,9 @@ class _RestaurantpageState extends State<Restaurantpage> {
   Future getdatafromid() async {
     Map data;
     word = selectid;
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/querydata/" + word),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/querydata/" + word));
     data = json.decode(res.body);
-    bool userFavourited = data["userFavourited"];
     data = data["foundRestaurant"];
     //restaurantData = data['restaurants'];
     print(word);
@@ -73,8 +53,6 @@ class _RestaurantpageState extends State<Restaurantpage> {
         builder: (context) =>
             Restaudetail(
               data: data,
-              userFavourited : userFavourited,
-              resultIndex: -1,
             ))
     );
   }

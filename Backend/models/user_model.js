@@ -18,18 +18,8 @@ const newSchema = new Schema({
     rolepartner: String,
     favorite : [
         {
-            id : {
-                type: mongoose.Schema.Types.ObjectId,
-                refPath: 'favorite.favModel',
-                
-            },
-            favModel : {
-                type: String,
-                required: true,
-                enum: ['Hotel', 'Attraction', 'Restaurant', 'Blog']
-            },
-            _id: false,
-    }
+            type: mongoose.Schema.Types.ObjectId,
+        }
     ],
     booking : [
         {

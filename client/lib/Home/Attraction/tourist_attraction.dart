@@ -4,9 +4,6 @@ import 'package:getwidget/components/card/gf_card.dart';
 import 'package:se_app2/Home/Attraction/tourism_detail.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:se_app2/constants.dart';
-import 'package:se_app2/functions.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:se_app2/Home/Attraction/tourism_result.dart';
 
@@ -37,18 +34,9 @@ class _AttractionpageState extends State<Attractionpage> {
   List attractionData;
   List seadata;
   String selectid = '';
-
   Future getItemAndNavigate(BuildContext context) async {
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/search/" + word),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/search/" + word));
     data = json.decode(res.body);
     attractionData = data["attraction"];
     print (attractionData);
@@ -65,22 +53,12 @@ class _AttractionpageState extends State<Attractionpage> {
   }
 
   Future gettheozone() async {
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
     Map data ;
     bool Check = false;
     word = selectid;
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/query/" + word),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/query/" + word));
     data = json.decode(res.body);
-    bool userFavourited = data["userFavourited"];
-    print(userFavourited);
     data = data["foundAttraction"];
     //restaurantData = data['restaurants'];
     print(data);
@@ -88,8 +66,6 @@ class _AttractionpageState extends State<Attractionpage> {
         builder: (context) => Attractiondetail(
           data : data,
           check : Check,
-          userFavourited : userFavourited,
-          resultIndex: -1,
         ))
     );
 

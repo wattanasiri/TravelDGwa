@@ -24,15 +24,8 @@ class Attractiondetail extends StatefulWidget {
   bool check;
   final detail;
   Map data;
-  bool userFavourited;
-  final Function favFunction;
-  var resultIndex;
   String word;
-  Attractiondetail({Key key,@required this.detail,this.data,
-    this.word,this.check,this.userFavourited,this.favFunction,
-  @required this.resultIndex,
-
-  }) : super(key : key);
+  Attractiondetail({Key key,@required this.detail,this.data,this.word,this.check}) : super(key : key);
 
   @override
   _AttractiondetailState createState() => _AttractiondetailState();
@@ -61,7 +54,6 @@ class _AttractiondetailState extends State<Attractiondetail> {
     var text = parsedDate.day.toString() + ' ' + getMonthName(parsedDate.month) + ' พ.ศ. ' + convertYearToBE(parsedDate.year).toString();
     return text;
   }
-  bool userFavourited = false;
 
   void initState(){
     data = widget.detail;
@@ -70,7 +62,6 @@ class _AttractiondetailState extends State<Attractiondetail> {
     print ("this ");
     print  (widget.data["name"]);
     print  (widget.data["star"]);
-    userFavourited = widget.userFavourited;
   }
   //จบเลือกแต่ละอันจาก ID
   void showWidget() {
@@ -115,16 +106,8 @@ class _AttractiondetailState extends State<Attractiondetail> {
 
   Future getseaattraction() async {
     print("1");
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/"),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/"));
     data = json.decode(res.body);
     print("this");
     print(data);
@@ -133,16 +116,8 @@ class _AttractiondetailState extends State<Attractiondetail> {
     print(seaattractiondata);
   }
   Future getmuseum() async {
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getmuseum" ),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
+    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getmuseum" ));
     data = json.decode(res.body);
     print("this");
     print(data);
@@ -155,16 +130,8 @@ class _AttractiondetailState extends State<Attractiondetail> {
     if(widget.check == true){
       print("test");
       print(widget.word);
-      var _prefs = await SharedPreferences.getInstance();
-      var token = _prefs.get('token');
       http.Response res =
-      await http.get(Uri.parse("http://10.0.2.2:8080/attraction/search/" + widget.word),
-        headers: {
-          'Content-Type': 'application/json;charSet=UTF-8',
-          'Accept': 'application/json;charSet=UTF-8',
-          'Authorization': 'Bearer $token',
-        },
-      );
+      await http.get(Uri.parse("http://10.0.2.2:8080/attraction/search/" + widget.word));
       data = json.decode(res.body);
       print ("this");
       print (data);
@@ -195,36 +162,12 @@ class _AttractiondetailState extends State<Attractiondetail> {
     }
     //restaurantData = data['restaurants'];
   }
-
-  Future actionFavourite() async {
-
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
-    final body = {
-    };
-
-    http.Response res = await http.post(
-      Uri.parse("http://10.0.2.2:8080/attraction/${widget.data['_id']}/favourite"),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-      body: jsonEncode(body),
-    );
-    if (res.statusCode == 200) {
-      if (widget.resultIndex != -1) {
-        widget.favFunction(widget.resultIndex);
-      }
-      setState(() {
-        userFavourited = !userFavourited;
-      });
-    }
-  }
   Future loadComment() async {
     // ---------------
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
+
+
     http.Response res = await http.get(Uri.parse
       ("http://10.0.2.2:8080/comment/${widget.data['_id']}/model/$type"),
       headers: {
@@ -370,17 +313,16 @@ class _AttractiondetailState extends State<Attractiondetail> {
                                   ),
                                 ),
                               ),
-                              GestureDetector(
-                                onTap: () => {
-                                  actionFavourite(),
-                                },
-                                child: Container(
-                                    padding: EdgeInsets.only(right: 10),
-                                    child: userFavourited ?
-                                    Icon(Icons.favorite_outlined, color: pinkColor, size: 30,) :
-                                    Icon(Icons.favorite_border_rounded, color: Color(0xff1D3557), size: 30,)
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.favorite_border_rounded,
+                                  color: Color(0xff1D3557),
                                 ),
-                              ),
+                                iconSize: 30,
+                                onPressed: () => {
+                                  // setState(() => data.isFavorite = !data.isFavorite)
+                                },
+                              )
                             ],
                           ),
                           Container(

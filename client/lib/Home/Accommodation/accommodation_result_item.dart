@@ -7,8 +7,6 @@ import 'accommodation_detail.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:se_app2/constants.dart';
 import 'package:se_app2/functions.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:http/http.dart' as http;
 
 class ResultItem extends StatefulWidget {
   final checkInHolder;
@@ -49,34 +47,6 @@ class _ResultItemState extends State<ResultItem> {
     );
   }
 
-  void actionFavouriteChild(index) {
-    setState(() {
-      data[index]['userFavourited'] = !data[index]['userFavourited'];
-    });
-  }
-  Future actionFavourite(id, index) async {
-
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
-    final body = {
-    };
-
-    http.Response res = await http.post(
-      Uri.parse("http://10.0.2.2:8080/hotel/$id/favourite"),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-      body: jsonEncode(body),
-    );
-    if (res.statusCode == 200) {
-      setState(() {
-        data[index]['userFavourited'] = !data[index]['userFavourited'];
-      });
-    }
-  }
-
   @override
   void initState() {
     super.initState();
@@ -110,11 +80,7 @@ class _ResultItemState extends State<ResultItem> {
                             checkOutHolder: checkOutEdit.text,
                             numberOfPeopleHolder: numberOfPeopleEdit.text,
                             numberOfRoomsHolder: numberOfRoomsEdit.text,
-                            detail: data[index],
-                            favFunction: actionFavouriteChild,
-                            resultIndex: index,
-
-                        )))
+                            detail: data[index])))
               },
               child: GFCard(
                 elevation: 8,
@@ -169,16 +135,19 @@ class _ResultItemState extends State<ResultItem> {
                                   const BorderRadius.all(Radius.circular(30)),
                               border: Border.all(
                                   color: const Color(0xff1D3557), width: 3)),
-                          child: GestureDetector(
-                            onTap: () => {
-                              actionFavourite(data[index]['_id'], index),
-                            },
-                            child: Container(
-                                child: data[index]['userFavourited'] ?
-                                Icon(Icons.favorite_outlined, color: pinkColor, size: 30,) :
-                                Icon(Icons.favorite_border_rounded, color: pinkColor, size: 30,)
+                          child: IconButton(
+                            icon: const Icon(
+                              Icons.favorite_rounded,
+                              color:
+                                  // data.isFavorite
+                                  // ? Color(0xffE80138)
+                                  Color(0xffC4C4C4),
                             ),
-                          ),),
+                            iconSize: 30,
+                            onPressed: () => {
+                              // setState(() => data.isFavorite = !data.isFavorite)
+                            },
+                          )),
                     ]),
                     Padding(
                       padding: const EdgeInsets.only(

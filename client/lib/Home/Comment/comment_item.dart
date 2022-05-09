@@ -351,11 +351,11 @@ class _itemState extends State<commentItem> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 backgroundColor: Color(0xFFECFAFF),
                 radius: 25,
                 child: Text(
-                  '${detail['username'][0]}${detail['username'][0]}',
+                  "TDG",
                   style: TextStyle(
                       fontSize: 20,
                       color: Color(0xFF1d3557)

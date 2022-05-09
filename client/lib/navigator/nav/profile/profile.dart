@@ -7,10 +7,7 @@ import 'package:se_app2/navigator/nav/profile/creditcard/maincreditcard.dart';
 import 'package:se_app2/navigator/nav/profile/partnership/mainpartnership.dart';
 import 'package:se_app2/navigator/nav/profile/profile_edit.dart';
 import 'package:se_app2/navigator/nav/profile/logout_confirm.dart';
-import 'package:se_app2/navigator/nav/profile/favourite/mainfavourite.dart';
 import 'package:se_app2/screen/login_register/login.dart';
-
-import 'helpcenter/mainhelpcenter.dart';
 
 class ProfilePage extends StatefulWidget {
 
@@ -193,11 +190,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => mainfavourite())
-                );
-              },
+              onTap: () {},
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 10),
                 padding: const EdgeInsets.all(20),
@@ -231,11 +224,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             GestureDetector(
-              onTap: () {
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => mainhelp())
-                );
-              },
+              onTap: () {},
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 10),
                 padding: const EdgeInsets.all(20),
