@@ -65,7 +65,7 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
 
   Future getRoom() async {
     http.Response res =
-        await http.get(Uri.parse("http://10.0.2.2:8080/hotel/" + id + '/room'));
+        await http.get(Uri.parse("$SERVER_URL/hotel/" + id + '/room'));
     data = json.decode(res.body);
     accommodationRoomData = data['rooms']['room'];
     hotelName = data['rooms']['name'];
@@ -88,7 +88,7 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
     };
 
     http.Response res = await http.post(
-      Uri.parse("http://10.0.2.2:8080/hotel/$id/favourite"),
+      Uri.parse("$SERVER_URL/hotel/$id/favourite"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -149,7 +149,7 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
 
 
     http.Response res = await http.get(Uri.parse
-      ("http://10.0.2.2:8080/comment/${widget.detail['_id']}/model/$type"),
+      ("$SERVER_URL/comment/${widget.detail['_id']}/model/$type"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',

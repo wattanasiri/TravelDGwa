@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:se_app2/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_place/google_place.dart';
 import 'package:http/http.dart' as http;
@@ -25,7 +26,7 @@ class _rentcarState extends State<rentcar> {
     print('id');
     print(datauser.id);
 
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/register_rentcarpartner'),
+    var res = await http.post(Uri.parse('$SERVER_URL/rentcar/register_rentcarpartner'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
         },
@@ -64,7 +65,7 @@ class _rentcarState extends State<rentcar> {
     for(int i = 0;i < image.length ; i++){
       data.addAll({"image[$i]":image[i]});
     }
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/update_register_rentcarpartner'),
+    var res = await http.post(Uri.parse('$SERVER_URL/rentcar/update_register_rentcarpartner'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
         },
@@ -74,7 +75,7 @@ class _rentcarState extends State<rentcar> {
   }
   Future save_carinfo_partner() async{
     print('save carinfo partner');
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/register_carinfo_rentcarpartner'),
+    var res = await http.post(Uri.parse('$SERVER_URL/rentcar/register_carinfo_rentcarpartner'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
         },
@@ -124,7 +125,7 @@ class _rentcarState extends State<rentcar> {
         data.addAll({"pricelocationpickup[$i]":pricelocationpickup[i]});
       }
 
-      var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/update_register_rentcarinfo'),
+      var res = await http.post(Uri.parse('$SERVER_URL/rentcar/update_register_rentcarinfo'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
         },
@@ -133,7 +134,7 @@ class _rentcarState extends State<rentcar> {
       print(res.body);
   }
   Future regis_carinfo_partner() async{
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/regis_rentcarinfo'),
+    var res = await http.post(Uri.parse('$SERVER_URL/rentcar/regis_rentcarinfo'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
         },
@@ -181,7 +182,7 @@ class _rentcarState extends State<rentcar> {
     for(int i = 0;i < pricelocationpickup.length ; i++){
       data.addAll({"pricelocationpickup[$i]":pricelocationpickup[i]});
     }
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/update_regis_rentcarinfo'),
+    var res = await http.post(Uri.parse('$SERVER_URL/rentcar/update_regis_rentcarinfo'),
       headers: <String, String>{
         'Context-Type': 'application/json;charSet=UTF-8'
       },
@@ -198,7 +199,7 @@ class _rentcarState extends State<rentcar> {
     id = _yourlocationcontroller.text.toString();
     //กรุงเทพ,อุดรธานี
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/rentcar/" + id + '/queryrentcar'));
+    await http.get(Uri.parse("$SERVER_URL/rentcar/" + id + '/queryrentcar'));
     dataafterquery = json.decode(res.body);
     print('dataafterquery');
     print(dataafterquery);

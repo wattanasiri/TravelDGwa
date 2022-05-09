@@ -94,7 +94,7 @@ class _activity_resultState extends State<activity_result> {
   Future getrec() async {
     print("1");
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/activity/" ));
+    await http.get(Uri.parse("$SERVER_URL/activity/" ));
     data = json.decode(res.body);
     print("this");
     print(data);
@@ -147,7 +147,7 @@ class _activity_resultState extends State<activity_result> {
 
 
     http.Response res = await http.get(Uri.parse
-      ("http://10.0.2.2:8080/comment/${widget.data['foundAcc']['_id']}/model/$type"),
+      ("$SERVER_URL/comment/${widget.data['foundAcc']['_id']}/model/$type"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:se_app2/constants.dart';
 import 'package:se_app2/navigator/nav/blog/blogpost/util.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
@@ -36,7 +37,7 @@ class _AddpostdetailState extends State<Addpostdetail> {
     // data = json.encode(allRooms);
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
-    var res = await http.post(Uri.parse("http://10.0.2.2:8080/blog"),
+    var res = await http.post(Uri.parse("$SERVER_URL/blog"),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8',
           'Accept': 'application/json;charSet=UTF-8',

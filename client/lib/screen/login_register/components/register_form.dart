@@ -42,7 +42,7 @@ class _RegisterFormState extends State<RegisterForm> {
     Size size = MediaQuery.of(context).size;
 
     Future save() async {
-      var res = await http.post(Uri.parse('http://10.0.2.2:8080/signup'),
+      var res = await http.post(Uri.parse('$SERVER_URL/signup'),
           headers: <String, String>{
             'Context-Type': 'application/json;charSet=UTF-8'
           },

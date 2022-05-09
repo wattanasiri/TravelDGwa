@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:se_app2/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:se_app2/Data/data_currentuser.dart';
@@ -46,7 +47,7 @@ class _airport_tranfer_registerState extends State<airport_tranfer_register> {
 
     Datauser datauser = Datauser();
     print(datauser.id);
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/airport_transfer/register_shuttlepartner'),
+    var res = await http.post(Uri.parse('$SERVER_URL/airport_transfer/register_shuttlepartner'),
         headers: {
           'Context-Type': 'application/json;charSet=UTF-8',
           'Accept': 'application/json;charSet=UTF-8',

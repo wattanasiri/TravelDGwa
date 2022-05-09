@@ -3,6 +3,7 @@ import 'package:flutter_material_pickers/helpers/show_number_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:http/http.dart' as http;
+import 'package:se_app2/constants.dart';
 import 'package:se_app2/Data/data_currentuser.dart';
 import 'dart:convert';
 
@@ -26,7 +27,7 @@ class _activityState extends State<activity> {
 
   Future activity_partner() async{
 
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/activity/activity_partner'),
+    var res = await http.post(Uri.parse('$SERVER_URL/activity/activity_partner'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
         },
@@ -63,7 +64,7 @@ class _activityState extends State<activity> {
     for(int i = 0;i < image.length ; i++){
       data.addAll({"image[$i]":image[i]});
     }
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/activity/update_activity'),
+    var res = await http.post(Uri.parse('$SERVER_URL/activity/update_activity'),
       headers: <String, String>{
         'Context-Type': 'application/json;charSet=UTF-8'
       },
@@ -83,7 +84,7 @@ class _activityState extends State<activity> {
     names = name.text.toString();
     //กรุงเทพ
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/activity/" + names + '/queryactivity'));
+    await http.get(Uri.parse("$SERVER_URL/activity/" + names + '/queryactivity'));
     dataafterquery = json.decode(res.body);
     //print(dataafterquery);
     //print(dataafterquery['foundAcc']);
@@ -106,7 +107,7 @@ class _activityState extends State<activity> {
     print('queryrec');
     //กรุงเทพ
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/activity/" + selectid + '/queryactivity'));
+    await http.get(Uri.parse("$SERVER_URL/activity/" + selectid + '/queryactivity'));
     dataafterquery = json.decode(res.body);
     print(dataafterquery);
     print(dataafterquery['foundAcc']);

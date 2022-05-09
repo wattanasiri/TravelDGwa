@@ -22,7 +22,7 @@ class _PasswordFormState extends State<PasswordRecoveryForm> {
     Size size = MediaQuery.of(context).size;
 
     Future save() async {
-      var res = await http.post(Uri.parse('http://10.0.2.2:8080/passwordrecover'),
+      var res = await http.post(Uri.parse('$SERVER_URL/passwordrecover'),
           headers: <String, String>{
             'Context-Type': 'application/json;charSet=UTF-8'
           },

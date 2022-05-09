@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:se_app2/constants.dart';
 import 'package:http/http.dart' as http;
 import 'package:se_app2/Data/data_currentuser.dart';
 import 'package:se_app2/Home/Activity/activity_receipt.dart';
@@ -23,7 +24,7 @@ class _activity_reserveState extends State<activity_reserve> {
 
     Datauser datauser = Datauser();
     print(datauser.id);
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/activity/save_invoice'),
+    var res = await http.post(Uri.parse('$SERVER_URL/activity/save_invoice'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
         },

@@ -35,7 +35,7 @@ class _RestaurantpageState extends State<Restaurantpage> {
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/search/" + word),
+    await http.get(Uri.parse("$SERVER_URL/restaurant/search/" + word),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -55,7 +55,7 @@ class _RestaurantpageState extends State<Restaurantpage> {
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/restaurant/querydata/" + word),
+    await http.get(Uri.parse("$SERVER_URL/restaurant/querydata/" + word),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',

@@ -62,7 +62,7 @@ class _ResultItemState extends State<ResultItem> {
     };
 
     http.Response res = await http.post(
-      Uri.parse("http://10.0.2.2:8080/hotel/$id/favourite"),
+      Uri.parse("$SERVER_URL/hotel/$id/favourite"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',

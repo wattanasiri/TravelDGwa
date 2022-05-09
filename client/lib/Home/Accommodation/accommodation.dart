@@ -29,7 +29,7 @@ class _AccommodationPageState extends State<AccommodationPage> {
     var token = _prefs.get('token');
 
     http.Response res = await http.get(
-      Uri.parse("http://10.0.2.2:8080/hotel/search/" + word),
+      Uri.parse("$SERVER_URL/hotel/search/" + word),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',

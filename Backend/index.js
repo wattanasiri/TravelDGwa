@@ -20,12 +20,6 @@ var exportElements = {};
 exportElements.SecretText = SecretText
 module.exports = exportElements;
 
-app.use(require('express-session')({
-  secret: 'it\'s a secret to everyone.',
-  resave: false,
-  saveUninitialized: false
-}));
-
 app.use(cors())
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(bodyParser.json())
@@ -41,7 +35,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.use(require('cookie-session')({
+app.use(require('express-session')({
   secret: SecretText,
   resave: false,
   saveUninitialized: false
@@ -87,6 +81,8 @@ passport.deserializeUser(User.deserializeUser());
 
 app.use(function(req,res,next) {
   res.locals.currentUser = req.user;
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
   next();
 });
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:se_app2/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:se_app2/navigator/nav/blog/blogpost/add_post_detail.dart';
 
@@ -29,7 +30,7 @@ class _BlogState extends State<Blog> {
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/blog/recent"),
+    await http.get(Uri.parse("$SERVER_URL/blog/recent"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
