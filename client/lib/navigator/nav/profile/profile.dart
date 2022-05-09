@@ -10,6 +10,8 @@ import 'package:se_app2/navigator/nav/profile/logout_confirm.dart';
 import 'package:se_app2/navigator/nav/profile/favourite/mainfavourite.dart';
 import 'package:se_app2/screen/login_register/login.dart';
 
+import 'helpcenter/mainhelpcenter.dart';
+
 class ProfilePage extends StatefulWidget {
 
   const ProfilePage({Key key}) : super(key: key);
@@ -229,7 +231,11 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(
+                    builder: (context) => mainhelp())
+                );
+              },
               child: Container(
                 margin: const EdgeInsets.symmetric(vertical: 10),
                 padding: const EdgeInsets.all(20),
