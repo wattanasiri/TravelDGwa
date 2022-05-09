@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
-const port = 8080 || process.env.PORT;
+const port = process.env.PORT || 5000; // 5000 is used for heroku server
+const host = '0.0.0.0';
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
@@ -40,7 +41,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.use(require('express-session')({
+app.use(require('cookie-session')({
   secret: SecretText,
   resave: false,
   saveUninitialized: false
