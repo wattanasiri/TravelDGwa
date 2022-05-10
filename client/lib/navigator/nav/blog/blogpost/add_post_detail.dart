@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as path;
+import 'package:firebase_storage/firebase_storage.dart'as firebase_storage;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Addpostdetail extends StatefulWidget {
@@ -43,7 +45,7 @@ class _AddpostdetailState extends State<Addpostdetail> {
           'Authorization': 'Bearer $token',
         },
         body: <String, String>{
-          'image' : imageFile.toString(),
+          'image' : fileNames.toString(),
           'topic' : topic.text,
           'location' : location.text,
           'desc' : desc.text,
@@ -52,7 +54,20 @@ class _AddpostdetailState extends State<Addpostdetail> {
     print(res.body);
   }
 
-
+  String fileNames;
+  Future uploadImageToFirebase(BuildContext context) async {
+    String fileName = path.basename(imageFile.path);
+    firebase_storage.Reference firebaseStorageRef = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('uploads')
+        .child('/$fileName');
+    firebase_storage.UploadTask uploadTask = firebaseStorageRef.putFile(imageFile);
+    firebase_storage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete((){});
+    taskSnapshot.ref.getDownloadURL().then(
+          (value) => print("Done: $value"),
+    );
+    fileNames = fileName.toString();
+  }
 
 
   /// Variables
@@ -318,3 +333,4 @@ class _AddpostdetailState extends State<Addpostdetail> {
     }
   }
 }
+

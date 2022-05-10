@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:se_app2/Data/data_currentuser.dart';
 import 'package:se_app2/Home/Rentcar/Rentcar_receipt.dart';
 
@@ -21,12 +22,16 @@ class result_reserve extends StatefulWidget {
 class _result_reserveState extends State<result_reserve> {
 
   Future save() async{
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
     Datauser datauser = Datauser();
     print('id');
     print(datauser.id);
     var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/save_transaction'),
         headers: <String, String>{
-          'Context-Type': 'application/json;charSet=UTF-8'
+          'Context-Type': 'application/json;charSet=UTF-8',
+          'Accept': 'application/json;charSet=UTF-8',
+          'Authorization': 'Bearer $token',
         },
         body: <String, String>{
 

@@ -6,10 +6,10 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
-
 const seedDB = require('./seeds');
 
 const User = require('./models/user_model');
+const { dirname } = require('path');
 
 mongoose.connect('mongodb+srv://admin:se1235@cluster0.inezx.mongodb.net/TravelDGwa?retryWrites=true&w=majority')
 

@@ -4,8 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:se_app2/Data/data_currentuser.dart';
-import 'package:http/http.dart' as http;
 import 'dart:io';
+import 'package:path/path.dart' as path;
+import 'package:firebase_storage/firebase_storage.dart'as firebase_storage;
 import 'package:se_app2/navigator/nav/profile/partnership/partner/activity/activity_request.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -54,6 +55,20 @@ class _activity_register3State extends State<activity_register3> {
     }
     print(imageFile);
   }
+  String fileNames;
+  Future uploadImageToFirebase(BuildContext context) async {
+    String fileName = path.basename(imageFile.path);
+    firebase_storage.Reference firebaseStorageRef = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('uploads')
+        .child('/$fileName');
+    firebase_storage.UploadTask uploadTask = firebaseStorageRef.putFile(imageFile);
+    firebase_storage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete((){});
+    taskSnapshot.ref.getDownloadURL().then(
+          (value) => print("Done: $value"),
+    );
+    fileNames = fileName.toString();
+  }
 
   Future activity_partner() async{
 
@@ -69,7 +84,7 @@ class _activity_register3State extends State<activity_register3> {
           "detail": detail.text,
           "opening_day": dayopen.toString()+"-"+dayopen2.toString(),
           "opening_time": _timegetcarcontroller.text+"-"+_timegetcarcontroller2.text,
-          "image": imageFile.toString(),
+          "image": fileNames.toString(),
         });
     print(res.body);
   }
@@ -222,6 +237,8 @@ class _activity_register3State extends State<activity_register3> {
                                     _getFromGallery(context);
                                   },
                                 ),
+
+
                               ),
                             ),
                           ],
@@ -591,8 +608,6 @@ class _activity_register3State extends State<activity_register3> {
                         ),
                       ),
                       const SizedBox(height: 10),
-
-
                       SizedBox(height: 30,),
                       Container(
                         margin: const EdgeInsets.symmetric(horizontal: 30),
@@ -610,6 +625,7 @@ class _activity_register3State extends State<activity_register3> {
                         child: ElevatedButton(
                           onPressed: () async=> {
                             activity_partner(),
+                            uploadImageToFirebase(context),
                             update_activity(),
                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => activity_request(
 
