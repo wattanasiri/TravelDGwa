@@ -33,6 +33,7 @@ class _tripstartState extends State<tripstart> {
   bool begincheck = false;
   bool sdiecheck = false;
   bool endcheck = false;
+  bool statussuccess,statusunsuccess = false;
   List<bool> checkboxs = [false, false, false, false, false, false, false, false, false];
   // Generating a long list to fill the ListView
   final List<Map> checkbox = List.generate(100,
@@ -40,10 +41,6 @@ class _tripstartState extends State<tripstart> {
   //เอาไว้สร้างตัวระหว่างทางเพิ่ม
   int btw = 0;
   //เอาไว้สร้างตัวระหว่างทางเพิ่ม
-  Future save() async {
-    http.Response res2 =
-        await http.get(Uri.parse("http://10.0.2.2:8080/map/updatestatus"));
-  }
   Future querydata() async{
     Datauser datauser = Datauser();
     print('querydata');
@@ -51,6 +48,15 @@ class _tripstartState extends State<tripstart> {
     await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/querydatamapandupdatstatus'));
     querydata2 = json.decode(res.body);
     print(querydata2);
+    for(int i=0 ; i < querydata2['foundinfo'].length ; i ++){
+      if(querydata2['foundinfo'][i]['status'] == 'success'){
+        statussuccess = true;
+      }
+      if(querydata2['foundinfo'][i]['status'] == 'unsuccess'){
+        statusunsuccess = true;
+      }
+
+    }
   }
 
   Future querydatafromcancel() async{
@@ -60,6 +66,15 @@ class _tripstartState extends State<tripstart> {
     await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/querydatamap'));
     querydata2 = json.decode(res.body);
     print(querydata2);
+    for(int i=0 ; i < querydata2['foundinfo'].length ; i ++){
+      if(querydata2['foundinfo'][i]['status'] == 'success'){
+        statussuccess = true;
+      }
+      if(querydata2['foundinfo'][i]['status'] == 'unsuccess'){
+        statusunsuccess = true;
+      }
+
+    }
   }
   Future check() async {
     print('check');
@@ -74,7 +89,15 @@ class _tripstartState extends State<tripstart> {
       // save();
       await querydata();
       Navigator.push(context, MaterialPageRoute(builder: (context) => triplog(
-
+        statussuccess: statussuccess,
+        statusunsuccess: statusunsuccess,
+        weather : widget.weather,
+        adventure :  widget.adventure,
+        sea : widget.sea,
+        confidence: widget.confidence,
+        bagpack: widget.bagpack,
+        budget: widget.budget,
+        social : widget.social,
         dataquerymap: querydata2,
       ),));
     }
@@ -320,11 +343,11 @@ class _tripstartState extends State<tripstart> {
                       child:Row(
                         children : [
                           Text(
-                      widget.data[0]['name'].length > 35 ? widget.data[0]['name'].substring(0,35)+'...' : widget.data[0]['name'],
+                      widget.data[0]['name'].length > 32 ? widget.data[0]['name'].substring(0,32)+'...' : widget.data[0]['name'],
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontWeight: FontWeight.w900,
-                                fontSize: 17,color: Color(0xff1D3557) ),
+                                fontSize: 17,color: Color(0xff1D3557),decoration: begincheck ? TextDecoration.lineThrough : null   ),
                           ),
                         ],
                       ),
@@ -363,7 +386,7 @@ class _tripstartState extends State<tripstart> {
                               Text(
                                 '${widget.data[0]['starttime']} น.',
                                 style: TextStyle(fontWeight: FontWeight.w900,
-                                    fontSize: 17,color: Color(0xff1D3557) ),
+                                    fontSize: 17,color: Color(0xff1D3557),decoration: begincheck ? TextDecoration.lineThrough : null   ),
                               ),
                             ],
                           ),
@@ -393,7 +416,7 @@ class _tripstartState extends State<tripstart> {
                               Text(
                                 '${widget.data[0]['endtime']} น.',
                                 style: TextStyle(fontWeight: FontWeight.w900,
-                                    fontSize: 17,color: Color(0xff1D3557) ),
+                                    fontSize: 17,color: Color(0xff1D3557),decoration: begincheck ? TextDecoration.lineThrough : null  ),
                               ),
                             ],
                           ),
@@ -475,11 +498,11 @@ class _tripstartState extends State<tripstart> {
                             child:Row(
                               children : [
                                 Text(
-                                widget.data[index+1]['name'].length > 35 ? widget.data[index+1]['name'].substring(0,35)+'...' : widget.data[index+1]['name'],
+                                widget.data[index+1]['name'].length > 32 ? widget.data[index+1]['name'].substring(0,32)+'...' : widget.data[index+1]['name'],
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(fontWeight: FontWeight.w900,
-                                      fontSize: 17,color: Color(0xff1D3557) ),
+                                      fontSize: 17,color: Color(0xff1D3557),decoration: checkboxs[index+1] ? TextDecoration.lineThrough : null   ),
                                 ),
                               ],
                             ),
@@ -518,7 +541,7 @@ class _tripstartState extends State<tripstart> {
                                     Text(
                                       '${widget.data[index+1]['starttime']} น.',
                                       style: TextStyle(fontWeight: FontWeight.w900,
-                                          fontSize: 17,color: Color(0xff1D3557) ),
+                                          fontSize: 17,color: Color(0xff1D3557),decoration: checkboxs[index+1] ? TextDecoration.lineThrough : null  ),
                                     ),
                                   ],
                                 ),
@@ -548,7 +571,7 @@ class _tripstartState extends State<tripstart> {
                                     Text(
                                       '${widget.data[index+1]['endtime']} น.',
                                       style: TextStyle(fontWeight: FontWeight.w900,
-                                          fontSize: 17,color: Color(0xff1D3557) ),
+                                          fontSize: 17,color: Color(0xff1D3557),decoration: checkboxs[index+1] ? TextDecoration.lineThrough : null ),
                                     ),
                                   ],
                                 ),
@@ -634,11 +657,11 @@ class _tripstartState extends State<tripstart> {
                             child:Row(
                               children : [
                                 Text(
-                            widget.data[widget.data.length - 1]['name'].length > 35 ? widget.data[widget.data.length - 1]['name'].substring(0,35)+'...' : widget.data[widget.data.length - 1]['name'],
+                            widget.data[widget.data.length - 1]['name'].length > 32 ? widget.data[widget.data.length - 1]['name'].substring(0,32)+'...' : widget.data[widget.data.length - 1]['name'],
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(fontWeight: FontWeight.w900,
-                                      fontSize: 17,color: Color(0xff1D3557) ),
+                                      fontSize: 17,color: Color(0xff1D3557),decoration: endcheck ? TextDecoration.lineThrough : null ),
                                 ),
                               ],
                             ),
@@ -677,7 +700,7 @@ class _tripstartState extends State<tripstart> {
                                     Text(
                                       '${widget.data[widget.data.length - 1]['starttime']} น.',
                                       style: TextStyle(fontWeight: FontWeight.w900,
-                                          fontSize: 17,color: Color(0xff1D3557) ),
+                                          fontSize: 17,color: Color(0xff1D3557),decoration: endcheck ? TextDecoration.lineThrough : null   ),
                                     ),
                                   ],
                                 ),
@@ -707,7 +730,7 @@ class _tripstartState extends State<tripstart> {
                                     Text(
                                       '${widget.data[widget.data.length - 1]['endtime']} น.',
                                       style: TextStyle(fontWeight: FontWeight.w900,
-                                          fontSize: 17,color: Color(0xff1D3557) ),
+                                          fontSize: 17,color: Color(0xff1D3557) ,decoration: endcheck ? TextDecoration.lineThrough : null  ),
                                     ),
                                   ],
                                 ),
@@ -744,6 +767,8 @@ class _tripstartState extends State<tripstart> {
               onPressed: () async {
                 await querydatafromcancel();
                 Navigator.push(context, MaterialPageRoute(builder: (context) => Mapmain(
+                  statussuccess: statussuccess,
+                  statusunsuccess: statusunsuccess,
                   dataquerymap: querydata2,
                   weather : widget.weather.toString(),
                   adventure :  widget.adventure.toString(),

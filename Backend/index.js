@@ -6,12 +6,15 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
+const model =require('./models/image_model')
+const multer =require('multer')
+const path= require('path')
 
 const seedDB = require('./seeds');
 
 const User = require('./models/user_model');
 
-mongoose.connect('mongodb+srv://admin:se1235@cluster0.inezx.mongodb.net/TravelDGwa?retryWrites=true&w=majority')
+mongoose.connect('mongodb+srv://admin:se1235@cluster0.inezx.mongodb.net/TravelDGwa?retryWrites=true&w=majority', {useNewUrlParser: true, useUnifiedTopology: true})
 
 const SecretText = 'it\'s a secret to everyone.'
 

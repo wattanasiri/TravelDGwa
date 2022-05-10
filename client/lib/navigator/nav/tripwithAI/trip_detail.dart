@@ -364,7 +364,7 @@ class _tripdetailState extends State<tripdetail> {
                       child:Row(
                         children : [
                           Text(
-                      widget.data[0]['name'].length > 35 ? widget.data[0]['name'].substring(0,35)+'...' : widget.data[0]['name'],
+                      widget.data[0]['name'].length > 32 ? widget.data[0]['name'].substring(0,32)+'...' : widget.data[0]['name'],
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontWeight: FontWeight.w900,
@@ -513,7 +513,7 @@ class _tripdetailState extends State<tripdetail> {
                             child:Row(
                               children : [
                                 Text(
-                                  widget.data[index+1]['name'].length > 35 ? widget.data[index+1]['name'].substring(0,35)+'...' : widget.data[index+1]['name'],
+                                  widget.data[index+1]['name'].length > 32 ? widget.data[index+1]['name'].substring(0,32)+'...' : widget.data[index+1]['name'],
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(fontWeight: FontWeight.w900,
@@ -665,7 +665,7 @@ class _tripdetailState extends State<tripdetail> {
                             child:Row(
                               children : [
                                 Text(
-                                  widget.data[widget.data.length - 1]['name'].length > 35 ? widget.data[widget.data.length - 1]['name'].substring(0,35)+'...' : widget.data[widget.data.length - 1]['name'],
+                                  widget.data[widget.data.length - 1]['name'].length > 32 ? widget.data[widget.data.length - 1]['name'].substring(0,32)+'...' : widget.data[widget.data.length - 1]['name'],
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(fontWeight: FontWeight.w900,

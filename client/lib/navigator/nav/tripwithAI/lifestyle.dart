@@ -13,7 +13,8 @@ import 'mapmain.dart';
 
 class lifestyle extends StatefulWidget {
   Map dataquerymap;
-  lifestyle({this.dataquerymap});
+  bool statussuccess,statusunsuccess;
+  lifestyle({this.dataquerymap,this.statusunsuccess,this.statussuccess});
 
   @override
   State<lifestyle> createState() => _lifestyleState();
@@ -933,6 +934,8 @@ class _lifestyleState extends State<lifestyle> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Mapmain(
+                                          statussuccess: widget.statussuccess,
+                                          statusunsuccess: widget.statusunsuccess,
                                           dataquerymap: widget.dataquerymap,
                                           weather: weather.toString(),
                                           adventure: adventure.toString(),
