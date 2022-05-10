@@ -62,7 +62,7 @@ class _BlogdetailState extends State<Blogdetail> {
 
   Future getAuthor() async {
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/blog/author/" + widget.detail['authorId']));
+    await http.get(Uri.parse("$SERVER_URL/blog/author/" + widget.detail['authorId']));
     author = json.decode(res.body);
     setState(() {
       author = author;
@@ -102,7 +102,7 @@ class _BlogdetailState extends State<Blogdetail> {
     };
 
     http.Response res = await http.post(
-      Uri.parse("http://10.0.2.2:8080/blog/${widget.detail['_id']}/favourite"),
+      Uri.parse("$SERVER_URL/blog/${widget.detail['_id']}/favourite"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -125,7 +125,7 @@ class _BlogdetailState extends State<Blogdetail> {
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
     http.Response res = await http.get(Uri.parse
-      ("http://10.0.2.2:8080/comment/${widget.detail['_id']}/model/$type"),
+      ("$SERVER_URL/comment/${widget.detail['_id']}/model/$type"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',

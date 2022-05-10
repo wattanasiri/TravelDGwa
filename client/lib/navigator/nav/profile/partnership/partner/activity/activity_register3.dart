@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:se_app2/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -57,7 +58,7 @@ class _activity_register3State extends State<activity_register3> {
 
   Future activity_partner() async{
 
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/activity/activity_partner'),
+    var res = await http.post(Uri.parse('$SERVER_URL/activity/activity_partner'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
         },
@@ -95,7 +96,7 @@ class _activity_register3State extends State<activity_register3> {
     // for(int i = 0;i < image.length ; i++){
     //   data.addAll({"image[$i]":image[i]});
     // }
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/activity/update_activity'),
+    var res = await http.post(Uri.parse('$SERVER_URL/activity/update_activity'),
       headers: <String, String>{
         'Context-Type': 'application/json;charSet=UTF-8'
       },

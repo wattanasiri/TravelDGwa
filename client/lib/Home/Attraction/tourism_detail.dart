@@ -118,7 +118,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/"),
+    await http.get(Uri.parse("$SERVER_URL/attraction/"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -136,7 +136,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/getmuseum" ),
+    await http.get(Uri.parse("$SERVER_URL/attraction/getmuseum" ),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -158,7 +158,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
       var _prefs = await SharedPreferences.getInstance();
       var token = _prefs.get('token');
       http.Response res =
-      await http.get(Uri.parse("http://10.0.2.2:8080/attraction/search/" + widget.word),
+      await http.get(Uri.parse("$SERVER_URL/attraction/search/" + widget.word),
         headers: {
           'Content-Type': 'application/json;charSet=UTF-8',
           'Accept': 'application/json;charSet=UTF-8',
@@ -204,7 +204,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
     };
 
     http.Response res = await http.post(
-      Uri.parse("http://10.0.2.2:8080/attraction/${widget.data['_id']}/favourite"),
+      Uri.parse("$SERVER_URL/attraction/${widget.data['_id']}/favourite"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -226,7 +226,7 @@ class _AttractiondetailState extends State<Attractiondetail> {
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
     http.Response res = await http.get(Uri.parse
-      ("http://10.0.2.2:8080/comment/${widget.data['_id']}/model/$type"),
+      ("$SERVER_URL/comment/${widget.data['_id']}/model/$type"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',

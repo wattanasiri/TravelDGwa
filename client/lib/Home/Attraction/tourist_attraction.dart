@@ -42,7 +42,7 @@ class _AttractionpageState extends State<Attractionpage> {
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/search/" + word),
+    await http.get(Uri.parse("$SERVER_URL/attraction/search/" + word),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -71,7 +71,7 @@ class _AttractionpageState extends State<Attractionpage> {
     bool Check = false;
     word = selectid;
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/attraction/query/" + word),
+    await http.get(Uri.parse("$SERVER_URL/attraction/query/" + word),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',

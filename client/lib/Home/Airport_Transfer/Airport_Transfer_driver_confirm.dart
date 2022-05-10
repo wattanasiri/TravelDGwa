@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:se_app2/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:http/http.dart' as http;
@@ -27,7 +28,7 @@ class _summaryState extends State<summary> {
     }else{
       typereserve = 'จองล่วงหน้า';
     }
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/airport_transfer/save_invoice'),
+    var res = await http.post(Uri.parse('$SERVER_URL/airport_transfer/save_invoice'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
         },
