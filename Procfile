@@ -1,1 +1,1 @@
-start: cd Backend && node index.js
+start: ./Backend node index.js
