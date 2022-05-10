@@ -85,4 +85,15 @@ router.get('/getrentcarpartner/:id',(req,res) => {
     })
 })
 
+router.get('/getadmin',(req,res) => {
+    User.find({role:'user'},(err,foundUser) => {
+        if(err){
+            console.log(err)
+        } else{
+            console.log(foundUser);
+            return res.json(foundUser);
+        }
+    })
+})
+
 module.exports = router
