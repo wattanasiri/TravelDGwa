@@ -27,7 +27,6 @@ class _activity_register3State extends State<activity_register3> {
   var numinfo=1;
   var numservice=1;
 
-  File imageFile;
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   FocusNode acFocusNode = FocusNode();
@@ -43,6 +42,7 @@ class _activity_register3State extends State<activity_register3> {
   final _timegetcarcontroller = TextEditingController();
   final _timegetcarcontroller2 = TextEditingController();
 
+  File imageFile;
   _getFromGallery(context) async {
     PickedFile pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
@@ -246,6 +246,7 @@ class _activity_register3State extends State<activity_register3> {
                           ],
                         ),
                       ),
+                      SizedBox(height: 10),
                       Padding(
                         padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                         child: Column(
