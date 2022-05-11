@@ -72,12 +72,6 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
   }
 
   int activeIndex = 0;
-  final urlImages = [
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any',
-    'https://placeimg.com/640/480/any',
-  ];
 
   bool userFavourited = false;
   Future actionFavourite() async {
@@ -190,14 +184,14 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
               children: <Widget>[
                 SizedBox(height: MediaQuery.of(context).size.height),
                 CarouselSlider.builder(
-                  itemCount: urlImages.length,
+                  itemCount: detail["image"].length,
                   options: CarouselOptions(
                       height: 400.0,
                       viewportFraction: 1,
                       onPageChanged: (index, reason) =>
                           {setState(() => activeIndex = index)}),
                   itemBuilder: (context, index, realIndex) {
-                    final urlImage = urlImages[index];
+                    final urlImage = detail["image"][index];
                     return buildImage(urlImage, index);
                   },
                 ),
@@ -553,14 +547,14 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
   Widget buildImage(String urlImage, int index) => Container(
         color: Colors.black,
         child: Image.network(
-          urlImage,
+          detail["image"],
           fit: BoxFit.cover,
         ),
       );
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
         activeIndex: activeIndex,
-        count: urlImages.length,
+        count: detail["image"].length,
         effect: ScaleEffect(
             dotWidth: 8,
             dotHeight: 8,

@@ -5,8 +5,12 @@ import 'package:se_app2/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_place/google_place.dart';
 import 'package:http/http.dart' as http;
+import '../../../Data/data_currentuser.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_storage/firebase_storage.dart'as firebase_storage;
 import 'package:se_app2/Data/data_currentuser.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Rentcar_info.dart';
 
 class rentcar extends StatefulWidget {
@@ -17,9 +21,24 @@ class rentcar extends StatefulWidget {
 
 class _rentcarState extends State<rentcar> {
   String id;
-
+// กรุงเทพ
   Map dataafterquery;
-
+  Future getdataid() async {
+    Datauser datauser = Datauser();
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
+    print('getuserid');
+    http.Response res = await http.get(
+      Uri.parse('http://10.0.2.2:8080/map/getuserid'),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    print(json.decode(res.body));
+    datauser.id = json.decode(res.body);
+  }
   Future save_partner() async {
     print('savepartner');
     Datauser datauser = Datauser();
@@ -190,6 +209,32 @@ class _rentcarState extends State<rentcar> {
     );
     print(res.body);
   }
+  Future<void> downloadURLExample() async {
+    String imagename = "profile.jpg";
+    downloadURL = await firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('uploads')
+        .child("/$imagename")
+        .getDownloadURL();
+    debugPrint(downloadURL.toString());
+    return downloadURL.toString();
+  }
+  Future getdataid() async {
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
+    print('getuserid');
+    http.Response res = await http.get(
+      Uri.parse('http://10.0.2.2:8080/map/getuserid'),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    print(json.decode(res.body));
+    Datauser datauser = Datauser();
+    datauser.id = json.decode(res.body);
+  }
   Future querycar() async {
     if (!_formKey.currentState.validate()) {
       return;
@@ -206,6 +251,7 @@ class _rentcarState extends State<rentcar> {
     print(dataafterquery.runtimeType);
     print(dataafterquery['foundCar']);
     print(dataafterquery['foundCar'].runtimeType);
+    getdataid();
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Rentcar_info(
       dategetcar: _dategetcarcontroller.text,
       timegetcar: _timegetcarcontroller.text,
@@ -244,6 +290,7 @@ class _rentcarState extends State<rentcar> {
   @override
   void initState() {
     test();
+    getdataid();
     // save();
     super.initState();
 

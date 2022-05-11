@@ -5,6 +5,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:path/path.dart' as path;
+import 'package:firebase_storage/firebase_storage.dart'as firebase_storage;
 import 'add_post_detail.dart';
 
 class Addpostgallery extends StatefulWidget {
@@ -41,6 +43,20 @@ class _AddpostgalleryState extends State<Addpostgallery> {
   final _controller = ScrollController();
   /// Variables
   File imageFile;
+  String fileNames;
+  Future uploadImageToFirebase(BuildContext context) async {
+    String fileName = path.basename(imageFile.path);
+    firebase_storage.Reference firebaseStorageRef = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('uploads')
+        .child('/$fileName');
+    firebase_storage.UploadTask uploadTask = firebaseStorageRef.putFile(imageFile);
+    firebase_storage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete((){});
+    taskSnapshot.ref.getDownloadURL().then(
+          (value) => print("Done: $value"),
+    );
+    fileNames = fileName.toString();
+  }
 
   @override
   Widget build(BuildContext context) {

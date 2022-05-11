@@ -27,6 +27,7 @@ class _cardetailState extends State<cardetail> {
   @override
   void initState() {
     super.initState();
+    print(widget.data);
     print('data destination');
     print(widget.destination);
     print(widget.dategetcar);

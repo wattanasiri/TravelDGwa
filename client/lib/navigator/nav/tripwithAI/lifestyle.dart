@@ -9,11 +9,13 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../Data/data_currentuser.dart';
+import '../../../constants.dart';
 import 'mapmain.dart';
 
 class lifestyle extends StatefulWidget {
   Map dataquerymap;
-  lifestyle({this.dataquerymap});
+  bool statussuccess,statusunsuccess;
+  lifestyle({this.dataquerymap,this.statusunsuccess,this.statussuccess});
 
   @override
   State<lifestyle> createState() => _lifestyleState();
@@ -37,7 +39,7 @@ class _lifestyleState extends State<lifestyle> {
     print('id');
     print(datauser.id);
     var res = await http.post(
-        Uri.parse('http://10.0.2.2:8080/map/register_mapinfo'),
+        Uri.parse('$SERVER_URL/map/register_mapinfo'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
         },
@@ -933,6 +935,8 @@ class _lifestyleState extends State<lifestyle> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => Mapmain(
+                                          statussuccess: widget.statussuccess,
+                                          statusunsuccess: widget.statusunsuccess,
                                           dataquerymap: widget.dataquerymap,
                                           weather: weather.toString(),
                                           adventure: adventure.toString(),
