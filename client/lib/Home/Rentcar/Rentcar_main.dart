@@ -195,32 +195,8 @@ class _rentcarState extends State<rentcar> {
     );
     print(res.body);
   }
-  Future<void> downloadURLExample() async {
-    String imagename = "profile.jpg";
-    downloadURL = await firebase_storage.FirebaseStorage.instance
-        .ref()
-        .child('uploads')
-        .child("/$imagename")
-        .getDownloadURL();
-    debugPrint(downloadURL.toString());
-    return downloadURL.toString();
-  }
-  Future getdataid() async {
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
-    print('getuserid');
-    http.Response res = await http.get(
-      Uri.parse('http://10.0.2.2:8080/map/getuserid'),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
-    print(json.decode(res.body));
-    Datauser datauser = Datauser();
-    datauser.id = json.decode(res.body);
-  }
+
+
   Future querycar() async {
     if (!_formKey.currentState.validate()) {
       return;

@@ -76,7 +76,7 @@ class _RoomItemState extends State<RoomItem> {
                       topLeft: Radius.circular(20),
                       topRight: Radius.circular(20)
                     ),
-                    child: Image.network('https://placeimg.com/640/480/any',
+                    child: Image.network(rooms[index]['image'][0],
                       height: 200,
                       width: MediaQuery.of(context).size.width,
                       fit: BoxFit.cover
