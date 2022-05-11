@@ -483,42 +483,42 @@ class _accom_registerState extends State<accom_register> {
                   //   ),
                   // ),
                   // SizedBox(height: 30,),
-
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 30),
-                    decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.3),
-                          spreadRadius: 1,
-                          blurRadius: 6,
-                          offset: const Offset(1, 6),
-                        ),
-                      ],
-                    ),
-                    child: ElevatedButton(
-                      onPressed: () async=> {
-                        Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => accom_register2(
-                      image : downloadURL.toString(),
-                        ),)),
-                        uploadImageToFirebase(context),
-                      },
-                      style: ElevatedButton.styleFrom(
-                        animationDuration: const Duration(milliseconds: 1000),
-                        onPrimary: const Color(0xffECFAFF),
-                        primary: const Color(0xff1D3557),
-                        minimumSize: const Size(350, 55),
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(16)),
-                        ),
-                      ),
-                      child: const Text(
-                        'ถัดไป',
-                        style: TextStyle(color: Color(0xffFFF4DC), fontSize: 20),
-                      ),
-                    ),
-                  ),
+                  //
+                  // Container(
+                  //   margin: const EdgeInsets.symmetric(horizontal: 30),
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: const BorderRadius.all(Radius.circular(10)),
+                  //     boxShadow: [
+                  //       BoxShadow(
+                  //         color: Colors.black.withOpacity(0.3),
+                  //         spreadRadius: 1,
+                  //         blurRadius: 6,
+                  //         offset: const Offset(1, 6),
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   child: ElevatedButton(
+                  //     onPressed: () async=> {
+                  //       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => accom_register2(
+                  //     image : downloadURL.toString(),
+                  //       ),)),
+                  //       uploadImageToFirebase(context),
+                  //     },
+                  //     style: ElevatedButton.styleFrom(
+                  //       animationDuration: const Duration(milliseconds: 1000),
+                  //       onPrimary: const Color(0xffECFAFF),
+                  //       primary: const Color(0xff1D3557),
+                  //       minimumSize: const Size(350, 55),
+                  //       shape: const RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.all(Radius.circular(16)),
+                  //       ),
+                  //     ),
+                  //     child: const Text(
+                  //       'ถัดไป',
+                  //       style: TextStyle(color: Color(0xffFFF4DC), fontSize: 20),
+                  //     ),
+                  //   ),
+                  // ),
                   // SizedBox(height: 20,),
                   //
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 const timeoutDuration = 10;
-// const SERVER_URL = 'https://traveldgwa.herokuapp.com';
-const SERVER_URL = 'http://10.0.2.2:8080';
+const SERVER_URL = 'https://traveldgwa-backend.herokuapp.com';
+// const SERVER_URL = 'http://10.0.2.2:8080';
 
 final kHintTextStyle = TextStyle(
   color: Colors.white54,
