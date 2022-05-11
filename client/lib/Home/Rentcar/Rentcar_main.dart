@@ -251,7 +251,6 @@ class _rentcarState extends State<rentcar> {
   @override
   void initState() {
     test();
-    getdataid();
     // save();
     super.initState();
 
