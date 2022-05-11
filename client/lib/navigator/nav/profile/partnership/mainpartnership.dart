@@ -49,7 +49,7 @@ class _partnershipState extends State<partnership> {
         ),
         body: TabBarView(
           children: [
-            accom_register(),
+            accom_partner(),
             rentcar_partner(),
             airport_tranfer_partner(),
             activity_partner(),

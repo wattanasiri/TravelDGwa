@@ -44,9 +44,9 @@ class _accom_partnerState extends State<accom_partner> {
                     ),
                   ),
                   onPressed: () async=> {
-                    // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => accom_register(
-                    //
-                    // ),)),
+                  //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => accom_register(
+                  //
+                  //   ),)),
                   },
                   child: Row(
                     children: [
