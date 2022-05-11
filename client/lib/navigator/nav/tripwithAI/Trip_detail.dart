@@ -9,6 +9,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:se_app2/Home/Attraction/tourism_result.dart';
 import 'package:http/http.dart' as http;
 import '../../../Data/data_currentuser.dart';
+import '../../../constants.dart';
 import 'Trip_edit.dart';
 import 'Trip_start.dart';
 import 'map.dart';
@@ -87,7 +88,7 @@ class _tripdetailState extends State<tripdetail> {
     //   data.addAll({"price_extrapay[$i]":price_extrapay[i]});
     // }
 
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/map/updatetrip'),
+    var res = await http.post(Uri.parse('$SERVER_URL/map/updatetrip'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
         },
@@ -364,7 +365,7 @@ class _tripdetailState extends State<tripdetail> {
                       child:Row(
                         children : [
                           Text(
-                      widget.data[0]['name'].length > 35 ? widget.data[0]['name'].substring(0,35)+'...' : widget.data[0]['name'],
+                      widget.data[0]['name'].length > 32 ? widget.data[0]['name'].substring(0,32)+'...' : widget.data[0]['name'],
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(fontWeight: FontWeight.w900,
@@ -513,7 +514,7 @@ class _tripdetailState extends State<tripdetail> {
                             child:Row(
                               children : [
                                 Text(
-                                  widget.data[index+1]['name'].length > 35 ? widget.data[index+1]['name'].substring(0,35)+'...' : widget.data[index+1]['name'],
+                                  widget.data[index+1]['name'].length > 32 ? widget.data[index+1]['name'].substring(0,32)+'...' : widget.data[index+1]['name'],
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(fontWeight: FontWeight.w900,
@@ -665,7 +666,7 @@ class _tripdetailState extends State<tripdetail> {
                             child:Row(
                               children : [
                                 Text(
-                                  widget.data[widget.data.length - 1]['name'].length > 35 ? widget.data[widget.data.length - 1]['name'].substring(0,35)+'...' : widget.data[widget.data.length - 1]['name'],
+                                  widget.data[widget.data.length - 1]['name'].length > 32 ? widget.data[widget.data.length - 1]['name'].substring(0,32)+'...' : widget.data[widget.data.length - 1]['name'],
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: TextStyle(fontWeight: FontWeight.w900,

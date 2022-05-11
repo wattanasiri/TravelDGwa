@@ -6,6 +6,7 @@ import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_place/google_place.dart';
 import 'package:intl/intl.dart';
 import 'package:se_app2/Data/data_selectlocation.dart';
 import 'package:se_app2/navigator/nav/tripwithAI/map.dart';
@@ -13,18 +14,22 @@ import 'package:ml_algo/ml_algo.dart';
 import 'package:ml_dataframe/ml_dataframe.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:http/http.dart' as http;
+import 'package:se_app2/navigator/nav/tripwithAI/trip_continue.dart';
 
 import '../../../Data/data_currentuser.dart';
 import '../../../Data/data_locations.dart';
+import '../../../Data/data_selectcontinue.dart';
 import '../../../Data/data_selectlocation2.dart';
+import '../../../constants.dart';
 import 'Trip_detail.dart';
 import 'Trip_log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Mapmain extends StatefulWidget {
   Map dataquerymap;
+  bool statussuccess,statusunsuccess;
   String weather,adventure,sea,confidence,bagpack,budget,social ;
-  Mapmain({this.weather,this.adventure,this.sea,this.confidence,this.social,this.bagpack,this.budget,this.dataquerymap});
+  Mapmain({this.statussuccess,this.statusunsuccess,this.weather,this.adventure,this.sea,this.confidence,this.social,this.bagpack,this.budget,this.dataquerymap});
   @override
   State<Mapmain> createState() => _MapmainState();
 }
@@ -35,7 +40,7 @@ class _MapmainState extends State<Mapmain> {
   Map<String,dynamic> datalocation;
   List<String> typelocation = <String>[];
   List<int> listtarget = <int>[];
-  Map dataafterquery,querydata2;
+  Map dataafterquery,querydata2,querycontinuedata;
   double group;
   var alltime;
   bool checklifestyleis;
@@ -49,6 +54,10 @@ class _MapmainState extends State<Mapmain> {
     return '${parts[0].padLeft(2, '0')}:${parts[1].padLeft(2, '0')}';
   }
 
+  Future checklen(){
+
+  }
+
   Future querydata() async{
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
@@ -56,9 +65,29 @@ class _MapmainState extends State<Mapmain> {
     print('querydata');
     print(datauser.id);
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/querydatamap'));
+    await http.get(Uri.parse("$SERVER_URL/map/" + datauser.id + '/querydatamap'));
     querydata2 = json.decode(res.body);
     print(querydata2);
+
+
+  }
+
+  Future querydatacontinue() async{
+    print(querycontinuedata);
+    Datalocation data = Datalocation();
+    Dataselectcontinue selectdata2 = Dataselectcontinue();
+    selectlocation = selectdata2.selectcontinue;
+    for (int j =0; j< querycontinuedata['location'].length ; j++) {
+      for(int i = 0; i < data.location.length; i++){
+        if(data.location[i]['name'] == querycontinuedata['location'][j]){
+          selectlocation.add(
+              data.location[i]
+          );
+        }
+      }
+    }
+    print(selectlocation);
+    print(selectlocation.length);
   }
 
   Future model() async{
@@ -376,29 +405,6 @@ class _MapmainState extends State<Mapmain> {
       backgroundColor : const Color(0xFFFFF4DC),
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(430.0),
-        /* AppBar(
-          centerTitle: true,
-          backgroundColor: const Color(0xff1D3557),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_rounded,
-                color: Color(0xffECFAFF)),
-            onPressed: () => Navigator.pushNamed(
-              context, '/Navi',
-            ),
-          ),
-          title: const Text(
-            'ไลฟ์ไสตล์การเที่ยว',
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-          ),
-          flexibleSpace: const SizedBox(
-            height: 20,
-          ),
-          shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.vertical(
-              bottom: Radius.circular(12),
-            ),
-          ),
-        ),*/
         child: AppBar(
           automaticallyImplyLeading: false,
           centerTitle: true,
@@ -410,7 +416,6 @@ class _MapmainState extends State<Mapmain> {
                 borderRadius : BorderRadius.only(bottomRight: Radius.circular(10),bottomLeft: Radius.circular(10)
                 )
             ),
-
             child: Form(
               key: _formKey,
               child: Column(
@@ -454,8 +459,7 @@ class _MapmainState extends State<Mapmain> {
                                         offset: const Offset(2, 4),
                                       ),
                                     ],
-                                    /*border: Border.all(
-                                      color: const Color(0xff1D3557), width: 2)*/),
+                                  ),
                                   child: TextFormField(
                                     controller: startlocationcontroller,
                                     focusNode: myFocusNode,
@@ -464,8 +468,6 @@ class _MapmainState extends State<Mapmain> {
                                       enabledBorder: UnderlineInputBorder(
                                           borderSide:
                                           BorderSide(color: Color(0xffECFAFF))),
-                                      /*suffixIcon:
-                                        Icon(Icons.search, color: Color(0xff1D3557))*/
                                     ),
                                     validator: (value) {
                                       if (value == null || value.isEmpty) {
@@ -741,9 +743,17 @@ class _MapmainState extends State<Mapmain> {
               onPressed: () async {
                 await querydata();
                 Navigator.push(context, MaterialPageRoute(builder: (context) => triplog(
+                  statussuccess: widget.statussuccess,
+                  statusunsuccess: widget.statusunsuccess,
                   dataquerymap: querydata2,
+                  weather : widget.weather,
+                  adventure :  widget.adventure,
+                  sea : widget.sea,
+                  confidence: widget.confidence,
+                  bagpack: widget.bagpack,
+                  budget: widget.budget,
+                  social : widget.social,
                 ),));
-                //Navigator.of(context).pop();
               },
               child: Text(
                 'บันทึกทริป',
@@ -770,241 +780,263 @@ class _MapmainState extends State<Mapmain> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                if(widget.dataquerymap['foundinfo'].length > 0)
-                Text(
-                  'กำลังดำเนินการ',
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
-                ),
-                ListView.builder(
-                  physics: NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  //สร้างตัวระหว่างทาง
-                  itemCount: widget.dataquerymap['foundinfo'].length,
-                  itemBuilder: (context,index){
-                    return  Column(
-                      children: [
-                        if(widget.dataquerymap['foundinfo'][index]['status'] == 'unsuccess')
-                        Row(
-                          children: [
-                            //กล่องด้านหน้าเวลา
-                            Container(
-                              width: 80,
-                              height: 80,
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              decoration: BoxDecoration(
-                                color: Color(0xff1D3557),
-                                /*border: Border.all(
+                if(widget.statusunsuccess == true)
+                  Text(
+                    'กำลังดำเนินการ',
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                  ),
+                if(widget.statusunsuccess == true)
+                  ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      //สร้างตัวระหว่างทาง
+                      itemCount: widget.dataquerymap['foundinfo'].length,
+                      itemBuilder: (context,index){
+                        return  GestureDetector(
+                          onTap: (){
+                            querycontinuedata = widget.dataquerymap['foundinfo'][index];
+                            querydatacontinue();
+                            print(widget.dataquerymap['foundinfo'][index]['_id']);
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => tripcontinue(
+                              data: widget.dataquerymap['foundinfo'][index],
+                              alltime: widget.dataquerymap['foundinfo'][index]['alltime'],
+                              title: widget.dataquerymap['foundinfo'][index]['nametrip'],
+                              dataquerymap: widget.dataquerymap,
+                              datamap: selectlocation,
+                              weather : widget.weather,
+                              adventure :  widget.adventure,
+                              sea : widget.sea,
+                              confidence: widget.confidence,
+                              bagpack: widget.bagpack,
+                              budget: widget.budget,
+                              social : widget.social,
+                            ),));
+                          },
+                          child: Column(
+                            children: [
+                              if(widget.dataquerymap['foundinfo'][index]['status'] == 'unsuccess')
+                                Row(
+                                  children: [
+                                    //กล่องด้านหน้าเวลา
+                                    Container(
+                                      width: 80,
+                                      height: 80,
+                                      margin: const EdgeInsets.symmetric(vertical: 10),
+                                      decoration: BoxDecoration(
+                                        color: Color(0xff1D3557),
+                                        /*border: Border.all(
                             color: Colors.red,
                             width: 5,
                           ),*/
-                                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.3),
-                                    spreadRadius: 1,
-                                    blurRadius: 6,
-                                    offset: const Offset(1, 6),
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    widget.dataquerymap['foundinfo'][index]['alltime'],
-                                    style: TextStyle(
-                                      fontSize: 25,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xffECFAFF),
+                                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.3),
+                                            spreadRadius: 1,
+                                            blurRadius: 6,
+                                            offset: const Offset(1, 6),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            widget.dataquerymap['foundinfo'][index]['alltime'],
+                                            style: TextStyle(
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.w600,
+                                              color: Color(0xffECFAFF),
+                                            ),
+                                          ),
+                                          Text(
+                                            'เวลารวม',
+                                            style: TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w600,
+                                              color: Color(0xffECFAFF),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                  ),
-                                  Text(
-                                    'เวลารวม',
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xffECFAFF),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            SizedBox(width: 10,),
-                            //ตกแต่ง
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Container(
-                                  width: 7,
-                                  height: 15,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xff1D3557),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.3),
-                                        spreadRadius: 1,
-                                        blurRadius: 6,
-                                        offset: const Offset(1, 6),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 5,),
-                                Container(
-                                  width: 7,
-                                  height: 15,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xff1D3557),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.3),
-                                        spreadRadius: 1,
-                                        blurRadius: 6,
-                                        offset: const Offset(1, 6),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 5,),
-                                Container(
-                                  width: 7,
-                                  height: 15,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xff1D3557),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.3),
-                                        spreadRadius: 1,
-                                        blurRadius: 6,
-                                        offset: const Offset(1, 6),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 5,),
-                                Container(
-                                  width: 7,
-                                  height: 15,
-                                  decoration: BoxDecoration(
-                                    color: Color(0xff1D3557),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withOpacity(0.3),
-                                        spreadRadius: 1,
-                                        blurRadius: 6,
-                                        offset: const Offset(1, 6),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(width: 10,),
-                            //กล่องหลังข้อมูลทริป
-                            Container(
-                              width: 225,
-                              height: 80,
-                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-                              margin: const EdgeInsets.symmetric(vertical: 10),
-                              decoration: BoxDecoration(
-                                color: Color(0xff1D3557),
-                                borderRadius: const BorderRadius.all(Radius.circular(20)),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.3),
-                                    spreadRadius: 1,
-                                    blurRadius: 6,
-                                    offset: const Offset(1, 6),
-                                  ),
-                                ],
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  //ชื่อทริป
-                                  Flexible(child: Text(
-                                    'ชื่อทริป ' + widget.dataquerymap['foundinfo'][index]['nametrip'],
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                      color: Color(0xffECFAFF),
-                                    ),
-                                  ),),
-                                  SizedBox(height: 5,),
-                                  //สถานที่
-                                  Row(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      //ต้นทาง
-                                      Flexible(child: Text(
-                                        widget.dataquerymap['foundinfo'][index]['location'][0],
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xffECFAFF),
+                                    SizedBox(width: 10,),
+                                    //ตกแต่ง
+                                    Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Container(
+                                          width: 7,
+                                          height: 15,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xff1D3557),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black.withOpacity(0.3),
+                                                spreadRadius: 1,
+                                                blurRadius: 6,
+                                                offset: const Offset(1, 6),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ), ),
-                                      Icon(Boxicons.bx_right_arrow_alt,
-                                          color: const Color(0xffFF9A62),
-                                          size: 30),
-                                      //ปลายทาง
-                                      Flexible(child: Text(
-                    widget.dataquerymap['foundinfo'][index]['location'][widget.dataquerymap['foundinfo'][index]['location'].length - 1],
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: Color(0xffECFAFF),
+                                        SizedBox(height: 5,),
+                                        Container(
+                                          width: 7,
+                                          height: 15,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xff1D3557),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black.withOpacity(0.3),
+                                                spreadRadius: 1,
+                                                blurRadius: 6,
+                                                offset: const Offset(1, 6),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                                        SizedBox(height: 5,),
+                                        Container(
+                                          width: 7,
+                                          height: 15,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xff1D3557),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black.withOpacity(0.3),
+                                                spreadRadius: 1,
+                                                blurRadius: 6,
+                                                offset: const Offset(1, 6),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        SizedBox(height: 5,),
+                                        Container(
+                                          width: 7,
+                                          height: 15,
+                                          decoration: BoxDecoration(
+                                            color: Color(0xff1D3557),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black.withOpacity(0.3),
+                                                spreadRadius: 1,
+                                                blurRadius: 6,
+                                                offset: const Offset(1, 6),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    SizedBox(width: 10,),
+                                    //กล่องหลังข้อมูลทริป
+                                    Container(
+                                      width: 225,
+                                      height: 80,
+                                      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                                      margin: const EdgeInsets.symmetric(vertical: 10),
+                                      decoration: BoxDecoration(
+                                        color: Color(0xff1D3557),
+                                        borderRadius: const BorderRadius.all(Radius.circular(20)),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.3),
+                                            spreadRadius: 1,
+                                            blurRadius: 6,
+                                            offset: const Offset(1, 6),
+                                          ),
+                                        ],
+                                      ),
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          //ชื่อทริป
+                                          Flexible(child: Text(
+                                            'ชื่อทริป ' + widget.dataquerymap['foundinfo'][index]['nametrip'],
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                              color: Color(0xffECFAFF),
+                                            ),
+                                          ),),
+                                          SizedBox(height: 5,),
+                                          //สถานที่
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              //ต้นทาง
+                                              Flexible(child: Text(
+                                                widget.dataquerymap['foundinfo'][index]['location'][0],
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Color(0xffECFAFF),
+                                                ),
+                                              ), ),
+                                              Icon(Boxicons.bx_right_arrow_alt,
+                                                  color: const Color(0xffFF9A62),
+                                                  size: 30),
+                                              //ปลายทาง
+                                              Flexible(child: Text(
+                                                widget.dataquerymap['foundinfo'][index]['location'][widget.dataquerymap['foundinfo'][index]['location'].length - 1],
+                                                maxLines: 1,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: Color(0xffECFAFF),
+                                                ),
+                                              ),),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                            ],
+
+                          ),
+                        );
+                      }
+                  ),
+                const SizedBox(
+                  height: 15,
+                ),
+                if(widget.statussuccess == true)
+                  Text(
+                    'ประวัติการสร้างทริป',
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                  ),
+                if(widget.statussuccess == false && widget.statusunsuccess == false)
+                  Row(
+                    children: [
+                      Icon(Icons.map_outlined  ,
+                          color: Color(0xff1D3557),
+                          size: 30),
+                      SizedBox(width: 10,),
+                      Text(
+                        'ไม่มีประวัติการสร้างทริป',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xff1D3557),
                         ),
-                        SizedBox(height: 5,),
-                      ],
-
-                    );
-                  }
-                ),
-
-                Text(
-                  'ประวัติการสร้างทริป',
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
-                ),
-                SizedBox(height: 10,),
-                if(widget.dataquerymap['foundinfo'].length == 0)
-                Row(
-                  children: [
-                    Icon(Icons.map_outlined  ,
-                        color: Color(0xff1D3557),
-                        size: 30),
-                    SizedBox(width: 10,),
-                    Text(
-                      'ไม่มีประวัติการสร้างทริป',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xff1D3557),
                       ),
-                    ),
 
-                  ],
-                ),
-
+                    ],
+                  ),
                 ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     shrinkWrap: true,
                     //สร้างตัวระหว่างทาง
-                    itemCount: widget.dataquerymap['foundinfo'].length,
+                    itemCount:  widget.dataquerymap['foundinfo'].length  ,
                     itemBuilder: (context,index){
                       return  Column(
                         children: [
@@ -1205,8 +1237,6 @@ class _MapmainState extends State<Mapmain> {
                       );
                     }
                 ),
-
-
               ],
             ),
 

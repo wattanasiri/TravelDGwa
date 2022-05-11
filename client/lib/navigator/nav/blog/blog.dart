@@ -25,6 +25,7 @@ class Blog extends StatefulWidget {
 class _BlogState extends State<Blog> {
   Map data;
   List recentBlog;
+  Map author;
 
   Future getRecentBlog() async {
     var _prefs = await SharedPreferences.getInstance();
@@ -811,12 +812,16 @@ class _BlogState extends State<Blog> {
                             return Padding(
                               padding: const EdgeInsets.all(8.0),
                               child : GestureDetector(
-                                onTap: () {
+                                onTap: () async {
                                   //selectid = widget.result2[index]["_id"];
                                   //getdatafromid();
+                                  await getAuthor(recentBlog[index]["authorId"]);
+                                  print("blog");
+                                  print(recentBlog[index]);
                                   Navigator.push(context, MaterialPageRoute(
                                       builder: (context) => Blogdetail(
                                           detail:recentBlog[index],
+                                          author: author,
                                           userFavourited: recentBlog[index]['userFavourited'],
                                           favFunction: actionFavouriteChildRecent,
                                           resultIndex: index,
@@ -842,7 +847,7 @@ class _BlogState extends State<Blog> {
                                                   topRight: Radius.circular(20)),
                                               child: Image.network(
                                                   //"${recentBlog[index]['image'][0]}",
-                                                  "https://i.ytimg.com/vi/Eanaq7dw9Hk/maxresdefault.jpg",
+                                                  recentBlog[index]['image'][0],
                                                   height: 150,
                                                   width: MediaQuery.of(context).size.width,
                                                   fit: BoxFit.cover),
@@ -999,6 +1004,16 @@ class _BlogState extends State<Blog> {
         child: Icon(Icons.add,size: 40,),
       ),
     );
+  }
+
+  Future getAuthor(String ans) async {
+    http.Response res =
+    await http.get(Uri.parse("$SERVER_URL/blog/author/" + ans));
+    author = json.decode(res.body);
+    print(author);
+    setState(() {
+      author = author;
+    });
   }
   }
 
