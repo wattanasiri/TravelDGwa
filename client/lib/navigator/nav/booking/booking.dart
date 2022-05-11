@@ -600,7 +600,7 @@ class _BookingState extends State<Booking> {
                                         borderRadius: const BorderRadius.only(
                                             topLeft: Radius.circular(20),
                                             bottomLeft: Radius.circular(20)),
-                                        child: Image.network(getImageUrl(currentData[index]['bookingType']),
+                                        child: Image.network(getImageUrl(currentData[index]),
                                             height: 110,
                                             width: 160,
                                             fit: BoxFit.cover),

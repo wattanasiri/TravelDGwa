@@ -36,8 +36,8 @@ dependencies:
   # slidable
   flutter_slidable: ^0.5.7
   image_picker: ^0.8.1
-  firebase_core: ^1.0.3
-  firebase_storage: ^8.0.3
+#  firebase_core: ^1.0.3
+#  firebase_storage: ^8.0.3
   convex_bottom_bar:
     path: ./convex_bottom_bar-master-2.5.1+1/
   animations: ^2.0.2
