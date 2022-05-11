@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:se_app2/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -70,7 +71,7 @@ class _rentcar_register3State extends State<rentcar_register3> {
   //   // for(int i = 0;i < image.length ; i++){
   //   //   data.addAll({"image[$i]":image[i]});
   //   // }
-  //   var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/update_register_rentcarpartner'),
+  //   var res = await http.post(Uri.parse('$SERVER_URL/rentcar/update_register_rentcarpartner'),
   //     headers: <String, String>{
   //       'Context-Type': 'application/json;charSet=UTF-8'
   //     },
@@ -85,7 +86,7 @@ class _rentcar_register3State extends State<rentcar_register3> {
   //   String username = '';
   //   print('savepartner');
   //
-  //   var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/register_rentcarpartner'),
+  //   var res = await http.post(Uri.parse('$SERVER_URL/rentcar/register_rentcarpartner'),
   //       headers:{
   //         'Context-Type': 'application/json;charSet=UTF-8',
   //         'Accept': 'application/json;charSet=UTF-8',
@@ -111,7 +112,7 @@ class _rentcar_register3State extends State<rentcar_register3> {
       String username = '';
       print('savepartner');
 
-      var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/register_carinfo_rentcarpartner'),
+      var res = await http.post(Uri.parse('$SERVER_URL/rentcar/register_carinfo_rentcarpartner'),
           headers:{
             'Context-Type': 'application/json;charSet=UTF-8',
             'Accept': 'application/json;charSet=UTF-8',
@@ -183,7 +184,7 @@ class _rentcar_register3State extends State<rentcar_register3> {
       data.addAll({"pricelocationpickup[$i]":pricelocationpickup[i]});
     }
 
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/update_register_rentcarinfo'),
+    var res = await http.post(Uri.parse('$SERVER_URL/rentcar/update_register_rentcarinfo'),
       headers: <String, String>{
         'Context-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -199,7 +200,7 @@ class _rentcar_register3State extends State<rentcar_register3> {
   //   String username = '';
   //   print('savepartner');
   //
-  //   var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/update_register_rentcarinfo'),
+  //   var res = await http.post(Uri.parse('$SERVER_URL/rentcar/update_register_rentcarinfo'),
   //       headers:{
   //         'Context-Type': 'application/json;charSet=UTF-8',
   //         'Accept': 'application/json;charSet=UTF-8',

@@ -145,7 +145,7 @@ class _BookingState extends State<Booking> {
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
 
-    http.Response res = await http.get(Uri.parse("http://10.0.2.2:8080/booking"),
+    http.Response res = await http.get(Uri.parse("$SERVER_URL/booking"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -599,7 +599,7 @@ class _BookingState extends State<Booking> {
                                       child: ClipRRect(
                                         borderRadius: const BorderRadius.only(
                                             topLeft: Radius.circular(20),
-                                            topRight: Radius.circular(20)),
+                                            bottomLeft: Radius.circular(20)),
                                         child: Image.network(getImageUrl(currentData[index]['bookingType']),
                                             height: 110,
                                             width: 160,
@@ -716,8 +716,10 @@ class _BookingState extends State<Booking> {
                     },
                   ))
             else
-              Center(child: CircularProgressIndicator())
-            ,
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 30),
+              child: Center(child: CircularProgressIndicator()),
+            ),
 
           ],
         ),

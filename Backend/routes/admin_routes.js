@@ -2,6 +2,7 @@ const express  = require('express');
 const User = require('../models/user_model')
 const passport = require('passport')
 const router = express.Router()
+const rentcarpartner = require('../models/rentcar_partner_model')
 
 router.post('/signin',(req,res,next) => {
     passport.authenticate('local', function(err, user, info) {
@@ -57,6 +58,39 @@ router.post('/promote/:id',(req,res) => {
         if(err){
             console.log(err)
         } else {
+            return res.json(foundUser);
+        }
+    })
+})
+
+router.get('/getrentcarpartner',(req,res) => {
+    rentcarpartner.find().populate('usernameID').exec((err,foundPartner) => {
+        if(err){
+            console.log(err)
+        } else{
+            console.log(foundPartner);
+            return res.json(foundPartner);
+        }
+    })
+})
+
+router.get('/getrentcarpartner/:id',(req,res) => {
+    rentcarpartner.findById(req.params.id).populate('usernameID').exec((err,foundPartner) => {
+        if(err){
+            console.log(err)
+        } else{
+            console.log(foundPartner);
+            return res.json(foundPartner);
+        }
+    })
+})
+
+router.get('/getadmin',(req,res) => {
+    User.find({role:'user'},(err,foundUser) => {
+        if(err){
+            console.log(err)
+        } else{
+            console.log(foundUser);
             return res.json(foundUser);
         }
     })

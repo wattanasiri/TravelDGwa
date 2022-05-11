@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:se_app2/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:se_app2/navigator/nav/blog/blogpost/add_post_detail.dart';
 
@@ -9,6 +10,9 @@ import 'blog_detail.dart';
 import 'blogpost/add_post_gall.dart';
 import 'package:http/http.dart' as http;
 
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:se_app2/constants.dart';
+import 'package:se_app2/functions.dart';
 
 class Blog extends StatefulWidget {
 
@@ -23,12 +27,32 @@ class _BlogState extends State<Blog> {
   List recentBlog;
 
   Future getRecentBlog() async {
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/blog/recent"));
+    await http.get(Uri.parse("$SERVER_URL/blog/recent"),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
     data = json.decode(res.body);
+    bool userFavourited = data["userFavourited"];
     recentBlog = data['recentBlog'];
     setState(() {
       recentBlog = recentBlog;
+    });
+  }
+
+  void actionFavouriteChildPopular(index) {
+    // setState(() {
+    //   recentBlog[index]['userFavourited'] = !recentBlog[index]['userFavourited'];
+    // });
+  }
+  void actionFavouriteChildRecent(index) {
+    setState(() {
+      recentBlog[index]['userFavourited'] = !recentBlog[index]['userFavourited'];
     });
   }
 
@@ -319,7 +343,7 @@ class _BlogState extends State<Blog> {
                                   //selectid = widget.result2[index]["_id"];
                                   //getdatafromid();
                                   Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) => Blogdetail())
+                                      builder: (context) => Blogdetail(resultIndex: -1,))
                                   );
                                 },
                                 child: Column(
@@ -791,7 +815,13 @@ class _BlogState extends State<Blog> {
                                   //selectid = widget.result2[index]["_id"];
                                   //getdatafromid();
                                   Navigator.push(context, MaterialPageRoute(
-                                      builder: (context) => Blogdetail(detail:recentBlog[index])));
+                                      builder: (context) => Blogdetail(
+                                          detail:recentBlog[index],
+                                          userFavourited: recentBlog[index]['userFavourited'],
+                                          favFunction: actionFavouriteChildRecent,
+                                          resultIndex: index,
+                                      ),
+                                  ));
                                 },
                                 child: Column(
                                   children: [

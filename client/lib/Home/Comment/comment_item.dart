@@ -128,7 +128,7 @@ class _itemState extends State<commentItem> {
     };
 
     http.Response res = await http.put(
-      Uri.parse("http://10.0.2.2:8080/comment/$id"),
+      Uri.parse("$SERVER_URL/comment/$id"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -170,7 +170,7 @@ class _itemState extends State<commentItem> {
 
     print('deleting comment');
     http.Response res = await http.delete(
-      Uri.parse("http://10.0.2.2:8080/comment/$id"),
+      Uri.parse("$SERVER_URL/comment/$id"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -246,7 +246,7 @@ class _itemState extends State<commentItem> {
     };
 
     http.Response res = await http.post(
-      Uri.parse("http://10.0.2.2:8080/comment/$id/like"),
+      Uri.parse("$SERVER_URL/comment/$id/like"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -283,7 +283,7 @@ class _itemState extends State<commentItem> {
     };
 
     http.Response res = await http.post(
-      Uri.parse("http://10.0.2.2:8080/comment/$id/dislike"),
+      Uri.parse("$SERVER_URL/comment/$id/dislike"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -351,11 +351,11 @@ class _itemState extends State<commentItem> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const CircleAvatar(
+              CircleAvatar(
                 backgroundColor: Color(0xFFECFAFF),
                 radius: 25,
                 child: Text(
-                  "TDG",
+                  '${detail['username'][0]}${detail['username'][0]}',
                   style: TextStyle(
                       fontSize: 20,
                       color: Color(0xFF1d3557)

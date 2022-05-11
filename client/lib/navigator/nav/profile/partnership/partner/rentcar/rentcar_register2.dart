@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:se_app2/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -90,7 +91,7 @@ class _rentcar_register2State extends State<rentcar_register2> {
     String username = '';
     print('savepartner');
 
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/register_rentcarpartner'),
+    var res = await http.post(Uri.parse('$SERVER_URL/rentcar/register_rentcarpartner'),
         headers:{
           'Context-Type': 'application/json;charSet=UTF-8',
           'Accept': 'application/json;charSet=UTF-8',
@@ -154,7 +155,7 @@ class _rentcar_register2State extends State<rentcar_register2> {
     // for(int i = 0;i < image.length ; i++){
     //   data.addAll({"image[$i]":image[i]});
     // }
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/update_register_rentcarpartner'),
+    var res = await http.post(Uri.parse('$SERVER_URL/rentcar/update_register_rentcarpartner'),
       headers: <String, String>{
         'Context-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
