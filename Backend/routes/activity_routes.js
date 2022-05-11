@@ -23,6 +23,10 @@ router.get('/', (req,res) => {
 })
 
 router.post('/activity_partner',async (req,res) => { 
+    var token = req.headers.authorization.split(' ')[1]
+    // we need to convert the string to JSON object first.
+    var stringToken = JSON.parse(token)['token']
+    var decodedtoken = jwt.decode(stringToken, secret)-
     console.log('activity_partner')
     // console.log(req.body.usernameID)
     // const infouser = await User.findById(req.body.username)

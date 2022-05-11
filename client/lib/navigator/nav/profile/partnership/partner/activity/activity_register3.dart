@@ -71,12 +71,17 @@ class _activity_register3State extends State<activity_register3> {
   }
 
   Future activity_partner() async{
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
 
     var res = await http.post(Uri.parse('http://10.0.2.2:8080/activity/activity_partner'),
         headers: <String, String>{
-          'Context-Type': 'application/json;charSet=UTF-8'
+          'Context-Type': 'application/json;charSet=UTF-8',
+          'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
         },
         body: <String, String>{
+          "usernameID" : '$token',
           "name": widget.activityName,
           "location": widget.number_address + widget.address + widget.province + widget.district + widget.post_code,
           "price": widget.price,
@@ -90,17 +95,50 @@ class _activity_register3State extends State<activity_register3> {
   }
 
   Future update_activity() async{
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
 
     print('update partner');
+    print(widget.activityName);
+    print(widget.number_address);
+    print(widget.address);
+    print(widget.province);
+    print(widget.district);
+    print(widget.post_code);
+    print(widget.price);
+    print(detail.text);
+    print(dayopen.toString());
+    print(dayopen2.toString());
+    print(_timegetcarcontroller.text);
+    print(_timegetcarcontroller2.text);
+    print(fileNames.toString());
+
     // List<String> hilight = ["ซาฟารีปาร์ค ซึ่งเป็นสวนสัตว์เปิด มีสัตว์ต่างๆ เช่น ม้าลาย กวาง ยีราฟ นก เสือ สิงโต หมี ฯลฯ ให้นักท่องเที่ยวได้นั่งรถชมชีวิตความเป็นอยู่ของสัตว์ตามธรรมชาติโดยรถส่วนตัว หรือรถบริการพร้อมผู้บรรยายของซาฟารีเวิลด์","มารีนปาร์ค หรือสวนน้ำ มีสัตว์น้ำ และสัตว์ชนิดต่างๆ ที่หาดูให้ชมยาก รวมทั้งการแสดงต่างๆ เช่น การแสดงของปลาโลมา, นก, แมวน้ำ และลิง เป็นต้น","การแสดงแต่ละอย่างจะเปิดให้นักท่องเที่ยวได้เข้าไปจับจองที่นั่งกัน ครึ่งชั่วโมง ก่อนการแสดงเริ่มนะค่ะ เพราะว่าฉะนั้น อยากดูการแสดงไหน ก็ต้องไปจับจองที่นั่งกันก่อน นอกจากการแสดงแล้วก็ยังมีกิจกรรมต่างๆ ให้เด็กๆ ได้สนุกกันด้วยค่ะ เช่นการขี่ม้าแคระ การถ่ายรูปกับลูกเสือ ยิงปืน โยนบ่วง และ เกมส์ต่างๆ"];
     // List<String> service = ["ห้องพยาบาล","ห้องน้ำ","ที่จอดรถ","ร้านอาหาร","รถเดินทางในซาฟารี"];
     // List<String> image = ["https://th.bing.com/th/id/OIP.rK1WUrjCgr9XbcMTQSqsWgHaEH?w=295&h=180&c=7&r=0&o=5&pid=1.7","https://th.bing.com/th/id/OIP.c1IWuCEIPfLbaG2esI_GWAHaE8?w=273&h=182&c=7&r=0&o=5&pid=1.7"];
     Map<String,String> data;
+    List<String> name;
     data={
       "hilight[]": info.toString(),
       "service[]": service.toString(),
+      "name[]": name.toString(),
       // "image[]": imageFile.toString(),
     };
+    int a=0;
+    data.addAll({"name[$a]":widget.activityName});a++;
+    data.addAll({"name[$a]":widget.number_address});a++;
+    data.addAll({"name[$a]":widget.address});a++;
+    data.addAll({"name[$a]":widget.province});a++;
+    data.addAll({"name[$a]":widget.district});a++;
+    data.addAll({"name[$a]":widget.post_code});a++;
+    data.addAll({"name[$a]":widget.price});a++;
+    data.addAll({"name[$a]":"0"});a++;
+    data.addAll({"name[$a]":detail.text});a++;
+    data.addAll({"name[$a]":dayopen.toString()});a++;
+    data.addAll({"name[$a]":dayopen2.toString()});a++;
+    data.addAll({"name[$a]":_timegetcarcontroller.text});a++;
+    data.addAll({"name[$a]":_timegetcarcontroller2.text});a++;
+    data.addAll({"name[$a]":fileNames.toString()});
     for(int i = 0;i < numinfo ; i++){
       data.addAll({"hilight[$i]":info[i].text});
     }
@@ -112,7 +150,9 @@ class _activity_register3State extends State<activity_register3> {
     // }
     var res = await http.post(Uri.parse('http://10.0.2.2:8080/activity/update_activity'),
       headers: <String, String>{
-        'Context-Type': 'application/json;charSet=UTF-8'
+        'Context-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+      'Authorization': 'Bearer $token',
       },
       body: data,
     );
@@ -624,8 +664,8 @@ class _activity_register3State extends State<activity_register3> {
                         ),
                         child: ElevatedButton(
                           onPressed: () async=> {
-                            activity_partner(),
-                            uploadImageToFirebase(context),
+                            // activity_partner(),
+                            await uploadImageToFirebase(context),
                             update_activity(),
                             Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => activity_request(
 
