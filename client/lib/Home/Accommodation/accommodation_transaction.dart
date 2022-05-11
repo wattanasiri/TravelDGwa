@@ -59,14 +59,32 @@ class _AccommodationTransactionState extends State<AccommodationTransaction> {
   FocusNode userPhoneFocusNode = FocusNode();
 
   final GlobalKey<FormState> _formKey = GlobalKey();
-
+  String imagefromname;
   bool viewVisible = false;
   List allRooms;
   Map data;
-
+  Future getimagefromnamehotel() async {
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
+    print('getimage');
+    http.Response res = await http.get(
+      Uri.parse('$SERVER_URL/hotel/' + widget.hotel_name + '/getimage'),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    print(json.decode(res.body));
+    Map dataimage = json.decode(res.body);
+    imagefromname = dataimage['rooms'][0]['image'];
+    print(imagefromname);
+  }
   Future addTransaction() async {
     // allRooms = room_detail;
     // data = json.encode(allRooms);
+    print('imagefromname');
+    print(imagefromname);
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
     var res = await http.post(Uri.parse("$SERVER_URL/transaction"),
@@ -82,6 +100,7 @@ class _AccommodationTransactionState extends State<AccommodationTransaction> {
           "room": room_detail['room_name'],
           'numberOfRoom': numberOfRoomsEdit.text,
           'priceOfRoom': room_detail['price'].toString(),
+          "image":imagefromname,
           'totalPrice':
               (int.parse(numberOfRoomsEdit.text) * room_detail['price'])
                   .toString(),
@@ -106,6 +125,7 @@ class _AccommodationTransactionState extends State<AccommodationTransaction> {
   @override
   void initState() {
     super.initState();
+    getimagefromnamehotel();
     hotel_name = widget.hotel_name;
     room_detail = widget.room_detail;
     checkInEdit = TextEditingController(text: widget.checkInHolder);
@@ -521,6 +541,7 @@ class _AccommodationTransactionState extends State<AccommodationTransaction> {
                 const SizedBox(height: 10),
                 ElevatedButton(
                   onPressed: () async => {
+                    // await getimagefromnamehotel(),
                     await addTransaction(),
                     Navigator.push(
                         context,

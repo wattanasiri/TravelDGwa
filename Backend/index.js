@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 5000; // 5000 is used for heroku server
+const port = process.env.PORT || 8080; // 5000 is used for heroku server
 const host = '0.0.0.0';
 const cors = require('cors');
 const bodyParser = require('body-parser');

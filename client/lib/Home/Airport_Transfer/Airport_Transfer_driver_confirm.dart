@@ -5,6 +5,7 @@ import 'package:flutter_animated_button/flutter_animated_button.dart';
 import 'package:http/http.dart' as http;
 import 'package:se_app2/Data/data_currentuser.dart';
 import 'package:se_app2/Home/Airport_Transfer/Airport_Transfer_driver_receipt.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class summary extends StatefulWidget {
   String startdate,yourlocation,destination,starttime,typeshuttle,sumprice;
@@ -18,6 +19,8 @@ class summary extends StatefulWidget {
 class _summaryState extends State<summary> {
 
   Future save_invoice() async {
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
     Datauser datauser = Datauser();
     print('id');
     print(datauser.id);
@@ -30,7 +33,9 @@ class _summaryState extends State<summary> {
     }
     var res = await http.post(Uri.parse('$SERVER_URL/airport_transfer/save_invoice'),
         headers: <String, String>{
-          'Context-Type': 'application/json;charSet=UTF-8'
+          'Context-Type': 'application/json;charSet=UTF-8',
+          'Accept': 'application/json;charSet=UTF-8',
+          'Authorization': 'Bearer $token',
         },
         body: <String, String>{
           "username" : datauser.id,

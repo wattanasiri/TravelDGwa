@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:se_app2/constants.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:se_app2/Data/data_currentuser.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'Airport_Transfer_driver_search.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -26,8 +29,23 @@ class _ShuttlePageState extends State<ShuttlePage> {
   bool checklocation = false;
   bool value_booknow = false;
   bool value_advance = true;
-  
 
+  Future getdataid() async {
+    Datauser datauser = Datauser();
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
+    print('getuserid');
+    http.Response res = await http.get(
+      Uri.parse('$SERVER_URL/map/getuserid'),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    print(json.decode(res.body));
+    datauser.id = json.decode(res.body);
+  }
   Future _checklocation(String address) async {
     try{
       List<Location> locations = await locationFromAddress(address);
@@ -575,6 +593,7 @@ class _ShuttlePageState extends State<ShuttlePage> {
     print(_yourlocationcontroller.text);
     print('value_booknow');
     print(value_booknow);
+    getdataid();
     Navigator.push(context, MaterialPageRoute(builder: (context) => search_driver(
         startdate: _startdatecontroller.text,
         typeshuttle: typeshuttle,
