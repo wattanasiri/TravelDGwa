@@ -27,7 +27,7 @@ class _NavState extends State<Nav> {
   final List<Widget> _pageList = <Widget>[
     const HomeBody(),
     const Booking(),
-    TripWithAI(),
+    const TripWithAI(),
     const Blog(),
     const ProfilePage()
   ];

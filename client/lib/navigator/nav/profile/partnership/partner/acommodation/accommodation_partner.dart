@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:se_app2/navigator/nav/profile/partnership/partner/acommodation/accom_register.dart';
 
 class accom_partner extends StatefulWidget {
 
@@ -43,10 +41,10 @@ class _accom_partnerState extends State<accom_partner> {
                       borderRadius: BorderRadius.all(Radius.circular(10)),
                     ),
                   ),
-                  onPressed: () async=> {
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => accom_register(
-
-                    ),)),
+                  onPressed: () {
+                    // Navigator.push(context, MaterialPageRoute(
+                    //     builder: (context) => partnership())
+                    // );
                   },
                   child: Row(
                     children: [

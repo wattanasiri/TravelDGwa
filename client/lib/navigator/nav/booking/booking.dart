@@ -99,7 +99,7 @@ class _BookingState extends State<Booking> {
           getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
           convertYearToBE(parsedDate.year).toString() + ' เวลา ' +
           dataIndex['starttime'] + ' น.';
-      return text.substring(0,33) + '..';
+      return text;
     } else if (dataIndex['bookingType'] == 'rentcar') {
       var inputFormat = DateFormat('yyyy-MM-dd');
       DateTime parsedDate = inputFormat.parse(dataIndex['date_getcar']);
@@ -107,7 +107,7 @@ class _BookingState extends State<Booking> {
           getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
           convertYearToBE(parsedDate.year).toString() + ' เวลา ' +
           dataIndex['time_getcar'] + ' น.';
-      return text.substring(0,28) + '..';
+      return text;
     } else if (dataIndex['bookingType'] == 'activity') {
       var inputFormat = DateFormat('dd-MM-yyyy');
       DateTime parsedDate = inputFormat.parse(dataIndex['day']);
@@ -115,7 +115,7 @@ class _BookingState extends State<Booking> {
           getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
           convertYearToBE(parsedDate.year).toString() + ' เวลา ' +
           dataIndex['time'] + ' น.';
-      return text.substring(0,33) + '..';
+      return text;
     }
     else {
       return '';
@@ -132,7 +132,7 @@ class _BookingState extends State<Booking> {
           getMonthNameShort(parsedDate.month) + ' พ.ศ. ' +
           convertYearToBE(parsedDate.year).toString() + ' เวลา ' +
           dataIndex['time_sentcar'] + ' น.';
-      return text.substring(0,28) + '..';
+      return text;
     }
     else {
       return '';
@@ -600,7 +600,7 @@ class _BookingState extends State<Booking> {
                                         borderRadius: const BorderRadius.only(
                                             topLeft: Radius.circular(20),
                                             bottomLeft: Radius.circular(20)),
-                                        child: Image.network(getImageUrl(currentData[index]),
+                                        child: Image.network(getImageUrl(currentData[index]['bookingType']),
                                             height: 110,
                                             width: 160,
                                             fit: BoxFit.cover),
@@ -727,16 +727,17 @@ class _BookingState extends State<Booking> {
     );
   }
 
-  String getImageUrl(Map dataIndex) {
-    if (dataIndex['bookingType'] == 'accommodation') {
-      return dataIndex['image'];
-    } else if (dataIndex['bookingType'] == 'transfer') {
+  String getImageUrl(type) {
+    if (type == 'accommodation')
+      return 'https://placeimg.com/640/480/any';
+    else if (type == 'transfer')
       return 'https://t1.blockdit.com/photos/2020/11/5fb952383d4b9b0cc0fd7d2e_800x0xcover_3aaaqsST.jpg';
-    } else if (dataIndex['bookingType'] == 'rentcar') {
-      return dataIndex['image'];
-    } else if (dataIndex['bookingType'] == 'activity') {
-      return dataIndex['image'];
-    }
+    else if (type == 'rentcar')
+      return 'https://www.toyota.co.th/media/product/feature/large/e8d2cc60fa1d5467bc3a8b2b944677faa9c42502.jpg';
+    else if (type == 'activity')
+      return 'https://ik.imagekit.io/tvlk/xpe-asset/AyJ40ZAo1DOyPyKLZ9c3RGQHTP2oT4ZXW+QmPVVkFQiXFSv42UaHGzSmaSzQ8DO5QIbWPZuF+VkYVRk6gh-Vg4ECbfuQRQ4pHjWJ5Rmbtkk=/2000785513283/Health%2520Land%2520Pradit%2520Manutham%2520Spa%2520Treatments-f3388649-4fee-4630-8c1c-cec1fd1f36f7.jpeg?_src=imagekit&tr=c-at_max';
+    else
+      return 'https://placeimg.com/640/480/any';
   }
 
 }

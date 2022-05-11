@@ -24,10 +24,8 @@ class Blogdetail extends StatefulWidget {
   bool userFavourited;
   final Function favFunction;
   var resultIndex;
-  Map author;
   Blogdetail({
     Key key,this.detail,
-    this.author,
     this.userFavourited,
     this.favFunction,
     @required this.resultIndex,
@@ -151,7 +149,7 @@ class _BlogdetailState extends State<Blogdetail> {
   void initState() {
     super.initState();
     detail = widget.detail;
-    // getAuthor();
+    getAuthor();
     userFavourited = widget.userFavourited;
   }
 
@@ -187,7 +185,7 @@ class _BlogdetailState extends State<Blogdetail> {
                 SizedBox(height: MediaQuery.of(context).size.height),
                 CarouselSlider.builder(
                   //itemCount: widget.data["image"].length,
-                  itemCount: detail['image'].length,
+                  itemCount: urlImages.length,
                   options: CarouselOptions(
                       height: 400.0,
                       viewportFraction: 1,
@@ -196,7 +194,7 @@ class _BlogdetailState extends State<Blogdetail> {
                   itemBuilder: (context, index, realIndex) {
                     //final urlImage = widget.data["image"][index];
                     //return buildImage(urlImage, index);
-                    final urlImage = detail['image'][index];
+                    final urlImage = urlImages[index];
                     return buildImage(urlImage, index);
                   },
                 ),
@@ -499,7 +497,7 @@ class _BlogdetailState extends State<Blogdetail> {
                                       backgroundColor: Color(0xFFECFAFF),
                                       radius: 40,
                                       child: Text(
-                                        '${widget.author['realname'][0]}${widget.author['surname'][0]}',
+                                        '${author['realname'][0]}${author['surname'][0]}',
                                         style: TextStyle(
                                             fontSize: 35,
                                             color: Color(0xFF1d3557)
@@ -520,7 +518,7 @@ class _BlogdetailState extends State<Blogdetail> {
                                             ),
                                           ),
                                           Text(
-                                            '${widget.author['realname']} ${widget.author['surname']}',
+                                            '${author['realname']} ${author['surname']}',
                                             style: TextStyle(
                                               color: Color(0xff1D3557),
                                               fontSize: 16,
@@ -676,7 +674,7 @@ class _BlogdetailState extends State<Blogdetail> {
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
     activeIndex: activeIndex,
-    count: /*widget.data["image"].length*/detail['image'].length,
+    count: /*widget.data["image"].length*/urlImages.length,
     effect: ScaleEffect(
         dotWidth: 8,
         dotHeight: 8,

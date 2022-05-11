@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import '../../../Data/data_selectlocation.dart';
 
 class MapSample extends StatefulWidget {
   List<dynamic> data;
@@ -149,7 +150,7 @@ class MapSampleState extends State<MapSample> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   Container(
-                    width: 200,
+                    width: 250,
                     height: 200,
                     child: ClipRRect(
                       borderRadius: new BorderRadius.circular(24.0),
@@ -159,7 +160,6 @@ class MapSampleState extends State<MapSample> {
                       ),
                     ),),
                   Container(
-                    width: 300,
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: myDetailsContainer1(Name,openday,opentime,star),
@@ -181,10 +181,9 @@ class MapSampleState extends State<MapSample> {
           padding: const EdgeInsets.only(left: 8.0),
           child: Container(
               child: Text(Name,
-                textAlign: TextAlign.center,
                 style: TextStyle(
                     color: Colors.black,
-                    fontSize: 20.0,
+                    fontSize: 24.0,
                     fontWeight: FontWeight.bold),
               )),
         ),
@@ -194,20 +193,14 @@ class MapSampleState extends State<MapSample> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Container(
-                    child: Row(
-                      children: [
-                        Text(
-                          ' (' + star.toString() + ') ',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.black54,
-                            fontSize: 18.0,
-                          ),
-                        ),
-                        _buildRatingStars(star),
-                      ],
+                    child: Text(
+                      ' (' + star.toString() + ') ',
+                      style: TextStyle(
+                        color: Colors.black54,
+                        fontSize: 18.0,
+                      ),
                     )),
-
+                _buildRatingStars(star),
               ],
             )),
         SizedBox(height:5.0),

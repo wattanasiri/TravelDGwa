@@ -63,7 +63,6 @@ router.post('/update_register_rentcarpartner',async (req,res) => {
         opening_day: req.body.name[4] + "-" + req.body.name[5],
         opening_time: req.body.name[6] + "-" + req.body.name[7],
         image: req.body.name[8],
-        star: 0,
     })
     // const infouser = await User.findById(req.body.username)
     for(i = 1;i<req.body.document.length;i++){
@@ -145,7 +144,6 @@ router.post('/update_register_rentcarinfo',async (req,res) => {
         car_license: req.body.name[9],
         car_rating: req.body.name[14],
         image: req.body.name[13],
-        car_counting: 0,
     })
     // const infouser = await User.findById(req.body.username)
     // const updatecarinfopartner = await rentcarinfo.findById(carinfopartner._id)

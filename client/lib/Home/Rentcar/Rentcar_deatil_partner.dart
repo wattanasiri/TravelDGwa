@@ -106,7 +106,6 @@ class _detailpartnerState extends State<detailpartner> {
   void initState() {
     super.initState();
     print('datapartner');
-    print(widget.data);
     print(widget.partnerdata);
     print(widget.partnerdata['foundpartner']['image']);
     print(widget.partnerdata['foundpartner']['image'].length);

@@ -1,10 +1,6 @@
 const mongoose = require('mongoose')
 
 var activitySchema  = new mongoose.Schema({
-    usernameID : {
-        type :mongoose.Schema.Types.ObjectId,
-        ref : 'User'
-    },
     name : String,
     image :  [
         {

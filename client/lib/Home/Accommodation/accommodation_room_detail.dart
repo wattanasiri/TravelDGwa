@@ -48,6 +48,12 @@ class _RoomDetailState extends State<RoomDetail> {
   }
 
   int activeIndex = 0;
+  final urlImages = [
+    'https://placeimg.com/640/480/any',
+    'https://placeimg.com/640/480/any',
+    'https://placeimg.com/640/480/any',
+    'https://placeimg.com/640/480/any',
+  ];
 
   List<String> facilitiesInRoom = ['เครื่องปรับอากาศ', 'โทรทัศน์', 'ตู้เย็น', 'ไมโครเวฟ', 'อินเทอร์เน็ต WIFI'];
   List<String> facilitiesInBathRoom = ['น้ำอุ่น', 'ห้องน้ำส่วนตัว', 'อุปกรณ์อาบน้ำ'];
@@ -62,14 +68,14 @@ class _RoomDetailState extends State<RoomDetail> {
               children: <Widget>[
                 SizedBox(height: MediaQuery.of(context).size.height),
                 CarouselSlider.builder(
-                  itemCount: room_detail["image"].length,
+                  itemCount: urlImages.length,
                   options: CarouselOptions(
                       height: 400.0,
                       viewportFraction: 1,
                       onPageChanged: (index, reason) =>
                           {setState(() => activeIndex = index)}),
                   itemBuilder: (context, index, realIndex) {
-                    final urlImage = room_detail["image"][index];
+                    final urlImage = urlImages[index];
                     return buildImage(urlImage, index);
                   },
                 ),
@@ -466,7 +472,7 @@ class _RoomDetailState extends State<RoomDetail> {
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
     activeIndex: activeIndex,
-    count: room_detail["image"].length,
+    count: urlImages.length,
     effect: ScaleEffect(
       dotWidth: 8,
       dotHeight: 8,

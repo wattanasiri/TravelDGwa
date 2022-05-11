@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:se_app2/navigator/nav/booking/booking.dart';
-import 'package:se_app2/navigator/nav/profile/partnership/partner/acommodation/accom_register.dart';
 import 'package:se_app2/navigator/nav/profile/partnership/partner/acommodation/accommodation_partner.dart';
 import 'package:se_app2/navigator/nav/profile/partnership/partner/activity/activity_partner.dart';
 import 'package:se_app2/navigator/nav/profile/partnership/partner/airport_tranfer/airport_tranfer_partner.dart';
@@ -49,7 +48,7 @@ class _partnershipState extends State<partnership> {
         ),
         body: TabBarView(
           children: [
-            accom_register(),
+            accom_partner(),
             rentcar_partner(),
             airport_tranfer_partner(),
             activity_partner(),

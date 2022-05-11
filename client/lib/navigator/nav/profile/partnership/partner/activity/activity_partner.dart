@@ -57,7 +57,7 @@ class _activity_partnerState extends State<activity_partner> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'กิจกรรม',
+                              'อพาร์ทเม้น',
                               style: TextStyle(
                                 color: Color(0xff1D3557),
                                 fontSize: 16,

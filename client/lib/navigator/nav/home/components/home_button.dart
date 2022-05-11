@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:se_app2/Home/Activity/activity.dart';
 import 'package:se_app2/Home/Attraction/tourist_attraction.dart';
-import 'package:se_app2/Home/Map/Map_main.dart';
 import 'package:se_app2/navigator/nav/tripwithAI/lifestyle.dart';
 import 'package:se_app2/navigator/nav/tripwithAI/mapmain.dart';
 import 'package:se_app2/constants.dart';
@@ -239,7 +238,36 @@ class HomeButton extends StatelessWidget {
              )
          );
        } else if(route.toString() == "Mapmain"){
-         Navigator.push(context, MaterialPageRoute(builder: (context) => Mapinput()));
+         await getdataid();
+         await checklifestyle();
+         print(checklifestyleis);
+         await querydata();
+         if(checklifestyleis){
+           Navigator.push(
+               context,
+               MaterialPageRoute(
+                   builder: (context) => Mapmain(
+                     dataquerymap: dataquerymap,
+                     weather : weather,
+                     adventure :  adventure,
+                     sea : sea,
+                     confidence: confidence,
+                     bagpack: bagpack,
+                     budget: budget,
+                     social : social,
+                   )
+               )
+           );
+         }else{
+           Navigator.push(
+               context,
+               MaterialPageRoute(
+                   builder: (context) => lifestyle(
+                     dataquerymap: dataquerymap,
+                   )
+               )
+           );
+         }
        }
        else {Navigator.push(context, MaterialPageRoute(builder: (context) => route));}
       },

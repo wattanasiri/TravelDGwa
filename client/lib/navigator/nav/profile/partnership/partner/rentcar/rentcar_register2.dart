@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:se_app2/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'package:se_app2/Data/data_currentuser.dart';
 import 'dart:io';
-import 'package:path/path.dart'as path;
-import 'package:se_app2/constants.dart';
-import 'package:firebase_storage/firebase_storage.dart'as firebase_storage;
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:se_app2/navigator/nav/profile/partnership/partner/rentcar/rentcar_register3.dart';
@@ -29,6 +27,7 @@ class _rentcar_register2State extends State<rentcar_register2> {
 
   File imageFile;
 
+
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   FocusNode acFocusNode = FocusNode();
@@ -45,20 +44,6 @@ class _rentcar_register2State extends State<rentcar_register2> {
   final district = TextEditingController();
   final info = TextEditingController();
   List<TextEditingController> _controllers = [];
-  String fileNames;
-  Future uploadImageToFirebase(BuildContext context) async {
-    String fileName = path.basename(imageFile.path);
-    firebase_storage.Reference firebaseStorageRef = firebase_storage.FirebaseStorage.instance
-        .ref()
-        .child('uploads')
-        .child('/$fileName');
-    firebase_storage.UploadTask uploadTask = firebaseStorageRef.putFile(imageFile);
-    firebase_storage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete((){});
-    taskSnapshot.ref.getDownloadURL().then(
-          (value) => print("Done: $value"),
-    );
-    fileNames = fileName.toString();
-  }
   _getFromGallery(context) async {
     PickedFile pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
@@ -79,7 +64,7 @@ class _rentcar_register2State extends State<rentcar_register2> {
     print(widget.name);
     print(dayopen);
     print(dayopen2);
-    print(fileNames);
+    print(imageFile);
     for(int i=0;i<_controllers.length;i++)print(_controllers[i].text);
     _formKey.currentState.save();
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
@@ -95,38 +80,37 @@ class _rentcar_register2State extends State<rentcar_register2> {
           dayopen : dayopen.toString(),
           dayopen2 : dayopen2.toString(),
           document : _controllers,
+          imagecompany : imageFile,
         ),));
 
   }
 
-  // Future save_partner() async {
-  //   var _prefs = await SharedPreferences.getInstance();
-  //   var token = _prefs.get('token');
-  //   String username = '';
-  //   print('savepartner');
-  //
-  //   fileName = fileName.split("/")[-1];
-  //   print(fileName);
-  //   var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/register_rentcarpartner'),
-  //       headers:{
-  //         'Context-Type': 'application/json;charSet=UTF-8',
-  //         'Accept': 'application/json;charSet=UTF-8',
-  //         'Authorization': 'Bearer $token',
-  //       },
-  //       body: <String, String>{
-  //         "usernameID" : '$token',
-  //         "companyName": widget.company,
-  //         "phone": widget.number.toString(),
-  //         "email": widget.email,
-  //         "dayopen": dayopen.toString(),
-  //         "dayopen2" : dayopen2.toString(),
-  //         "timeopen": _timegetcarcontroller.text,
-  //         "timeopen2" : _timegetcarcontroller2.text,
-  //         "image" : fileName.toString(),
-  //         // "imagecompany": widget.imagecompany,
-  //       });
-  //   print(res.body);
-  // }
+  Future save_partner() async {
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
+    String username = '';
+    print('savepartner');
+
+    var res = await http.post(Uri.parse('$SERVER_URL/rentcar/register_rentcarpartner'),
+        headers:{
+          'Context-Type': 'application/json;charSet=UTF-8',
+          'Accept': 'application/json;charSet=UTF-8',
+          'Authorization': 'Bearer $token',
+        },
+        body: <String, String>{
+          "usernameID" : '$token',
+          "companyName": widget.company,
+          "phone": widget.number.toString(),
+          "email": widget.email,
+          "dayopen": dayopen.toString(),
+          "dayopen2" : dayopen2.toString(),
+          "timeopen": _timegetcarcontroller.text,
+          "timeopen2" : _timegetcarcontroller2.text,
+          "image" : imageFile.toString(),
+          // "imagecompany": widget.imagecompany,
+        });
+    print(res.body);
+  }
 
   Future update_partner() async{
     var _prefs = await SharedPreferences.getInstance();
@@ -137,9 +121,6 @@ class _rentcar_register2State extends State<rentcar_register2> {
     }
     List<String> name;
 
-    // print(fileNames);
-    // fileNames = fileNames.split("/").last;
-    print(fileNames);
     List<String> name_extrapay = ["05:30 - 08.59","21:01 - 23:59","บริการรับส่งนอกสถานที่"];
     List<String> price_extrapay = ["300","300","100"];
     // List<String> image = ["https://www.luvdrive.com/assets/img/logo/new-logo.png","https://lh5.googleusercontent.com/p/AF1QipNf5_4r5eeUBPNb_sT5IcZ7u_luULYk5L2iFJBe=w1080-k-no"];
@@ -158,7 +139,7 @@ class _rentcar_register2State extends State<rentcar_register2> {
     data.addAll({"name[$a]":dayopen2.toString()});a++;
     data.addAll({"name[$a]":_timegetcarcontroller.text});a++;
     data.addAll({"name[$a]":_timegetcarcontroller2.text});a++;
-    data.addAll({"name[$a]":fileNames.toString()});
+    data.addAll({"name[$a]":imageFile.toString()});
     // print(numinfo.toString());
 
     for(int i = 0;i < name_extrapay.length ; i++){
@@ -583,7 +564,6 @@ class _rentcar_register2State extends State<rentcar_register2> {
                         child: ElevatedButton(
                           onPressed: () async=> {
                             next(),
-                            await uploadImageToFirebase(context),
                             // await save_partner(),
                             await update_partner(),
                             // activity_partner(),

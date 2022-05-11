@@ -1,4 +1,0 @@
-class Dataselectcontinue {
-  List selectcontinue = [
-  ];
-}

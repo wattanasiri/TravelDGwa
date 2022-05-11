@@ -3,10 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:se_app2/constants.dart';
 import 'package:http/http.dart' as http;
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:se_app2/constants.dart';
 import 'package:se_app2/Data/data_currentuser.dart';
 import 'package:se_app2/Home/Rentcar/Rentcar_receipt.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class result_reserve extends StatefulWidget {
   String dategetcar, timegetcar,datesentcar,yourlocation,timesentcar,price,pricedestination,namedestination;
@@ -24,16 +23,12 @@ class result_reserve extends StatefulWidget {
 class _result_reserveState extends State<result_reserve> {
 
   Future save() async{
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
     Datauser datauser = Datauser();
     print('id');
     print(datauser.id);
     var res = await http.post(Uri.parse('$SERVER_URL/rentcar/save_transaction'),
         headers: <String, String>{
-          'Context-Type': 'application/json;charSet=UTF-8',
-          'Accept': 'application/json;charSet=UTF-8',
-          'Authorization': 'Bearer $token',
+          'Context-Type': 'application/json;charSet=UTF-8'
         },
         body: <String, String>{
 
@@ -54,7 +49,6 @@ class _result_reserveState extends State<result_reserve> {
           "sum_detail_pricelocation": "${widget.pricedestination}",
           "total_price": widget.price.toString(),
           "carid": widget.data['foundCar']['_id'],
-          "image": widget.data['foundCar']['car_image'][0],
         });
     print('res');
     print(res);

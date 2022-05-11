@@ -25,19 +25,13 @@ dependencies:
   carousel_slider: ^4.0.0
   smooth_page_indicator: ^1.0.0+2
   dotted_line: ^3.1.0
-  firebase_storage: ^10.2.5
-  firebase_core: ^1.11.0
-  firebase_auth: ^3.3.5
-  firebase_messaging_platform_interface: 3.1.6
-  firebase_storage_platform_interface: 4.0.14
 
   # state management
   provider: ^6.0.2
   # slidable
   flutter_slidable: ^0.5.7
   image_picker: ^0.8.1
-#  firebase_core: ^1.0.3
-#  firebase_storage: ^8.0.3
+
   convex_bottom_bar:
     path: ./convex_bottom_bar-master-2.5.1+1/
   animations: ^2.0.2
