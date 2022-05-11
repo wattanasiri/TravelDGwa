@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:se_app2/Home/Attraction/tourism_result.dart';
 
 import '../../../Data/data_currentuser.dart';
+import '../../../constants.dart';
 import 'Trip_detail.dart';
 import 'Trip_edit.dart';
 import 'Trip_log.dart';
@@ -45,7 +46,7 @@ class _tripstartState extends State<tripstart> {
     Datauser datauser = Datauser();
     print('querydata');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/querydatamapandupdatstatus'));
+    await http.get(Uri.parse("$SERVER_URL/map/" + datauser.id + '/querydatamapandupdatstatus'));
     querydata2 = json.decode(res.body);
     print(querydata2);
     for(int i=0 ; i < querydata2['foundinfo'].length ; i ++){
@@ -63,7 +64,7 @@ class _tripstartState extends State<tripstart> {
     Datauser datauser = Datauser();
     print('querydata');
     http.Response res =
-    await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/querydatamap'));
+    await http.get(Uri.parse("$SERVER_URL/map/" + datauser.id + '/querydatamap'));
     querydata2 = json.decode(res.body);
     print(querydata2);
     for(int i=0 ; i < querydata2['foundinfo'].length ; i ++){

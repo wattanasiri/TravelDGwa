@@ -95,14 +95,14 @@ class _rentCarDetailState extends State<rentCarDetail> {
               children: <Widget>[
                 SizedBox(height: MediaQuery.of(context).size.height),
                 CarouselSlider.builder(
-                  itemCount: urlImages.length,
+                  itemCount: 1,
                   options: CarouselOptions(
                       height: 400.0,
                       viewportFraction: 1,
                       onPageChanged: (index, reason) =>
                           {setState(() => activeIndex = index)}),
                   itemBuilder: (context, index, realIndex) {
-                    final urlImage = urlImages[index];
+                    final urlImage = detail['image'];
                     return buildImage(urlImage, index);
                   },
                 ),
@@ -599,7 +599,7 @@ class _rentCarDetailState extends State<rentCarDetail> {
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
         activeIndex: activeIndex,
-        count: urlImages.length,
+        count: 1,
         effect: ScaleEffect(
             dotWidth: 8,
             dotHeight: 8,
