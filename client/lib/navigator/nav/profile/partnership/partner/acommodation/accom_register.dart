@@ -23,18 +23,11 @@ class accom_register extends StatefulWidget {
 class _accom_registerState extends State<accom_register> {
 
   File _imageFile;
-  _getFromGallery(context) async {
-    PickedFile pickedFile = await ImagePicker().getImage(
-      source: ImageSource.gallery,
-      maxWidth: 1800,
-      maxHeight: 1800,
-    );
-    if (pickedFile != null) {
-      setState(() {
-        _imageFile = File(pickedFile.path);
-      });
-    }
-    print(_imageFile);
+  Future picImage() async{
+    final pickedFile = await ImagePicker().getImage(source: ImageSource.gallery);
+    setState(() {
+      _imageFile = File(pickedFile.path);
+    });
   }
 
   Future uploadImageToFirebase(BuildContext context) async {
@@ -53,6 +46,17 @@ class _accom_registerState extends State<accom_register> {
   //   Image image;
   //   await firebase_storage
   // }
+  String downloadURL;
+  Future<void> downloadURLExample() async {
+    String imagename = "profile.jpg";
+    downloadURL = await firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('uploads')
+        .child("/$imagename")
+        .getDownloadURL();
+    debugPrint(downloadURL.toString());
+    return downloadURL.toString();
+  }
 //   Future<dynamic>loadimage() async{
 //     print("test");
 //     dynamic test = firebase_storage.FirebaseStorage.instance
@@ -61,6 +65,7 @@ class _accom_registerState extends State<accom_register> {
 //     print(test);
 // }
   void initState(){
+    downloadURLExample();
   }
 
   String word = '';
@@ -125,321 +130,7 @@ class _accom_registerState extends State<accom_register> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   SizedBox(height: 30),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("ชื่อที่พัก",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.normal,
-                                color: Color(0xff1D3557))),
-                        const SizedBox(height: 5),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 2),
-                          width: 350,
-                          decoration: BoxDecoration(
-                              color: const Color(0xffECFAFF),
-                              borderRadius: BorderRadius.circular(15),
-                              border: Border.all(
-                                  color: const Color(0xff1D3557), width: 2)),
-                          child: TextFormField(
-                            controller: name,
-                            decoration: const InputDecoration(
-                              hintText: 'เช่น Perfect For Families',
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: Color(0xffECFAFF))),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณาระบุชื่อที่พัก';
-                              }
-                              return null;
-                            },
-                            focusNode: acFocusNode,
-                            onChanged: (value) {
-                              word = value;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("คำบรรยายที่พัก",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.normal,
-                                color: Color(0xff1D3557))),
-                        const SizedBox(height: 5),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 2),
-                          width: 350,
-                          decoration: BoxDecoration(
-                              color: const Color(0xffECFAFF),
-                              borderRadius: BorderRadius.circular(15),
-                              border: Border.all(
-                                  color: const Color(0xff1D3557), width: 2)),
-                          child: TextFormField(
-                            controller: desc,
-                            decoration: const InputDecoration(
-                              hintText: 'เช่น พื้นที่กว้างขวาง วิวสวยงาม อากาศเย็นสบาย',
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: Color(0xffECFAFF))),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณาระบุคำบรรยายที่พัก';
-                              }
-                              return null;
-                            },
-                            focusNode: acFocusNode2,
-                            onChanged: (value) {
-                              word = value;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("ที่อยู่",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.normal,
-                                color: Color(0xff1D3557))),
-                        const SizedBox(height: 5),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 2),
-                          width: 350,
-                          decoration: BoxDecoration(
-                              color: const Color(0xffECFAFF),
-                              borderRadius: BorderRadius.circular(15),
-                              border: Border.all(
-                                  color: const Color(0xff1D3557), width: 2)),
-                          child: TextFormField(
-                            controller: address,
-                            decoration: const InputDecoration(
-                              hintText: 'ที่อยู่',
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: Color(0xffECFAFF))),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณาระบุที่อยู่';
-                              }
-                              return null;
-                            },
-                            focusNode: acFocusNode3,
-                            onChanged: (value) {
-                              word = value;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("เลขที่อยู่, หมายเลขชั้น, ห้อง",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.normal,
-                                color: Color(0xff1D3557))),
-                        const SizedBox(height: 5),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 2),
-                          width: 350,
-                          decoration: BoxDecoration(
-                              color: const Color(0xffECFAFF),
-                              borderRadius: BorderRadius.circular(15),
-                              border: Border.all(
-                                  color: const Color(0xff1D3557), width: 2)),
-                          child: TextFormField(
-                            controller: number_address,
-                            decoration: const InputDecoration(
-                              hintText: 'เลขที่อยู่, หมายเลขชั้น, ห้อง',
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: Color(0xffECFAFF))),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณาระบุเลขที่อยู่, หมายเลขชั้น, ห้อง';
-                              }
-                              return null;
-                            },
-                            focusNode: acFocusNode4,
-                            onChanged: (value) {
-                              word = value;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("จังหวัด",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.normal,
-                                color: Color(0xff1D3557))),
-                        const SizedBox(height: 5),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 2),
-                          width: 350,
-                          decoration: BoxDecoration(
-                              color: const Color(0xffECFAFF),
-                              borderRadius: BorderRadius.circular(15),
-                              border: Border.all(
-                                  color: const Color(0xff1D3557), width: 2)),
-                          child: TextFormField(
-                            controller: province,
-                            decoration: const InputDecoration(
-                              hintText: 'จังหวัด',
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: Color(0xffECFAFF))),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณาระบุจังหวัด';
-                              }
-                              return null;
-                            },
-                            focusNode: acFocusNode5,
-                            onChanged: (value) {
-                              word = value;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("ตำบล",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.normal,
-                                color: Color(0xff1D3557))),
-                        const SizedBox(height: 5),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 2),
-                          width: 350,
-                          decoration: BoxDecoration(
-                              color: const Color(0xffECFAFF),
-                              borderRadius: BorderRadius.circular(15),
-                              border: Border.all(
-                                  color: const Color(0xff1D3557), width: 2)),
-                          child: TextFormField(
-                            controller: district,
-                            decoration: const InputDecoration(
-                              hintText: 'ตำบล',
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: Color(0xffECFAFF))),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณาระบุตำบล';
-                              }
-                              return null;
-                            },
-                            focusNode: acFocusNode6,
-                            onChanged: (value) {
-                              word = value;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text("รหัสไปรษณีย์",
-                            style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.normal,
-                                color: Color(0xff1D3557))),
-                        const SizedBox(height: 5),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 16, vertical: 2),
-                          width: 350,
-                          decoration: BoxDecoration(
-                              color: const Color(0xffECFAFF),
-                              borderRadius: BorderRadius.circular(15),
-                              border: Border.all(
-                                  color: const Color(0xff1D3557), width: 2)),
-                          child: TextFormField(
-                            controller: post_code,
-                            inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.digitsOnly,
-                              LengthLimitingTextInputFormatter(5)
-                            ],
-                            keyboardType: TextInputType.numberWithOptions(
-                              decimal: false,
-                              signed: true,
-                            ),
-                            decoration: const InputDecoration(
-                              hintText: 'รหัสไปรษณีย์',
-                              enabledBorder: UnderlineInputBorder(
-                                  borderSide:
-                                  BorderSide(color: Color(0xffECFAFF))),
-                            ),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'กรุณาระบุรหัสไปรษณีย์';
-                              }
-                              return null;
-                            },
-                            focusNode: acFocusNode7,
-                            onChanged: (value) {
-                              word = value;
-                            },
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10),
+                 Container(child: Image.network(downloadURL)),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                     child: Column(
@@ -469,17 +160,329 @@ class _accom_registerState extends State<accom_register> {
                             child: IconButton(
                               icon: Icon(Icons.add),
                               onPressed: () {
-                                _getFromGallery(context);
+                                picImage();
                               },
                             ),
-
-
                           ),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 30,),
+                  // Padding(
+                  //   padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       const Text("ชื่อที่พัก",
+                  //           style: TextStyle(
+                  //               fontSize: 18,
+                  //               fontWeight: FontWeight.normal,
+                  //               color: Color(0xff1D3557))),
+                  //       const SizedBox(height: 5),
+                  //       Container(
+                  //         padding: const EdgeInsets.symmetric(
+                  //             horizontal: 16, vertical: 2),
+                  //         width: 350,
+                  //         decoration: BoxDecoration(
+                  //             color: const Color(0xffECFAFF),
+                  //             borderRadius: BorderRadius.circular(15),
+                  //             border: Border.all(
+                  //                 color: const Color(0xff1D3557), width: 2)),
+                  //         child: TextFormField(
+                  //           controller: name,
+                  //           decoration: const InputDecoration(
+                  //             hintText: 'เช่น Perfect For Families',
+                  //             enabledBorder: UnderlineInputBorder(
+                  //                 borderSide:
+                  //                 BorderSide(color: Color(0xffECFAFF))),
+                  //           ),
+                  //           validator: (value) {
+                  //             if (value == null || value.isEmpty) {
+                  //               return 'กรุณาระบุชื่อที่พัก';
+                  //             }
+                  //             return null;
+                  //           },
+                  //           focusNode: acFocusNode,
+                  //           onChanged: (value) {
+                  //             word = value;
+                  //           },
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 10),
+                  // Padding(
+                  //   padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       const Text("คำบรรยายที่พัก",
+                  //           style: TextStyle(
+                  //               fontSize: 18,
+                  //               fontWeight: FontWeight.normal,
+                  //               color: Color(0xff1D3557))),
+                  //       const SizedBox(height: 5),
+                  //       Container(
+                  //         padding: const EdgeInsets.symmetric(
+                  //             horizontal: 16, vertical: 2),
+                  //         width: 350,
+                  //         decoration: BoxDecoration(
+                  //             color: const Color(0xffECFAFF),
+                  //             borderRadius: BorderRadius.circular(15),
+                  //             border: Border.all(
+                  //                 color: const Color(0xff1D3557), width: 2)),
+                  //         child: TextFormField(
+                  //           controller: desc,
+                  //           decoration: const InputDecoration(
+                  //             hintText: 'เช่น พื้นที่กว้างขวาง วิวสวยงาม อากาศเย็นสบาย',
+                  //             enabledBorder: UnderlineInputBorder(
+                  //                 borderSide:
+                  //                 BorderSide(color: Color(0xffECFAFF))),
+                  //           ),
+                  //           validator: (value) {
+                  //             if (value == null || value.isEmpty) {
+                  //               return 'กรุณาระบุคำบรรยายที่พัก';
+                  //             }
+                  //             return null;
+                  //           },
+                  //           focusNode: acFocusNode2,
+                  //           onChanged: (value) {
+                  //             word = value;
+                  //           },
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // Padding(
+                  //   padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       const Text("ที่อยู่",
+                  //           style: TextStyle(
+                  //               fontSize: 18,
+                  //               fontWeight: FontWeight.normal,
+                  //               color: Color(0xff1D3557))),
+                  //       const SizedBox(height: 5),
+                  //       Container(
+                  //         padding: const EdgeInsets.symmetric(
+                  //             horizontal: 16, vertical: 2),
+                  //         width: 350,
+                  //         decoration: BoxDecoration(
+                  //             color: const Color(0xffECFAFF),
+                  //             borderRadius: BorderRadius.circular(15),
+                  //             border: Border.all(
+                  //                 color: const Color(0xff1D3557), width: 2)),
+                  //         child: TextFormField(
+                  //           controller: address,
+                  //           decoration: const InputDecoration(
+                  //             hintText: 'ที่อยู่',
+                  //             enabledBorder: UnderlineInputBorder(
+                  //                 borderSide:
+                  //                 BorderSide(color: Color(0xffECFAFF))),
+                  //           ),
+                  //           validator: (value) {
+                  //             if (value == null || value.isEmpty) {
+                  //               return 'กรุณาระบุที่อยู่';
+                  //             }
+                  //             return null;
+                  //           },
+                  //           focusNode: acFocusNode3,
+                  //           onChanged: (value) {
+                  //             word = value;
+                  //           },
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 10),
+                  // Padding(
+                  //   padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       const Text("เลขที่อยู่, หมายเลขชั้น, ห้อง",
+                  //           style: TextStyle(
+                  //               fontSize: 18,
+                  //               fontWeight: FontWeight.normal,
+                  //               color: Color(0xff1D3557))),
+                  //       const SizedBox(height: 5),
+                  //       Container(
+                  //         padding: const EdgeInsets.symmetric(
+                  //             horizontal: 16, vertical: 2),
+                  //         width: 350,
+                  //         decoration: BoxDecoration(
+                  //             color: const Color(0xffECFAFF),
+                  //             borderRadius: BorderRadius.circular(15),
+                  //             border: Border.all(
+                  //                 color: const Color(0xff1D3557), width: 2)),
+                  //         child: TextFormField(
+                  //           controller: number_address,
+                  //           decoration: const InputDecoration(
+                  //             hintText: 'เลขที่อยู่, หมายเลขชั้น, ห้อง',
+                  //             enabledBorder: UnderlineInputBorder(
+                  //                 borderSide:
+                  //                 BorderSide(color: Color(0xffECFAFF))),
+                  //           ),
+                  //           validator: (value) {
+                  //             if (value == null || value.isEmpty) {
+                  //               return 'กรุณาระบุเลขที่อยู่, หมายเลขชั้น, ห้อง';
+                  //             }
+                  //             return null;
+                  //           },
+                  //           focusNode: acFocusNode4,
+                  //           onChanged: (value) {
+                  //             word = value;
+                  //           },
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 10),
+                  // Padding(
+                  //   padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       const Text("จังหวัด",
+                  //           style: TextStyle(
+                  //               fontSize: 18,
+                  //               fontWeight: FontWeight.normal,
+                  //               color: Color(0xff1D3557))),
+                  //       const SizedBox(height: 5),
+                  //       Container(
+                  //         padding: const EdgeInsets.symmetric(
+                  //             horizontal: 16, vertical: 2),
+                  //         width: 350,
+                  //         decoration: BoxDecoration(
+                  //             color: const Color(0xffECFAFF),
+                  //             borderRadius: BorderRadius.circular(15),
+                  //             border: Border.all(
+                  //                 color: const Color(0xff1D3557), width: 2)),
+                  //         child: TextFormField(
+                  //           controller: province,
+                  //           decoration: const InputDecoration(
+                  //             hintText: 'จังหวัด',
+                  //             enabledBorder: UnderlineInputBorder(
+                  //                 borderSide:
+                  //                 BorderSide(color: Color(0xffECFAFF))),
+                  //           ),
+                  //           validator: (value) {
+                  //             if (value == null || value.isEmpty) {
+                  //               return 'กรุณาระบุจังหวัด';
+                  //             }
+                  //             return null;
+                  //           },
+                  //           focusNode: acFocusNode5,
+                  //           onChanged: (value) {
+                  //             word = value;
+                  //           },
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 10),
+                  // Padding(
+                  //   padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       const Text("ตำบล",
+                  //           style: TextStyle(
+                  //               fontSize: 18,
+                  //               fontWeight: FontWeight.normal,
+                  //               color: Color(0xff1D3557))),
+                  //       const SizedBox(height: 5),
+                  //       Container(
+                  //         padding: const EdgeInsets.symmetric(
+                  //             horizontal: 16, vertical: 2),
+                  //         width: 350,
+                  //         decoration: BoxDecoration(
+                  //             color: const Color(0xffECFAFF),
+                  //             borderRadius: BorderRadius.circular(15),
+                  //             border: Border.all(
+                  //                 color: const Color(0xff1D3557), width: 2)),
+                  //         child: TextFormField(
+                  //           controller: district,
+                  //           decoration: const InputDecoration(
+                  //             hintText: 'ตำบล',
+                  //             enabledBorder: UnderlineInputBorder(
+                  //                 borderSide:
+                  //                 BorderSide(color: Color(0xffECFAFF))),
+                  //           ),
+                  //           validator: (value) {
+                  //             if (value == null || value.isEmpty) {
+                  //               return 'กรุณาระบุตำบล';
+                  //             }
+                  //             return null;
+                  //           },
+                  //           focusNode: acFocusNode6,
+                  //           onChanged: (value) {
+                  //             word = value;
+                  //           },
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 10),
+                  // Padding(
+                  //   padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       const Text("รหัสไปรษณีย์",
+                  //           style: TextStyle(
+                  //               fontSize: 18,
+                  //               fontWeight: FontWeight.normal,
+                  //               color: Color(0xff1D3557))),
+                  //       const SizedBox(height: 5),
+                  //       Container(
+                  //         padding: const EdgeInsets.symmetric(
+                  //             horizontal: 16, vertical: 2),
+                  //         width: 350,
+                  //         decoration: BoxDecoration(
+                  //             color: const Color(0xffECFAFF),
+                  //             borderRadius: BorderRadius.circular(15),
+                  //             border: Border.all(
+                  //                 color: const Color(0xff1D3557), width: 2)),
+                  //         child: TextFormField(
+                  //           controller: post_code,
+                  //           inputFormatters: <TextInputFormatter>[
+                  //             FilteringTextInputFormatter.digitsOnly,
+                  //             LengthLimitingTextInputFormatter(5)
+                  //           ],
+                  //           keyboardType: TextInputType.numberWithOptions(
+                  //             decimal: false,
+                  //             signed: true,
+                  //           ),
+                  //           decoration: const InputDecoration(
+                  //             hintText: 'รหัสไปรษณีย์',
+                  //             enabledBorder: UnderlineInputBorder(
+                  //                 borderSide:
+                  //                 BorderSide(color: Color(0xffECFAFF))),
+                  //           ),
+                  //           validator: (value) {
+                  //             if (value == null || value.isEmpty) {
+                  //               return 'กรุณาระบุรหัสไปรษณีย์';
+                  //             }
+                  //             return null;
+                  //           },
+                  //           focusNode: acFocusNode7,
+                  //           onChanged: (value) {
+                  //             word = value;
+                  //           },
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  // SizedBox(height: 30,),
 
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 30),
@@ -497,7 +500,7 @@ class _accom_registerState extends State<accom_register> {
                     child: ElevatedButton(
                       onPressed: () async=> {
                         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => accom_register2(
-
+                      image : downloadURL.toString(),
                         ),)),
                         uploadImageToFirebase(context),
                       },
