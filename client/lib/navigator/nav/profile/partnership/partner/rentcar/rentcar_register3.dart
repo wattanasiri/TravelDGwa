@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:se_app2/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
@@ -140,7 +141,7 @@ class _rentcar_register3State extends State<rentcar_register3> {
       data.addAll({"pricelocationpickup[$i]":pricelocationpickup[i]});
     }
 
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/update_register_rentcarinfo'),
+    var res = await http.post(Uri.parse('$SERVER_URL/rentcar/update_register_rentcarinfo'),
       headers: <String, String>{
         'Context-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',

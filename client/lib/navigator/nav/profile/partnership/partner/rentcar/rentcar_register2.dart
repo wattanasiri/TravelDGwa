@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:se_app2/Data/data_currentuser.dart';
 import 'dart:io';
 import 'package:path/path.dart'as path;
+import 'package:se_app2/constants.dart';
 import 'package:firebase_storage/firebase_storage.dart'as firebase_storage;
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -173,7 +174,7 @@ class _rentcar_register2State extends State<rentcar_register2> {
     // for(int i = 0;i < image.length ; i++){
     //   data.addAll({"image[$i]":image[i]});
     // }
-    var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/update_register_rentcarpartner'),
+    var res = await http.post(Uri.parse('$SERVER_URL/rentcar/update_register_rentcarpartner'),
       headers: <String, String>{
         'Context-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
