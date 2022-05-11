@@ -81,7 +81,7 @@ router.get('/' , middleware.isLoggedIn, (req,res) => {
                     var formattedTime = convertDMYToYMD(elem.checkOut)
                     newElem.status = compareBookingDate(formattedTime)
                 }
-                // bookingList.push(newElem)
+                bookingList.push(newElem)
             });
             airporttransferreceipt.find({"usernameID" : user._id}, function (err, foundTransferRecipt) {  // get transfer receipt
                 if (err) {

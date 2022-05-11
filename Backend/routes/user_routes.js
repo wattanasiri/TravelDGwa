@@ -5,6 +5,7 @@ const secret = require('..').SecretText
 const shuttle_partner = require('../models/airport_transfer_partner_model')
 const shuttle_invoice = require('../models/airport_transfer_receipt_model')
 const passport = require('passport')
+const middleware = require('../middleware')
 
 const router = express.Router()
 
@@ -84,5 +85,28 @@ router.post('/signin',(req,res,next) => {
     })(req, res, next)
 })
 
+router.get('/favourite', middleware.isLoggedIn, (req,res) => {
+    var user = middleware.getUser(req)
+
+    User.findById(user._id).populate('favorite.id').exec(function(err, foundUser) {
+        if (err) return console.log(err);
+        if (foundUser) {
+            var hotelList = []
+            var attractionList = []
+            var restaurantList = []
+            var blogList = []
+            foundUser.favorite.forEach(elem => {
+                if (elem.favModel == 'Hotel') hotelList.push(elem.id)
+                if (elem.favModel == 'Attraction') attractionList.push(elem.id)
+                if (elem.favModel == 'Restaurant') restaurantList.push(elem.id)
+                if (elem.favModel == 'Blog') blogList.push(elem.id)
+            })
+            console.log(hotelList)
+            return res.status(200).json({hotelList:hotelList, attractionList:attractionList, restaurantList:restaurantList, blogList:blogList})
+        } else {
+            return console.log(err);
+        }
+    });
+})
 
 module.exports = router

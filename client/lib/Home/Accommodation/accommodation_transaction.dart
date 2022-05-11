@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dotted_line/dotted_line.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:se_app2/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_boxicons/flutter_boxicons.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -68,7 +69,7 @@ class _AccommodationTransactionState extends State<AccommodationTransaction> {
     // data = json.encode(allRooms);
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
-    var res = await http.post(Uri.parse("http://10.0.2.2:8080/transaction"),
+    var res = await http.post(Uri.parse("$SERVER_URL/transaction"),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8',
           'Accept': 'application/json;charSet=UTF-8',

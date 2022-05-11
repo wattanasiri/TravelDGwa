@@ -83,7 +83,7 @@ class _detailpartnerState extends State<detailpartner> {
 
 
     http.Response res = await http.get(Uri.parse
-      ("http://10.0.2.2:8080/comment/${widget.partnerdata['foundpartner']['_id']}/model/$type"),
+      ("$SERVER_URL/comment/${widget.partnerdata['foundpartner']['_id']}/model/$type"),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',

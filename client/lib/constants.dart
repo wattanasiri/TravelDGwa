@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 const timeoutDuration = 10;
+const SERVER_URL = 'https://traveldgwa.herokuapp.com';
+// const SERVER_URL = 'http://10.0.2.2:5000';
+
 
 final kHintTextStyle = TextStyle(
   color: Colors.white54,
@@ -35,5 +38,6 @@ const redOrangeColor = Color(0xFFF25B52);
 const skyBlueColor = Color(0xFFECFAFF);
 const greenColor = Color(0xFF7BEE99);
 const grayColor = Color(0xFF827E7E);
+const pinkColor = Color(0xFFE80138);
 
 const paddingValue = 30.0;
