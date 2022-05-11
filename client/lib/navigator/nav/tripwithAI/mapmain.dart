@@ -20,7 +20,6 @@ import '../../../Data/data_currentuser.dart';
 import '../../../Data/data_locations.dart';
 import '../../../Data/data_selectcontinue.dart';
 import '../../../Data/data_selectlocation2.dart';
-import '../../../constants.dart';
 import 'Trip_detail.dart';
 import 'Trip_log.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -65,7 +64,7 @@ class _MapmainState extends State<Mapmain> {
     print('querydata');
     print(datauser.id);
     http.Response res =
-    await http.get(Uri.parse("$SERVER_URL/map/" + datauser.id + '/querydatamap'));
+    await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/querydatamap'));
     querydata2 = json.decode(res.body);
     print(querydata2);
 

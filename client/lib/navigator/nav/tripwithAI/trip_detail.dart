@@ -9,7 +9,6 @@ import 'package:ionicons/ionicons.dart';
 import 'package:se_app2/Home/Attraction/tourism_result.dart';
 import 'package:http/http.dart' as http;
 import '../../../Data/data_currentuser.dart';
-import '../../../constants.dart';
 import 'Trip_edit.dart';
 import 'Trip_start.dart';
 import 'map.dart';
@@ -88,7 +87,7 @@ class _tripdetailState extends State<tripdetail> {
     //   data.addAll({"price_extrapay[$i]":price_extrapay[i]});
     // }
 
-    var res = await http.post(Uri.parse('$SERVER_URL/map/updatetrip'),
+    var res = await http.post(Uri.parse('http://10.0.2.2:8080/map/updatetrip'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
         },

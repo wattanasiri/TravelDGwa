@@ -114,7 +114,6 @@ class _ResultItemState extends State<ResultItem> {
                             favFunction: actionFavouriteChild,
                             resultIndex: index,
 
-
                         )))
               },
               child: GFCard(

@@ -106,14 +106,14 @@ class _activityDetailState extends State<activityDetail> {
               children: <Widget>[
                 SizedBox(height: MediaQuery.of(context).size.height),
                 CarouselSlider.builder(
-                  itemCount: 1,
+                  itemCount: urlImages.length,
                   options: CarouselOptions(
                       height: 400.0,
                       viewportFraction: 1,
                       onPageChanged: (index, reason) =>
                           {setState(() => activeIndex = index)}),
                   itemBuilder: (context, index, realIndex) {
-                    final urlImage = detail['image'];
+                    final urlImage = urlImages[index];
                     return buildImage(urlImage, index);
                   },
                 ),
@@ -483,7 +483,7 @@ class _activityDetailState extends State<activityDetail> {
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
         activeIndex: activeIndex,
-        count: 1,
+        count: urlImages.length,
         effect: ScaleEffect(
             dotWidth: 8,
             dotHeight: 8,

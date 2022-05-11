@@ -8,7 +8,6 @@ import 'package:se_app2/Data/data_currentuser.dart';
 import 'dart:convert';
 
 import 'package:se_app2/Home/Activity/activity_result.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class activity extends StatefulWidget {
   // const activity({Key key}) : super(key: key);
@@ -25,22 +24,7 @@ class _activityState extends State<activity> {
 
   String word = '';
   String selectid = '';
-  Future getdataid() async {
-    Datauser datauser = Datauser();
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
-    print('getuserid');
-    http.Response res = await http.get(
-      Uri.parse('$SERVER_URL/map/getuserid'),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
-    print(json.decode(res.body));
-    datauser.id = json.decode(res.body);
-  }
+
   Future activity_partner() async{
 
     var res = await http.post(Uri.parse('$SERVER_URL/activity/activity_partner'),
@@ -106,7 +90,6 @@ class _activityState extends State<activity> {
     //print(dataafterquery['foundAcc']);
     //print(dataafterquery['foundAcc']['name']);
     // print(dataafterquery['foundAcc'][0]['name']);
-
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => activity_result(
       name: name.text,
       // day: day.text,
@@ -154,7 +137,6 @@ class _activityState extends State<activity> {
 
   @override
   void initState(){
-    getdataid();
     super.initState();
     print("result");
     print(widget.result);

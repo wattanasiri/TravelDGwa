@@ -9,7 +9,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../Data/data_currentuser.dart';
-import '../../../constants.dart';
 import 'mapmain.dart';
 
 class lifestyle extends StatefulWidget {
@@ -39,7 +38,7 @@ class _lifestyleState extends State<lifestyle> {
     print('id');
     print(datauser.id);
     var res = await http.post(
-        Uri.parse('$SERVER_URL/map/register_mapinfo'),
+        Uri.parse('http://10.0.2.2:8080/map/register_mapinfo'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8'
         },

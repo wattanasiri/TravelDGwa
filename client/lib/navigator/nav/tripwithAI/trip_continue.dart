@@ -7,7 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../Data/data_currentuser.dart';
-import '../../../constants.dart';
 import 'Trip_log.dart';
 import 'map.dart';
 import 'mapmain.dart';
@@ -41,7 +40,7 @@ class _tripcontinueState extends State<tripcontinue> {
     Datauser datauser = Datauser();
     print('querydata2');
     http.Response res =
-    await http.get(Uri.parse("$SERVER_URL/map/" + datauser.id + '/querydataandupdatstatus/' + widget.data['_id']));
+    await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/querydataandupdatstatus/' + widget.data['_id']));
     querydata2 = json.decode(res.body);
     print(querydata2);
     for(int i=0 ; i < querydata2['foundinfo'].length ; i ++){
@@ -59,7 +58,7 @@ class _tripcontinueState extends State<tripcontinue> {
     Datauser datauser = Datauser();
     print('querydatafromcancel');
     http.Response res =
-    await http.get(Uri.parse("$SERVER_URL/map/" + datauser.id + '/querydatamap'));
+    await http.get(Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/querydatamap'));
     querydata2 = json.decode(res.body);
     print(querydata2);
     for(int i=0 ; i < querydata2['foundinfo'].length ; i ++){

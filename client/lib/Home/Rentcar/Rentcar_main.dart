@@ -10,7 +10,6 @@ import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_storage/firebase_storage.dart'as firebase_storage;
 import 'package:se_app2/Data/data_currentuser.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'Rentcar_info.dart';
 
 class rentcar extends StatefulWidget {
@@ -21,24 +20,11 @@ class rentcar extends StatefulWidget {
 
 class _rentcarState extends State<rentcar> {
   String id;
-// กรุงเทพ
+
   Map dataafterquery;
-  Future getdataid() async {
-    Datauser datauser = Datauser();
-    var _prefs = await SharedPreferences.getInstance();
-    var token = _prefs.get('token');
-    print('getuserid');
-    http.Response res = await http.get(
-      Uri.parse('http://10.0.2.2:8080/map/getuserid'),
-      headers: {
-        'Content-Type': 'application/json;charSet=UTF-8',
-        'Accept': 'application/json;charSet=UTF-8',
-        'Authorization': 'Bearer $token',
-      },
-    );
-    print(json.decode(res.body));
-    datauser.id = json.decode(res.body);
-  }
+  String downloadURL;
+
+
   Future save_partner() async {
     print('savepartner');
     Datauser datauser = Datauser();
@@ -251,7 +237,6 @@ class _rentcarState extends State<rentcar> {
     print(dataafterquery.runtimeType);
     print(dataafterquery['foundCar']);
     print(dataafterquery['foundCar'].runtimeType);
-    getdataid();
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Rentcar_info(
       dategetcar: _dategetcarcontroller.text,
       timegetcar: _timegetcarcontroller.text,

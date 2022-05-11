@@ -5,7 +5,6 @@ import 'package:google_place/google_place.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../Data/data_currentuser.dart';
-import '../../../constants.dart';
 import 'lifestyle.dart';
 import 'mapmain.dart';
 import 'dart:math';
@@ -39,7 +38,7 @@ class _TripWithAIState extends State<TripWithAI> with TickerProviderStateMixin{
   Future querydata() async {
     print('querydata');
     http.Response res = await http.get(
-        Uri.parse("$SERVER_URL/map/" + datauser.id + '/querydatamap'));
+        Uri.parse("http://10.0.2.2:8080/map/" + datauser.id + '/querydatamap'));
     dataquerymap = json.decode(res.body);
     print(dataquerymap);
     for(int i=0 ; i < dataquerymap['foundinfo'].length ; i ++){
@@ -58,7 +57,7 @@ class _TripWithAIState extends State<TripWithAI> with TickerProviderStateMixin{
     var token = _prefs.get('token');
     print('getuserid');
     http.Response res = await http.get(
-      Uri.parse('$SERVER_URL/map/getuserid'),
+      Uri.parse('http://10.0.2.2:8080/map/getuserid'),
       headers: {
         'Content-Type': 'application/json;charSet=UTF-8',
         'Accept': 'application/json;charSet=UTF-8',
@@ -75,7 +74,7 @@ class _TripWithAIState extends State<TripWithAI> with TickerProviderStateMixin{
       Datauser datauser = Datauser();
       print(datauser.id);
       http.Response res = await http.get(Uri.parse(
-          "$SERVER_URL/map/" + datauser.id + '/infolifestyleuser'));
+          "http://10.0.2.2:8080/map/" + datauser.id + '/infolifestyleuser'));
       dataafterquery = json.decode(res.body);
       print(dataafterquery['foundinfo'].length);
       print(dataafterquery['foundinfo']);
