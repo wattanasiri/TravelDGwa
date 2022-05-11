@@ -97,6 +97,25 @@ router.get('/:id' + '/querydatamapandupdatstatus',async (req,res) => {
     })
    
 })
+
+router.get('/:id' + '/querydataandupdatstatus' + '/:idtrip',async (req,res) => {
+    console.log('updatestatus')
+    console.log(req.params.idtrip)
+    var result = await trip.updateOne({_id:req.params.idtrip},{$set:{status:'success'}})
+    console.log('querydatamap')
+    var id = req.params.id;
+    console.log(id)
+    trip.find({ "usernameID": id }).exec((err,foundinfo) => {
+        if(err){
+            console.log(err)
+        } else {
+            res.json({foundinfo})
+            console.log(foundinfo)
+        }
+    })
+   
+})
+
 router.post('/savetrip',async (req,res) => {
     console.log('savetrip')
     console.log(req.body.usernameID)
