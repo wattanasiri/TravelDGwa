@@ -28,7 +28,7 @@ class _activity_register2State extends State<activity_register2> {
   FocusNode acFocusNode6 = FocusNode();
   FocusNode acFocusNode7 = FocusNode();
 
-  final name = TextEditingController();
+  final activityName = TextEditingController();
   final address = TextEditingController();
   final number_address = TextEditingController();
   final province = TextEditingController();
@@ -40,13 +40,20 @@ class _activity_register2State extends State<activity_register2> {
     if (!_formKey.currentState.validate()) {
       return;
     }
+    print(activityName.text);
+    print(number_address.text);
+    print(address.text);
+    print(province.text);
+    print(district.text);
+    print(post_code.text);
+    print(price.text);
     _formKey.currentState.save();
     Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
         activity_register3(
           name: widget.name,
           number : widget.number,
           email : widget.email,
-          activityName: name.text,
+          activityName: activityName.text,
           address: address.text,
           number_address: number_address.text,
           province : province.text,
@@ -121,7 +128,7 @@ class _activity_register2State extends State<activity_register2> {
                                   border: Border.all(
                                       color: const Color(0xff1D3557), width: 2)),
                               child: TextFormField(
-                                controller: name,
+                                controller: activityName,
                                 decoration: const InputDecoration(
                                   hintText: 'ชื่อ - นามสกุล ',
                                   enabledBorder: UnderlineInputBorder(
@@ -450,9 +457,10 @@ class _activity_register2State extends State<activity_register2> {
                         child: ElevatedButton(
                           onPressed: () async=> {
                             // airport_partner(),
-                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => activity_register3(
-
-                            ),)),
+                            next(),
+                            // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => activity_register3(
+                            //
+                            // ),)),
                           },
                           style: ElevatedButton.styleFrom(
                             animationDuration: const Duration(milliseconds: 1000),

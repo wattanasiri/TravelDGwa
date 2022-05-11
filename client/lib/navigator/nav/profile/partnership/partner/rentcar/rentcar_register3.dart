@@ -1,11 +1,13 @@
 import 'package:flutter/cupertino.dart';
-import 'package:se_app2/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
+import 'package:se_app2/constants.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:path/path.dart' as path;
+import 'package:firebase_storage/firebase_storage.dart'as firebase_storage;
 import 'package:se_app2/navigator/nav/profile/partnership/partner/rentcar/rentcar_request.dart';
 class rentcar_register3 extends StatefulWidget {
   rentcar_register3({this.imagecompany,this.province,this.name,this.address,this.company,this.number,this.email,this.dayopen,this.dayopen2,this.timegetcarcontroller,this.timegetcarcontroller2,this.document});
@@ -45,74 +47,28 @@ class _rentcar_register3State extends State<rentcar_register3> {
   final smallbag = TextEditingController();
   TextEditingController num_seat = TextEditingController(text: '0');
 
-  // Future update_partner() async{
-  //
-  //   print(widget.document);
-  //   print('update partner');
-  //   List<String> name_extrapay = ["05:30 - 08.59","31:01 - 23:59","บริการรับส่งนอกสถานที่"];
-  //   List<String> price_extrapay = ["300","300","100"];
-  //   List<String> image = ["https://www.luvdrive.com/assets/img/logo/new-logo.png","https://lh5.googleusercontent.com/p/AF1QipNf5_4r5eeUBPNb_sT5IcZ7u_luULYk5L2iFJBe=w1080-k-no"];
-  //   Map<String,String> data;
-  //   data={
-  //     "document[]": widget.document.toString(),
-  //     "name_extrapay[]": name_extrapay.toString(),
-  //     "price_extrapay[]": price_extrapay.toString(),
-  //   };
-  //   for(int i = 0;i < widget.document.length ; i++){
-  //     data.addAll({"document[$i]":widget.document[i].text});
-  //   }
-  //   for(int i = 0;i < name_extrapay.length ; i++){
-  //     data.addAll({"name_extrapay[$i]":name_extrapay[i]});
-  //   }
-  //   for(int i = 0;i < price_extrapay.length ; i++){
-  //     data.addAll({"price_extrapay[$i]":price_extrapay[i]});
-  //   }
-  //   // "image": imageFile.toString(),
-  //   // for(int i = 0;i < image.length ; i++){
-  //   //   data.addAll({"image[$i]":image[i]});
-  //   // }
-  //   var res = await http.post(Uri.parse('$SERVER_URL/rentcar/update_register_rentcarpartner'),
-  //     headers: <String, String>{
-  //       'Context-Type': 'application/json;charSet=UTF-8'
-  //     },
-  //     body: data,
-  //   );
-  //   print(res.body);
-  // }
+  String fileNames;
+  Future uploadImageToFirebase(BuildContext context) async {
+    String fileName = path.basename(imageFile.path);
+    firebase_storage.Reference firebaseStorageRef = firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('uploads')
+        .child('/$fileName');
+    firebase_storage.UploadTask uploadTask = firebaseStorageRef.putFile(imageFile);
+    firebase_storage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete((){});
+    taskSnapshot.ref.getDownloadURL().then(
+          (value) => print("Done: $value"),
+    );
+    fileNames = fileName.toString();
+  }
 
-  // Future save_partner() async {
-  //   var _prefs = await SharedPreferences.getInstance();
-  //   var token = _prefs.get('token');
-  //   String username = '';
-  //   print('savepartner');
-  //
-  //   var res = await http.post(Uri.parse('$SERVER_URL/rentcar/register_rentcarpartner'),
-  //       headers:{
-  //         'Context-Type': 'application/json;charSet=UTF-8',
-  //         'Accept': 'application/json;charSet=UTF-8',
-  //         'Authorization': 'Bearer $token',
-  //       },
-  //       body: <String, String>{
-  //         "usernameID" : '$token',
-  //         "companyName": widget.company,
-  //         "phone": widget.number.toString(),
-  //         "email": widget.email,
-  //         "dayopen": widget.dayopen,
-  //         "dayopen2" : widget.dayopen2,
-  //         "timeopen": widget.timegetcarcontroller,
-  //         "timeopen2" : widget.timegetcarcontroller2,
-  //         "image" : widget.imagecompany.path,
-  //         // "imagecompany": widget.imagecompany,
-  //       });
-  //   print(res.body);
-  // }
     Future save_partner2() async {
       var _prefs = await SharedPreferences.getInstance();
       var token = _prefs.get('token');
       String username = '';
       print('savepartner');
 
-      var res = await http.post(Uri.parse('$SERVER_URL/rentcar/register_carinfo_rentcarpartner'),
+      var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/register_carinfo_rentcarpartner'),
           headers:{
             'Context-Type': 'application/json;charSet=UTF-8',
             'Accept': 'application/json;charSet=UTF-8',
@@ -145,8 +101,8 @@ class _rentcar_register3State extends State<rentcar_register3> {
     print('update carinfo partner');
     // List<String> image = ["https://www.toyota.co.th/media/product/feature/large/e8d2cc60fa1d5467bc3a8b2b944677faa9c42502.jpg","https://s.isanook.com/au/0/rp/r/w728/ya0xa0m1w0/aHR0cHM6Ly9zLmlzYW5vb2suY29tL2F1LzAvdWQvMTYvODEyODAveWFyaXNfYXRpdl8zMi5qcGc=.jpg"];
     // List<String> name_service = ["FM/AM Radio","Bluetooth","USB/AUX","CD/MP3"];
-    List<String> locationpickup = ["มารับด้วยตนเอง","ท่าอากศยานสุวรรณภูมิ","ท่าอากศยานดินเมือง"];
-    List<String> pricelocationpickup = ["0","500","800"];
+    List<String> locationpickup = ["มารับด้วยตนเอง","มารับด้วยตนเอง","ท่าอากศยานสุวรรณภูมิ","ท่าอากศยานดินเมือง"];
+    List<String> pricelocationpickup = ["0","0","500","800"];
     Map<String,String> data;
     List<String> name;
     data={
@@ -158,6 +114,7 @@ class _rentcar_register3State extends State<rentcar_register3> {
     //   data.addAll({"image[$i]":image[i]});
     // }
 
+    // fileNames = fileNames.split("/").last;
     int a=0;
     data.addAll({"name[$a]":widget.company});a++;
     data.addAll({"name[$a]":widget.address});a++;
@@ -171,7 +128,7 @@ class _rentcar_register3State extends State<rentcar_register3> {
     data.addAll({"name[$a]":"2"});a++;
     data.addAll({"name[$a]":bigbag.text});a++;
     data.addAll({"name[$a]":smallbag.text});a++;
-    data.addAll({"name[$a]":imageFile.toString()});a++;
+    data.addAll({"name[$a]":fileNames.toString()});a++;
     data.addAll({"name[$a]":"0"});a++;
     data.addAll({"name[$a]":widget.name});
     for(int i = 0;i < numtool ; i++){
@@ -200,7 +157,7 @@ class _rentcar_register3State extends State<rentcar_register3> {
   //   String username = '';
   //   print('savepartner');
   //
-  //   var res = await http.post(Uri.parse('$SERVER_URL/rentcar/update_register_rentcarinfo'),
+  //   var res = await http.post(Uri.parse('http://10.0.2.2:8080/rentcar/update_register_rentcarinfo'),
   //       headers:{
   //         'Context-Type': 'application/json;charSet=UTF-8',
   //         'Accept': 'application/json;charSet=UTF-8',
@@ -852,6 +809,7 @@ class _rentcar_register3State extends State<rentcar_register3> {
 
                             ),)),
                             // activity_partner(),
+                            uploadImageToFirebase(context),
                           },
                           style: ElevatedButton.styleFrom(
                             animationDuration: const Duration(milliseconds: 1000),

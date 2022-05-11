@@ -15,6 +15,9 @@ import 'screen/login_register/password_recovery.dart';
 import 'screen/login_register/register.dart';
 import 'navigator/nav/profile/profile.dart';
 import 'navigator/nav.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
 
 void main() async {
 
@@ -25,7 +28,8 @@ void main() async {
     ),
   );
   WidgetsFlutterBinding.ensureInitialized();
-//กรุงเทพ
+
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 

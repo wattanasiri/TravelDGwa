@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "300119033260",
+    "project_id": "traveldgwa",
+    "storage_bucket": "traveldgwa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:300119033260:android:836eba3a32d3371c562609",
+        "android_client_info": {
+          "package_name": "com.example.se_app2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "300119033260-80iv461ojcq5dr08l3dq02ke240s5nrr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEiARryhf3BM0i1TK29vo_itdfb_apwNY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "300119033260-80iv461ojcq5dr08l3dq02ke240s5nrr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
