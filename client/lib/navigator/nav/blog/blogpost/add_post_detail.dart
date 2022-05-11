@@ -46,7 +46,7 @@ class _AddpostdetailState extends State<Addpostdetail> {
           'Authorization': 'Bearer $token',
         },
         body: <String, String>{
-          'image' : fileNames.toString(),
+          'image' : fileNames,
           'topic' : topic.text,
           'location' : location.text,
           'desc' : desc.text,
@@ -65,9 +65,14 @@ class _AddpostdetailState extends State<Addpostdetail> {
     firebase_storage.UploadTask uploadTask = firebaseStorageRef.putFile(imageFile);
     firebase_storage.TaskSnapshot taskSnapshot = await uploadTask.whenComplete((){});
     taskSnapshot.ref.getDownloadURL().then(
-          (value) => print("Done: $value"),
+          (value) => {print("Done: $value"),
+                      fileNames = value}
     );
-    fileNames = fileName.toString();
+    // print(fileName);
+    // print(taskSnapshot);
+    // print(imageFile.path);
+    // fileNames = fileName.toString();
+    print(fileNames);
   }
 
 
@@ -104,8 +109,9 @@ class _AddpostdetailState extends State<Addpostdetail> {
           ),
           actions: [
             TextButton(
-                onPressed: (){
-                  addBlog();
+                onPressed: () async {
+                  await uploadImageToFirebase(context);
+                  await addBlog();
                   Navigator.of(context).pop();
                 },
                 child: Text(
@@ -147,7 +153,7 @@ class _AddpostdetailState extends State<Addpostdetail> {
                               RaisedButton(
                                 color: Color(0xff7BEE99),
                                 onPressed: () {
-                                  _getFromGallery();
+                                  _getFromGallery(context);
                                 },
                                 child: Text("Add Image from gallery"),
                               ),
@@ -157,13 +163,13 @@ class _AddpostdetailState extends State<Addpostdetail> {
                               RaisedButton(
                                 color: Color(0xffFF9A62),
                                 onPressed: () {
-                                  _getFromCamera();
+                                  _getFromCamera(context);
                                 },
                                 child: Text("         Take a picture         "),
                               )
                             ],
                           ),
-                        ): Container(
+                        ): ClipRect(
                           child: Image.file(
                             imageFile,
                             fit: BoxFit.cover,
@@ -307,7 +313,7 @@ class _AddpostdetailState extends State<Addpostdetail> {
     );
   }
   /// Get from gallery
-  _getFromGallery() async {
+  _getFromGallery(context) async {
     PickedFile pickedFile = await ImagePicker().getImage(
       source: ImageSource.gallery,
       maxWidth: 1800,
@@ -318,10 +324,11 @@ class _AddpostdetailState extends State<Addpostdetail> {
         imageFile = File(pickedFile.path);
       });
     }
+    print(imageFile.toString());
   }
 
   /// Get from Camera
-  _getFromCamera() async {
+  _getFromCamera(context) async {
     PickedFile pickedFile = await ImagePicker().getImage(
       source: ImageSource.camera,
       maxWidth: 1800,
@@ -332,6 +339,7 @@ class _AddpostdetailState extends State<Addpostdetail> {
         imageFile = File(pickedFile.path);
       });
     }
+    print(imageFile.toString());
   }
 }
 
