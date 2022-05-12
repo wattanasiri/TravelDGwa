@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:se_app2/navigator/nav/profile/changepass.dart';
 import 'package:se_app2/navigator/nav/profile/profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:se_app2/constants.dart';
 
 class editpro extends StatefulWidget {
   @override
@@ -8,6 +11,27 @@ class editpro extends StatefulWidget {
 }
 
 class _editproState extends State<editpro> {
+
+  // Future editProfile() async {
+  //   // allRooms = room_detail;
+  //   // data = json.encode(allRooms);
+  //   var _prefs = await SharedPreferences.getInstance();
+  //   var token = _prefs.get('token');
+  //   var res = await http.post(Uri.parse("$SERVER_URL/blog"),
+  //       headers: <String, String>{
+  //         'Context-Type': 'application/json;charSet=UTF-8',
+  //         'Accept': 'application/json;charSet=UTF-8',
+  //         'Authorization': 'Bearer $token',
+  //       },
+  //       body: <String, String>{
+  //         'realname' : realname ,
+  //         'surname' : surname ,
+  //         'phone' : phone
+  //
+  //       });
+  //   print(res.body);
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -132,41 +156,6 @@ class _editproState extends State<editpro> {
                     ),
                   ),
                 ]
-              ),
-              Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        padding: EdgeInsets.all(10),
-                        child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text("อีเมล",
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.normal,
-                                      color: Color(0xff1D3557))),
-                              const SizedBox(height: 5),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16),
-                                decoration: BoxDecoration(
-                                    color: const Color(0xffECFAFF),
-                                    borderRadius: BorderRadius.circular(15),
-                                    border: Border.all(color: const Color(0xff1D3557), width: 2)
-                                ),
-                                child: TextFormField(
-                                  decoration: const InputDecoration(
-                                    hintText: 'อีเมล',
-                                    enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Color(0xffECFAFF))),
-                                  ),
-                                ),
-                              )
-                            ]
-                        ),
-                      ),
-                    ),
-                  ]
               ),
               Row(
                   children: [

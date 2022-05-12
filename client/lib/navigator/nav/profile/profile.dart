@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -9,6 +11,9 @@ import 'package:se_app2/navigator/nav/profile/profile_edit.dart';
 import 'package:se_app2/navigator/nav/profile/logout_confirm.dart';
 import 'package:se_app2/navigator/nav/profile/favourite/mainfavourite.dart';
 import 'package:se_app2/screen/login_register/login.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'package:se_app2/constants.dart';
 
 import 'helpcenter/mainhelpcenter.dart';
 
@@ -21,6 +26,36 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+
+  // Map data;
+  // List info;
+  //
+  //
+  // Future getUserInfo() async {
+  //   var _prefs = await SharedPreferences.getInstance();
+  //   var token = _prefs.get('token');
+  //   http.Response res =
+  //   await http.get(Uri.parse("$SERVER_URL/user/userinfo"),
+  //     headers: {
+  //       'Content-Type': 'application/json;charSet=UTF-8',
+  //       'Accept': 'application/json;charSet=UTF-8',
+  //       'Authorization': 'Bearer $token',
+  //     },
+  //   );
+  //   data = json.decode(res.body);
+  //   info = data['foundUser'];
+  //   setState(() {
+  //     info = info;
+  //   });
+  //   print(info);
+  // }
+
+  @override
+  void initState() {
+    super.initState();
+    // getUserInfo();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,7 +115,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text("Sedtawut Chalothronnarumit",
+                            Text( "Sedtawut Chalothornnarumit",
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                               style: GoogleFonts.poppins(
