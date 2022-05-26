@@ -554,7 +554,7 @@ class _AccommodationDetailState extends State<AccommodationDetail> {
 
   Widget buildIndicator() => AnimatedSmoothIndicator(
         activeIndex: activeIndex,
-        count: detail["image"].length,
+        count: 1,
         effect: ScaleEffect(
             dotWidth: 8,
             dotHeight: 8,

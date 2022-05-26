@@ -27,8 +27,6 @@ class _result_reserveState extends State<result_reserve> {
     var _prefs = await SharedPreferences.getInstance();
     var token = _prefs.get('token');
     Datauser datauser = Datauser();
-    print('id');
-    print(datauser.id);
     var res = await http.post(Uri.parse('$SERVER_URL/rentcar/save_transaction'),
         headers: <String, String>{
           'Context-Type': 'application/json;charSet=UTF-8',
@@ -37,7 +35,6 @@ class _result_reserveState extends State<result_reserve> {
         },
         body: <String, String>{
 
-          "usernameid": datauser.id,
           "partnername": widget.partnerdata['foundpartner']['namepartner'],
           "car_name": widget.data['foundCar']['car_name'],
           "car_license" : widget.data['foundCar']['car_license'],

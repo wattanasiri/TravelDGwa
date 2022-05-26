@@ -27,33 +27,33 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
 
-  // Map data;
-  // List info;
-  //
-  //
-  // Future getUserInfo() async {
-  //   var _prefs = await SharedPreferences.getInstance();
-  //   var token = _prefs.get('token');
-  //   http.Response res =
-  //   await http.get(Uri.parse("$SERVER_URL/user/userinfo"),
-  //     headers: {
-  //       'Content-Type': 'application/json;charSet=UTF-8',
-  //       'Accept': 'application/json;charSet=UTF-8',
-  //       'Authorization': 'Bearer $token',
-  //     },
-  //   );
-  //   data = json.decode(res.body);
-  //   info = data['foundUser'];
-  //   setState(() {
-  //     info = info;
-  //   });
-  //   print(info);
-  // }
+  Map data;
+  List info;
+
+
+  Future getUserInfo() async {
+    var _prefs = await SharedPreferences.getInstance();
+    var token = _prefs.get('token');
+    http.Response res =
+    await http.get(Uri.parse("$SERVER_URL/user/userinfo"),
+      headers: {
+        'Content-Type': 'application/json;charSet=UTF-8',
+        'Accept': 'application/json;charSet=UTF-8',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    data = json.decode(res.body);
+    info = data['founduser'];
+    setState(() {
+      info = info;
+    });
+    print(info);
+  }
 
   @override
   void initState() {
     super.initState();
-    // getUserInfo();
+    getUserInfo();
   }
 
   @override
